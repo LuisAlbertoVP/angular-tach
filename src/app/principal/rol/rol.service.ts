@@ -1,0 +1,40 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { Rol, Roles } from '@models/auth';
+import { Busqueda } from '@models/busqueda';
+import { HttpErrorHandlerService, HandleError } from '../../http-error-handler.service';
+
+const httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+  observe: 'response' as const
+};
+
+@Injectable({
+  providedIn: 'root'
+})
+export class RolService {
+  url: string = 'http://localhost:8080/api/roles';
+  private handleError: HandleError;
+
+  constructor(
+    private http: HttpClient,
+    httpErrorHandler: HttpErrorHandlerService
+  ) { 
+    this.handleError = httpErrorHandler.createHandleError('RolService');
+  }
+
+  getAll = (busqueda: Busqueda) => this.http.post(`${this.url}/all`, busqueda, httpOptions)
+      .pipe(catchError(this.handleError<Roles>('getAll')));
+
+  insertOrUpdate = (rol: Rol) => this.http.post(this.url, rol, httpOptions)
+      .pipe(catchError(this.handleError('insertOrUpdate', rol)));
+
+  setStatus = (rol: Rol) => this.http.post(`${this.url}/${rol.id}`, rol, httpOptions)
+      .pipe(catchError(this.handleError('setStatus', rol)));
+
+  delete = (id: string) => this.http.delete(`${this.url}/${id}`, httpOptions)
+      .pipe(catchError(this.handleError('delete', id)));
+}

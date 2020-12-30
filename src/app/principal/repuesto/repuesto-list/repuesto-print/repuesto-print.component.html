@@ -1,0 +1,39 @@
+<div class="mb-3">
+  <h2 class="bold">Filtro(s)</h2>
+  <ul class="list-unstyled shadow p-3">
+    <li *ngFor="let filtro of busqueda.filtros">
+      <span class="bold">{{ filtro.columna + ' ' }}</span>
+      <span *ngIf="filtro.condicion != 'between' && filtro.condicion != 'multiple'">{{ filtro.criterio1.replace(regex, '') }}</span>
+      <span *ngIf="filtro.condicion == 'between'">{{ filtro.criterio1 + ' ' + filtro.criterio2 }}</span>
+      <span *ngIf="filtro.condicion == 'multiple'">
+        <ng-container *ngFor="let criterio of filtro.criterios">{{ criterio + ' ' }}</ng-container>
+      </span>
+    </li>
+  </ul>
+  <div>{{ 'Cantidad: ' + busqueda.cantidad }}</div>
+</div>
+<div class="container-fluid">
+  <div class="row bold">
+    <div class="col-2">Código</div>
+    <div class="col-2">Marca</div>
+    <div class="col-2">Categoría</div>
+    <div class="col-2">Modelo</div>
+    <div class="col-2">Ano</div>
+    <div class="col-1">Stock</div>
+    <div class="col-1">Precio</div>
+  </div>
+  <ng-container *ngFor="let repuesto of repuestos">
+    <div class="row page-break">
+      <div class="col-2">{{ repuesto.codigo }}</div>
+      <div class="col-2">{{ repuesto.marca.descripcion }}</div>
+      <div class="col-2">{{ repuesto.categoria.descripcion }}</div>
+      <div class="col-2">{{ repuesto.modelo }}</div>
+      <div class="col-2">{{ repuesto.fecha }}</div>
+      <div class="col-1">{{ repuesto.stock }}</div>
+      <div class="col-1">{{ repuesto.precio }}</div>
+    </div>
+    <div class="col-12 spacer page-break">
+      {{ repuesto.descripcion }}
+    </div>
+  </ng-container>
+</div>

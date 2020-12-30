@@ -1,0 +1,8 @@
+.principal-container { display: flex; flex-direction: column; position: absolute; top: 0; bottom: 0; left: 0; right: 0; }
+.es-mobile .principal-toolbar { position: fixed; z-index: 2; }
+.principal-sidenav { flex: 1; }
+.es-mobile .principal-sidenav { flex: 1 0 auto; }
+.not-hover:hover * { color: rgb(203, 217, 236); }
+@media print {
+  mat-toolbar { display: none; }
+}

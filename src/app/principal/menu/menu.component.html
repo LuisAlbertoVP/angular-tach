@@ -1,0 +1,30 @@
+<div class="principal-container es-mobile">
+  <mat-toolbar color="primary" class="principal-toolbar">
+    <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
+    <div class="w-100 d-flex">
+      <h1>{{ menuBar.title }}</h1>
+      <span class="ml-auto"></span>
+      <a *ngIf="menuBar.printEvent" mat-icon-button (click)="menuBar.printEvent()" class="not-hover"><mat-icon>print</mat-icon></a>
+      <a *ngIf="menuBar.addEvent" mat-icon-button (click)="menuBar.addEvent()" class="not-hover"><mat-icon>add</mat-icon></a>
+      <a mat-icon-button [matMenuTriggerFor]="menu" class="not-hover"><mat-icon>more_vert</mat-icon></a>
+      <mat-menu #menu="matMenu">
+        <a mat-menu-item [matMenuTriggerFor]="nuevo">
+          <mat-icon>add_circle_outline</mat-icon><span>Nuevo</span></a>
+        <a mat-menu-item (click)="navigate('/principal/cuenta')">
+          <mat-icon>settings</mat-icon><span>Configuración</span></a>
+      </mat-menu>
+      <mat-menu #nuevo="matMenu">
+        <a mat-menu-item *ngFor="let menuItem of menuItems" (click)="navigate(menuItem.url)">
+          <mat-icon>add_circle</mat-icon><span>{{ menuItem.nombre }}</span></a>
+      </mat-menu>
+    </div>
+  </mat-toolbar>
+  <mat-sidenav-container class="principal-sidenav" [style.marginTop.px]="56">
+    <mat-sidenav #snav mode="over" [opened]="false" [fixedInViewport]="true" fixedTopGap="56">
+      <app-sidenav></app-sidenav>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

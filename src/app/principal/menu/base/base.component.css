@@ -1,0 +1,11 @@
+.parent { display: inline-block; }
+.parent:hover .images, .back { transform: rotateY(180deg); }
+.sparent, .back { display: flex; justify-content: center; }
+.img-container, .front img, a { width: 100px; }
+.img-container { perspective: 1000; height: 105px; }
+.images, .front, .back { width: 100%; height: 100%; }
+.images { transition: 0.8s; transform-style: preserve-3d; position: relative; }
+.front, .back { backface-visibility: hidden; position: absolute; }
+.back { align-items: center; }
+.back img {  width: 60px; }
+a { font-size: 12px; }

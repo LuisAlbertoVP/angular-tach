@@ -1,0 +1,64 @@
+<div>
+  <h2 mat-dialog-title class="text-center blue">Crear cuenta</h2>
+  <mat-dialog-content class="mat-typography">
+    <form [formGroup]="form" (ngSubmit)="crear()" autocomplete="off" class="cuenta-screen m0-auto" [style.width]="isMobile ? '75%' : '50%'">
+      <mat-form-field appearance="outline">
+        <mat-label>Usuario</mat-label>
+        <input formControlName="nombreUsuario" matInput placeholder="Ingrese usuario" type="text" required />
+        <mat-error *ngIf="form.get('nombreUsuario').hasError('required')">Usuario es requerido</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Nombres</mat-label>
+        <input formControlName="nombres" matInput placeholder="Ingrese nombres" type="text" required />
+        <mat-error *ngIf="form.get('nombres').hasError('required')">Nombres son requeridos</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Cedula</mat-label>
+        <input formControlName="cedula" matInput placeholder="Ingrese cedula" type="text" required />
+        <mat-error *ngIf="form.get('cedula').hasError('required')">Cedula es requerida</mat-error>
+        <mat-error *ngIf="form.get('cedula').hasError('pattern')">Cedula debe tener 10 dígitos</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Correo</mat-label>
+        <input formControlName="correo" matInput placeholder="Ingrese correo" type="text" required />
+        <mat-error *ngIf="form.get('correo').hasError('required')">Correo es requerido</mat-error>
+        <mat-error *ngIf="form.get('correo').hasError('pattern')">Ingrese una dirección de correo válida</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Dirección</mat-label>
+        <input formControlName="direccion" matInput placeholder="Ingrese dirección" type="text" required />
+        <mat-error *ngIf="form.get('direccion').hasError('required')">Dirección es requerida</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Teléfono</mat-label>
+        <input formControlName="telefono" matInput placeholder="Ingrese teléfono" type="text" required />
+        <mat-error *ngIf="form.get('telefono').hasError('required')">Teléfono es requerido</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Celular</mat-label>
+        <input formControlName="celular" matInput placeholder="Ingrese celular" type="text" required />
+        <mat-error *ngIf="form.get('celular').hasError('required')">Celular es requerido</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Fecha de nacimiento</mat-label>
+        <input matInput formControlName="fechaNacimiento" [matDatepicker]="picker" required />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="form.get('fechaNacimiento').hasError('required')">Fecha de nacimiento es requerida</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Contraseña</mat-label>
+        <input formControlName="clave" matInput [type]="hide ? 'password' : 'text'" placeholder="Ingrese contraseña" required />
+        <button mat-icon-button matSuffix (click)="hide = !hide" type="button">
+          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+        <mat-error *ngIf="form.get('clave').hasError('required')">Contraseña es requerida</mat-error>
+        <mat-error *ngIf="form.get('clave').hasError('pattern')">Ingrese una combinación de al menos 8 letras, números y caracteres especiales (!@#$%^&*)</mat-error>
+      </mat-form-field>
+      <div class="d-flex mt-4 w-100">
+        <button mat-raised-button color="primary" mat-dialog-close #close>Cancelar</button>
+        <button mat-raised-button color="primary" class="ml-auto">Guardar</button>
+      </div>
+    </form>
+  </mat-dialog-content>
+</div>

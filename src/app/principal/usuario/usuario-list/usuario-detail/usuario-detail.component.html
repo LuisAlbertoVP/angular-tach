@@ -1,0 +1,78 @@
+<div>
+  <h2 mat-dialog-title class="text-center blue">{{ !usuario ? 'Nuevo Usuario' : 'Modificar Usuario' }}</h2>
+  <mat-dialog-content class="mat-typography">
+    <form *ngIf="form" [formGroup]="form" (ngSubmit)="guardar()" class="m0-auto" [style.width]="isMobile ? '75%' : '50%'">
+      <div class="mb-2">
+        <h3 class="mb-3">Detalles de cuenta</h3>
+        <mat-form-field class="w-100" appearance="outline">
+          <mat-label>Nombres</mat-label>
+          <input formControlName="nombres" matInput placeholder="Ingrese nombres" type="text" required />
+          <mat-error *ngIf="form.get('nombres').hasError('required')">Nombres son requeridos</mat-error>
+        </mat-form-field>
+        <mat-form-field class="w-100" appearance="outline">
+          <mat-label>Cedula</mat-label>
+          <input formControlName="cedula" matInput placeholder="Ingrese cedula" type="text" required />
+          <mat-error *ngIf="form.get('cedula').hasError('required')">Cedula es requerida</mat-error>
+          <mat-error *ngIf="form.get('cedula').hasError('pattern')">Cedula debe tener 10 dígitos</mat-error>
+        </mat-form-field>
+        <mat-form-field class="w-100" appearance="outline">
+          <mat-label>Correo</mat-label>
+          <input formControlName="correo" matInput placeholder="Ingrese correo" type="text" required />
+          <mat-error *ngIf="form.get('correo').hasError('required')">Correo es requerido</mat-error>
+          <mat-error *ngIf="form.get('correo').hasError('pattern')">Ingrese una dirección de correo válida</mat-error>
+        </mat-form-field>
+        <mat-form-field class="w-100" appearance="outline">
+          <mat-label>Dirección</mat-label>
+          <input formControlName="direccion" matInput placeholder="Ingrese dirección" type="text" required />
+          <mat-error *ngIf="form.get('direccion').hasError('required')">Dirección es requerida</mat-error>
+        </mat-form-field>
+        <mat-form-field class="w-100" appearance="outline">
+          <mat-label>Teléfono</mat-label>
+          <input formControlName="telefono" matInput placeholder="Ingrese teléfono" type="text" required />
+          <mat-error *ngIf="form.get('telefono').hasError('required')">Teléfono es requerido</mat-error>
+        </mat-form-field>
+        <mat-form-field class="w-100" appearance="outline">
+          <mat-label>Celular</mat-label>
+          <input formControlName="celular" matInput placeholder="Ingrese celular" type="text" required />
+          <mat-error *ngIf="form.get('celular').hasError('required')">Celular es requerido</mat-error>
+        </mat-form-field>
+        <mat-form-field class="w-100" appearance="outline">
+          <mat-label>Fecha de nacimiento</mat-label>
+          <input matInput formControlName="fechaNacimiento" [matDatepicker]="picker" required />
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="form.get('fechaNacimiento').hasError('required')">Fecha de nacimiento es requerida</mat-error>
+        </mat-form-field>
+        <mat-form-field class="w-100" appearance="outline">
+          <mat-label>Roles</mat-label>
+          <mat-select formControlName="roles" multiple required>
+            <mat-option *ngFor="let rol of roles" [value]="rol.id">{{ rol.descripcion }}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.get('roles').hasError('required')">Rol es requerido</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="mb-2">
+        <h3 class="mb-3">Inicio de sesión</h3>
+        <mat-form-field class="w-100" appearance="outline">
+          <mat-label>Usuario</mat-label>
+          <input formControlName="nombreUsuario" matInput placeholder="Ingrese usuario" type="text" required />
+          <mat-icon matSuffix [inline]="true">person</mat-icon>
+          <mat-error *ngIf="form.get('nombreUsuario').hasError('required')">Usuario es requerido</mat-error>
+        </mat-form-field>
+        <mat-form-field class="w-100" appearance="outline">
+          <mat-label>Nueva Contraseña</mat-label>
+          <input formControlName="clave" matInput [type]="hide ? 'password' : 'text'" placeholder="Ingrese contraseña" required />
+          <button mat-icon-button matSuffix (click)="hide = !hide" type="button">
+            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+          <mat-error *ngIf="form.get('clave').hasError('required')">Contraseña es requerida</mat-error>
+          <mat-error *ngIf="form.get('clave').hasError('pattern')">Ingrese una combinación de al menos 8 letras, números y caracteres especiales (!@#$%^&*)</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="d-flex mt-5 w-100">
+        <button mat-raised-button color="primary" [mat-dialog-close]="form.valid">Cancelar</button>
+        <button mat-raised-button color="primary" class="ml-auto">Guardar</button>
+      </div>
+    </form>
+  </mat-dialog-content>
+</div>

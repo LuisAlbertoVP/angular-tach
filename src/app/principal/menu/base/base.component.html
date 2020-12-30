@@ -1,0 +1,23 @@
+<div style="margin-top: 90px;">
+  <div class="container shadow text-center">
+    <h1 class="blue pt-5 pb-3">Transmisiones Automáticas Chabeli</h1>
+    <div *ngFor="let modulo of modulos" class="parent col-sm-6 col-md-4 col-xl-3 mb-5">
+      <div class="sparent m-3 cursor-point" (click)="navigate(modulo.ruta)">
+        <div class="img-container">
+          <div class="images">
+            <div class="front"><img [src]="'assets/' + modulo.imagen" /></div>
+            <div class="back"><img src="assets/siguiente.png" /></div>
+          </div>
+          <a mat-raised-button color="primary">{{ modulo.descripcion }}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="d-none">
+  <div>Icons made by <a href="https://www.flaticon.com/authors/pixel-perfect" title="Pixel perfect">Pixel perfect</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
+  <div>Icons made by <a href="https://www.flaticon.com/authors/eucalyp" title="Eucalyp">Eucalyp</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
+  <div>Icons made by <a href="https://www.flaticon.com/authors/xnimrodx" title="xnimrodx">xnimrodx</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
+  <div>Icons made by <a href="http://www.freepik.com/" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
+  <div>Icons made by <a href="https://www.flaticon.com/authors/darius-dan" title="Darius Dan">Darius Dan</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
+</div>

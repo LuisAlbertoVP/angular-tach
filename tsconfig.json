@@ -4,6 +4,13 @@
   "compilerOptions": {
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
+    "paths": {
+      "@animations/*": ["src/app/animations/*"],
+      "@models/*": ["src/app/models/*"],
+      "@shared_service/*": ["src/app/principal/shared/shared.service.ts"], 
+      "@print_service/*": ["src/app/principal/shared/printing.service.ts"], 
+      "@auth_service/*": ["src/app/auth/auth.service.ts"]
+    },
     "sourceMap": true,
     "declaration": false,
     "downlevelIteration": true,

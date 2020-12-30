@@ -1,0 +1,45 @@
+<div class="sidebar-panel">
+  <div class="sidebar-header p-3">
+    <h3>{{ service.nombres }}</h3>
+    <h4 class="mb-3">{{ service.nombreUsuario }}</h4>
+  </div>
+  <mat-list role="list">
+    <div mat-subheader>Administrador</div>
+    <mat-list-item (click)="navigate('/principal/usuarios')" class="cursor-point">
+      <mat-icon mat-list-icon>supervisor_account</mat-icon>
+      <div mat-line>Gestión de usuarios</div>
+    </mat-list-item>
+    <mat-list-item (click)="navigate('/principal/roles')" class="cursor-point">
+      <mat-icon mat-list-icon>assignment_ind</mat-icon>
+      <div mat-line>Gestión de roles</div>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <div mat-subheader>Inicio</div>
+    <mat-list-item (click)="principal()" class="cursor-point">
+      <mat-icon mat-list-icon>navigate_next</mat-icon>
+      <div mat-line>Página principal</div>
+    </mat-list-item>
+    <mat-list-item (click)="navigate('/principal/compras')" class="cursor-point">
+      <mat-icon mat-list-icon>navigate_next</mat-icon>
+      <div mat-line>Compras</div>
+    </mat-list-item>
+    <mat-list-item (click)="navigate('/principal/repuestos')" class="cursor-point">
+      <mat-icon mat-list-icon>navigate_next</mat-icon>
+      <div mat-line>Repuestos</div>
+    </mat-list-item>
+    <mat-list-item (click)="navigate('/principal/ventas')" class="cursor-point">
+      <mat-icon mat-list-icon>navigate_next</mat-icon>
+      <div mat-line>Ventas</div>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <div mat-subheader>Cuenta</div>
+    <mat-list-item (click)="navigate('/principal/cuenta')" class="cursor-point">
+      <mat-icon mat-list-icon>settings</mat-icon>
+      <div mat-line>Configuración</div>
+    </mat-list-item>
+    <mat-list-item (click)="logout();" class="cursor-point">
+      <mat-icon mat-list-icon>logout</mat-icon>
+      <div mat-line>Cerrar sesión</div>
+    </mat-list-item>
+  </mat-list>
+</div>
