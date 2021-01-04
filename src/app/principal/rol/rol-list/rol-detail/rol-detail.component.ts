@@ -35,7 +35,7 @@ export class RolDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.modulos = listModulos.slice();
+    this.modulos = JSON.parse(JSON.stringify(listModulos));
     if(this.rol) {
       this.form.patchValue(this.rol);
       this.setChecked()

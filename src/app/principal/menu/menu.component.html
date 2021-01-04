@@ -11,7 +11,9 @@
         <a mat-menu-item [matMenuTriggerFor]="nuevo">
           <mat-icon>add_circle_outline</mat-icon><span>Nuevo</span></a>
         <a mat-menu-item (click)="navigate('/principal/cuenta')">
-          <mat-icon>settings</mat-icon><span>Configuración</span></a>
+          <mat-icon>account_circle</mat-icon><span>Cuenta</span></a>
+        <a mat-menu-item (click)="logout()">
+          <mat-icon>exit_to_app</mat-icon><span>Cerrar sesión</span></a>
       </mat-menu>
       <mat-menu #nuevo="matMenu">
         <a mat-menu-item *ngFor="let menuItem of menuItems" (click)="navigate(menuItem.url)">
@@ -21,7 +23,7 @@
   </mat-toolbar>
   <mat-sidenav-container class="principal-sidenav" [style.marginTop.px]="56">
     <mat-sidenav #snav mode="over" [opened]="false" [fixedInViewport]="true" fixedTopGap="56">
-      <app-sidenav></app-sidenav>
+      <app-sidenav (closeSidenav)="snav.toggle()"></app-sidenav>
     </mat-sidenav>
     <mat-sidenav-content>
       <router-outlet></router-outlet>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { SharedService } from '@shared_service/*';
 import { Router } from '@angular/router';
+import { AuthService } from '@auth_service/*';
+import { SharedService } from '@shared_service/*';
 import { menuBase, MenuBar, MenuItem } from '@models/menu';
 
 @Component({
@@ -13,7 +14,8 @@ export class MenuComponent implements OnInit {
   menuItems: MenuItem[] = menuBase;
 
   constructor(
-    sharedService: SharedService,
+    private sharedService: SharedService,
+    private service: AuthService,
     private router: Router
   ) {
     sharedService.menuBar$.subscribe(menuBar => this.menuBar = menuBar);
@@ -23,4 +25,10 @@ export class MenuComponent implements OnInit {
   }
 
   navigate = (url: string) => this.router.navigate([url]);
+
+  logout() {
+    this.sharedService.buildMenuBar({ title: 'Principal' });
+    this.service.logout();
+    this.navigate('/login');
+  }
 }

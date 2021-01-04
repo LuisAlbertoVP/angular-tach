@@ -15,11 +15,12 @@ import { VentaModule } from './venta/venta.module';
 import { MenuComponent } from './menu/menu.component';
 import { SidenavComponent } from './menu/sidenav/sidenav.component';
 import { BaseComponent } from './menu/base/base.component';
+import { CuentaComponent } from './menu/cuenta/cuenta.component';
 import { HttpErrorHandlerService } from '../http-error-handler.service';
 import { httpInterceptorProviders } from '../http-interceptors/index';
 
 @NgModule({
-  declarations: [MenuComponent, SidenavComponent, BaseComponent],
+  declarations: [MenuComponent, SidenavComponent, BaseComponent, CuentaComponent],
   imports: [
     SharedModule,
     PrincipalRoutingModule,

@@ -29,7 +29,7 @@ export class UsuarioControlService {
       celular: [user?.celular, Validators.required],
       fechaNacimiento: [user?.fechaNacimiento, Validators.required],
       roles: [this.toRoles(user?.roles), Validators.required],
-      clave: ['', [Validators.required, Validators.pattern('^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$')]]
+      clave: ['']
     });
   }
 }

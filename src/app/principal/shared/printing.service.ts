@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
-import { Busqueda } from '@models/busqueda';
 
 @Injectable({
   providedIn: 'root'
@@ -11,10 +10,9 @@ export class PrintingService {
     private router: Router
   ) { }
 
-  printWindow(url: string, busqueda: Busqueda) {
+  printWindow(url: string, printObject?: any) {
     const extras: NavigationExtras = {
-      queryParams: { busqueda: JSON.stringify(busqueda) },
-      skipLocationChange: true
+      queryParams: { printObject: JSON.stringify(printObject) }, skipLocationChange: true
     };
     this.router.navigate([url], extras)
   }

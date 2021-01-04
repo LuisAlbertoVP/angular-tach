@@ -15,7 +15,7 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class AuthService {
-  url: string = 'http://localhost:8080/api';
+  readonly url: string = 'http://192.168.100.128:8080/api';
   private handleError: HandleError;
 
   constructor(
@@ -25,14 +25,11 @@ export class AuthService {
     this.handleError = httpErrorHandler.createHandleError('AuthService');
   }
 
-  addUser = (user: User) => this.http.post(`${this.url}/usuarios/request`, user, httpOptions)
-      .pipe(catchError(this.handleError('addUser', user)));
-
-  changePassword = (user: User) => this.http.post(`${this.url}/usuarios/update`, user, httpOptions)
-      .pipe(catchError(this.handleError('changePassword', user)));
-
   login = (user: User) => this.http.post(`${this.url}/login`, user, httpOptions)
       .pipe(catchError(this.handleError('login', user)));
+
+  addAccount = (user: User) => this.http.post(`${this.url}/cuenta`, user, httpOptions)
+      .pipe(catchError(this.handleError('addAccount', user)));
 
   getRolUser = (id: string): Observable<User> => this.http.get<User>(`${this.url}/usuarios/${id}/roles`)
       .pipe(catchError(this.handleError<User>('getRolUser')));

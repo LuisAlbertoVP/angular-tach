@@ -15,7 +15,7 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class MarcaService {
-  url: string = 'http://localhost:8080/api/marcas';
+  readonly url: string = 'http://192.168.100.128:8080/api/marcas';
   private handleError: HandleError;
 
   constructor(
@@ -31,9 +31,9 @@ export class MarcaService {
   insertOrUpdate = (marca: Base) => this.http.post(this.url, marca, httpOptions)
       .pipe(catchError(this.handleError('insertOrUpdate', marca)));
 
-  setStatus = (marca: Base) => this.http.post(`${this.url}/${marca.id}`, marca, httpOptions)
+  setStatus = (marca: Base) => this.http.post(`${this.url}/${marca.id}/status`, marca, httpOptions)
       .pipe(catchError(this.handleError('setStatus', marca)));
 
-  delete = (id: string) => this.http.delete(`${this.url}/${id}`, httpOptions)
-      .pipe(catchError(this.handleError('delete', id)));
+  delete = (marca: Base) => this.http.post(`${this.url}/${marca.id}/delete`, marca, httpOptions)
+      .pipe(catchError(this.handleError('delete', marca)));
 }

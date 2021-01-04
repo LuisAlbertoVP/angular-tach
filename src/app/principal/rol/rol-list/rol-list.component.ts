@@ -30,9 +30,9 @@ export class RolListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatRadioGroup) radio: MatRadioGroup;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  displayedColumns: string[] = ['opciones', 'descripcion', 'ingreso', 'modificacion', 'accion'];
+  readonly displayedColumns: string[] = ['opciones', 'descripcion', 'ingreso', 'modificacion', 'accion'];
+  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   options: Option[] = optionsBase;
-  separatorKeysCodes: number[] = [ENTER, COMMA];
   data: Rol[] = [];
   expandedElement: Rol = null;
   resultsLength: number = 0;
@@ -164,10 +164,10 @@ export class RolListComponent implements OnInit, AfterViewInit {
     dialogRef.afterClosed().subscribe(result => result ? this.initSearch() : null);
   }
 
-  delete(id: string) {
-    this.service.delete(id).subscribe((response: HttpResponse<string>) => {
+  delete(rol: Rol) {
+    this.service.delete(rol).subscribe((response: HttpResponse<string>) => {
       if(response?.status == 200) {
-        this.data = this.data.filter(oldRol => oldRol.id != id);
+        this.data = this.data.filter(oldRol => oldRol.id != rol.id);
         this.showMessage(response.body);
       }
     });

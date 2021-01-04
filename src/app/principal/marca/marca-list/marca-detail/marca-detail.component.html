@@ -1,7 +1,7 @@
 <div>
   <h1 mat-dialog-title class="text-center blue">{{ !marca ? 'Nueva Marca' : 'Modificar Marca' }}</h1>
   <mat-dialog-content class="mat-typography">
-    <form [formGroup]="form" (ngSubmit)="guardar()" class="m0-auto" [style.width]="isMobile ? '75%' : '50%'">
+    <form [formGroup]="form" (ngSubmit)="guardar()" class="m0-auto" [style.width]="isMobile ? '250px' : '325px'">
       <div class="mb-2">
         <mat-form-field class="w-100">
           <mat-label>Ingrese marca</mat-label>

@@ -16,7 +16,7 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class RepuestoService {
-  url: string = 'http://localhost:8080/api/repuestos';
+  readonly url: string = 'http://192.168.100.128:8080/api/repuestos';
   private handleError: HandleError;
 
   constructor(
@@ -35,9 +35,9 @@ export class RepuestoService {
   insertOrUpdate = (repuesto: Repuesto) => this.http.post(this.url, repuesto, httpOptions)
       .pipe(catchError(this.handleError('insertOrUpdate', repuesto)));
 
-  setStatus = (repuesto: Repuesto) => this.http.post(`${this.url}/${repuesto.id}`, repuesto, httpOptions)
+  setStatus = (repuesto: Repuesto) => this.http.post(`${this.url}/${repuesto.id}/status`, repuesto, httpOptions)
       .pipe(catchError(this.handleError('setStatus', repuesto)));
 
-  delete = (id: string) => this.http.delete(`${this.url}/${id}`, httpOptions)
-      .pipe(catchError(this.handleError('delete', id)));
+  delete = (repuesto: Repuesto) => this.http.post(`${this.url}/${repuesto.id}/delete`, repuesto, httpOptions)
+      .pipe(catchError(this.handleError('delete', repuesto)));
 }

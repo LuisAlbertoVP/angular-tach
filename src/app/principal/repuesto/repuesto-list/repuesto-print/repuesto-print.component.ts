@@ -24,7 +24,7 @@ export class RepuestoPrintComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.queryParamMap.subscribe(param => {
-      this.busqueda = JSON.parse(param.get('busqueda'));
+      this.busqueda = JSON.parse(param.get('printObject'));
       this.service.getAll(this.busqueda).subscribe(repuestos => {
         this.repuestos = (repuestos as HttpResponse<Repuestos>).body.repuestos;
         this.printing.dataOnLoad('/principal/repuestos');

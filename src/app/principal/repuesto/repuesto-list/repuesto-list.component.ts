@@ -31,11 +31,11 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatRadioGroup) radio: MatRadioGroup;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  normalColumns: string[] = ['opciones', 'codigo', 'marca', 'categoria', 'modelo', 'fecha', 'stock', 'precio', 'accion'];
-  mobileColumns: string[] = this.normalColumns.filter(column => column != 'marca' && column != 'categoria' && column != 'fecha');
+  readonly normalColumns: string[] = ['opciones', 'codigo', 'marca', 'categoria', 'modelo', 'fecha', 'stock', 'precio', 'accion'];
+  readonly mobileColumns: string[] = ['opciones', 'codigo', 'modelo', 'stock', 'precio', 'accion'];
+  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   isMobile: boolean = false;
   options: Option[] = optionsRepuestos;
-  separatorKeysCodes: number[] = [ENTER, COMMA];
   data: Repuesto[] = [];
   expandedElement: Repuesto = null;
   resultsLength: number = 0;
@@ -179,10 +179,10 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
     dialogRef.afterClosed().subscribe(result => result ? this.initSearch() : null);
   }
 
-  delete(id: string) {
-    this.service.delete(id).subscribe((response: HttpResponse<string>) => {
+  delete(repuesto: Repuesto) {
+    this.service.delete(repuesto).subscribe((response: HttpResponse<string>) => {
       if(response?.status == 200) {
-        this.data = this.data.filter(oldRepuesto => oldRepuesto.id != id);
+        this.data = this.data.filter(oldRepuesto => oldRepuesto.id != repuesto.id);
         this.showMessage(response.body);
       }
     });

@@ -6,6 +6,8 @@ import { User } from '@models/auth';
 import { HttpResponse } from '@angular/common/http';
 import { SHA256 } from 'crypto-js';
 import { v4 as uuid } from 'uuid';
+import * as moment from 'moment';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-cuenta',
@@ -31,7 +33,8 @@ export class CuentaComponent implements OnInit {
   constructor(
     breakpointObserver: BreakpointObserver,
     public service: AuthService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private snackBar: MatSnackBar
   ) { 
     breakpointObserver.observe([
       Breakpoints.Small,
@@ -54,10 +57,11 @@ export class CuentaComponent implements OnInit {
       user.id = uuid();
       user.usrIngreso = user.nombreUsuario;
       user.usrModificacion = user.nombreUsuario;
+      user.fechaNacimiento = moment(user.fechaNacimiento).format('YYYY-MM-DD');
       user.clave = SHA256(user.clave).toString();
-      user.estado = 0;
-      this.service.addUser(user).subscribe((response: HttpResponse<Object>) => {
+      this.service.addAccount(user).subscribe((response: HttpResponse<string>) => {
         if(response?.status == 200) {
+          this.snackBar.open(response.body, 'Ok', {duration: 6000, panelClass: ['success']});
           this.button.nativeElement.click();
         }
       });

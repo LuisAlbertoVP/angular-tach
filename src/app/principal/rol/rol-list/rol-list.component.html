@@ -7,14 +7,14 @@
     <ng-container formArrayName="filtros">
       <ng-container *ngFor="let filtro of filtros.controls; let i=index">
         <div [formGroupName]="i" class="margin">
-          <button mat-icon-button color="accent" (click)="deleteFiltro(i)" type="button"><mat-icon>clear</mat-icon></button>
+          <button mat-icon-button color="accent" (click)="deleteFiltro(i)" type="button" class="w5"><mat-icon>clear</mat-icon></button>
           <mat-form-field appearance="fill" class="w18">
             <mat-label>Filtro</mat-label>
             <mat-select formControlName="columna" (selectionChange)="clearCriterios(filtro)">
               <mat-option *ngFor="let option of options" [value]="option.id">{{ option.nombre }}</mat-option>
             </mat-select>
           </mat-form-field>
-          <mat-form-field *ngIf="filtro.get('condicion').value == 'multiple'; else elseBlock" appearance="fill" class="w40">
+          <mat-form-field *ngIf="filtro.get('condicion').value == 'multiple'; else elseBlock" appearance="fill" class="w-50">
             <mat-label>Ingrese los criterios de búsqueda</mat-label>
             <mat-chip-list formArrayName="criterios" #chipList>
               <mat-chip *ngFor="let criterio of criterios(filtro).controls; let i=index" [removable]="true" (removed)="removeCriterio(filtro, i)">
@@ -25,14 +25,14 @@
           </mat-form-field>
           <ng-template #elseBlock>
             <ng-container *ngIf="filtro.get('condicion').value != 'between'; else elseBlock">
-              <mat-form-field *ngIf="esFecha(filtro); else elseBlock" appearance="fill" class="w40">
+              <mat-form-field *ngIf="esFecha(filtro); else elseBlock" appearance="fill" class="w-50">
                 <mat-label>Ingrese una fecha</mat-label>
                 <input matInput formControlName="criterio1" [matDatepicker]="picker" />
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
               </mat-form-field>
               <ng-template #elseBlock>
-                <mat-form-field appearance="fill" class="w40">
+                <mat-form-field appearance="fill" class="w-50">
                   <mat-label>Ingrese un criterio de búsqueda</mat-label>
                   <input matInput formControlName="criterio1" />
                   <button mat-button *ngIf="filtro.get('criterio1').value" matSuffix mat-icon-button aria-label="Clear" 
@@ -41,7 +41,7 @@
               </ng-template>
             </ng-container>
             <ng-template #elseBlock>
-              <mat-form-field *ngIf="esFecha(filtro); else elseBlock" appearance="fill" class="w40">
+              <mat-form-field *ngIf="esFecha(filtro); else elseBlock" appearance="fill" class="w-50">
                 <mat-label>Ingrese un rango de fechas</mat-label>
                 <mat-date-range-input [rangePicker]="picker">
                   <input formControlName="criterio1" matStartDate placeholder="Fecha Inicio">
@@ -75,7 +75,7 @@
               <mat-option value="multiple">Múltiple</mat-option>
             </mat-select>
           </mat-form-field>
-          <button mat-icon-button color="accent" (click)="addFiltro()" type="button"><mat-icon>add</mat-icon></button>
+          <button mat-icon-button color="accent" (click)="addFiltro()" type="button" class="w5"><mat-icon>add</mat-icon></button>
         </div>
       </ng-container>
     </ng-container>
@@ -93,7 +93,7 @@
     <div class="loading-shade" *ngIf="isLoadingResults || isRateLimitReached">
       <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
       <div class="text-danger bold" *ngIf="isRateLimitReached">
-        Número de consultas ha excedido el límite, recargue la página
+        El tiempo se ha agotado, recargue la página
       </div>
     </div>
   
@@ -105,7 +105,7 @@
           <mat-menu #menu="matMenu">
             <a mat-menu-item (click)="openDialog(row)">
               <mat-icon>edit</mat-icon><span>Modificar</span></a>
-            <a mat-menu-item (click)="delete(row.id)">
+            <a mat-menu-item (click)="delete(row)">
               <mat-icon>delete_forever</mat-icon><span>Eliminar</span></a>
           </mat-menu>
         </td>
@@ -149,6 +149,6 @@
         <td class="mat-cell" colspan="4">No hay datos que coincidan con el criterio de búsqueda</td>
       </tr>
     </table>
-    <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]" [length]="resultsLength" [showFirstLastButtons]="true"></mat-paginator>
+    <mat-paginator [pageSizeOptions]="[5, 25, 50, 100]" [length]="resultsLength" [showFirstLastButtons]="true"></mat-paginator>
   </div>  
 </div>

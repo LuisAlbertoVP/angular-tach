@@ -30,9 +30,9 @@ export class ProveedorListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatRadioGroup) radio: MatRadioGroup;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  displayedColumns: string[] = ['opciones', 'descripcion', 'convenio', 'telefono', 'direccion', 'accion'];
+  readonly displayedColumns: string[] = ['opciones', 'descripcion', 'convenio', 'telefono', 'direccion', 'accion'];
+  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   options: Option[] = optionsProveedores;
-  separatorKeysCodes: number[] = [ENTER, COMMA];
   data: Proveedor[] = [];
   expandedElement: Proveedor = null;
   resultsLength: number = 0;
@@ -164,10 +164,10 @@ export class ProveedorListComponent implements OnInit, AfterViewInit {
     dialogRef.afterClosed().subscribe(result => result ? this.initSearch() : null);
   }
 
-  delete(id: string) {
-    this.service.delete(id).subscribe((response: HttpResponse<string>) => {
+  delete(proveedor: Proveedor) {
+    this.service.delete(proveedor).subscribe((response: HttpResponse<string>) => {
       if(response?.status == 200) {
-        this.data = this.data.filter(oldProveedor => oldProveedor.id != id);
+        this.data = this.data.filter(oldProveedor => oldProveedor.id != proveedor.id);
         this.showMessage(response.body);
       }
     });

@@ -11,9 +11,9 @@ thead tr { background-color: #ff4081; text-align: center; }
 .mat-sort-header-arrow, .mat-header-cell, thead tr { color: white; }
 .element:hover { background: whitesmoke;}
 .d-flex { align-items: center; }
-.w18 { width: 18%; }
-.wbetween { width: 19.7%;}
-.w40 { width: 40%; }
+.w5 { width: 5% !important; }
+.w18 { width: 18.5%; }
+.wbetween { width: 24.7%;}
 .m0-auto { margin: 0 auto; }
 .cursor-point { cursor: pointer; }
 .success .mat-simple-snackbar-action, .blue  { color: #3f51b5 }

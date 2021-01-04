@@ -15,7 +15,7 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class CategoriaService {
-  url: string = 'http://localhost:8080/api/categorias';
+  readonly url: string = 'http://192.168.100.128:8080/api/categorias';
   private handleError: HandleError;
 
   constructor(
@@ -31,9 +31,9 @@ export class CategoriaService {
   insertOrUpdate = (categoria: Base) => this.http.post(this.url, categoria, httpOptions)
       .pipe(catchError(this.handleError('insertOrUpdate', categoria)));
 
-  setStatus = (categoria: Base) => this.http.post(`${this.url}/${categoria.id}`, categoria, httpOptions)
+  setStatus = (categoria: Base) => this.http.post(`${this.url}/${categoria.id}/status`, categoria, httpOptions)
       .pipe(catchError(this.handleError('setStatus', categoria)));
 
-  delete = (id: string) => this.http.delete(`${this.url}/${id}`, httpOptions)
-      .pipe(catchError(this.handleError('delete', id)));
+  delete = (categoria: Base) => this.http.post(`${this.url}/${categoria.id}/delete`, categoria, httpOptions)
+      .pipe(catchError(this.handleError('delete', categoria)));
 }

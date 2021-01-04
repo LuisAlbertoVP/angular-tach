@@ -1,9 +1,9 @@
-<div>
-  <h2 mat-dialog-title class="text-center blue">{{ !usuario ? 'Nuevo Usuario' : 'Modificar Usuario' }}</h2>
-  <mat-dialog-content class="mat-typography">
-    <form *ngIf="form" [formGroup]="form" (ngSubmit)="guardar()" class="m0-auto" [style.width]="isMobile ? '250px' : '325px'">
-      <div class="mb-2">
-        <h3 class="mb-3">Detalles de cuenta</h3>
+<div class="mt-4 container">
+  <div class="shadow p-5 m0-auto" [style.width]="isMobile ? '90%' : '50%'">
+    <h2 class="text-center blue">Configuración de cuenta</h2>
+    <form *ngIf="form" [formGroup]="form" (ngSubmit)="guardar()">
+      <div class="mb-2 p-3">
+        <h3 class="mb-3 blue">Detalles de cuenta</h3>
         <mat-form-field class="w-100" appearance="outline">
           <mat-label>Nombres</mat-label>
           <input formControlName="nombres" matInput placeholder="Ingrese nombres" type="text" required />
@@ -43,16 +43,9 @@
           <mat-datepicker #picker></mat-datepicker>
           <mat-error *ngIf="form.get('fechaNacimiento').hasError('required')">Fecha de nacimiento es requerida</mat-error>
         </mat-form-field>
-        <mat-form-field class="w-100" appearance="outline">
-          <mat-label>Roles</mat-label>
-          <mat-select formControlName="roles" multiple required>
-            <mat-option *ngFor="let rol of roles" [value]="rol.id">{{ rol.descripcion }}</mat-option>
-          </mat-select>
-          <mat-error *ngIf="form.get('roles').hasError('required')">Rol es requerido</mat-error>
-        </mat-form-field>
       </div>
-      <div class="mb-2">
-        <h3 class="mb-3">Inicio de sesión</h3>
+      <div class="mb-2 p-3">
+        <h3 class="mb-3 blue">Inicio de sesión</h3>
         <mat-form-field class="w-100" appearance="outline">
           <mat-label>Usuario</mat-label>
           <input formControlName="nombreUsuario" matInput placeholder="Ingrese usuario" type="text" required />
@@ -65,12 +58,12 @@
           <button mat-icon-button matSuffix (click)="hide = !hide" type="button">
             <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
           </button>
+          <mat-error *ngIf="form.get('clave').hasError('pattern')">Ingrese una combinación de al menos 8 letras, números y caracteres especiales (!@#$%^&*)</mat-error>
         </mat-form-field>
       </div>
-      <div class="d-flex mt-5 w-100">
-        <button mat-raised-button color="primary" [mat-dialog-close]="form.valid">Cancelar</button>
+      <div class="d-flex mt-3 w-100 p-3">
         <button mat-raised-button color="primary" class="ml-auto">Guardar</button>
       </div>
     </form>
-  </mat-dialog-content>
+  </div>
 </div>

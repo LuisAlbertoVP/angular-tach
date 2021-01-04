@@ -50,8 +50,7 @@ export class UsuarioDetailComponent implements OnInit {
       usuario.usrIngreso = this.auth.nombreUsuario;
       usuario.usrModificacion = this.auth.nombreUsuario;
       usuario.fechaNacimiento = moment(usuario.fechaNacimiento).format('YYYY-MM-DD');
-      usuario.clave = SHA256(usuario.clave).toString();
-      usuario.estado = 1;
+      usuario.clave = usuario.clave ? SHA256(usuario.clave).toString() : '';
       this.service.insertOrUpdate(usuario).subscribe((response: HttpResponse<string>) => {
         if(response.status == 200) {
           this.snackBar.open(response.body, 'Ok', {duration: 2000, panelClass: ['success']});

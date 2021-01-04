@@ -28,9 +28,9 @@ export class CategoriaListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatRadioGroup) radio: MatRadioGroup;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  displayedColumns: string[] = ['opciones', 'descripcion', 'ingreso', 'modificacion', 'accion'];
+  readonly displayedColumns: string[] = ['opciones', 'descripcion', 'ingreso', 'modificacion', 'accion'];
+  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   options: Option[] = optionsBase;
-  separatorKeysCodes: number[] = [ENTER, COMMA];
   data: Base[] = [];
   resultsLength: number = 0;
   isLoadingResults: boolean = true;
@@ -161,10 +161,10 @@ export class CategoriaListComponent implements OnInit, AfterViewInit {
     dialogRef.afterClosed().subscribe(result => result ? this.initSearch() : null);
   }
 
-  delete(id: string) {
-    this.service.delete(id).subscribe((response: HttpResponse<string>) => {
+  delete(categoria: Base) {
+    this.service.delete(categoria).subscribe((response: HttpResponse<string>) => {
       if(response?.status == 200) {
-        this.data = this.data.filter(oldCategoria => oldCategoria.id != id);
+        this.data = this.data.filter(oldCategoria => oldCategoria.id != categoria.id);
         this.showMessage(response.body);
       }
     });

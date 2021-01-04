@@ -14,6 +14,7 @@ export class SharedService {
 
   constructor(breakpointObserver: BreakpointObserver) { 
     breakpointObserver.observe([
+      Breakpoints.XSmall,
       Breakpoints.Small,
       Breakpoints.HandsetPortrait
     ]).subscribe(result => {

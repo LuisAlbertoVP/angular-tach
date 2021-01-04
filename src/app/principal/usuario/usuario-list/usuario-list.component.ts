@@ -30,9 +30,9 @@ export class UsuarioListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatRadioGroup) radio: MatRadioGroup;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  displayedColumns: string[] = ['opciones', 'nombres', 'nombreUsuario', 'telefono', 'celular', 'correo', 'accion'];
+  readonly displayedColumns: string[] = ['opciones', 'nombres', 'nombreUsuario', 'telefono', 'celular', 'correo', 'accion'];
+  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   options: Option[] = optionsUsuarios;
-  separatorKeysCodes: number[] = [ENTER, COMMA];
   data: User[] = [];
   expandedElement: User = null;
   resultsLength: number = 0;
@@ -165,10 +165,10 @@ export class UsuarioListComponent implements OnInit, AfterViewInit {
     dialogRef.afterClosed().subscribe(result => result ? this.initSearch() : null);
   }
 
-  delete(id: string) {
-    this.service.delete(id).subscribe((response: HttpResponse<string>) => {
+  delete(user: User) {
+    this.service.delete(user).subscribe((response: HttpResponse<string>) => {
       if(response?.status == 200) {
-        this.data = this.data.filter(oldUser => oldUser.id != id);
+        this.data = this.data.filter(oldUser => oldUser.id != user.id);
         this.showMessage(response.body);
       }
     });

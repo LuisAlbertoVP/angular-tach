@@ -4,6 +4,7 @@ import { AuthGuard } from '../auth/auth.guard';
 import { RolGuard } from '../auth/rol.guard';
 import { MenuComponent } from './menu/menu.component';
 import { BaseComponent } from './menu/base/base.component';
+import { CuentaComponent } from './menu/cuenta/cuenta.component';
 import { UsuarioListComponent } from './usuario/usuario-list/usuario-list.component';
 import { RolListComponent } from './rol/rol-list/rol-list.component';
 import { ProveedorListComponent } from './proveedor/proveedor-list/proveedor-list.component';
@@ -27,6 +28,7 @@ const routes: Routes = [
         canActivateChild: [AuthGuard],
         children: [
           { path: '', component: BaseComponent },
+          { path: 'cuenta', component: CuentaComponent },
           { path: 'usuarios', component: UsuarioListComponent, canActivate: [RolGuard], data: { modulo: 'Usuarios'} },
           { path: 'roles', component: RolListComponent, canActivate: [RolGuard], data: { modulo: 'Roles'} },
           { path: 'proveedores', component: ProveedorListComponent, canActivate: [RolGuard], data: { modulo: 'Proveedores'} },

@@ -16,7 +16,7 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class ProveedorService {
-  url: string = 'http://localhost:8080/api/proveedores';
+  readonly url: string = 'http://192.168.100.128:8080/api/proveedores';
   private handleError: HandleError;
 
   constructor(
@@ -35,9 +35,9 @@ export class ProveedorService {
   insertOrUpdate = (proveedor: Proveedor) => this.http.post(this.url, proveedor, httpOptions)
       .pipe(catchError(this.handleError('insertOrUpdate', proveedor)));
 
-  setStatus = (proveedor: Proveedor) => this.http.post(`${this.url}/${proveedor.id}`, proveedor, httpOptions)
+  setStatus = (proveedor: Proveedor) => this.http.post(`${this.url}/${proveedor.id}/status`, proveedor, httpOptions)
       .pipe(catchError(this.handleError('setStatus', proveedor)));
 
-  delete = (id: string) => this.http.delete(`${this.url}/${id}`, httpOptions)
-      .pipe(catchError(this.handleError('delete', id)));
+  delete = (proveedor: Proveedor) => this.http.post(`${this.url}/${proveedor.id}/delete`, proveedor, httpOptions)
+      .pipe(catchError(this.handleError('delete', proveedor)));
 }
