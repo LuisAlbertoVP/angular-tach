@@ -5,47 +5,42 @@ import { RolGuard } from '../auth/rol.guard';
 import { MenuComponent } from './menu/menu.component';
 import { BaseComponent } from './menu/base/base.component';
 import { CuentaComponent } from './menu/cuenta/cuenta.component';
-import { UsuarioListComponent } from './usuario/usuario-list/usuario-list.component';
-import { RolListComponent } from './rol/rol-list/rol-list.component';
-import { ProveedorListComponent } from './proveedor/proveedor-list/proveedor-list.component';
-import { MarcaListComponent } from './marca/marca-list/marca-list.component';
-import { CategoriaListComponent } from './categoria/categoria-list/categoria-list.component';
-import { RepuestoListComponent } from './repuesto/repuesto-list/repuesto-list.component';
-import { RepuestoPrintComponent } from './repuesto/repuesto-list/repuesto-print/repuesto-print.component';
-import { CompraListComponent } from './compra/compra-list/compra-list.component';
-import { CompraDetailComponent } from './compra/compra-detail/compra-detail.component';
-import { VentaListComponent } from './venta/venta-list/venta-list.component';
-import { VentaDetailComponent } from './venta/venta-detail/venta-detail.component';
 
 const routes: Routes = [
   {
     path: '',  
     component: MenuComponent,
-    canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
     children: [
-      {
-        path: '',
-        canActivateChild: [AuthGuard],
-        children: [
-          { path: '', component: BaseComponent },
-          { path: 'cuenta', component: CuentaComponent },
-          { path: 'usuarios', component: UsuarioListComponent, canActivate: [RolGuard], data: { modulo: 'Usuarios'} },
-          { path: 'roles', component: RolListComponent, canActivate: [RolGuard], data: { modulo: 'Roles'} },
-          { path: 'proveedores', component: ProveedorListComponent, canActivate: [RolGuard], data: { modulo: 'Proveedores'} },
-          { path: 'marcas', component: MarcaListComponent, canActivate: [RolGuard], data: { modulo: 'Marcas'} },
-          { path: 'categorias', component: CategoriaListComponent, canActivate: [RolGuard], data: { modulo: 'Categorias'} },
-          { path: 'repuestos', component: RepuestoListComponent, canActivate: [RolGuard], data: { modulo: 'Repuestos'},
-            children: [
-              { path: 'print', component: RepuestoPrintComponent }
-            ]
-          },
-          { path: 'compras', component: CompraListComponent, canActivate: [RolGuard], data: { modulo: 'Compras'} },
-          { path: 'compra', component: CompraDetailComponent, canActivate: [RolGuard], data: { modulo: 'Compras'} },
-          { path: 'compra/:id', component: CompraDetailComponent, canActivate: [RolGuard], data: { modulo: 'Compras'} },
-          { path: 'ventas', component: VentaListComponent, canActivate: [RolGuard], data: { modulo: 'Ventas'} },
-          { path: 'venta', component: VentaDetailComponent, canActivate: [RolGuard], data: { modulo: 'Ventas'} },
-          { path: 'venta/:id', component: VentaDetailComponent, canActivate: [RolGuard], data: { modulo: 'Ventas'} }
-        ]
+      { path: '', component: BaseComponent },
+      { path: 'cuenta', component: CuentaComponent },
+      { 
+        path: 'usuarios', loadChildren: () => import('./usuario/usuario.module').then(m => m.UsuarioModule), 
+        canActivate: [RolGuard], data: { modulo: 'Usuarios'} },
+      { 
+        path: 'roles', loadChildren: () => import('./rol/rol.module').then(m => m.RolModule), 
+        canActivate: [RolGuard], data: { modulo: 'Roles'} },
+      { 
+        path: 'proveedores', loadChildren: () => import('./proveedor/proveedor.module').then(m => m.ProveedorModule), 
+        canActivate: [RolGuard], data: { modulo: 'Proveedores'} },
+      { 
+        path: 'marcas', loadChildren: () => import('./marca/marca.module').then(m => m.MarcaModule), 
+        canActivate: [RolGuard], data: { modulo: 'Marcas'} },
+      { 
+        path: 'categorias', loadChildren: () => import('./categoria/categoria.module').then(m => m.CategoriaModule), 
+        canActivate: [RolGuard], data: { modulo: 'Categorias'} 
+      },
+      { 
+        path: 'repuestos', loadChildren: () => import('./repuesto/repuesto.module').then(m => m.RepuestoModule), 
+        canActivate: [RolGuard], data: { modulo: 'Repuestos'} 
+      },
+      { 
+        path: 'compras', loadChildren: () => import('./compra/compra.module').then(m => m.CompraModule), 
+        canActivate: [RolGuard], data: { modulo: 'Compras'} 
+      },
+      { 
+        path: 'ventas', loadChildren: () => import('./venta/venta.module').then(m => m.VentaModule), 
+        canActivate: [RolGuard], data: { modulo: 'Ventas'} 
       }
     ]
   }

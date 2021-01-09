@@ -13,13 +13,13 @@ export class ProveedorControlService {
     return this.fb.group({
       id: [proveedor?.id],
       descripcion: [proveedor?.descripcion, Validators.required],
-      convenio: [proveedor?.convenio],
-      telefono: [proveedor?.telefono],
-      direccion: [proveedor?.direccion],
-      tipoProveedor: [proveedor?.tipoProveedor],
-      contacto: [proveedor?.contacto],
-      telefonoContacto: [proveedor?.telefonoContacto],
-      correoContacto: [proveedor?.correoContacto]
+      convenio: [proveedor?.convenio ? proveedor.convenio : false],
+      telefono: [proveedor?.telefono ? proveedor.telefono : ''],
+      direccion: [proveedor?.direccion ? proveedor.direccion : ''],
+      tipoProveedor: [proveedor?.tipoProveedor ? proveedor.tipoProveedor : ''],
+      contacto: [proveedor?.contacto ? proveedor.contacto : ''],
+      telefonoContacto: [proveedor?.telefonoContacto ? proveedor.telefonoContacto : ''],
+      correoContacto: [proveedor?.correoContacto ? proveedor.correoContacto : '']
     });
   }
 }

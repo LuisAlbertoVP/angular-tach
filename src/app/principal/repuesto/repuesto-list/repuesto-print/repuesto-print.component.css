@@ -1,5 +1,4 @@
-.page-break { page-break-after: always; }
-.page-break:last-child { page-break-after: avoid; }
+.page-break { page-break-after: always; height: 0; }
 .spacer { border-bottom: 1px solid lightgray; }
 @media screen {
   :host {

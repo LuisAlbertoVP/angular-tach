@@ -1,6 +1,6 @@
 export interface Base {
   id: string;
-  estado?: number;
+  estado?: boolean;
   usrIngreso?: string;
   fecIngreso?: string;
   usrModificacion?: string;

@@ -24,6 +24,11 @@ export class MenuComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  principal() {
+    this.sharedService.buildMenuBar({ title: 'Principal' });
+    this.navigate('/principal');
+  }
+
   navigate = (url: string) => this.router.navigate([url]);
 
   logout() {

@@ -2,10 +2,10 @@
   <mat-toolbar color="primary" class="principal-toolbar">
     <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
     <div class="w-100 d-flex">
-      <h1>{{ menuBar.title }}</h1>
+      <h1 (click)="principal()" class="cursor-point">{{ menuBar.title }}</h1>
       <span class="ml-auto"></span>
       <a *ngIf="menuBar.printEvent" mat-icon-button (click)="menuBar.printEvent()" class="not-hover"><mat-icon>print</mat-icon></a>
-      <a *ngIf="menuBar.addEvent" mat-icon-button (click)="menuBar.addEvent()" class="not-hover"><mat-icon>add</mat-icon></a>
+      <a *ngIf="menuBar.addEvent" mat-icon-button (click)="menuBar.addEvent()" class="not-hover"><mat-icon>filter_list_alt</mat-icon></a>
       <a mat-icon-button [matMenuTriggerFor]="menu" class="not-hover"><mat-icon>more_vert</mat-icon></a>
       <mat-menu #menu="matMenu">
         <a mat-menu-item [matMenuTriggerFor]="nuevo">

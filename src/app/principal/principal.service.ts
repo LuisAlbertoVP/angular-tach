@@ -15,7 +15,7 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class PrincipalService {
-  readonly url: string = 'http://192.168.100.128:8080/api/cuenta';
+  readonly url: string = 'http://localhost:8080/api/cuenta';
   private handleError: HandleError;
 
   constructor(

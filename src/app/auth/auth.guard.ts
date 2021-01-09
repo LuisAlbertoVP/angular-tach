@@ -6,9 +6,13 @@ import { Route } from '@angular/compiler/src/core';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuard implements CanActivate, CanLoad, CanActivateChild {
+export class AuthGuard implements CanLoad, CanActivate, CanActivateChild {
 
   constructor(private service: AuthService, private router: Router) {}
+
+  canLoad(route: Route): boolean {
+    return this.checkLogin();
+  }
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     return this.checkLogin();
@@ -16,10 +20,6 @@ export class AuthGuard implements CanActivate, CanLoad, CanActivateChild {
 
   canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     return this.canActivate(route, state);
-  }
-
-  canLoad(route: Route): boolean {
-    return this.checkLogin();
   }
 
   private checkDate(): boolean {

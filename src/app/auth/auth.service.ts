@@ -15,7 +15,7 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class AuthService {
-  readonly url: string = 'http://192.168.100.128:8080/api';
+  readonly url: string = 'http://localhost:8080/api';
   private handleError: HandleError;
 
   constructor(

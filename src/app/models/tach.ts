@@ -1,7 +1,7 @@
 export interface Base {
   id: string;
   descripcion: string;
-  estado?: number;
+  estado?: boolean;
   usrIngreso?: string;
   fecIngreso?: string;
   usrModificacion?: string;
@@ -9,7 +9,7 @@ export interface Base {
 }
 
 export interface Proveedor extends Base {
-  convenio: number;
+  convenio: boolean;
   telefono: string;
   direccion: string;
   tipoProveedor: string;

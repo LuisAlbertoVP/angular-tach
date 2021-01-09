@@ -1,0 +1,7 @@
+.filter-container { margin-top: 6px; margin-bottom: 6px; padding: 10px 10px 5px 10px; border-radius: 14px ; box-shadow: 0px 0px 1px 0px; }
+.headers-align .mat-expansion-panel-header-title, .headers-align .mat-expansion-panel-header-description { flex-basis: 0; }
+.headers-align .mat-expansion-panel-header-description { justify-content: space-between; align-items: center; }
+.headers-align .mat-form-field + .mat-form-field { margin-left: 8px; }
+.content { width: 90%; margin: 0 auto; }
+.mt-flex { margin-top: 15px; }
+.w100 { width: 100px; }

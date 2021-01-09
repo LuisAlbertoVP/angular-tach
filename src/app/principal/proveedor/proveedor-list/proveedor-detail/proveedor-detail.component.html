@@ -1,17 +1,13 @@
-<div>
+<form *ngIf="form" [formGroup]="form" (ngSubmit)="guardar()">
   <h2 mat-dialog-title class="text-center blue">{{ !proveedor ? 'Nuevo Proveedor' : 'Modificar Proveedor' }}</h2>
   <mat-dialog-content class="mat-typography">
-    <form *ngIf="form" [formGroup]="form" (ngSubmit)="guardar()" class="m0-auto" [style.width]="isMobile ? '250px' : '325px'">
+    <div class="m0-auto" [style.width]="isMobile ? '250px' : '325px'">
       <div class="mb-2">
         <h3 class="mb-3">General</h3>
         <mat-form-field class="w-100" appearance="outline">
           <mat-label>Descripción</mat-label>
           <input matInput formControlName="descripcion" placeholder="Ingrese una descripcion" required />
           <mat-error *ngIf="form.get('descripcion').hasError('required')">Descripción requerida</mat-error>
-        </mat-form-field>
-        <mat-form-field class="w-100" appearance="outline">
-          <mat-label>Convenio</mat-label>
-          <input matInput formControlName="convenio" placeholder="Ingrese un convenio" />
         </mat-form-field>
         <mat-form-field class="w-100" appearance="outline">
           <mat-label>Teléfono</mat-label>
@@ -25,6 +21,9 @@
           <mat-label>Tipo de proveedor</mat-label>
           <input matInput formControlName="tipoProveedor" placeholder="Ingrese un tipo de proveedor" />
         </mat-form-field>
+        <div class="w-100 mb-4 d-flex">
+          <mat-slide-toggle formControlName="convenio" class="ml-auto">Tiene convenio</mat-slide-toggle>
+        </div>
       </div>
       <div class="mb-2">
         <h3 class="mb-3">Información de contacto</h3>
@@ -41,10 +40,10 @@
           <input matInput formControlName="correoContacto" placeholder="Ingrese un correo del contacto" />
         </mat-form-field>
       </div>
-      <div class="d-flex mt-5 w-100">
-        <button mat-raised-button color="primary" [mat-dialog-close]="form.valid">Cancelar</button>
-        <button mat-raised-button color="primary" class="ml-auto">Guardar</button>
-      </div>
-    </form>
+    </div>
   </mat-dialog-content>
-</div>
+  <mat-dialog-actions class="d-flex justify-content-around">
+    <button mat-raised-button color="primary" [mat-dialog-close]="form.valid">Cancelar</button>
+    <button mat-raised-button color="primary">Guardar</button>
+  </mat-dialog-actions>
+</form>

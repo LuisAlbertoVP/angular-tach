@@ -2,18 +2,16 @@ html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 button { outline: none !important; }
 a { text-decoration: none !important; }
-thead tr { background-color: #ff4081; text-align: center; }
+thead tr { background-color: #ff4081; }
 .ml-auto { margin-left: auto !important; }
-.margin > * { margin-left: 0.3%; margin-right: 0.3%; }
+.margin > * { margin-left: 2px; margin-right: 2px; }
 .bold { font-weight: bold; }
 .mat-elevation-z8 { overflow: auto; }
-.mat-header-cell { background-color: #3f51b5; text-align: center; }
+thead tr, .mat-header-cell { text-align: center; }
+.mat-header-cell, .bg-blue { background-color: #3f51b5; }
 .mat-sort-header-arrow, .mat-header-cell, thead tr { color: white; }
 .element:hover { background: whitesmoke;}
 .d-flex { align-items: center; }
-.w5 { width: 5% !important; }
-.w18 { width: 18.5%; }
-.wbetween { width: 24.7%;}
 .m0-auto { margin: 0 auto; }
 .cursor-point { cursor: pointer; }
 .success .mat-simple-snackbar-action, .blue  { color: #3f51b5 }

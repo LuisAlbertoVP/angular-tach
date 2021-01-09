@@ -16,15 +16,29 @@ import { MatPaginatorModule, MatPaginatorIntl } from '@angular/material/paginato
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { PaginatorIntlService } from './paginator-intl.service';
+import { FiltroComponent } from './filtro/filtro.component';
 
 
 @NgModule({
-  declarations: [],
+  declarations: [FiltroComponent],
   imports: [
-    CommonModule
+    CommonModule,
+    MatInputModule,
+    MatNativeDateModule,
+    MatDatepickerModule,
+    MatSelectModule,
+    MatButtonModule,
+    MatIconModule,
+    MatChipsModule,
+    MatSlideToggleModule,
+    MatExpansionModule,
+    MatDialogModule,
+    ReactiveFormsModule
   ],
   exports: [
     CommonModule,
