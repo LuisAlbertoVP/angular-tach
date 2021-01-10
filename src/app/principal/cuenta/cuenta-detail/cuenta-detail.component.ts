@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { User, Rol } from '@models/auth';
+import { User } from '@models/auth';
 import { SharedService } from '@shared_service/shared';
 import { AuthService } from '@auth_service/*';
 import { PrincipalService } from '../../principal.service';
@@ -10,10 +10,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import * as moment from 'moment';
 
 @Component({
-  selector: 'app-cuenta',
-  templateUrl: './cuenta.component.html'
+  selector: 'app-cuenta-detail',
+  templateUrl: './cuenta-detail.component.html'
 })
-export class CuentaComponent implements OnInit {
+export class CuentaDetailComponent implements OnInit {
   id: string = this.auth.id;
   hide: boolean = true;
   isMobile: boolean = false;

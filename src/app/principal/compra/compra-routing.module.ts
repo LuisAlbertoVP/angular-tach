@@ -2,19 +2,23 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { CompraListComponent } from './compra-list/compra-list.component';
 import { CompraDetailComponent } from './compra-detail/compra-detail.component';
+import { RolGuard } from 'src/app/auth/rol.guard';
 
 const routes: Routes = [
   {
     path: '',
-    component: CompraListComponent
+    component: CompraListComponent,
+    canActivate: [RolGuard]
   },
   { 
     path: 'compra', 
-    component: CompraDetailComponent
+    component: CompraDetailComponent,
+    canActivate: [RolGuard]
   },
   { 
     path: 'compra/:id', 
-    component: CompraDetailComponent
+    component: CompraDetailComponent,
+    canActivate: [RolGuard]
   }
 ];
 

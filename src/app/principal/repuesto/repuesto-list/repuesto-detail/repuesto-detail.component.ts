@@ -40,8 +40,6 @@ export class RepuestoDetailComponent implements OnInit {
     });
   }
 
-  onNoClick = (status?: boolean): void => this.dialogRef.close(status);
-
   guardar() {
     if(this.form.valid) {
       const repuesto: Repuesto = this.form.getRawValue();
@@ -51,7 +49,7 @@ export class RepuestoDetailComponent implements OnInit {
       this.service.insertOrUpdate(repuesto).subscribe((response: HttpResponse<string>) => {
         if(response.status == 200) {
           this.snackBar.open(response.body, 'Ok', {duration: 2000, panelClass: ['success']});
-          this.onNoClick(true);
+          this.dialogRef.close(true);
         }
       });
     } else {

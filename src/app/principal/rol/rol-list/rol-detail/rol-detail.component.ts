@@ -54,8 +54,6 @@ export class RolDetailComponent implements OnInit {
     }
   }
 
-  onNoClick = (status?: boolean): void => this.dialogRef.close(status);
-
   updateStatus = (position: number, checked: boolean) => this.modulos[position].checked = checked;
 
   guardar() {
@@ -68,7 +66,7 @@ export class RolDetailComponent implements OnInit {
       this.service.insertOrUpdate(rol).subscribe((response: HttpResponse<string>) => {
         if(response.status == 200) {
           this.snackBar.open(response.body, 'Ok', {duration: 2000, panelClass: ['success']});
-          this.onNoClick(true);
+          this.dialogRef.close(true);
         }
       });
     } else {

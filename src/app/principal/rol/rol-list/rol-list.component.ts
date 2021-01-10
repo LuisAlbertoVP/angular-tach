@@ -122,8 +122,10 @@ export class RolListComponent implements OnInit, AfterViewInit {
       width: '720px', autoFocus: false, disableClose: true, data: this.busqueda
     });
     dialogRef.afterClosed().subscribe(result => {
-      this.busqueda = result ? result : this.busqueda;
-      this.initSearch();
+      if(result) {
+        this.busqueda = result;
+        this.initSearch();
+      }
     });
   }
 

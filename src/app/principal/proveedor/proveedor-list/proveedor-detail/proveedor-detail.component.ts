@@ -34,8 +34,6 @@ export class ProveedorDetailComponent implements OnInit {
     this.form = this.control.toFormGroup(this.proveedor);
   }
 
-  onNoClick = (status?: boolean): void => this.dialogRef.close(status);
-
   guardar() {
     if(this.form.valid) {
       const proveedor: Proveedor = this.form.getRawValue();
@@ -45,7 +43,7 @@ export class ProveedorDetailComponent implements OnInit {
       this.service.insertOrUpdate(proveedor).subscribe((response: HttpResponse<string>) => {
         if(response.status == 200) {
           this.snackBar.open(response.body, 'Ok', {duration: 2000, panelClass: ['success']});
-          this.onNoClick(true);
+          this.dialogRef.close(true);
         }
       });
     } else {

@@ -38,8 +38,6 @@ export class MarcaDetailComponent implements OnInit {
     }
   }
 
-  onNoClick = (status?: boolean): void => this.dialogRef.close(status);
-
   guardar() {
     if(this.form.valid) {
       const marca = this.form.getRawValue();
@@ -49,7 +47,7 @@ export class MarcaDetailComponent implements OnInit {
       this.service.insertOrUpdate(marca).subscribe((response: HttpResponse<string>) => {
         if(response.status == 200) {
           this.snackBar.open(response.body, 'Ok', {duration: 2000, panelClass: ['success']});
-          this.onNoClick(true);
+          this.dialogRef.close(true);
         }
       });
     } else {

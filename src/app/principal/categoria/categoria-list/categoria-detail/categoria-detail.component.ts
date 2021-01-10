@@ -38,8 +38,6 @@ export class CategoriaDetailComponent implements OnInit {
     }
   }
 
-  onNoClick = (status?: boolean): void => this.dialogRef.close(status);
-
   guardar() {
     if(this.form.valid) {
       const categoria = this.form.getRawValue();
@@ -49,7 +47,7 @@ export class CategoriaDetailComponent implements OnInit {
       this.service.insertOrUpdate(categoria).subscribe((response: HttpResponse<string>) => {
         if(response.status == 200) {
           this.snackBar.open(response.body, 'Ok', {duration: 2000, panelClass: ['success']});
-          this.onNoClick(true);
+          this.dialogRef.close(true);
         }
       });
     } else {

@@ -34,6 +34,6 @@ export class MenuComponent implements OnInit {
   logout() {
     this.sharedService.buildMenuBar({ title: 'Principal' });
     this.service.logout();
-    this.navigate('/login');
+    this.navigate('/');
   }
 }

@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AuthRoutingModule } from './auth-routing.module';
 import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -18,7 +17,6 @@ import { CuentaComponent } from './login/cuenta/cuenta.component';
   declarations: [LoginComponent, CuentaComponent],
   imports: [
     CommonModule,
-    AuthRoutingModule,
     MatInputModule,
     MatNativeDateModule,
     MatDatepickerModule,
