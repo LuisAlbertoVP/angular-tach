@@ -44,11 +44,11 @@ export class RepuestoDetailComponent implements OnInit {
     if(this.form.valid) {
       const repuesto: Repuesto = this.form.getRawValue();
       repuesto.id = this.repuesto ? repuesto.id : uuid();
-      repuesto.usrIngreso = this.auth.nombreUsuario;
-      repuesto.usrModificacion = this.auth.nombreUsuario;
-      this.service.insertOrUpdate(repuesto).subscribe((response: HttpResponse<string>) => {
+      repuesto.usuarioIngreso = this.auth.nombreUsuario;
+      repuesto.usuarioModificacion = this.auth.nombreUsuario;
+      this.service.insertOrUpdate(repuesto).subscribe((response: HttpResponse<any>) => {
         if(response.status == 200) {
-          this.snackBar.open(response.body, 'Ok', {duration: 2000, panelClass: ['success']});
+          this.snackBar.open(response.body.result, 'Ok', {duration: 2000, panelClass: ['success']});
           this.dialogRef.close(true);
         }
       });

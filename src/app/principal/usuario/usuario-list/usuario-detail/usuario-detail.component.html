@@ -55,13 +55,14 @@
         <h3 class="mb-3">Detalles laborales</h3>
         <mat-form-field class="w-100" appearance="outline">
           <mat-label>Fecha de contratación</mat-label>
-          <input matInput formControlName="fechaContratacion" [matDatepicker]="picker2" />
+          <input matInput formControlName="fechaContratacion" [matDatepicker]="picker2" required/>
           <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
           <mat-datepicker #picker2></mat-datepicker>
+          <mat-error *ngIf="form.get('fechaContratacion').hasError('required')">Fecha de contratación es requerida</mat-error>
         </mat-form-field>
         <mat-form-field class="w-100" appearance="outline">
           <mat-label>Salario</mat-label>
-          <input formControlName="salario" matInput placeholder="Ingrese salario" type="text" />
+          <input formControlName="salario" matInput placeholder="Ingrese salario" type="text" required/>
           <mat-error *ngIf="form.get('salario').hasError('required')">Salario es requerido</mat-error>
         </mat-form-field>
       </div>

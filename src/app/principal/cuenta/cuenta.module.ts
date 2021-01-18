@@ -1,5 +1,13 @@
 import { NgModule } from '@angular/core';
-import { SharedModule } from '../shared/shared.module';
+import { CommonModule } from '@angular/common';
+import { MatInputModule } from '@angular/material/input';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { HttpClientModule } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
 import { CuentaRoutingModule } from './cuenta-routing.module';
 import { CuentaDetailComponent } from './cuenta-detail/cuenta-detail.component';
 
@@ -7,7 +15,15 @@ import { CuentaDetailComponent } from './cuenta-detail/cuenta-detail.component';
 @NgModule({
   declarations: [CuentaDetailComponent],
   imports: [
-    SharedModule,
+    CommonModule,
+    MatInputModule,
+    MatNativeDateModule,
+    MatDatepickerModule,
+    MatButtonModule,
+    MatIconModule,
+    MatSnackBarModule,
+    HttpClientModule,
+    ReactiveFormsModule,
     CuentaRoutingModule
   ]
 })

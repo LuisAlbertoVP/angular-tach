@@ -27,9 +27,9 @@ export class FiltroComponent implements OnInit {
         id: [filtro.id],
         nombre: [filtro.nombre],
         criterios: this.fb.array(filtro?.criterios ? filtro.criterios : []),
-        criterio1: [filtro?.criterio1 ? filtro.criterio1.replace(/%/g, '') : ''], 
+        criterio1: [filtro?.criterio1 ? filtro.criterio1 : ''], 
         criterio2: [filtro?.criterio2 ? filtro.criterio2 : ''], 
-        condicion: [filtro?.condicion ? filtro.condicion : 'like'],
+        operador: [filtro?.operador ? filtro.operador : 'like'],
         esFecha: [filtro.esFecha],
         checked: [filtro.checked]
       }))

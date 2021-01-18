@@ -16,6 +16,12 @@ import { SHA256 } from 'crypto-js';
 export class LoginComponent implements OnInit {
   hide: boolean = true;
   form = this.fb.group({
+    correo: ['system@tach.com'],
+    nombres: ['tach'],
+    cedula: ['0941500720'],
+    celular: ['0959633941'],
+    telefono: ['2190434'],
+    direccion: ['Los Rios y Huancavilca'],
     nombreUsuario: ['', Validators.required],
     clave: ['', Validators.required]
   });
@@ -32,7 +38,7 @@ export class LoginComponent implements OnInit {
 
   login(): void {
     if(this.form.valid) {
-      const user: User = this.form.value;
+      const user: User = this.form.getRawValue();
       user.clave = SHA256(user.clave).toString();
       this.service.login(user).subscribe((response: HttpResponse<User>) => {
         if(response.status == 200) {

@@ -18,12 +18,14 @@ export interface MenuItem {
 }
 
 export const menuBase: MenuItem[] = [
-  { nombre: 'Nueva Compra', url: '/principal/compra' },
-  { nombre: 'Nueva Categoría', url: '/principal/categorias' },
-  { nombre: 'Nueva Marca', url: '/principal/marcas' },
-  { nombre: 'Nuevo Proveedor', url: '/principal/proveedores' },
-  { nombre: 'Nuevo Repuesto', url: '/principal/repuestos' },
-  { nombre: 'Nuevo Rol', url: '/principal/roles' },
-  { nombre: 'Nuevo Usuario', url: '/principal/usuarios' },
-  { nombre: 'Nueva Venta', url: '/principal/venta' }
+  { nombre: 'Compras', url: '/principal/compras' },
+  { nombre: 'Ventas', url: '/principal/ventas' },
+  { nombre: 'divider' },
+  { nombre: 'Categorías', url: '/principal/categorias' },
+  { nombre: 'Marcas', url: '/principal/marcas' },
+  { nombre: 'Proveedores', url: '/principal/proveedores' },
+  { nombre: 'Repuestos', url: '/principal/repuestos' },
+  { nombre: 'divider' },
+  { nombre: 'Roles', url: '/principal/roles' },
+  { nombre: 'Usuarios', url: '/principal/usuarios' }
 ];

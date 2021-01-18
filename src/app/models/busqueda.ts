@@ -1,11 +1,10 @@
 export interface Filtro {
   id: string;
   nombre: string;
-  criterios?: string[];
   criterio1?: string;
   criterio2?: string;
-  condicion?: string;
-  isRelation?: boolean;
+  criterios?: string[];
+  operador?: string;
   esFecha?: boolean;
   checked?: boolean;
 }
@@ -25,55 +24,55 @@ export interface Busqueda {
 
 export const busquedaBase: Busqueda = {
   filtros: [
-    { id: "descripcion", nombre: "Descripción", criterio1: '', condicion: 'like', checked: true },
-    { id: "fec_ing", nombre: "Fecha de ingreso", esFecha: true },
-    { id: "fec_mod", nombre: "Fecha de modificación", esFecha: true }
+    { id: "Descripcion", nombre: "Descripción", criterio1: '', operador: 'like', checked: true },
+    { id: "FechaIngreso", nombre: "Fecha de ingreso", esFecha: true },
+    { id: "FechaModificacion", nombre: "Fecha de modificación", esFecha: true }
   ], estado: '2'
 };
 
 export const busquedaUsuarios: Busqueda = {
   filtros: [
-    { id: "nombres", nombre: "Nombres", criterio1: '', condicion: 'like', checked: true },
-    { id: "nombre_usuario", nombre: "Nombre de usuario" },
-    { id: "telefono", nombre: "Teléfono" },    
-    { id: "celular", nombre: "Celular" },
-    { id: "correo", nombre: "Correo" },
-    { id: "cedula", nombre: "Cedula" },
-    { id: "direccion", nombre: "Dirección" },
-    { id: "fecha_nacimiento", nombre: "Fecha de nacimiento", esFecha: true },
-    { id: "fecha_contratacion", nombre: "Fecha de contratación", esFecha: true },
-    { id: "salario", nombre: "Salario" },
-    { id: "fec_ing", nombre: "Fecha de ingreso", esFecha: true },
-    { id: "fec_mod", nombre: "Fecha de modificación", esFecha: true }
+    { id: "Nombres", nombre: "Nombres", criterio1: '', operador: 'like', checked: true },
+    { id: "NombreUsuario", nombre: "Nombre de usuario" },
+    { id: "Telefono", nombre: "Teléfono" },    
+    { id: "Celular", nombre: "Celular" },
+    { id: "Correo", nombre: "Correo" },
+    { id: "Cedula", nombre: "Cedula" },
+    { id: "Direccion", nombre: "Dirección" },
+    { id: "FechaNacimiento", nombre: "Fecha de nacimiento", esFecha: true },
+    { id: "FechaContratacion", nombre: "Fecha de contratación", esFecha: true },
+    { id: "Salario", nombre: "Salario" },
+    { id: "FechaIngreso", nombre: "Fecha de ingreso", esFecha: true },
+    { id: "FechaModificacion", nombre: "Fecha de modificación", esFecha: true }
   ], estado: '2'
 };
 
 export const busquedaRepuesto: Busqueda = {
   filtros: [
-    { id: "codigo", nombre: "Código", criterio1: '', condicion: 'like', checked: true },
-    { id: "marca", nombre: "Marca" },
-    { id: "categoria", nombre: "Categoría" },    
-    { id: "modelo", nombre: "Modelo" },
-    { id: "fecha", nombre: "Año" },
-    { id: "stock", nombre: "Cantidad" },
-    { id: "precio", nombre: "Precio" },
-    { id: "descripcion", nombre: "Descripción" },
-    { id: "fec_ing", nombre: "Fecha de ingreso", esFecha: true },
-    { id: "fec_mod", nombre: "Fecha de modificación", esFecha: true }
+    { id: "Codigo", nombre: "Código", criterio1: '', operador: 'like', checked: true },
+    { id: "Marca.Descripcion", nombre: "Marca" },
+    { id: "Categoria.Descripcion", nombre: "Categoría" },    
+    { id: "Modelo", nombre: "Modelo" },
+    { id: "Fecha", nombre: "Año" },
+    { id: "Stock", nombre: "Cantidad" },
+    { id: "Precio", nombre: "Precio" },
+    { id: "Descripcion", nombre: "Descripción" },
+    { id: "FechaIngreso", nombre: "Fecha de ingreso", esFecha: true },
+    { id: "FechaModificacion", nombre: "Fecha de modificación", esFecha: true }
   ], estado: '2'
 };
 
 export const busquedaProveedores: Busqueda = {
   filtros: [
-    { id: "descripcion", nombre: "Descripción", criterio1: '', condicion: 'like', checked: true },
-    { id: "convenio", nombre: "Convenio" },
-    { id: "telefono", nombre: "Teléfono" },
-    { id: "direccion", nombre: "Dirección" },
-    { id: "tipoProveedor", nombre: "Tipo de proveedor" },
-    { id: "contacto", nombre: "Contacto" },
-    { id: "telefonoContacto", nombre: "Teléfono de contacto" },
-    { id: "correoContacto", nombre: "Correo de contacto" },
-    { id: "fec_ing", nombre: "Fecha de ingreso", esFecha: true },
-    { id: "fec_mod", nombre: "Fecha de modificación", esFecha: true }
+    { id: "Descripcion", nombre: "Descripción", criterio1: '', operador: 'like', checked: true },
+    { id: "Convenio", nombre: "Convenio" },
+    { id: "Telefono", nombre: "Teléfono" },
+    { id: "Direccion", nombre: "Dirección" },
+    { id: "TipoProveedor", nombre: "Tipo de proveedor" },
+    { id: "Contacto", nombre: "Contacto" },
+    { id: "TelefonoContacto", nombre: "Teléfono de contacto" },
+    { id: "CorreoContacto", nombre: "Correo de contacto" },
+    { id: "FechaIngreso", nombre: "Fecha de ingreso", esFecha: true },
+    { id: "FechaModificacion", nombre: "Fecha de modificación", esFecha: true }
   ], estado: '2'
 };

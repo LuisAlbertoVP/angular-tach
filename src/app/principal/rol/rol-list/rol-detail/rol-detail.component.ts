@@ -60,12 +60,12 @@ export class RolDetailComponent implements OnInit {
     if(this.form.valid) {
       const rol: Rol = this.form.getRawValue();
       rol.id = this.rol ? rol.id : uuid();
-      rol.usrIngreso = this.auth.nombreUsuario;
-      rol.usrModificacion = this.auth.nombreUsuario;
+      rol.usuarioIngreso = this.auth.nombreUsuario;
+      rol.usuarioModificacion = this.auth.nombreUsuario;
       rol.modulos = this.modulos.filter(modulo => modulo.checked);
-      this.service.insertOrUpdate(rol).subscribe((response: HttpResponse<string>) => {
+      this.service.insertOrUpdate(rol).subscribe((response: HttpResponse<any>) => {
         if(response.status == 200) {
-          this.snackBar.open(response.body, 'Ok', {duration: 2000, panelClass: ['success']});
+          this.snackBar.open(response.body.result, 'Ok', {duration: 2000, panelClass: ['success']});
           this.dialogRef.close(true);
         }
       });

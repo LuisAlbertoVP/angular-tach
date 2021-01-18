@@ -2,34 +2,30 @@ export interface Base {
   id: string;
   descripcion: string;
   estado?: boolean;
-  usrIngreso?: string;
-  fecIngreso?: string;
-  usrModificacion?: string;
-  fecModificacion?: string;
+  usuarioIngreso?: string;
+  fechaIngreso?: string;
+  stock?: number;
+  usuarioModificacion?: string;
+  fechaModificacion?: string;
+}
+
+export interface Bases {
+  data: Base[];
+  total: number;
 }
 
 export interface Proveedor extends Base {
   convenio: boolean;
-  telefono: string;
-  direccion: string;
-  tipoProveedor: string;
-  contacto: string;
-  telefonoContacto: string;
-  correoContacto: string;
+  telefono?: string;
+  direccion?: string;
+  tipoProveedor?: string;
+  contacto?: string;
+  telefonoContacto?: string;
+  correoContacto?: string;
 }
 
 export interface Proveedores {
-  proveedores: Proveedor[];
-  total: number;
-}
-
-export interface Marcas {
-  marcas: Base[];
-  total: number;
-}
-
-export interface Categorias {
-  categorias: Base[];
+  data: Proveedor[];
   total: number;
 }
 
@@ -43,14 +39,14 @@ export interface Repuesto extends Base {
   precio: number;
 }
 
+export interface Repuestos {
+  data: Repuesto[];
+  total: number;
+}
+
 export interface RepuestoForm {
   marcas: Base[];
   categorias: Base[];
-}
-
-export interface Repuestos {
-  repuestos: Repuesto[];
-  total: number;
 }
 
 export interface Venta {

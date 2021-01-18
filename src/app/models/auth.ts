@@ -1,12 +1,3 @@
-export interface Base {
-  id: string;
-  estado?: boolean;
-  usrIngreso?: string;
-  fecIngreso?: string;
-  usrModificacion?: string;
-  fecModificacion?: string;
-}
-
 export interface Modulo {
   id: number;
   descripcion?: string;
@@ -15,13 +6,22 @@ export interface Modulo {
   checked?: boolean;
 }
 
+export interface Base {
+  id: string;
+  estado?: boolean;
+  usuarioIngreso?: string;
+  fechaIngreso?: string;
+  usuarioModificacion?: string;
+  fechaModificacion?: string;
+}
+
 export interface Rol extends Base {
   descripcion: string;
   modulos?: Modulo[];
 }
 
 export interface Roles {
-  roles: Rol[];
+  data: Rol[];
   total: number;
 }
 
@@ -47,11 +47,11 @@ export interface User extends Base {
   token?: Token;
 }
 
-export interface UserForm {
-  roles: Rol[];
+export interface Users {
+  data: User[];
+  total: number;
 }
 
-export interface Users {
-  usuarios: User[];
-  total: number;
+export interface UserForm {
+  roles: Rol[];
 }

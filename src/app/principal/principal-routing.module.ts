@@ -22,6 +22,9 @@ const routes: Routes = [
             path: 'cuenta', loadChildren: () => import('./cuenta/cuenta.module').then(m => m.CuentaModule) 
           },
           { 
+            path: 'sistema', loadChildren: () => import('./sistema/sistema.module').then(m => m.SistemaModule) 
+          },
+          { 
             path: 'usuarios', loadChildren: () => import('./usuario/usuario.module').then(m => m.UsuarioModule), 
             canLoad: [RolGuard], data: { modulo: 'Usuarios'} 
           },

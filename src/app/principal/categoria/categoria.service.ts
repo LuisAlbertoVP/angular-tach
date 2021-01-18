@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
-import { Base, Categorias } from '@models/tach';
+import { Base, Bases } from '@models/tach';
 import { Busqueda } from '@models/busqueda';
 import { HttpErrorHandlerService, HandleError } from '../../http-error-handler.service';
 
@@ -26,7 +26,7 @@ export class CategoriaService {
   }
 
   getAll = (busqueda: Busqueda) => this.http.post(`${this.url}/all`, busqueda, httpOptions)
-      .pipe(catchError(this.handleError<Categorias>('getAll')));
+      .pipe(catchError(this.handleError<Bases>('getAll')));
 
   insertOrUpdate = (categoria: Base) => this.http.post(this.url, categoria, httpOptions)
       .pipe(catchError(this.handleError('insertOrUpdate', categoria)));

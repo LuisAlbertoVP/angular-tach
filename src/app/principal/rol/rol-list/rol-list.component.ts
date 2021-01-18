@@ -49,7 +49,7 @@ export class RolListComponent implements OnInit, AfterViewInit {
 
   get newBusqueda() {
     let busqueda: Busqueda = { filtros: [], estado: this.busqueda.estado };
-    const activo = this.sort.active ? this.sort.active : 'fec_mod';
+    const activo = this.sort.active ? this.sort.active : 'FechaModificacion';
     const direccion = this.sort.direction ? this.sort.direction : 'desc';
     busqueda.orden = { activo: activo, direccion: direccion };
     busqueda.pagina = this.paginator.pageIndex;
@@ -58,9 +58,8 @@ export class RolListComponent implements OnInit, AfterViewInit {
       if(filtro.checked) {
         if(filtro.esFecha) {
           filtro.criterio1 = moment(filtro.criterio1).format('YYYY-MM-DD');
-          filtro.criterio2 = filtro.condicion == 'between' ? moment(filtro.criterio2).format('YYYY-MM-DD') : '';
+          filtro.criterio2 = filtro.operador == 'between' ? moment(filtro.criterio2).format('YYYY-MM-DD') : '';
         }
-        filtro.criterio1 = filtro.condicion == 'like' ? `%${filtro.criterio1}%` : filtro.criterio1;
         busqueda.filtros.push(filtro);
       }
     }
@@ -80,7 +79,7 @@ export class RolListComponent implements OnInit, AfterViewInit {
         this.isLoadingResults = false;
         this.isRateLimitReached = false;
         this.resultsLength = roles.total;
-        return roles.roles;
+        return roles.data;
       }), catchError(() => {
         this.isLoadingResults = false;
         this.isRateLimitReached = true;
@@ -98,14 +97,14 @@ export class RolListComponent implements OnInit, AfterViewInit {
   updateEstado(rol: Rol) {
     const cloneRol = Object.assign({}, rol);
     cloneRol.estado = cloneRol.estado ? false : true;
-    this.service.setStatus(cloneRol).subscribe((response: HttpResponse<string>) => {
+    this.service.setStatus(cloneRol).subscribe((response: HttpResponse<any>) => {
       if(response?.status == 200) {
         if(this.busqueda.estado == '2') {
           rol.estado = cloneRol.estado;
         } else {
           this.data = this.data.filter(oldRol => oldRol.id != rol.id);
         }
-        this.showMessage(response.body);
+        this.showMessage(response.body.result);
       }
     });
   }
@@ -130,10 +129,10 @@ export class RolListComponent implements OnInit, AfterViewInit {
   }
 
   delete(rol: Rol) {
-    this.service.delete(rol).subscribe((response: HttpResponse<string>) => {
+    this.service.delete(rol).subscribe((response: HttpResponse<any>) => {
       if(response?.status == 200) {
         this.data = this.data.filter(oldRol => oldRol.id != rol.id);
-        this.showMessage(response.body);
+        this.showMessage(response.body.result);
       }
     });
   }

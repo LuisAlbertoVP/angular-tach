@@ -46,7 +46,7 @@ export class ProveedorListComponent implements OnInit, AfterViewInit {
 
   get newBusqueda() {
     let busqueda: Busqueda = { filtros: [], estado: this.busqueda.estado };
-    const activo = this.sort.active ? this.sort.active : 'fec_mod';
+    const activo = this.sort.active ? this.sort.active : 'FechaModificacion';
     const direccion = this.sort.direction ? this.sort.direction : 'desc';
     busqueda.orden = { activo: activo, direccion: direccion };
     busqueda.pagina = this.paginator.pageIndex;
@@ -55,9 +55,8 @@ export class ProveedorListComponent implements OnInit, AfterViewInit {
       if(filtro.checked) {
         if(filtro.esFecha) {
           filtro.criterio1 = moment(filtro.criterio1).format('YYYY-MM-DD');
-          filtro.criterio2 = filtro.condicion == 'between' ? moment(filtro.criterio2).format('YYYY-MM-DD') : '';
+          filtro.criterio2 = filtro.operador == 'between' ? moment(filtro.criterio2).format('YYYY-MM-DD') : '';
         }
-        filtro.criterio1 = filtro.condicion == 'like' ? `%${filtro.criterio1}%` : filtro.criterio1;
         busqueda.filtros.push(filtro);
       }
     }
@@ -80,7 +79,7 @@ export class ProveedorListComponent implements OnInit, AfterViewInit {
         this.isLoadingResults = false;
         this.isRateLimitReached = false;
         this.resultsLength = proveedores.total;
-        return proveedores.proveedores;
+        return proveedores.data;
       }), catchError(() => {
         this.isLoadingResults = false;
         this.isRateLimitReached = true;
@@ -98,14 +97,14 @@ export class ProveedorListComponent implements OnInit, AfterViewInit {
   updateEstado(proveedor: Proveedor) {
     const cloneProveedor = Object.assign({}, proveedor);
     cloneProveedor.estado = cloneProveedor.estado ? false : true;
-    this.service.setStatus(cloneProveedor).subscribe((response: HttpResponse<string>) => {
+    this.service.setStatus(cloneProveedor).subscribe((response: HttpResponse<any>) => {
       if(response?.status == 200) {
         if(this.busqueda.estado == '2') {
           proveedor.estado = cloneProveedor.estado;
         } else {
           this.data = this.data.filter(oldProveedor => oldProveedor.id != proveedor.id);
         }
-        this.showMessage(response.body);
+        this.showMessage(response.body.result);
       }
     });
   }
@@ -130,10 +129,10 @@ export class ProveedorListComponent implements OnInit, AfterViewInit {
   }
 
   delete(proveedor: Proveedor) {
-    this.service.delete(proveedor).subscribe((response: HttpResponse<string>) => {
+    this.service.delete(proveedor).subscribe((response: HttpResponse<any>) => {
       if(response?.status == 200) {
         this.data = this.data.filter(oldProveedor => oldProveedor.id != proveedor.id);
-        this.showMessage(response.body);
+        this.showMessage(response.body.result);
       }
     });
   }

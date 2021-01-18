@@ -4,7 +4,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { SharedService } from '@shared_service/shared';
 import { MarcaService }  from '../marca.service';
-import { Base, Marcas } from '@models/tach';
+import { Base, Bases } from '@models/tach';
 import { Busqueda, busquedaBase } from '@models/busqueda';
 import { HttpResponse } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -25,7 +25,7 @@ export class MarcaListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatRadioGroup) radio: MatRadioGroup;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  readonly displayedColumns: string[] = ['opciones', 'descripcion', 'ingreso', 'modificacion', 'accion'];
+  readonly displayedColumns: string[] = ['opciones', 'descripcion', 'repuestos.count', 'fechaIngreso', 'fechaModificacion', 'accion'];
   busqueda: Busqueda = busquedaBase;
   data: Base[] = [];
   resultsLength: number = 0;
@@ -43,7 +43,7 @@ export class MarcaListComponent implements OnInit, AfterViewInit {
 
   get newBusqueda() {
     let busqueda: Busqueda = { filtros: [], estado: this.busqueda.estado };
-    const activo = this.sort.active ? this.sort.active : 'fec_mod';
+    const activo = this.sort.active ? this.sort.active : 'FechaModificacion';
     const direccion = this.sort.direction ? this.sort.direction : 'desc';
     busqueda.orden = { activo: activo, direccion: direccion };
     busqueda.pagina = this.paginator.pageIndex;
@@ -52,9 +52,8 @@ export class MarcaListComponent implements OnInit, AfterViewInit {
       if(filtro.checked) {
         if(filtro.esFecha) {
           filtro.criterio1 = moment(filtro.criterio1).format('YYYY-MM-DD');
-          filtro.criterio2 = filtro.condicion == 'between' ? moment(filtro.criterio2).format('YYYY-MM-DD') : '';
+          filtro.criterio2 = filtro.operador == 'between' ? moment(filtro.criterio2).format('YYYY-MM-DD') : '';
         }
-        filtro.criterio1 = filtro.condicion == 'like' ? `%${filtro.criterio1}%` : filtro.criterio1;
         busqueda.filtros.push(filtro);
       }
     }
@@ -73,11 +72,11 @@ export class MarcaListComponent implements OnInit, AfterViewInit {
         this.isLoadingResults = true;
         return this.service.getAll(this.newBusqueda);
       }), map(data => {
-        const marcas: Marcas = (data as HttpResponse<Marcas>).body;
+        const marcas: Bases = (data as HttpResponse<Bases>).body;
         this.isLoadingResults = false;
         this.isRateLimitReached = false;
         this.resultsLength = marcas.total;
-        return marcas.marcas;
+        return marcas.data;
       }), catchError(() => {
         this.isLoadingResults = false;
         this.isRateLimitReached = true;
@@ -95,14 +94,14 @@ export class MarcaListComponent implements OnInit, AfterViewInit {
   updateEstado(marca: Base) {
     const cloneMarca = Object.assign({}, marca);
     cloneMarca.estado = cloneMarca.estado ? false : true;
-    this.service.setStatus(cloneMarca).subscribe((response: HttpResponse<string>) => {
+    this.service.setStatus(cloneMarca).subscribe((response: HttpResponse<any>) => {
       if(response?.status == 200) {
         if(this.busqueda.estado == '2') {
           marca.estado = cloneMarca.estado;
         } else {
           this.data = this.data.filter(oldMarca => oldMarca.id != marca.id);
         }
-        this.showMessage(response.body);
+        this.showMessage(response.body.result);
       }
     });
   }
@@ -127,10 +126,10 @@ export class MarcaListComponent implements OnInit, AfterViewInit {
   }
 
   delete(marca: Base) {
-    this.service.delete(marca).subscribe((response: HttpResponse<string>) => {
+    this.service.delete(marca).subscribe((response: HttpResponse<any>) => {
       if(response?.status == 200) {
         this.data = this.data.filter(oldMarca => oldMarca.id != marca.id);
-        this.showMessage(response.body);
+        this.showMessage(response.body.result);
       }
     });
   }

@@ -1,17 +1,18 @@
 import { NgModule } from '@angular/core';
 import { PrincipalRoutingModule } from './principal-routing.module';
+import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
+import { MatDividerModule } from '@angular/material/divider';
 import { MenuComponent } from './menu/menu.component';
 import { SidenavComponent } from './menu/sidenav/sidenav.component';
 import { BaseComponent } from './menu/base/base.component';
 import { HttpErrorHandlerService } from '../http-error-handler.service';
 import { httpInterceptorProviders } from '../http-interceptors/index';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [MenuComponent, SidenavComponent, BaseComponent],
@@ -23,7 +24,8 @@ import { CommonModule } from '@angular/common';
     MatButtonModule,
     MatMenuModule,
     MatSidenavModule,
-    MatListModule
+    MatListModule,
+    MatDividerModule
   ],
   providers: [
     HttpErrorHandlerService,

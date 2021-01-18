@@ -17,7 +17,7 @@
               <div class="w-100 d-flex">
                 <h2 class="blue">{{ filtro.get('nombre').value }}</h2>
                 <mat-form-field class="w100 ml-auto">
-                  <mat-select formControlName="condicion">
+                  <mat-select formControlName="operador">
                     <mat-option value="like">Contiene</mat-option>
                     <mat-option value="=">Es igual</mat-option>
                     <mat-option value="between">Rango</mat-option>
@@ -25,7 +25,7 @@
                   </mat-select>
                 </mat-form-field>   
               </div>
-              <div [ngSwitch]="filtro.get('condicion').value" class="text-center">
+              <div [ngSwitch]="filtro.get('operador').value" class="text-center">
                 <ng-template [ngSwitchCase]="'multiple'">
                   <mat-form-field class="w-100" appearance="fill">
                     <mat-label>Ingrese los criterios de búsqueda</mat-label>

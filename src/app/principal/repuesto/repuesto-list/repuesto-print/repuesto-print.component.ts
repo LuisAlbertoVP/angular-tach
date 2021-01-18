@@ -14,7 +14,6 @@ import { RepuestoService }  from '../../repuesto.service';
 export class RepuestoPrintComponent implements OnInit {
   busqueda: Busqueda;
   repuestos: Repuesto[] = [];
-  regex = /%/g;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -26,7 +25,7 @@ export class RepuestoPrintComponent implements OnInit {
     this.activatedRoute.queryParamMap.subscribe(param => {
       this.busqueda = JSON.parse(param.get('printObject'));
       this.service.getAll(this.busqueda).subscribe(repuestos => {
-        this.repuestos = (repuestos as HttpResponse<Repuestos>).body.repuestos;
+        this.repuestos = (repuestos as HttpResponse<Repuestos>).body.data;
         this.printing.dataOnLoad('/principal/repuestos');
       });
     });

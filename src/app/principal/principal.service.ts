@@ -28,6 +28,6 @@ export class PrincipalService {
   getById = (id: string): Observable<User> => this.http.get<User>(`${this.url}/${id}`)
       .pipe(catchError(this.handleError<User>('getById')));
 
-  update = (user: User) => this.http.post(this.url, user, httpOptions)
+  update = (user: User) => this.http.post(`${this.url}/update`, user, httpOptions)
       .pipe(catchError(this.handleError('update', user)));
 }

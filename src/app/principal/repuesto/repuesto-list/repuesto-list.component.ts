@@ -28,7 +28,7 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatRadioGroup) radio: MatRadioGroup;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  readonly normalColumns: string[] = ['opciones', 'codigo', 'marca', 'categoria', 'modelo', 'fecha', 'stock', 'precio', 'accion'];
+  readonly normalColumns: string[] = ['opciones', 'codigo', 'categoria.descripcion', 'marca.descripcion', 'modelo', 'fecha', 'stock', 'precio', 'accion'];
   readonly mobileColumns: string[] = ['opciones', 'codigo', 'modelo', 'stock', 'precio', 'accion'];
   isMobile: boolean = false;
   busqueda: Busqueda = busquedaRepuesto;
@@ -60,7 +60,7 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
 
   get newBusqueda() {
     let busqueda: Busqueda = { filtros: [], estado: this.busqueda.estado };
-    const activo = this.sort.active ? this.sort.active : 'fec_mod';
+    const activo = this.sort.active ? this.sort.active : 'FechaModificacion';
     const direccion = this.sort.direction ? this.sort.direction : 'desc';
     busqueda.orden = { activo: activo, direccion: direccion };
     busqueda.pagina = this.paginator.pageIndex;
@@ -69,10 +69,8 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
       if(filtro.checked) {
         if(filtro.esFecha) {
           filtro.criterio1 = moment(filtro.criterio1).format('YYYY-MM-DD');
-          filtro.criterio2 = filtro.condicion == 'between' ? moment(filtro.criterio2).format('YYYY-MM-DD') : '';
+          filtro.criterio2 = filtro.operador == 'between' ? moment(filtro.criterio2).format('YYYY-MM-DD') : '';
         }
-        filtro.criterio1 = filtro.condicion == 'like' ? `%${filtro.criterio1}%` : filtro.criterio1;
-        filtro.isRelation = filtro.id == 'marca' || filtro.id == 'categoria' ? true : false;
         busqueda.filtros.push(filtro);
       }
     }
@@ -92,7 +90,7 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
         this.isLoadingResults = false;
         this.isRateLimitReached = false;
         this.resultsLength = repuestos.total;
-        return repuestos.repuestos;
+        return repuestos.data;
       }), catchError(() => {
         this.isLoadingResults = false;
         this.isRateLimitReached = true;
@@ -110,14 +108,14 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
   updateEstado(repuesto: Repuesto) {
     const cloneRepuesto = Object.assign({}, repuesto);
     cloneRepuesto.estado = cloneRepuesto.estado ? false : true;
-    this.service.setStatus(cloneRepuesto).subscribe((response: HttpResponse<string>) => {
+    this.service.setStatus(cloneRepuesto).subscribe((response: HttpResponse<any>) => {
       if(response?.status == 200) {
         if(this.busqueda.estado == '2') {
           repuesto.estado = cloneRepuesto.estado;
         } else {
           this.data = this.data.filter(oldRepuesto => oldRepuesto.id != repuesto.id);
         }
-        this.showMessage(response.body);
+        this.showMessage(response.body.result);
       }
     });
   }
@@ -142,10 +140,10 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
   }
 
   delete(repuesto: Repuesto) {
-    this.service.delete(repuesto).subscribe((response: HttpResponse<string>) => {
+    this.service.delete(repuesto).subscribe((response: HttpResponse<any>) => {
       if(response?.status == 200) {
         this.data = this.data.filter(oldRepuesto => oldRepuesto.id != repuesto.id);
-        this.showMessage(response.body);
+        this.showMessage(response.body.result);
       }
     });
   }

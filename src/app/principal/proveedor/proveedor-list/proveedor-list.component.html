@@ -65,8 +65,8 @@
                   <label class="d-block bold blue">Contacto</label><label>{{ row.contacto }}</label>
                   <label class="d-block bold blue">Teléfono del contacto</label><label>{{ row.telefonoContacto }}</label>
                   <label class="d-block bold blue">Correo del contacto</label><label>{{ row.correoContacto }}</label>
-                  <label class="d-block bold blue">Usr/Fec. Ingreso</label><label>{{ row.usrIngreso + '  ' + row.fecIngreso }}</label>
-                  <label class="d-block bold blue">Usr/Fec. Modificación</label><label>{{ row.usrModificacion + '  ' + row.fecModificacion }}</label>
+                  <label class="d-block bold blue">Usr/Fec. Ingreso</label><label>{{ row.usuarioIngreso + '  ' + row.fechaIngreso }}</label>
+                  <label class="d-block bold blue">Usr/Fec. Modificación</label><label>{{ row.usuarioModificacion + '  ' + row.fechaModificacion }}</label>
                 </div>         
               </div>
             </div>
@@ -81,6 +81,6 @@
         </tr>
       </table>
     </div>
-    <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]" [length]="resultsLength" [showFirstLastButtons]="true"></mat-paginator>
+    <mat-paginator [pageSizeOptions]="[25, 50, 100, 500]" [length]="resultsLength" [showFirstLastButtons]="true"></mat-paginator>
   </div>  
 </div>

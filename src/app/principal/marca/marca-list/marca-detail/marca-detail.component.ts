@@ -42,11 +42,11 @@ export class MarcaDetailComponent implements OnInit {
     if(this.form.valid) {
       const marca = this.form.getRawValue();
       marca.id = this.marca ? marca.id : uuid();
-      marca.usrIngreso = this.auth.nombreUsuario;
-      marca.usrModificacion = this.auth.nombreUsuario;
-      this.service.insertOrUpdate(marca).subscribe((response: HttpResponse<string>) => {
+      marca.usuarioIngreso = this.auth.nombreUsuario;
+      marca.usuarioModificacion = this.auth.nombreUsuario;
+      this.service.insertOrUpdate(marca).subscribe((response: HttpResponse<any>) => {
         if(response.status == 200) {
-          this.snackBar.open(response.body, 'Ok', {duration: 2000, panelClass: ['success']});
+          this.snackBar.open(response.body.result, 'Ok', {duration: 2000, panelClass: ['success']});
           this.dialogRef.close(true);
         }
       });

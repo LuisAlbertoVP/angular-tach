@@ -23,7 +23,7 @@ export class AuthGuard implements CanLoad, CanActivate, CanActivateChild {
   }
 
   private checkDate(): boolean {
-    return Date.now() < +this.service.tokenExpiration * 1000;
+    return Date.now() <  Date.parse(this.service.tokenExpiration);
   }
 
   private hasToken() : boolean {

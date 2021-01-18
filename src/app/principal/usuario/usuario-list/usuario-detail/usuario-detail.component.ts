@@ -43,16 +43,21 @@ export class UsuarioDetailComponent implements OnInit {
 
   guardar() {
     if(this.form.valid) {
-      const usuario: User = this.form.getRawValue();
+      const usuario = this.form.getRawValue();
       usuario.id = this.usuario ? usuario.id : uuid();
-      usuario.usrIngreso = this.auth.nombreUsuario;
-      usuario.usrModificacion = this.auth.nombreUsuario;
+      usuario.usuarioIngreso = this.auth.nombreUsuario;
+      usuario.usuarioModificacion = this.auth.nombreUsuario;
       usuario.fechaNacimiento = moment(usuario.fechaNacimiento).format('YYYY-MM-DD');
-      usuario.fechaContratacion = usuario.fechaContratacion ? moment(usuario.fechaContratacion).format('YYYY-MM-DD') : '';
+      usuario.fechaContratacion = moment(usuario.fechaContratacion).format('YYYY-MM-DD');
       usuario.clave = usuario.clave ? SHA256(usuario.clave).toString() : '';
-      this.service.insertOrUpdate(usuario).subscribe((response: HttpResponse<string>) => {
+      let roles: Rol[] = [];
+      for(let i = 0; i < usuario.roles.length; i++) {
+        roles.push({ id: (usuario.roles[i] as string), descripcion: ''});
+      }
+      usuario.roles = roles;
+      this.service.insertOrUpdate(usuario).subscribe((response: HttpResponse<any>) => {
         if(response.status == 200) {
-          this.snackBar.open(response.body, 'Ok', {duration: 2000, panelClass: ['success']});
+          this.snackBar.open(response.body.result, 'Ok', {duration: 2000, panelClass: ['success']});
           this.dialogRef.close(true);
         }
       });

@@ -28,7 +28,7 @@ export class UsuarioControlService {
       telefono: [user?.telefono, Validators.required],
       celular: [user?.celular, Validators.required],
       fechaNacimiento: [user?.fechaNacimiento, Validators.required],
-      fechaContratacion: [user?.fechaContratacion ? user.fechaContratacion : ''],
+      fechaContratacion: [user?.fechaContratacion, Validators.required],
       salario: [user?.salario ? user.salario : 0, Validators.required],
       roles: [this.toRoles(user?.roles), Validators.required],
       clave: ['']

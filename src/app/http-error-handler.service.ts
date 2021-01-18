@@ -16,14 +16,15 @@ export class HttpErrorHandlerService {
     (operation = 'operation', result = {} as T) => this.handleError(serviceName, operation, result);
 
   handleError<T> (serviceName = '', operation = 'operation', result = {} as T) {
-    return (error: HttpErrorResponse): Observable<T> => {
-      const message = (error.error instanceof ErrorEvent) ?
-        error.error.message : `codigo ${error.status} y cuerpo: ${JSON.stringify(error.error)}`;
-
+    return (response: HttpErrorResponse): Observable<T> => {
+      const message = (response.error instanceof ErrorEvent) ?
+      response.error.message : `codigo ${response.status} y cuerpo: ${JSON.stringify(response.error)}`;
       console.error(`${serviceName}: ${operation} fallo con: ${message}`);
-
-      this.snackBar.open(JSON.stringify(error.error), 'Error', {duration: 3000});
-
+      if(response.error) {
+        if(!response.error.errors) {
+          this.snackBar.open(JSON.stringify(response.error), 'Error', {duration: 3000});
+        }
+      }
       return of(result);
     };
   }

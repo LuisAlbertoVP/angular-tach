@@ -38,11 +38,11 @@ export class ProveedorDetailComponent implements OnInit {
     if(this.form.valid) {
       const proveedor: Proveedor = this.form.getRawValue();
       proveedor.id = this.proveedor ? proveedor.id : uuid();
-      proveedor.usrIngreso = this.auth.nombreUsuario;
-      proveedor.usrModificacion = this.auth.nombreUsuario;
-      this.service.insertOrUpdate(proveedor).subscribe((response: HttpResponse<string>) => {
+      proveedor.usuarioIngreso = this.auth.nombreUsuario;
+      proveedor.usuarioModificacion = this.auth.nombreUsuario;
+      this.service.insertOrUpdate(proveedor).subscribe((response: HttpResponse<any>) => {
         if(response.status == 200) {
-          this.snackBar.open(response.body, 'Ok', {duration: 2000, panelClass: ['success']});
+          this.snackBar.open(response.body.result, 'Ok', {duration: 2000, panelClass: ['success']});
           this.dialogRef.close(true);
         }
       });

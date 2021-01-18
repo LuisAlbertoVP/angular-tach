@@ -42,11 +42,11 @@ export class CategoriaDetailComponent implements OnInit {
     if(this.form.valid) {
       const categoria = this.form.getRawValue();
       categoria.id = this.categoria ? categoria.id : uuid();
-      categoria.usrIngreso = this.auth.nombreUsuario;
-      categoria.usrModificacion = this.auth.nombreUsuario;
-      this.service.insertOrUpdate(categoria).subscribe((response: HttpResponse<string>) => {
+      categoria.usuarioIngreso = this.auth.nombreUsuario;
+      categoria.usuarioModificacion = this.auth.nombreUsuario;
+      this.service.insertOrUpdate(categoria).subscribe((response: HttpResponse<any>) => {
         if(response.status == 200) {
-          this.snackBar.open(response.body, 'Ok', {duration: 2000, panelClass: ['success']});
+          this.snackBar.open(response.body.result, 'Ok', {duration: 2000, panelClass: ['success']});
           this.dialogRef.close(true);
         }
       });

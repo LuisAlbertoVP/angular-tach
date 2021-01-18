@@ -48,12 +48,12 @@ export class CuentaDetailComponent implements OnInit {
     if(this.form.valid) {
       const usuario: User = this.form.getRawValue();
       usuario.id = this.id;
-      usuario.usrModificacion = this.auth.nombreUsuario;
+      usuario.usuarioModificacion = this.auth.nombreUsuario;
       usuario.fechaNacimiento = moment(usuario.fechaNacimiento).format('YYYY-MM-DD');
       usuario.clave = usuario.clave ? SHA256(usuario.clave).toString() : '';
-      this.service.update(usuario).subscribe((response: HttpResponse<string>) => {
+      this.service.update(usuario).subscribe((response: HttpResponse<any>) => {
         if(response.status == 200) {
-          this.snackBar.open(response.body, 'Ok', {duration: 2000, panelClass: ['success']});
+          this.snackBar.open(response.body.result, 'Ok', {duration: 2000, panelClass: ['success']});
         }
       });
     } else {

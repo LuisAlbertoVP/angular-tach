@@ -53,15 +53,14 @@ export class CuentaComponent implements OnInit {
 
   crear() {
     if(this.form.valid) {
-      const user: User = this.form.value;
+      const user: User = this.form.getRawValue();
       user.id = uuid();
-      user.usrIngreso = user.nombreUsuario;
-      user.usrModificacion = user.nombreUsuario;
+      user.usuarioIngreso = user.nombreUsuario;
       user.fechaNacimiento = moment(user.fechaNacimiento).format('YYYY-MM-DD');
       user.clave = SHA256(user.clave).toString();
-      this.service.addAccount(user).subscribe((response: HttpResponse<string>) => {
+      this.service.addAccount(user).subscribe((response: HttpResponse<any>) => {
         if(response?.status == 200) {
-          this.snackBar.open(response.body, 'Ok', {duration: 6000, panelClass: ['success']});
+          this.snackBar.open(response.body.result, 'Ok', {duration: 6000, panelClass: ['success']});
           this.button.nativeElement.click();
         }
       });
