@@ -13,7 +13,6 @@ import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { detailExpand } from '@animations/detailExpand';
 import { MatDialog } from '@angular/material/dialog';
 import { RepuestoDetailComponent } from './repuesto-detail/repuesto-detail.component';
-import * as moment from 'moment';
 import { PrintingService } from '@print_service/*';
 import { FiltroComponent } from '../../shared/filtro/filtro.component';
 
@@ -28,7 +27,7 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatRadioGroup) radio: MatRadioGroup;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  readonly normalColumns: string[] = ['opciones', 'codigo', 'categoria.descripcion', 'marca.descripcion', 'modelo', 'fecha', 'stock', 'precio', 'accion'];
+  readonly normalColumns: string[] = ['opciones', 'codigo', 'categoria.descripcion', 'marca.descripcion', 'modelo', 'epoca', 'stock', 'precio', 'accion'];
   readonly mobileColumns: string[] = ['opciones', 'codigo', 'modelo', 'stock', 'precio', 'accion'];
   isMobile: boolean = false;
   busqueda: Busqueda = busquedaRepuesto;
@@ -67,10 +66,6 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
     busqueda.cantidad = this.paginator.pageSize;
     for(let filtro of this.busqueda.filtros) {
       if(filtro.checked) {
-        if(filtro.esFecha) {
-          filtro.criterio1 = moment(filtro.criterio1).format('YYYY-MM-DD');
-          filtro.criterio2 = filtro.operador == 'between' ? moment(filtro.criterio2).format('YYYY-MM-DD') : '';
-        }
         busqueda.filtros.push(filtro);
       }
     }
@@ -129,7 +124,7 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
 
   openFilter() {
     const dialogRef = this.dialog.open(FiltroComponent, {
-      width: '720px', autoFocus: false, disableClose: true, data: this.busqueda
+      width: '720px', autoFocus: false, disableClose: true, data: this.busqueda, restoreFocus: false
     });
     dialogRef.afterClosed().subscribe(result => {
       if(result) {

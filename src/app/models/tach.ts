@@ -34,7 +34,7 @@ export interface Repuesto extends Base {
   marca?: Base;
   categoria?: Base;
   modelo?: string;
-  fecha: string;
+  epoca: string;
   stock: number;
   precio: number;
 }

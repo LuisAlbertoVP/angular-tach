@@ -18,10 +18,12 @@
                 <h2 class="blue">{{ filtro.get('nombre').value }}</h2>
                 <mat-form-field class="w100 ml-auto">
                   <mat-select formControlName="operador">
-                    <mat-option value="like">Contiene</mat-option>
-                    <mat-option value="=">Es igual</mat-option>
+                    <ng-container *ngIf="!filtro.get('esFecha').value">
+                      <mat-option value="like">Contiene</mat-option>
+                      <mat-option value="==">Es igual</mat-option>
+                      <mat-option value="multiple">Múltiple</mat-option>
+                    </ng-container>
                     <mat-option value="between">Rango</mat-option>
-                    <mat-option value="multiple">Múltiple</mat-option>
                   </mat-select>
                 </mat-form-field>   
               </div>
@@ -63,20 +65,12 @@
                   </ng-template>
                 </ng-template>
                 <ng-template ngSwitchDefault>
-                  <mat-form-field *ngIf="filtro.get('esFecha').value; else elseBlock" class="w-100" appearance="fill">
-                    <mat-label>Ingrese una fecha</mat-label>
-                    <input matInput formControlName="criterio1" [matDatepicker]="picker" />
-                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-datepicker #picker></mat-datepicker>
+                  <mat-form-field class="w-100" appearance="fill">
+                    <mat-label>Ingrese un criterio de búsqueda</mat-label>
+                    <input matInput formControlName="criterio1" />
+                    <button mat-button *ngIf="filtro.get('criterio1').value" matSuffix mat-icon-button aria-label="Clear" 
+                      (click)="clearCriterio1(filtro)" type="button"><mat-icon>close</mat-icon></button>
                   </mat-form-field>
-                  <ng-template #elseBlock>
-                    <mat-form-field class="w-100" appearance="fill">
-                      <mat-label>Ingrese un criterio de búsqueda</mat-label>
-                      <input matInput formControlName="criterio1" />
-                      <button mat-button *ngIf="filtro.get('criterio1').value" matSuffix mat-icon-button aria-label="Clear" 
-                        (click)="clearCriterio1(filtro)" type="button"><mat-icon>close</mat-icon></button>
-                    </mat-form-field>
-                  </ng-template>
                 </ng-template>
               </div>
               <div class="d-flex">

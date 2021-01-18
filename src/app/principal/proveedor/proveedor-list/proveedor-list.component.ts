@@ -13,7 +13,6 @@ import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { detailExpand } from '@animations/detailExpand';
 import { MatDialog } from '@angular/material/dialog';
 import { ProveedorDetailComponent } from './proveedor-detail/proveedor-detail.component';
-import * as moment from 'moment';
 import { FiltroComponent } from '../../shared/filtro/filtro.component';
 
 @Component({
@@ -53,10 +52,6 @@ export class ProveedorListComponent implements OnInit, AfterViewInit {
     busqueda.cantidad = this.paginator.pageSize;
     for(let filtro of this.busqueda.filtros) {
       if(filtro.checked) {
-        if(filtro.esFecha) {
-          filtro.criterio1 = moment(filtro.criterio1).format('YYYY-MM-DD');
-          filtro.criterio2 = filtro.operador == 'between' ? moment(filtro.criterio2).format('YYYY-MM-DD') : '';
-        }
         busqueda.filtros.push(filtro);
       }
     }
@@ -118,7 +113,7 @@ export class ProveedorListComponent implements OnInit, AfterViewInit {
 
   openFilter() {
     const dialogRef = this.dialog.open(FiltroComponent, {
-      width: '720px', autoFocus: false, disableClose: true, data: this.busqueda
+      width: '720px', autoFocus: false, disableClose: true, data: this.busqueda, restoreFocus: false
     });
     dialogRef.afterClosed().subscribe(result => {
       if(result) {

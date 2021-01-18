@@ -16,7 +16,7 @@ export class RepuestoControlService {
       categoria: this.fb.group({ id: [repuesto?.categoria?.id, Validators.required] }),
       marca: this.fb.group({ id: [repuesto?.marca?.id, Validators.required] }),
       modelo: [repuesto?.modelo, Validators.required],
-      fecha: [repuesto?.fecha ? repuesto.fecha : ''],
+      fecha: [repuesto?.epoca ? repuesto.epoca : ''],
       stock: [repuesto?.stock ? repuesto.stock : 0, Validators.required],
       precio: [repuesto?.precio ? repuesto.precio : 0, Validators.required],
       descripcion: [repuesto?.descripcion ? repuesto.descripcion : ''],
