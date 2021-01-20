@@ -1,5 +1,5 @@
-.container { overflow: hidden; }
-.page-break { page-break-after: always; height: 0; }
+.print-container { margin: 0; height: 100%; overflow: hidden }
+.page-break > * { page-break-inside: avoid; }
 .spacer { border-bottom: 1px solid lightgray; }
 @media screen {
   :host {
