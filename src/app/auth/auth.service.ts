@@ -31,7 +31,7 @@ export class AuthService {
   addAccount = (user: User) => this.http.post(`${this.url}/cuenta`, user, httpOptions)
       .pipe(catchError(this.handleError('addAccount', user)));
 
-  getRolUser = (id: string): Observable<User> => this.http.get<User>(`${this.url}/usuarios/${id}/roles`)
+  getRolUser = (id: string): Observable<User> => this.http.get<User>(`${this.url}/cuenta/${id}/roles`)
       .pipe(catchError(this.handleError<User>('getRolUser')));
 
   saveToken(user: User) {
