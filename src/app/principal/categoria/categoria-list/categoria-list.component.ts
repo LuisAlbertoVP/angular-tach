@@ -10,23 +10,27 @@ import { HttpResponse } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { fromEvent, merge, of as observableOf } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
+import { detailExpand } from '@animations/detailExpand';
 import { MatDialog } from '@angular/material/dialog';
 import { CategoriaDetailComponent } from './categoria-detail/categoria-detail.component';
 import { FiltroComponent } from '../../shared/filtro/filtro.component';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-categoria-list',
   templateUrl: './categoria-list.component.html',
-  styleUrls: ['./categoria-list.component.css']
+  styleUrls: ['./categoria-list.component.css'],
+  animations: detailExpand
 })
 export class CategoriaListComponent implements OnInit, AfterViewInit {
   @ViewChild('btnSearch', { read: ElementRef }) button: ElementRef;
   @ViewChild(MatRadioGroup) radio: MatRadioGroup;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  readonly displayedColumns: string[] = ['opciones', 'descripcion', 'repuestos.count', 'fechaIngreso', 'fechaModificacion', 'accion'];
+  readonly displayedColumns: string[] = ['opciones', 'Descripcion', 'Repuestos.Count', 'accion'];
   busqueda: Busqueda = busquedaBase;
   data: Base[] = [];
+  expandedElement: Base = null;
   resultsLength: number = 0;
   isLoadingResults: boolean = true;
   isRateLimitReached: boolean = false;
@@ -85,6 +89,8 @@ export class CategoriaListComponent implements OnInit, AfterViewInit {
   }
 
   initSearch = () => this.button.nativeElement.click();
+
+  parseDateTime = (fecha: string) => moment(fecha).format('DD/MM/YYYY, hh:mm:ss A');
 
   updateEstado(categoria: Base) {
     const cloneCategoria = Object.assign({}, categoria);

@@ -14,6 +14,7 @@ import { detailExpand } from '@animations/detailExpand';
 import { MatDialog } from '@angular/material/dialog';
 import { RolDetailComponent } from './rol-detail/rol-detail.component';
 import { FiltroComponent } from '../../shared/filtro/filtro.component';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-rol-list',
@@ -26,7 +27,7 @@ export class RolListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatRadioGroup) radio: MatRadioGroup;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  readonly displayedColumns: string[] = ['opciones', 'descripcion', 'ingreso', 'modificacion', 'accion'];
+  readonly displayedColumns: string[] = ['opciones', 'Descripcion', 'FechaIngreso', 'FechaModificacion', 'accion'];
   busqueda: Busqueda = busquedaBase;
   data: Rol[] = [];
   expandedElement: Rol = null;
@@ -88,6 +89,10 @@ export class RolListComponent implements OnInit, AfterViewInit {
   }
 
   initSearch = () => this.button.nativeElement.click();
+
+  parseDateTime = (fecha: string) => moment(fecha).format('DD/MM/YYYY, hh:mm:ss A');
+
+  parseArray = (array: any[]) => array.map(element => element.descripcion).join(', ');
 
   updateEstado(rol: Rol) {
     const cloneRol = Object.assign({}, rol);

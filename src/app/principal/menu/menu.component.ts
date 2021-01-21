@@ -12,6 +12,7 @@ import { menuBase, MenuBar, MenuItem } from '@models/menu';
 export class MenuComponent implements OnInit {
   menuBar: MenuBar;
   menuItems: MenuItem[] = menuBase;
+  visible: boolean = false;
 
   constructor(
     private sharedService: SharedService,
@@ -27,6 +28,13 @@ export class MenuComponent implements OnInit {
   principal() {
     this.sharedService.buildMenuBar({ title: 'Principal' });
     this.navigate('/principal');
+  }
+
+  search(valor: string) {
+    if(valor?.trim()) {
+      this.navigate('/principal/repuestos/' + valor);
+    }
+    this.visible = false;
   }
 
   navigate = (url: string) => this.router.navigate([url]);

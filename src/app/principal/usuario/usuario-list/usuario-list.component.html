@@ -35,23 +35,23 @@
             </mat-menu>
           </td>
         </ng-container>
-        <ng-container matColumnDef="nombres">
+        <ng-container matColumnDef="Nombres">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombres</th>
           <td mat-cell *matCellDef="let row">{{ row.nombres }}</td>
         </ng-container>
-        <ng-container matColumnDef="nombreUsuario">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre Usuario</th>
+        <ng-container matColumnDef="NombreUsuario">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Usuario</th>
           <td mat-cell *matCellDef="let row">{{ row.nombreUsuario }}</td>
         </ng-container>
-        <ng-container matColumnDef="telefono">
+        <ng-container matColumnDef="Telefono">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Teléfono</th>
           <td mat-cell *matCellDef="let row">{{ row.telefono }}</td>
         </ng-container>
-        <ng-container matColumnDef="celular">
+        <ng-container matColumnDef="Celular">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Celular</th>
           <td mat-cell *matCellDef="let row">{{ row.celular }}</td>
         </ng-container>
-        <ng-container matColumnDef="correo">
+        <ng-container matColumnDef="Correo">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Correo</th>
           <td mat-cell *matCellDef="let row">{{ row.correo }}</td>
         </ng-container>
@@ -64,21 +64,16 @@
           <td mat-cell *matCellDef="let row" [attr.colspan]="displayedColumns.length">
             <div class="element-detail" [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'">
               <div class="w-50 m0-auto mt-3 mb-3">
-                <div class="shadow p-3">
-                  <label class="d-block bold blue">Cedula</label><label>{{ row.cedula }}</label>
-                  <label class="d-block bold blue">Dirección</label><label>{{ row.direccion }}</label>
-                  <label class="d-block bold blue">Fec. Nacimiento</label><label>{{ row.fechaNacimiento }}</label>
-                  <label class="d-block bold blue">Fec. Contratacion</label><label>{{ row.fechaContratacion }}</label>
-                  <label class="d-block bold blue">Salario</label><label>{{ row.salario }}</label>
-                  <label class="d-block bold blue">Usr/Fec. Ingreso</label><label>{{ row.usuarioIngreso + '  ' + row.fechaIngreso }}</label>
-                  <label class="d-block bold blue">Usr/Fec. Modificación</label><label>{{ row.usuarioModificacion + '  ' + row.fechaModificacion }}</label>
-                </div>
-                <div class="shadow p-3 mt-3 d-flex margin">
-                  <label class="d-block bold blue mt-1">Roles</label>
-                  <mat-chip-list>
-                    <mat-chip color="warn" selected *ngFor="let rol of row.roles">{{ rol.descripcion }}</mat-chip>
-                  </mat-chip-list> 
-                </div>           
+                <dl class="shadow p-3">
+                  <dt class="blue">Ingresado Por</dt><dd>{{ '"' + row.usuarioIngreso + '" - ' + parseDateTime(row.fechaIngreso) }}</dd>
+                  <dt class="blue">Última Modificación</dt><dd>{{ '"' + row.usuarioModificacion + '" - ' + parseDateTime(row.fechaModificacion) }}</dd>
+                  <dt class="blue">Cedula</dt><dd>{{ row.cedula }}</dd>
+                  <dt class="blue">Dirección</dt><dd>{{ row.direccion }}</dd>
+                  <dt class="blue">Fecha Nacimiento</dt><dd>{{ parseDate(row.fechaNacimiento) }}</dd>
+                  <dt class="blue">Fecha Contratación</dt><dd>{{ parseDate(row.fechaContratacion) }}</dd>
+                  <dt class="blue">Salario</dt><dd>{{ row.salario }}</dd>
+                  <dt class="blue">Roles</dt><dd>{{ parseArray(row.roles) }}</dd>
+                </dl>          
               </div>
             </div>
           </td>

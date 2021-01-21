@@ -35,31 +35,31 @@
             </mat-menu>
           </td>
         </ng-container>
-        <ng-container matColumnDef="codigo">
+        <ng-container matColumnDef="Codigo">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Código</th>
           <td mat-cell *matCellDef="let row">{{ row.codigo }}</td>
         </ng-container>
-        <ng-container matColumnDef="categoria.descripcion">
+        <ng-container matColumnDef="Categoria.Descripcion">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Categoría</th>
           <td mat-cell *matCellDef="let row">{{ row.categoria?.descripcion }}</td>
         </ng-container>
-        <ng-container matColumnDef="marca.descripcion">
+        <ng-container matColumnDef="Marca.Descripcion">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Marca</th>
           <td mat-cell *matCellDef="let row">{{ row.marca?.descripcion }}</td>
         </ng-container>
-        <ng-container matColumnDef="modelo">
+        <ng-container matColumnDef="Modelo">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Modelo</th>
           <td mat-cell *matCellDef="let row">{{ row.modelo }}</td>
         </ng-container>
-        <ng-container matColumnDef="epoca">
+        <ng-container matColumnDef="Epoca">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Año</th>
           <td mat-cell *matCellDef="let row">{{ row.epoca }}</td>
         </ng-container>
-        <ng-container matColumnDef="stock">
+        <ng-container matColumnDef="Stock">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Stock</th>
           <td mat-cell *matCellDef="let row">{{ row.stock }}</td>
         </ng-container>
-        <ng-container matColumnDef="precio">
+        <ng-container matColumnDef="Precio">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Precio</th>
           <td mat-cell *matCellDef="let row">{{ row.precio }}</td>
         </ng-container>
@@ -72,16 +72,16 @@
           <td mat-cell *matCellDef="let row" [attr.colspan]="columns.length">
             <div class="element-detail" [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'">
               <div class="m0-auto mt-3 mb-3" [style.width]="isMobile ? '75%' : '50%'">
-                <div class="shadow p-3">
-                  <label class="d-block bold blue">Usr/Fec. Ingreso</label><label>{{ row.usuarioIngreso + '  ' + row.fechaIngreso }}</label>
-                  <label class="d-block bold blue">Usr/Fec. Modificación</label><label>{{ row.usuarioModificacion + '  ' + row.fechaModificacion }}</label>
+                <dl class="shadow p-3">
+                  <dt class="blue">Ingresado Por</dt><dd>{{ '"' + row.usuarioIngreso + '" - ' + parseDateTime(row.fechaIngreso) }}</dd>
+                  <dt class="blue">Última Modificación</dt><dd>{{ '"' + row.usuarioModificacion + '" - ' + parseDateTime(row.fechaModificacion) }}</dd>
                   <ng-container *ngIf="isMobile">
-                    <label class="d-block bold blue">Marca</label><label>{{ row.marca?.descripcion }}</label>
-                    <label class="d-block bold blue">Categoría</label><label>{{ row.categoria?.descripcion }}</label>
-                    <label class="d-block bold blue">Año</label><label>{{ row.epoca }}</label>
+                    <dt class="blue">Marca</dt><dd>{{ row.marca?.descripcion }}</dd>
+                    <dt class="blue">Categoría</dt><dd>{{ row.categoria?.descripcion }}</dd>
+                    <dt class="blue">Año</dt><dd>{{ row.epoca }}</dd>
                   </ng-container>
-                  <label class="d-block bold blue">Descripción</label><label>{{ row.descripcion }}</label>
-                </div>         
+                  <dt class="blue">Descripción</dt><dd>{{ row.descripcion }}</dd>
+                </dl>
               </div>
             </div>
           </td>

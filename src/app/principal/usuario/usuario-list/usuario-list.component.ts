@@ -14,6 +14,7 @@ import { detailExpand } from '@animations/detailExpand';
 import { MatDialog } from '@angular/material/dialog';
 import { UsuarioDetailComponent } from './usuario-detail/usuario-detail.component';
 import { FiltroComponent } from '../../shared/filtro/filtro.component';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-usuario-list',
@@ -26,7 +27,7 @@ export class UsuarioListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatRadioGroup) radio: MatRadioGroup;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  readonly displayedColumns: string[] = ['opciones', 'nombres', 'nombreUsuario', 'telefono', 'celular', 'correo', 'accion'];
+  readonly displayedColumns: string[] = ['opciones', 'Nombres', 'NombreUsuario', 'Telefono', 'Celular', 'Correo', 'accion'];
   busqueda: Busqueda = busquedaUsuarios;
   data: User[] = [];
   expandedElement: User = null;
@@ -88,6 +89,12 @@ export class UsuarioListComponent implements OnInit, AfterViewInit {
   }
 
   initSearch = () => this.button.nativeElement.click();
+
+  parseDate = (fecha: string) => moment(fecha).format('DD/MM/YYYY');
+
+  parseDateTime = (fecha: string) => moment(fecha).format('DD/MM/YYYY, hh:mm:ss A');
+
+  parseArray = (array: any[]) => array.map(element => element.descripcion).join(', ');
 
   updateEstado(user: User) {
     const cloneUser = Object.assign({}, user);

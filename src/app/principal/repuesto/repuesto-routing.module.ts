@@ -12,6 +12,14 @@ const routes: Routes = [
     children: [
       { path: 'print', component: RepuestoPrintComponent }
     ]
+  },
+  {
+    path: ':id',
+    component: RepuestoListComponent,
+    canActivate: [RolGuard],
+    children: [
+      { path: 'print', component: RepuestoPrintComponent }
+    ]
   }
 ];
 

@@ -4,8 +4,9 @@
     <div class="w-100 d-flex">
       <h1 (click)="principal()" class="cursor-point">{{ menuBar.title }}</h1>
       <span class="ml-auto"></span>
-      <a *ngIf="menuBar.printEvent" mat-icon-button (click)="menuBar.printEvent()" class="not-hover"><mat-icon>print</mat-icon></a>
-      <a *ngIf="menuBar.addEvent" mat-icon-button (click)="menuBar.addEvent()" class="not-hover"><mat-icon>filter_list_alt</mat-icon></a>
+      <input *ngIf="visible" #input (keyup.enter)="search(input.value)" placeholder="Ingrese código o modelo" type="text" class="input-search" />
+      <a mat-icon-button (click)="visible=!visible" class="not-hover"><mat-icon>search</mat-icon></a>
+      <a *ngIf="menuBar.addEvent" mat-icon-button (click)="menuBar.addEvent()" class="not-hover"><mat-icon>filter_list</mat-icon></a>
       <a mat-icon-button [matMenuTriggerFor]="menu" class="not-hover"><mat-icon>more_vert</mat-icon></a>
       <mat-menu #menu="matMenu">
         <a mat-menu-item [matMenuTriggerFor]="nuevo">
@@ -14,6 +15,8 @@
           <mat-icon>apps</mat-icon><span>Ver</span></a>
         <a mat-menu-item (click)="navigate('/principal/cuenta')">
           <mat-icon>account_circle</mat-icon><span>Cuenta</span></a>
+        <a *ngIf="menuBar.printEvent" mat-menu-item (click)="menuBar.printEvent()">
+          <mat-icon>print</mat-icon><span>Imprimir</span></a>
         <a mat-menu-item (click)="navigate('/principal/sistema')">
           <mat-icon>settings_applications</mat-icon><span>Sistema</span></a>
         <a mat-menu-item (click)="logout()">

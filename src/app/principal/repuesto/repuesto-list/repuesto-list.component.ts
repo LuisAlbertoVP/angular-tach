@@ -15,6 +15,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { RepuestoDetailComponent } from './repuesto-detail/repuesto-detail.component';
 import { PrintingService } from '@print_service/*';
 import { FiltroComponent } from '../../shared/filtro/filtro.component';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-repuesto-list',
@@ -27,8 +28,8 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatRadioGroup) radio: MatRadioGroup;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  readonly normalColumns: string[] = ['opciones', 'codigo', 'categoria.descripcion', 'marca.descripcion', 'modelo', 'epoca', 'stock', 'precio', 'accion'];
-  readonly mobileColumns: string[] = ['opciones', 'codigo', 'modelo', 'stock', 'precio', 'accion'];
+  readonly normalColumns: string[] = ['opciones', 'Codigo', 'Categoria.Descripcion', 'Marca.Descripcion', 'Modelo', 'Epoca', 'Stock', 'Precio', 'accion'];
+  readonly mobileColumns: string[] = ['opciones', 'Codigo', 'Modelo', 'Stock', 'Precio', 'accion'];
   isMobile: boolean = false;
   busqueda: Busqueda = busquedaRepuesto;
   data: Repuesto[] = [];
@@ -99,6 +100,8 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
   }
 
   initSearch = () => this.button.nativeElement.click();
+
+  parseDateTime = (fecha: string) => moment(fecha).format('DD/MM/YYYY, hh:mm:ss A');
 
   updateEstado(repuesto: Repuesto) {
     const cloneRepuesto = Object.assign({}, repuesto);

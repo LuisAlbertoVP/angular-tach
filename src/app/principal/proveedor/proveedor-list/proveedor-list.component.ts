@@ -14,6 +14,7 @@ import { detailExpand } from '@animations/detailExpand';
 import { MatDialog } from '@angular/material/dialog';
 import { ProveedorDetailComponent } from './proveedor-detail/proveedor-detail.component';
 import { FiltroComponent } from '../../shared/filtro/filtro.component';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-proveedor-list',
@@ -26,7 +27,7 @@ export class ProveedorListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatRadioGroup) radio: MatRadioGroup;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  readonly displayedColumns: string[] = ['opciones', 'descripcion', 'convenio', 'telefono', 'direccion', 'accion'];
+  readonly displayedColumns: string[] = ['opciones', 'Descripcion', 'Convenio', 'Telefono', 'Direccion', 'accion'];
   busqueda: Busqueda = busquedaProveedores;
   data: Proveedor[] = [];
   expandedElement: Proveedor = null;
@@ -88,6 +89,8 @@ export class ProveedorListComponent implements OnInit, AfterViewInit {
   }
 
   initSearch = () => this.button.nativeElement.click();
+
+  parseDateTime = (fecha: string) => moment(fecha).format('DD/MM/YYYY, hh:mm:ss A');
 
   updateEstado(proveedor: Proveedor) {
     const cloneProveedor = Object.assign({}, proveedor);

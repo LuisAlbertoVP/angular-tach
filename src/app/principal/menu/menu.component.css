@@ -3,6 +3,7 @@
 .principal-sidenav { flex: 1; }
 .es-mobile .principal-sidenav { flex: 1 0 auto; }
 .not-hover:hover * { color: rgb(203, 217, 236); }
+.input-search { font-size: 14px; padding: 0px 15px; outline: none; border-radius: 15px; border: 1px solid silver; }
 @media print {
   mat-toolbar { display: none; }
 }

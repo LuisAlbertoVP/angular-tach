@@ -49,7 +49,6 @@ import { FiltroComponent } from './filtro/filtro.component';
     MatRadioModule,
     MatButtonModule,
     MatIconModule,
-    MatChipsModule,
     MatDividerModule,
     MatSortModule,
     MatTableModule,
