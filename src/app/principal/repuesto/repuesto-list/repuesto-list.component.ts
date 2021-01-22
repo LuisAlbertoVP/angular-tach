@@ -8,7 +8,7 @@ import { Repuesto, Repuestos } from '@models/tach';
 import { Busqueda, busquedaRepuesto } from '@models/busqueda';
 import { HttpResponse } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { fromEvent, merge, of as observableOf } from 'rxjs';
+import { BehaviorSubject, fromEvent, merge, of as observableOf, Subject } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { detailExpand } from '@animations/detailExpand';
 import { MatDialog } from '@angular/material/dialog';
@@ -16,6 +16,7 @@ import { RepuestoDetailComponent } from './repuesto-detail/repuesto-detail.compo
 import { PrintingService } from '@print_service/*';
 import { FiltroComponent } from '../../shared/filtro/filtro.component';
 import * as moment from 'moment';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-repuesto-list',
@@ -31,7 +32,8 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
   readonly normalColumns: string[] = ['opciones', 'Codigo', 'Categoria.Descripcion', 'Marca.Descripcion', 'Modelo', 'Epoca', 'Stock', 'Precio', 'accion'];
   readonly mobileColumns: string[] = ['opciones', 'Codigo', 'Modelo', 'Stock', 'Precio', 'accion'];
   isMobile: boolean = false;
-  busqueda: Busqueda = busquedaRepuesto;
+  busqueda: Busqueda = null;
+  criterio = new Subject();
   data: Repuesto[] = [];
   expandedElement: Repuesto = null;
   resultsLength: number = 0;
@@ -40,6 +42,8 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
 
   constructor(
     sharedService: SharedService,
+    private activedRoute: ActivatedRoute,
+    private router: Router,
     private service: RepuestoService,
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
@@ -52,6 +56,14 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
 
 
   ngOnInit(): void {
+    this.activedRoute.paramMap.subscribe(params => {
+      this.busqueda = JSON.parse(JSON.stringify(busquedaRepuesto));
+      const id: string = params.get('id');
+      if(id){
+        this.busqueda.filtros[0].criterio1 = id;
+        this.criterio.next();
+      }
+    });
   }
 
   get columns() {
@@ -78,7 +90,7 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
     btnEvent.subscribe(e =>  this.paginator.pageIndex = 0);
     this.radio.change.subscribe(() => this.paginator.pageIndex = 0);
     this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-    merge(btnEvent, this.radio.change, this.sort.sortChange, this.paginator.page).pipe(startWith({}), switchMap(() => {
+    merge(this.criterio.asObservable(), btnEvent, this.radio.change, this.sort.sortChange, this.paginator.page).pipe(startWith({}), switchMap(() => {
         this.isLoadingResults = true;  
         return this.service.getAll(this.newBusqueda);
       }), map(data => {
@@ -95,8 +107,9 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
   }
 
   reload() {
-    this.busqueda = busquedaRepuesto;
-    this.initSearch();
+    //this.busqueda = busquedaRepuesto;
+    //this.initSearch();
+    this.router.navigate(['/principal/repuestos']);
   }
 
   initSearch = () => this.button.nativeElement.click();
