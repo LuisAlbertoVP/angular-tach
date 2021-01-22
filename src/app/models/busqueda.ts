@@ -1,6 +1,6 @@
 export interface Filtro {
   id: string;
-  nombre: string;
+  nombre?: string;
   criterio1?: string;
   criterio2?: string;
   criterios?: string[];
@@ -20,6 +20,7 @@ export interface Busqueda {
   orden?: Orden;
   pagina?: number;
   cantidad?: number;
+  operadorLogico: string;
 }
 
 export const busquedaBase: Busqueda = {
@@ -27,7 +28,7 @@ export const busquedaBase: Busqueda = {
     { id: "Descripcion", nombre: "Descripción", criterio1: '', operador: 'like', checked: true },
     { id: "FechaIngreso", nombre: "Fecha de ingreso", esFecha: true },
     { id: "FechaModificacion", nombre: "Fecha de modificación", esFecha: true }
-  ], estado: '2'
+  ], estado: '2', operadorLogico: '&&'
 };
 
 export const busquedaUsuarios: Busqueda = {
@@ -44,7 +45,7 @@ export const busquedaUsuarios: Busqueda = {
     { id: "Salario", nombre: "Salario" },
     { id: "FechaIngreso", nombre: "Fecha de ingreso", esFecha: true },
     { id: "FechaModificacion", nombre: "Fecha de modificación", esFecha: true }
-  ], estado: '2'
+  ], estado: '2', operadorLogico: '&&'
 };
 
 export const busquedaRepuesto: Busqueda = {
@@ -59,7 +60,7 @@ export const busquedaRepuesto: Busqueda = {
     { id: "Descripcion", nombre: "Descripción" },
     { id: "FechaIngreso", nombre: "Fecha de ingreso", esFecha: true },
     { id: "FechaModificacion", nombre: "Fecha de modificación", esFecha: true }
-  ], estado: '2'
+  ], estado: '2', operadorLogico: '&&'
 };
 
 export const busquedaProveedores: Busqueda = {
@@ -74,5 +75,5 @@ export const busquedaProveedores: Busqueda = {
     { id: "CorreoContacto", nombre: "Correo de contacto" },
     { id: "FechaIngreso", nombre: "Fecha de ingreso", esFecha: true },
     { id: "FechaModificacion", nombre: "Fecha de modificación", esFecha: true }
-  ], estado: '2'
+  ], estado: '2', operadorLogico: '&&'
 };

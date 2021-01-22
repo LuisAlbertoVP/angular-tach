@@ -1,4 +1,5 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { MatRadioGroup } from '@angular/material/radio';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
@@ -8,7 +9,7 @@ import { Proveedor, Proveedores } from '@models/tach';
 import { Busqueda, busquedaProveedores } from '@models/busqueda';
 import { HttpResponse } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { fromEvent, merge, of as observableOf } from 'rxjs';
+import { merge, of as observableOf, Subject } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { detailExpand } from '@animations/detailExpand';
 import { MatDialog } from '@angular/material/dialog';
@@ -23,12 +24,12 @@ import * as moment from 'moment';
   animations: detailExpand
 })
 export class ProveedorListComponent implements OnInit, AfterViewInit {
-  @ViewChild('btnSearch', { read: ElementRef }) button: ElementRef;
   @ViewChild(MatRadioGroup) radio: MatRadioGroup;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   readonly displayedColumns: string[] = ['opciones', 'Descripcion', 'Convenio', 'Telefono', 'Direccion', 'accion'];
   busqueda: Busqueda = busquedaProveedores;
+  criterio = new Subject();
   data: Proveedor[] = [];
   expandedElement: Proveedor = null;
   resultsLength: number = 0;
@@ -37,15 +38,17 @@ export class ProveedorListComponent implements OnInit, AfterViewInit {
 
   constructor(
     sharedService: SharedService,
+    private router: Router,
+    private activedRoute: ActivatedRoute,
     private service: ProveedorService,
     private snackBar: MatSnackBar,
     private dialog: MatDialog
   ) { 
-    sharedService.buildMenuBar({ title: 'Proveedores', addEvent: () => this.openFilter() });
+    sharedService.buildMenuBar({ title: 'Proveedores', filterEvent: () => this.openFilter() });
   }
 
   get newBusqueda() {
-    let busqueda: Busqueda = { filtros: [], estado: this.busqueda.estado };
+    let busqueda: Busqueda = { filtros: [], estado: this.busqueda.estado, operadorLogico: this.busqueda.operadorLogico };
     const activo = this.sort.active ? this.sort.active : 'FechaModificacion';
     const direccion = this.sort.direction ? this.sort.direction : 'desc';
     busqueda.orden = { activo: activo, direccion: direccion };
@@ -60,14 +63,21 @@ export class ProveedorListComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    this.activedRoute.queryParamMap.subscribe(params => {
+      const busqueda: Busqueda = JSON.parse(params.get('busqueda'));
+      if(busqueda) {
+        this.busqueda = busqueda;
+        this.initSearch();
+      }
+    });
   }
 
   ngAfterViewInit(): void {
-    const btnEvent = fromEvent(this.button.nativeElement, 'click');
-    btnEvent.subscribe(e =>  this.paginator.pageIndex = 0);
+    const criterio$ = this.criterio.asObservable();
+    criterio$.subscribe(() => this.paginator.pageIndex = 0);
     this.radio.change.subscribe(() => this.paginator.pageIndex = 0);
     this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-    merge(btnEvent, this.radio.change, this.sort.sortChange, this.paginator.page).pipe(startWith({}), switchMap(() => {
+    merge(criterio$, this.radio.change, this.sort.sortChange, this.paginator.page).pipe(startWith({}), switchMap(() => {
         this.isLoadingResults = true;
         return this.service.getAll(this.newBusqueda);
       }), map(data => {
@@ -83,15 +93,6 @@ export class ProveedorListComponent implements OnInit, AfterViewInit {
       })).subscribe(data => this.data = data);
   }
 
-  reload() {
-    this.busqueda = busquedaProveedores;
-    this.initSearch();
-  }
-
-  initSearch = () => this.button.nativeElement.click();
-
-  parseDateTime = (fecha: string) => moment(fecha).format('DD/MM/YYYY, hh:mm:ss A');
-
   updateEstado(proveedor: Proveedor) {
     const cloneProveedor = Object.assign({}, proveedor);
     cloneProveedor.estado = cloneProveedor.estado ? false : true;
@@ -102,6 +103,15 @@ export class ProveedorListComponent implements OnInit, AfterViewInit {
         } else {
           this.data = this.data.filter(oldProveedor => oldProveedor.id != proveedor.id);
         }
+        this.showMessage(response.body.result);
+      }
+    });
+  }
+
+  delete(proveedor: Proveedor) {
+    this.service.delete(proveedor).subscribe((response: HttpResponse<any>) => {
+      if(response?.status == 200) {
+        this.data = this.data.filter(oldProveedor => oldProveedor.id != proveedor.id);
         this.showMessage(response.body.result);
       }
     });
@@ -120,20 +130,29 @@ export class ProveedorListComponent implements OnInit, AfterViewInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if(result) {
-        this.busqueda = result;
-        this.initSearch();
+        this.navigateToPrincipal(result);
       }
     });
   }
 
-  delete(proveedor: Proveedor) {
-    this.service.delete(proveedor).subscribe((response: HttpResponse<any>) => {
-      if(response?.status == 200) {
-        this.data = this.data.filter(oldProveedor => oldProveedor.id != proveedor.id);
-        this.showMessage(response.body.result);
-      }
-    });
+  navigateToPrincipal(busqueda: Busqueda) {
+    const extras: NavigationExtras = {
+      queryParams: { busqueda: JSON.stringify(busqueda) }, skipLocationChange: true
+    };
+    this.router.navigate(['/principal/proveedores'], extras);
   }
+
+  reload() {
+    if(this.busqueda == busquedaProveedores) {
+      this.initSearch();
+    } else {
+      this.navigateToPrincipal(busquedaProveedores);
+    }
+  }
+
+  initSearch = () => this.criterio.next();
+
+  parseDateTime = (fecha: string) => moment(fecha).format('DD/MM/YYYY, hh:mm:ss A');
 
   showMessage = (message: string) => this.snackBar.open(message, 'Ok', {duration: 2000, panelClass: ['success']});
 }

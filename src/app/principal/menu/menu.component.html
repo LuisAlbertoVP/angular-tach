@@ -6,7 +6,7 @@
       <span class="ml-auto"></span>
       <input *ngIf="visible" #input (keyup.enter)="search(input.value)" placeholder="Ingrese código o modelo" type="text" class="input-search" />
       <a mat-icon-button (click)="visible=!visible" class="not-hover"><mat-icon>search</mat-icon></a>
-      <a *ngIf="menuBar.addEvent" mat-icon-button (click)="menuBar.addEvent()" class="not-hover"><mat-icon>filter_list</mat-icon></a>
+      <a *ngIf="menuBar.filterEvent" mat-icon-button (click)="menuBar.filterEvent()" class="not-hover"><mat-icon>filter_list</mat-icon></a>
       <a mat-icon-button [matMenuTriggerFor]="menu" class="not-hover"><mat-icon>more_vert</mat-icon></a>
       <mat-menu #menu="matMenu">
         <a mat-menu-item [matMenuTriggerFor]="nuevo">

@@ -6,15 +6,13 @@ import { NavigationExtras, Router } from '@angular/router';
 })
 export class PrintingService {
 
-  constructor(
-    private router: Router
-  ) { }
+  constructor(private router: Router) {}
 
   printWindow(url: string, printObject?: any) {
     const extras: NavigationExtras = {
       queryParams: { printObject: JSON.stringify(printObject) }, skipLocationChange: true
     };
-    this.router.navigate([url], extras)
+    this.router.navigate([url], extras);
   }
 
   dataOnLoad(url: string) {

@@ -32,7 +32,7 @@ export class MenuComponent implements OnInit {
 
   search(valor: string) {
     if(valor?.trim()) {
-      this.navigate('/principal/repuestos/' + valor);
+      this.navigate('/principal/repuestos/' + valor.trim());
     }
     this.visible = false;
   }

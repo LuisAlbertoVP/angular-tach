@@ -8,7 +8,7 @@ export interface PrintEvent {
 
 export interface MenuBar {
   title: string;
-  addEvent?: AddEvent;
+  filterEvent?: AddEvent;
   printEvent?: PrintEvent;
 }
 

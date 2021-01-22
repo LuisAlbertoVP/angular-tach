@@ -55,7 +55,8 @@ export class SharedService {
   public getForm(busqueda: Busqueda) {
     return this.fb.group({
       filtros: this.fb.array(this.getFiltros(busqueda.filtros)),
-      estado: busqueda.estado
+      estado: busqueda.estado,
+      operadorLogico: '&&'
     });
   }
 }
