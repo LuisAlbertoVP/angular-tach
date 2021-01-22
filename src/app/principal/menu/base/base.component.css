@@ -1,6 +1,7 @@
 .center, .images { position: relative; }
 .container, .front, .back { position: absolute; }
 .container { margin: 0; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+.container h1 { font-weight: 600; }
 .parent { display: inline-block; }
 .parent:hover .images, .back { transform: rotateY(180deg); }
 .sparent, .back { display: flex; justify-content: center; }
