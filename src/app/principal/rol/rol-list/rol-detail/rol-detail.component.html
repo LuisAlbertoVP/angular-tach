@@ -2,21 +2,21 @@
   <h2 mat-dialog-title class="text-center blue">{{ !rol ? 'Nuevo Rol' : 'Modificar Rol' }}</h2>
   <mat-dialog-content class="mat-typography">
     <div class="m0-auto" [style.width]="isMobile ? '250px' : '325px'">
-      <div class="mb-2">
-        <h3 class="mb-3">General</h3>
+      <fieldset class="mb-2">
+        <legend class="mb-3">General</legend>
         <mat-form-field class="w-100" appearance="outline">
           <mat-label>Descripción</mat-label>
           <input formControlName="descripcion" matInput placeholder="Ingrese descripción" type="text" required />
           <mat-error *ngIf="form.get('descripcion').hasError('required')">Descripción es requerida</mat-error>
         </mat-form-field>
-      </div>
-      <div class="mb-2">
-        <h3 class="mb-3">Permisos</h3>
+      </fieldset>
+      <fieldset class="mb-2">
+        <legend class="mb-3">Permisos</legend>
         <section class="container-fluid">
           <mat-checkbox *ngFor="let modulo of modulos; let i=index" (change)="updateStatus(i, $event.checked)" 
             [checked]="modulo.checked" class="col-6">{{ modulo.descripcion }}</mat-checkbox>
         </section>
-      </div>
+      </fieldset>
     </div>
   </mat-dialog-content>
   <mat-dialog-actions class="d-flex justify-content-around">

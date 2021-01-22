@@ -2,8 +2,8 @@
   <h2 mat-dialog-title class="text-center blue">{{ !usuario ? 'Nuevo Usuario' : 'Modificar Usuario' }}</h2>
   <mat-dialog-content class="mat-typography">
     <div class="m0-auto" [style.width]="isMobile ? '250px' : '325px'">
-      <div class="mb-2">
-        <h3 class="mb-3">Detalles de cuenta</h3>
+      <fieldset class="mb-2">
+        <legend class="mb-3">Detalles de cuenta</legend>
         <mat-form-field class="w-100" appearance="outline">
           <mat-label>Nombres</mat-label>
           <input formControlName="nombres" matInput placeholder="Ingrese nombres" type="text" required />
@@ -50,9 +50,9 @@
           </mat-select>
           <mat-error *ngIf="form.get('roles').hasError('required')">Rol es requerido</mat-error>
         </mat-form-field>
-      </div>
-      <div class="mb-2">
-        <h3 class="mb-3">Detalles laborales</h3>
+      </fieldset>
+      <fieldset class="mb-2">
+        <legend class="mb-3">Detalles laborales</legend>
         <mat-form-field class="w-100" appearance="outline">
           <mat-label>Fecha de contratación</mat-label>
           <input matInput formControlName="fechaContratacion" [matDatepicker]="picker2" required/>
@@ -65,9 +65,9 @@
           <input formControlName="salario" matInput placeholder="Ingrese salario" type="text" required/>
           <mat-error *ngIf="form.get('salario').hasError('required')">Salario es requerido</mat-error>
         </mat-form-field>
-      </div>
-      <div class="mb-2">
-        <h3 class="mb-3">Inicio de sesión</h3>
+      </fieldset>
+      <fieldset class="mb-2">
+        <legend class="mb-3">Inicio de sesión</legend>
         <mat-form-field class="w-100" appearance="outline">
           <mat-label>Usuario</mat-label>
           <input formControlName="nombreUsuario" matInput placeholder="Ingrese usuario" type="text" required />
@@ -81,7 +81,7 @@
             <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
           </button>
         </mat-form-field>
-      </div>
+      </fieldset>
     </div>
   </mat-dialog-content>
   <mat-dialog-actions class="d-flex justify-content-around">

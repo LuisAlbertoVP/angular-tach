@@ -2,8 +2,8 @@
   <h2 mat-dialog-title class="text-center blue">{{ !proveedor ? 'Nuevo Proveedor' : 'Modificar Proveedor' }}</h2>
   <mat-dialog-content class="mat-typography">
     <div class="m0-auto" [style.width]="isMobile ? '250px' : '325px'">
-      <div class="mb-2">
-        <h3 class="mb-3">General</h3>
+      <fieldset class="mb-2">
+        <legend class="mb-3">General</legend>
         <mat-form-field class="w-100" appearance="outline">
           <mat-label>Descripción</mat-label>
           <input matInput formControlName="descripcion" placeholder="Ingrese una descripcion" required />
@@ -24,9 +24,9 @@
         <div class="w-100 mb-4 d-flex">
           <mat-slide-toggle formControlName="convenio" class="ml-auto">Tiene convenio</mat-slide-toggle>
         </div>
-      </div>
-      <div class="mb-2">
-        <h3 class="mb-3">Información de contacto</h3>
+      </fieldset>
+      <fieldset class="mb-2">
+        <legend class="mb-3">Información de contacto</legend>
         <mat-form-field class="w-100" appearance="outline">
           <mat-label>Contacto</mat-label>
           <input matInput formControlName="contacto" placeholder="Ingrese un contacto" />
@@ -39,7 +39,7 @@
           <mat-label>Correo contacto</mat-label>
           <input matInput formControlName="correoContacto" placeholder="Ingrese un correo del contacto" />
         </mat-form-field>
-      </div>
+      </fieldset>
     </div>
   </mat-dialog-content>
   <mat-dialog-actions class="d-flex justify-content-around">

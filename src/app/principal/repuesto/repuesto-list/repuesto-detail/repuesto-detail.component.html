@@ -2,8 +2,8 @@
   <h2 mat-dialog-title class="text-center blue">{{ !repuesto ? 'Nuevo Repuesto' : 'Modificar Repuesto' }}</h2>
   <mat-dialog-content class="mat-typography">
     <div class="m0-auto" [style.width]="isMobile ? '250px' : '325px'">
-      <div class="mb-2">
-        <h3 class="mb-3">General</h3>
+      <fieldset class="mb-2">
+        <legend class="mb-3">General</legend>
         <mat-form-field class="w-100" appearance="outline">
           <mat-label>Código</mat-label>
           <input matInput formControlName="codigo" placeholder="Ingrese un codigo" required />
@@ -48,15 +48,15 @@
           <input matInput formControlName="precio" placeholder="Ingrese un precio" required />
           <mat-error *ngIf="form.get('precio').hasError('required')">Precio requerido</mat-error>
         </mat-form-field>
-      </div>  
-      <div class="mb-2">
-        <h3 class="mb-3">Detalles del repuesto</h3>
+      </fieldset>  
+      <fieldset class="mb-2">
+        <legend class="mb-3">Detalles del repuesto</legend>
         <mat-form-field class="w-100" appearance="outline">
           <mat-label>Descripción</mat-label>
           <textarea matInput formControlName="descripcion" placeholder="Ingrese una descripcion" 
             style="height: 160px;"></textarea>
         </mat-form-field>
-      </div>
+      </fieldset>
     </div>
   </mat-dialog-content>
   <mat-dialog-actions class="d-flex justify-content-around">

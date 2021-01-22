@@ -3,6 +3,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 button { outline: none !important; }
 a { text-decoration: none !important; }
 thead tr { background-color: #ff4081; }
+legend { font-size: 18px; }
 .ml-auto { margin-left: auto !important; }
 .margin > * { margin-left: 2px; margin-right: 2px; }
 .bold { font-weight: bold; }
