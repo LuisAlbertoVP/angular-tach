@@ -24,8 +24,8 @@ export class UsuarioDetailComponent implements OnInit {
 
   constructor(
     sharedService: SharedService,
-    public dialogRef: MatDialogRef<UsuarioDetailComponent>,
     @Inject(MAT_DIALOG_DATA) public usuario: User,
+    private dialogRef: MatDialogRef<UsuarioDetailComponent>,
     private auth: AuthService,
     private service: UsuarioService,
     private control: UsuarioControlService,

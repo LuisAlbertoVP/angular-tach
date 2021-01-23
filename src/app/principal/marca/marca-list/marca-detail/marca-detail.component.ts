@@ -22,8 +22,8 @@ export class MarcaDetailComponent implements OnInit {
 
   constructor(
     sharedService: SharedService,
-    public dialogRef: MatDialogRef<MarcaDetailComponent>,
     @Inject(MAT_DIALOG_DATA) public marca: Base,
+    private dialogRef: MatDialogRef<MarcaDetailComponent>,
     private auth: AuthService,
     private service: MarcaService,
     private fb: FormBuilder,

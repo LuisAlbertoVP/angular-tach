@@ -20,8 +20,8 @@ export class ProveedorDetailComponent implements OnInit {
 
   constructor(
     sharedService: SharedService,
-    public dialogRef: MatDialogRef<ProveedorDetailComponent>,
     @Inject(MAT_DIALOG_DATA) public proveedor: Proveedor,
+    private dialogRef: MatDialogRef<ProveedorDetailComponent>,
     private auth: AuthService,
     private service: ProveedorService,
     private control: ProveedorControlService,

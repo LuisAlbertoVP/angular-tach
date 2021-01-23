@@ -16,7 +16,7 @@ export class FiltroComponent implements OnInit {
   form: FormGroup;
 
   constructor(
-    public dialogRef: MatDialogRef<FiltroComponent>,
+    private dialogRef: MatDialogRef<FiltroComponent>,
     @Inject(MAT_DIALOG_DATA) public busqueda: Busqueda,
     private service: SharedService
   ) {}

@@ -24,8 +24,8 @@ export class RolDetailComponent implements OnInit {
 
   constructor(
     sharedService: SharedService,
-    public dialogRef: MatDialogRef<RolDetailComponent>,
     @Inject(MAT_DIALOG_DATA) public rol: Rol,
+    private dialogRef: MatDialogRef<RolDetailComponent>,
     private auth: AuthService,
     private service: RolService,
     private fb: FormBuilder,

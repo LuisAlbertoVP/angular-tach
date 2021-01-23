@@ -1,4 +1,5 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, Validators } from '@angular/forms';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { AuthService } from '@auth_service/*';
@@ -15,7 +16,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styles: ['.cuenta-screen > *:not(:last-child) { width: 100%; margin-top: 2px; margin-bottom: 2px; }']
 })
 export class CuentaComponent implements OnInit {
-  @ViewChild('close', { read: ElementRef }) button: ElementRef;
   hide: boolean = true;
   isMobile: boolean = false;
   form = this.fb.group({
@@ -33,6 +33,7 @@ export class CuentaComponent implements OnInit {
   constructor(
     breakpointObserver: BreakpointObserver,
     public service: AuthService,
+    private dialogRef: MatDialogRef<CuentaComponent>,
     private fb: FormBuilder,
     private snackBar: MatSnackBar
   ) { 
@@ -61,11 +62,11 @@ export class CuentaComponent implements OnInit {
       this.service.addAccount(user).subscribe((response: HttpResponse<any>) => {
         if(response?.status == 200) {
           this.snackBar.open(response.body.result, 'Ok', {duration: 6000, panelClass: ['success']});
-          this.button.nativeElement.click();
+          this.dialogRef.close();
         }
       });
     } else {
-      this.form.markAllAsTouched();
+      this.snackBar.open('Algunos campos son invalidos', 'Error', {duration: 2000});
     }
   }
 }

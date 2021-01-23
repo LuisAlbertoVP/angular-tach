@@ -22,8 +22,8 @@ export class CategoriaDetailComponent implements OnInit {
 
   constructor(
     sharedService: SharedService,
-    public dialogRef: MatDialogRef<CategoriaDetailComponent>,
     @Inject(MAT_DIALOG_DATA) public categoria: Base,
+    private dialogRef: MatDialogRef<CategoriaDetailComponent>,
     private auth: AuthService,
     private service: CategoriaService,
     private fb: FormBuilder,

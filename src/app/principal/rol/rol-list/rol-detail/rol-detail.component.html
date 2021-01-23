@@ -3,7 +3,7 @@
   <mat-dialog-content class="mat-typography">
     <div class="m0-auto" [style.width]="isMobile ? '250px' : '325px'">
       <fieldset class="mb-2">
-        <legend class="mb-3">General</legend>
+        <legend class="mb-3 blue">General</legend>
         <mat-form-field class="w-100" appearance="outline">
           <mat-label>Descripción</mat-label>
           <input formControlName="descripcion" matInput placeholder="Ingrese descripción" type="text" required />
@@ -11,8 +11,8 @@
           <mat-error *ngIf="form.get('descripcion').hasError('required')">Descripción es requerida</mat-error>
         </mat-form-field>
       </fieldset>
-      <fieldset class="mb-2">
-        <legend class="mb-3">Permisos</legend>
+      <fieldset class="mt-3 mb-2">
+        <legend class="mb-3 blue">Permisos</legend>
         <section class="container-fluid">
           <mat-checkbox *ngFor="let modulo of modulos; let i=index" (change)="updateStatus(i, $event.checked)" 
             [checked]="modulo.checked" class="col-6">{{ modulo.descripcion }}</mat-checkbox>
@@ -21,7 +21,7 @@
     </div>
   </mat-dialog-content>
   <mat-dialog-actions class="d-flex justify-content-around">
-    <button mat-raised-button mat-dialog-close>Cancelar</button>
-    <button mat-raised-button color="primary">Guardar</button>
+    <button mat-raised-button mat-dialog-close type="button">Cancelar</button>
+    <button mat-raised-button color="primary" type="submit">Guardar</button>
   </mat-dialog-actions>
 </form>

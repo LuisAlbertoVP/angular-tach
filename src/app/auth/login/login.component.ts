@@ -16,12 +16,6 @@ import { SHA256 } from 'crypto-js';
 export class LoginComponent implements OnInit {
   hide: boolean = true;
   form = this.fb.group({
-    correo: ['system@tach.com'],
-    nombres: ['tach'],
-    cedula: ['0941500720'],
-    celular: ['0959633941'],
-    telefono: ['2190434'],
-    direccion: ['Los Rios y Huancavilca'],
     nombreUsuario: ['', Validators.required],
     clave: ['', Validators.required]
   });
@@ -46,8 +40,6 @@ export class LoginComponent implements OnInit {
           this.router.navigate(['/principal']);
         }
       });
-    } else {
-      this.form.markAllAsTouched();
     }
   }
 

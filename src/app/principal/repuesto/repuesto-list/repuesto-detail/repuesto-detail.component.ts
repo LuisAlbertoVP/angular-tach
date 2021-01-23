@@ -23,8 +23,8 @@ export class RepuestoDetailComponent implements OnInit {
 
   constructor(
     sharedService: SharedService,
-    public dialogRef: MatDialogRef<RepuestoDetailComponent>,
     @Inject(MAT_DIALOG_DATA) public repuesto: Repuesto,
+    private dialogRef: MatDialogRef<RepuestoDetailComponent>,
     private auth: AuthService,
     private service: RepuestoService,
     private control: RepuestoControlService,
