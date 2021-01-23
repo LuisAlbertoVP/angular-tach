@@ -127,7 +127,7 @@ export class UsuarioListComponent implements OnInit, AfterViewInit {
 
   openConfirmation(user: User) {
     const dialogRef = this.dialog.open(ConfirmacionComponent, {
-      width: '360px', autoFocus: false, disableClose: true, data: '¿Está seguro de eliminar el usuario?'
+      width: '360px', autoFocus: false, disableClose: true, data: '¿Está seguro de que desea eliminar este usuario?'
     });
     dialogRef.afterClosed().subscribe(result => {
       return result ? this.delete(user) : this.showMessage('No se han aplicado los cambios');

@@ -29,7 +29,7 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatRadioGroup) radio: MatRadioGroup;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  readonly normalColumns: string[] = ['opciones', 'Codigo', 'Categoria.Descripcion', 'Marca.Descripcion', 'Modelo', 'Epoca', 'Stock', 'Precio', 'accion'];
+  readonly normalColumns: string[] = ['opciones', 'Codigo', 'Categoria.Descripcion', 'Marca.Descripcion', 'Modelo', 'Stock', 'Precio', 'Epoca', 'accion'];
   readonly mobileColumns: string[] = ['opciones', 'Codigo', 'Modelo', 'Stock', 'Precio', 'accion'];
   isMobile: boolean = false;
   busqueda: Busqueda = busquedaRepuesto;
@@ -149,7 +149,7 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
 
   openConfirmation(repuesto: Repuesto) {
     const dialogRef = this.dialog.open(ConfirmacionComponent, {
-      width: '360px', autoFocus: false, disableClose: true, data: '¿Está seguro de eliminar el repuesto?'
+      width: '360px', autoFocus: false, disableClose: true, data: '¿Está seguro de que desea eliminar este repuesto?'
     });
     dialogRef.afterClosed().subscribe(result => {
       return result ? this.delete(repuesto) : this.showMessage('No se han aplicado los cambios');

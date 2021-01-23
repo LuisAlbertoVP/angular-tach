@@ -127,7 +127,7 @@ export class RolListComponent implements OnInit, AfterViewInit {
 
   openConfirmation(rol: Rol) {
     const dialogRef = this.dialog.open(ConfirmacionComponent, {
-      width: '360px', autoFocus: false, disableClose: true, data: '¿Está seguro de eliminar el rol?'
+      width: '360px', autoFocus: false, disableClose: true, data: '¿Está seguro de que desea eliminar este rol?'
     });
     dialogRef.afterClosed().subscribe(result => {
       return result ? this.delete(rol) : this.showMessage('No se han aplicado los cambios');

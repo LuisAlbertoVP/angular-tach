@@ -127,7 +127,7 @@ export class MarcaListComponent implements OnInit, AfterViewInit {
 
   openConfirmation(marca: Base) {
     const dialogRef = this.dialog.open(ConfirmacionComponent, {
-      width: '360px', autoFocus: false, disableClose: true, data: '¿Está seguro de eliminar la marca?'
+      width: '360px', autoFocus: false, disableClose: true, data: '¿Está seguro de que desea eliminar esta marca?'
     });
     dialogRef.afterClosed().subscribe(result => {
       return result ? this.delete(marca) : this.showMessage('No se han aplicado los cambios');

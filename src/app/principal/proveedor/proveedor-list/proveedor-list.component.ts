@@ -127,7 +127,7 @@ export class ProveedorListComponent implements OnInit, AfterViewInit {
 
   openConfirmation(proveedor: Proveedor) {
     const dialogRef = this.dialog.open(ConfirmacionComponent, {
-      width: '360px', autoFocus: false, disableClose: true, data: '¿Está seguro de eliminar el proveedor?'
+      width: '360px', autoFocus: false, disableClose: true, data: '¿Está seguro de que desea eliminar este proveedor?'
     });
     dialogRef.afterClosed().subscribe(result => {
       return result ? this.delete(proveedor) : this.showMessage('No se han aplicado los cambios');

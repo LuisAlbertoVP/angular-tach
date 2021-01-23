@@ -37,11 +37,6 @@
           <mat-error *ngIf="form.get('modelo').hasError('required')">Modelo requerido</mat-error>
         </mat-form-field>
         <mat-form-field class="w-100" appearance="outline">
-          <mat-label>Año</mat-label>
-          <input matInput formControlName="epoca" placeholder="Ingrese un año" />
-          <mat-icon matSuffix>date_range</mat-icon>
-        </mat-form-field>
-        <mat-form-field class="w-100" appearance="outline">
           <mat-label>Cantidad</mat-label>
           <input matInput formControlName="stock" placeholder="Ingrese una cantidad" required />
           <mat-icon matSuffix>bar_chart</mat-icon>
@@ -52,6 +47,11 @@
           <input matInput formControlName="precio" placeholder="Ingrese un precio" required />
           <mat-icon matSuffix>monetization_on</mat-icon>          
           <mat-error *ngIf="form.get('precio').hasError('required')">Precio requerido</mat-error>
+        </mat-form-field>
+        <mat-form-field class="w-100" appearance="outline">
+          <mat-label>Año</mat-label>
+          <input matInput formControlName="epoca" placeholder="Ingrese un año" />
+          <mat-icon matSuffix>date_range</mat-icon>
         </mat-form-field>
       </fieldset>  
       <fieldset class="mt-3 mb-2">

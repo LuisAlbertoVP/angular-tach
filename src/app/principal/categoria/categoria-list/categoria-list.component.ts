@@ -127,7 +127,7 @@ export class CategoriaListComponent implements OnInit, AfterViewInit {
 
   openConfirmation(categoria: Base) {
     const dialogRef = this.dialog.open(ConfirmacionComponent, {
-      width: '360px', autoFocus: false, disableClose: true, data: '¿Está seguro de eliminar la categoría?'
+      width: '360px', autoFocus: false, disableClose: true, data: '¿Está seguro de que desea eliminar esta categoría?'
     });
     dialogRef.afterClosed().subscribe(result => {
       return result ? this.delete(categoria) : this.showMessage('No se han aplicado los cambios');
