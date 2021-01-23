@@ -14,6 +14,7 @@ import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { detailExpand } from '@animations/detailExpand';
 import { MatDialog } from '@angular/material/dialog';
 import { RolDetailComponent } from './rol-detail/rol-detail.component';
+import { ConfirmacionComponent } from '../../shared/confirmacion/confirmacion.component';
 import { FiltroComponent } from '../../shared/filtro/filtro.component';
 import * as moment from 'moment';
 
@@ -117,11 +118,20 @@ export class RolListComponent implements OnInit, AfterViewInit {
     });
   }
 
-  openDialog(rol?: Rol) {
+  openForm(rol?: Rol) {
     const dialogRef = this.dialog.open(RolDetailComponent, {
       width: '720px', autoFocus: false, disableClose: true, data: rol
     });
     dialogRef.afterClosed().subscribe(result => result ? this.initSearch() : null);
+  }
+
+  openConfirmation(rol: Rol) {
+    const dialogRef = this.dialog.open(ConfirmacionComponent, {
+      width: '360px', autoFocus: false, disableClose: true, data: '¿Está seguro de eliminar el rol?'
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      return result ? this.delete(rol) : this.showMessage('No se han aplicado los cambios');
+    });
   }
 
   openFilter() {

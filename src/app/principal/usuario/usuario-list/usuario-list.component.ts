@@ -14,6 +14,7 @@ import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { detailExpand } from '@animations/detailExpand';
 import { MatDialog } from '@angular/material/dialog';
 import { UsuarioDetailComponent } from './usuario-detail/usuario-detail.component';
+import { ConfirmacionComponent } from '../../shared/confirmacion/confirmacion.component';
 import { FiltroComponent } from '../../shared/filtro/filtro.component';
 import * as moment from 'moment';
 
@@ -117,11 +118,20 @@ export class UsuarioListComponent implements OnInit, AfterViewInit {
     });
   }
 
-  openDialog(usuario?: User) {
+  openForm(user?: User) {
     const dialogRef = this.dialog.open(UsuarioDetailComponent, {
-      width: '720px', autoFocus: false, disableClose: true, data: usuario
+      width: '720px', autoFocus: false, disableClose: true, data: user
     });
     dialogRef.afterClosed().subscribe(result => result ? this.initSearch() : null);
+  }
+
+  openConfirmation(user: User) {
+    const dialogRef = this.dialog.open(ConfirmacionComponent, {
+      width: '360px', autoFocus: false, disableClose: true, data: '¿Está seguro de eliminar el usuario?'
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      return result ? this.delete(user) : this.showMessage('No se han aplicado los cambios');
+    });
   }
 
   openFilter() {

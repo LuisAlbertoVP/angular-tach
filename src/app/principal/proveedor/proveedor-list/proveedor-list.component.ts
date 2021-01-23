@@ -14,6 +14,7 @@ import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { detailExpand } from '@animations/detailExpand';
 import { MatDialog } from '@angular/material/dialog';
 import { ProveedorDetailComponent } from './proveedor-detail/proveedor-detail.component';
+import { ConfirmacionComponent } from '../../shared/confirmacion/confirmacion.component';
 import { FiltroComponent } from '../../shared/filtro/filtro.component';
 import * as moment from 'moment';
 
@@ -117,11 +118,20 @@ export class ProveedorListComponent implements OnInit, AfterViewInit {
     });
   }
 
-  openDialog(proveedor?: Proveedor) {
+  openForm(proveedor?: Proveedor) {
     const dialogRef = this.dialog.open(ProveedorDetailComponent, {
       width: '720px', autoFocus: false, disableClose: true, data: proveedor
     });
     dialogRef.afterClosed().subscribe(result => result ? this.initSearch() : null);
+  }
+
+  openConfirmation(proveedor: Proveedor) {
+    const dialogRef = this.dialog.open(ConfirmacionComponent, {
+      width: '360px', autoFocus: false, disableClose: true, data: '¿Está seguro de eliminar el proveedor?'
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      return result ? this.delete(proveedor) : this.showMessage('No se han aplicado los cambios');
+    });
   }
 
   openFilter() {

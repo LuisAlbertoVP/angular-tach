@@ -14,6 +14,7 @@ import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { detailExpand } from '@animations/detailExpand';
 import { MatDialog } from '@angular/material/dialog';
 import { RepuestoDetailComponent } from './repuesto-detail/repuesto-detail.component';
+import { ConfirmacionComponent } from '../../shared/confirmacion/confirmacion.component';
 import { FiltroComponent } from '../../shared/filtro/filtro.component';
 import * as moment from 'moment';
 import { PrintingService } from '@print_service/*';
@@ -139,11 +140,20 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
     });
   }
 
-  openDialog(repuesto?: Repuesto) {
+  openForm(repuesto?: Repuesto) {
     const dialogRef = this.dialog.open(RepuestoDetailComponent, {
       width: '720px', autoFocus: false, disableClose: true, data: repuesto
     });
     dialogRef.afterClosed().subscribe(result => result ? this.initSearch() : null);
+  }
+
+  openConfirmation(repuesto: Repuesto) {
+    const dialogRef = this.dialog.open(ConfirmacionComponent, {
+      width: '360px', autoFocus: false, disableClose: true, data: '¿Está seguro de eliminar el repuesto?'
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      return result ? this.delete(repuesto) : this.showMessage('No se han aplicado los cambios');
+    });
   }
 
   openFilter() {

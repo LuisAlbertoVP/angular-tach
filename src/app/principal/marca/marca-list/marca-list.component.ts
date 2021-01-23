@@ -14,6 +14,7 @@ import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { detailExpand } from '@animations/detailExpand';
 import { MatDialog } from '@angular/material/dialog';
 import { MarcaDetailComponent } from './marca-detail/marca-detail.component';
+import { ConfirmacionComponent } from '../../shared/confirmacion/confirmacion.component';
 import { FiltroComponent } from '../../shared/filtro/filtro.component';
 import * as moment from 'moment';
 
@@ -117,11 +118,20 @@ export class MarcaListComponent implements OnInit, AfterViewInit {
     });
   }
 
-  openDialog(marca?: Base) {
+  openForm(marca?: Base) {
     const dialogRef = this.dialog.open(MarcaDetailComponent, {
       width: '520px', autoFocus: false, disableClose: true, data: marca
     });
     dialogRef.afterClosed().subscribe(result => result ? this.initSearch() : null);
+  }
+
+  openConfirmation(marca: Base) {
+    const dialogRef = this.dialog.open(ConfirmacionComponent, {
+      width: '360px', autoFocus: false, disableClose: true, data: '¿Está seguro de eliminar la marca?'
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      return result ? this.delete(marca) : this.showMessage('No se han aplicado los cambios');
+    });
   }
 
   openFilter() {

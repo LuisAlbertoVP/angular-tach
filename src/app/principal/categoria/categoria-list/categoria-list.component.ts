@@ -14,6 +14,7 @@ import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { detailExpand } from '@animations/detailExpand';
 import { MatDialog } from '@angular/material/dialog';
 import { CategoriaDetailComponent } from './categoria-detail/categoria-detail.component';
+import { ConfirmacionComponent } from '../../shared/confirmacion/confirmacion.component';
 import { FiltroComponent } from '../../shared/filtro/filtro.component';
 import * as moment from 'moment';
 
@@ -117,11 +118,20 @@ export class CategoriaListComponent implements OnInit, AfterViewInit {
     });
   }
 
-  openDialog(categoria?: Base) {
+  openForm(categoria?: Base) {
     const dialogRef = this.dialog.open(CategoriaDetailComponent, {
       width: '520px', autoFocus: false, disableClose: true, data: categoria
     });
     dialogRef.afterClosed().subscribe(result => result ? this.initSearch() : null);
+  }
+
+  openConfirmation(categoria: Base) {
+    const dialogRef = this.dialog.open(ConfirmacionComponent, {
+      width: '360px', autoFocus: false, disableClose: true, data: '¿Está seguro de eliminar la categoría?'
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      return result ? this.delete(categoria) : this.showMessage('No se han aplicado los cambios');
+    });
   }
 
   openFilter() {

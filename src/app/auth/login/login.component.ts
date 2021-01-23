@@ -51,5 +51,5 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  openDialog = () => this.dialog.open(CuentaComponent, {width: '720px'});
+  openForm = () => this.dialog.open(CuentaComponent, {width: '720px'});
 }

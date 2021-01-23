@@ -22,10 +22,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { PaginatorIntlService } from './paginator-intl.service';
 import { FiltroComponent } from './filtro/filtro.component';
+import { ConfirmacionComponent } from './confirmacion/confirmacion.component';
 
 
 @NgModule({
-  declarations: [FiltroComponent],
+  declarations: [FiltroComponent, ConfirmacionComponent],
   imports: [
     CommonModule,
     MatInputModule,

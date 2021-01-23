@@ -20,7 +20,7 @@
         <mat-error *ngIf="form.get('clave').hasError('required')">Contraseña es requerida</mat-error>
       </mat-form-field>
       <div class="d-flex mt-3">
-        <button mat-raised-button color="primary" (click)="openDialog()" type="button">Crear cuenta</button>
+        <button mat-raised-button color="primary" (click)="openForm()" type="button">Crear cuenta</button>
         <button mat-raised-button color="primary" class="ml-auto">Iniciar sesión</button>    
       </div>
     </form>
