@@ -2,13 +2,12 @@
   <h1 mat-dialog-title class="text-center blue">{{ !marca ? 'Nueva Marca' : 'Modificar Marca' }}</h1>
   <mat-dialog-content class="mat-typography">
     <div class="m0-auto" [style.width]="isMobile ? '250px' : '325px'">
-      <div class="mb-2">
-        <mat-form-field class="w-100">
-          <mat-label>Ingrese marca</mat-label>
-          <input matInput formControlName="descripcion" required />
-          <mat-error *ngIf="form.get('descripcion').hasError('required')">Descripción es requerida</mat-error>
-        </mat-form-field>
-      </div>
+      <mat-form-field class="w-100" appearance="outline">
+        <mat-label>Ingrese marca</mat-label>
+        <input matInput formControlName="descripcion" required />
+        <mat-icon matSuffix>local_offer</mat-icon>
+        <mat-error *ngIf="form.get('descripcion').hasError('required')">Descripción es requerida</mat-error>
+      </mat-form-field>
     </div>
   </mat-dialog-content>
   <mat-dialog-actions class="d-flex justify-content-around">

@@ -12,7 +12,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-repuesto-detail',
-  templateUrl: './repuesto-detail.component.html'
+  templateUrl: './repuesto-detail.component.html',
+  styles: ['.h160 { height: 160px; }']
 })
 export class RepuestoDetailComponent implements OnInit {
   marcas: Base[] = [];

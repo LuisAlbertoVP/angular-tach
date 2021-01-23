@@ -7,6 +7,7 @@
         <mat-form-field class="w-100" appearance="outline">
           <mat-label>Código</mat-label>
           <input matInput formControlName="codigo" placeholder="Ingrese un codigo" required />
+          <mat-icon matSuffix>code</mat-icon>
           <mat-error *ngIf="form.get('codigo').hasError('required')">Código requerido</mat-error>
         </mat-form-field>
         <ng-container formGroupName="categoria">
@@ -32,20 +33,25 @@
         <mat-form-field class="w-100" appearance="outline">
           <mat-label>Modelo</mat-label>
           <input matInput formControlName="modelo" placeholder="Ingrese un modelo" required />
+          <mat-icon matSuffix>directions_car</mat-icon>
           <mat-error *ngIf="form.get('modelo').hasError('required')">Modelo requerido</mat-error>
         </mat-form-field>
         <mat-form-field class="w-100" appearance="outline">
           <mat-label>Año</mat-label>
           <input matInput formControlName="epoca" placeholder="Ingrese un año" />
+          <mat-icon matSuffix>date_range</mat-icon>
         </mat-form-field>
         <mat-form-field class="w-100" appearance="outline">
           <mat-label>Cantidad</mat-label>
           <input matInput formControlName="stock" placeholder="Ingrese una cantidad" required />
+          <mat-icon matSuffix>bar_chart</mat-icon>
           <mat-error *ngIf="form.get('stock').hasError('required')">Cantidad requerida</mat-error>
         </mat-form-field>
         <mat-form-field class="w-100" appearance="outline">
           <mat-label>Precio de Venta</mat-label>
           <input matInput formControlName="precio" placeholder="Ingrese un precio" required />
+          <mat-icon matPrefix>attach_money</mat-icon>
+          <mat-icon matSuffix>money_icon</mat-icon>          
           <mat-error *ngIf="form.get('precio').hasError('required')">Precio requerido</mat-error>
         </mat-form-field>
       </fieldset>  
@@ -53,8 +59,7 @@
         <legend class="mb-3">Detalles del repuesto</legend>
         <mat-form-field class="w-100" appearance="outline">
           <mat-label>Descripción</mat-label>
-          <textarea matInput formControlName="descripcion" placeholder="Ingrese una descripcion" 
-            style="height: 160px;"></textarea>
+          <textarea matInput formControlName="descripcion" placeholder="Ingrese una descripcion" class="h160"></textarea>
         </mat-form-field>
       </fieldset>
     </div>

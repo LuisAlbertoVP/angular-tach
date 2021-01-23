@@ -7,6 +7,7 @@
         <mat-form-field class="w-100" appearance="outline">
           <mat-label>Descripción</mat-label>
           <input formControlName="descripcion" matInput placeholder="Ingrese descripción" type="text" required />
+          <mat-icon matSuffix>how_to_reg</mat-icon>
           <mat-error *ngIf="form.get('descripcion').hasError('required')">Descripción es requerida</mat-error>
         </mat-form-field>
       </fieldset>

@@ -43,11 +43,8 @@ import { FiltroComponent } from './filtro/filtro.component';
   exports: [
     CommonModule,
     MatInputModule,
-    MatNativeDateModule,
-    MatDatepickerModule,
-    MatSelectModule,
-    MatRadioModule,
     MatButtonModule,
+    MatRadioModule,
     MatIconModule,
     MatDividerModule,
     MatSortModule,
