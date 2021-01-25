@@ -34,9 +34,10 @@ export interface Repuesto extends Base {
   marca?: Base;
   categoria?: Base;
   modelo?: string;
-  epoca: string;
   stock: number;
   precio: number;
+  epoca: string;
+  subMarca: string;
 }
 
 export interface Repuestos {

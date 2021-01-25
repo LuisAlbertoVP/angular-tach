@@ -29,7 +29,8 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatRadioGroup) radio: MatRadioGroup;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  readonly normalColumns: string[] = ['opciones', 'Codigo', 'Categoria.Descripcion', 'Marca.Descripcion', 'Modelo', 'Stock', 'Precio', 'Epoca', 'accion'];
+  readonly normalColumns: string[] = ['opciones', 'Codigo', 'Categoria.Descripcion', 'Marca.Descripcion', 
+    'Modelo', 'Stock', 'Precio', 'Epoca', 'SubMarca', 'accion'];
   readonly mobileColumns: string[] = ['opciones', 'Codigo', 'Modelo', 'Stock', 'Precio', 'accion'];
   isMobile: boolean = false;
   busqueda: Busqueda = busquedaRepuesto;

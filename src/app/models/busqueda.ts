@@ -55,6 +55,7 @@ export const busquedaRepuesto: Busqueda = {
     { id: "Categoria.Descripcion", nombre: "Categoría" },    
     { id: "Modelo", nombre: "Modelo" },
     { id: "Epoca", nombre: "Año" },
+    { id: "SubMarca", nombre: "SubMarca" },
     { id: "Stock", nombre: "Cantidad" },
     { id: "Precio", nombre: "Precio" },
     { id: "Descripcion", nombre: "Descripción" },
