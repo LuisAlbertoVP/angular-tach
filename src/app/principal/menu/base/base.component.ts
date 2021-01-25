@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { listModulos } from '@models/modulos';
 import { Modulo } from '@models/auth';
+import { AuthService } from '@auth_service/*';
 
 @Component({
   selector: 'app-base',
@@ -11,7 +12,10 @@ import { Modulo } from '@models/auth';
 export class BaseComponent implements OnInit {
   modulos: Modulo[] = listModulos;
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    public auth: AuthService
+  ) {}
 
   ngOnInit(): void {
   }

@@ -8,27 +8,20 @@ import { Repuesto } from '@models/tach';
   templateUrl: './venta-detail.component.html',
   styleUrls: ['./venta-detail.component.css']
 })
-export class VentaDetailComponent implements OnInit {
+export class VentaDetailComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
   displayedColumns: string[] = ['codigo', 'descripcion', 'cantidad', 'precio', 'total'];
   dataSource: MatTableDataSource<Repuesto>;
 
   constructor() {
-    this.dataSource = new MatTableDataSource([]);
+    this.dataSource = new MatTableDataSource();
   }
 
   ngOnInit() {
   }
 
   ngAfterViewInit() {
+    this.dataSource.data = [];
     this.dataSource.sort = this.sort;
-  }
-
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
   }
 }

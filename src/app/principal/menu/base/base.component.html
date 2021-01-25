@@ -1,6 +1,13 @@
-<div class="center">
-  <div class="container text-center shadow">
-    <h1 class="blue pt-5 pb-3">Transmisiones Automáticas Chabeli</h1>
+<div class="center mt-4">
+  <div class="container shadow">
+    <div class="d-flex pt-5 p-3">
+      <h1 class="blue">Menú Principal</h1>
+      <div class="ml-auto right">
+        <b>Bienvenido(a):</b>
+        <p>{{ auth.nombres }}</p>
+      </div>
+    </div>
+    <h2 class="blue pt-3 pb-3 text-center">Transmisiones Automáticas Chabeli</h2>
     <div *ngFor="let modulo of modulos" class="parent col-sm-6 col-md-4 col-xl-3 mb-5">
       <div class="sparent m-3 cursor-point" (click)="navigate(modulo.ruta)">
         <div class="img-container">
