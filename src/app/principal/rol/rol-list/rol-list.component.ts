@@ -6,7 +6,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { SharedService } from '@shared_service/shared';
 import { RolService }  from '../rol.service';
 import { Rol, Roles } from '@models/auth';
-import { Busqueda, busquedaBase } from '@models/busqueda';
+import { Busqueda, BusquedaBuilder } from '@models/busqueda';
 import { HttpResponse } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { merge, of as observableOf, Subject } from 'rxjs';
@@ -29,7 +29,7 @@ export class RolListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   readonly displayedColumns: string[] = ['opciones', 'Descripcion', 'FechaIngreso', 'FechaModificacion', 'accion'];
-  busqueda: Busqueda = busquedaBase;
+  busqueda: Busqueda = BusquedaBuilder.BASE;
   criterio = new Subject();
   data: Rol[] = [];
   expandedElement: Rol = null;
@@ -146,18 +146,15 @@ export class RolListComponent implements OnInit, AfterViewInit {
   }
 
   navigateToPrincipal(busqueda: Busqueda) {
-    const extras: NavigationExtras = {
-      queryParams: { busqueda: JSON.stringify(busqueda) }, skipLocationChange: true
-    };
+    busqueda.tiempo = Date.now();
+    const extras: NavigationExtras = { queryParams: { busqueda: JSON.stringify(busqueda) }, skipLocationChange: true };
     this.router.navigate(['/principal/roles'], extras);
   }
 
   reload() {
-    if(this.busqueda == busquedaBase) {
-      this.initSearch();
-    } else {
-      this.navigateToPrincipal(busquedaBase);
-    }
+    const busqueda: Busqueda = BusquedaBuilder.BASE;
+    busqueda.estado = this.busqueda.estado;
+    this.navigateToPrincipal(busqueda);
   }
 
   initSearch = () => this.criterio.next();

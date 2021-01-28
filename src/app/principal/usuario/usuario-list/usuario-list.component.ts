@@ -6,7 +6,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { SharedService } from '@shared_service/shared';
 import { UsuarioService }  from '../usuario.service';
 import { User, Users } from '@models/auth';
-import { Busqueda, busquedaUsuarios } from '@models/busqueda';
+import { Busqueda, BusquedaBuilder } from '@models/busqueda';
 import { HttpResponse } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { merge, of as observableOf, Subject } from 'rxjs';
@@ -29,7 +29,7 @@ export class UsuarioListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   readonly displayedColumns: string[] = ['opciones', 'Nombres', 'NombreUsuario', 'Telefono', 'Celular', 'Correo', 'accion'];
-  busqueda: Busqueda = busquedaUsuarios;
+  busqueda: Busqueda = BusquedaBuilder.USUARIO;
   criterio = new Subject();
   data: User[] = [];
   expandedElement: User = null;
@@ -146,18 +146,15 @@ export class UsuarioListComponent implements OnInit, AfterViewInit {
   }
 
   navigateToPrincipal(busqueda: Busqueda) {
-    const extras: NavigationExtras = {
-      queryParams: { busqueda: JSON.stringify(busqueda) }, skipLocationChange: true
-    };
+    busqueda.tiempo = Date.now();
+    const extras: NavigationExtras = { queryParams: { busqueda: JSON.stringify(busqueda) }, skipLocationChange: true };
     this.router.navigate(['/principal/usuarios'], extras);
   }
 
   reload() {
-    if(this.busqueda == busquedaUsuarios) {
-      this.initSearch();
-    } else {
-      this.navigateToPrincipal(busquedaUsuarios);
-    }
+    const busqueda: Busqueda = BusquedaBuilder.USUARIO;
+    busqueda.estado = this.busqueda.estado;
+    this.navigateToPrincipal(busqueda);
   }
 
   initSearch = () => this.criterio.next();

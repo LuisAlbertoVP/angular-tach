@@ -21,9 +21,10 @@ export interface Busqueda {
   pagina?: number;
   cantidad?: number;
   operadorLogico: string;
+  tiempo?: number;
 }
 
-export const busquedaBase: Busqueda = {
+const busquedaBase: Busqueda = {
   filtros: [
     { id: "Descripcion", nombre: "Descripción", criterio1: '', operador: 'like', checked: true },
     { id: "FechaIngreso", nombre: "Fecha de ingreso", esFecha: true },
@@ -31,7 +32,7 @@ export const busquedaBase: Busqueda = {
   ], estado: '2', operadorLogico: '&&'
 };
 
-export const busquedaUsuarios: Busqueda = {
+const busquedaUsuario: Busqueda = {
   filtros: [
     { id: "Nombres", nombre: "Nombres", criterio1: '', operador: 'like', checked: true },
     { id: "NombreUsuario", nombre: "Nombre de usuario" },
@@ -48,7 +49,7 @@ export const busquedaUsuarios: Busqueda = {
   ], estado: '2', operadorLogico: '&&'
 };
 
-export const busquedaRepuesto: Busqueda = {
+const busquedaRepuesto: Busqueda = {
   filtros: [
     { id: "Codigo", nombre: "Código", criterio1: '', operador: 'like', checked: true },
     { id: "Marca.Descripcion", nombre: "Marca" },
@@ -64,7 +65,7 @@ export const busquedaRepuesto: Busqueda = {
   ], estado: '2', operadorLogico: '&&'
 };
 
-export const busquedaProveedores: Busqueda = {
+const busquedaProveedor: Busqueda = {
   filtros: [
     { id: "Descripcion", nombre: "Descripción", criterio1: '', operador: 'like', checked: true },
     { id: "Convenio", nombre: "Convenio" },
@@ -78,3 +79,10 @@ export const busquedaProveedores: Busqueda = {
     { id: "FechaModificacion", nombre: "Fecha de modificación", esFecha: true }
   ], estado: '2', operadorLogico: '&&'
 };
+
+export class BusquedaBuilder {
+  static readonly BASE: Busqueda = JSON.parse(JSON.stringify(busquedaBase));
+  static readonly USUARIO: Busqueda = JSON.parse(JSON.stringify(busquedaUsuario));
+  static readonly REPUESTO: Busqueda = JSON.parse(JSON.stringify(busquedaRepuesto));
+  static readonly PROVEEDOR: Busqueda = JSON.parse(JSON.stringify(busquedaProveedor));
+}

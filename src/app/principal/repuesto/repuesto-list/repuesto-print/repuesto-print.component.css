@@ -1,5 +1,7 @@
+.bold, .page-break { text-align: center; }
 .print-container { margin: 0; height: 100%; overflow: hidden }
 .page-break, .spacer { page-break-after: always; }
+.page-break > * { word-wrap: break-word; }
 .spacer { border-bottom: 1px solid lightgray; }
 @media screen {
   :host {

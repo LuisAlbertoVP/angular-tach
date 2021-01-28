@@ -6,7 +6,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { SharedService } from '@shared_service/shared';
 import { ProveedorService }  from '../proveedor.service';
 import { Proveedor, Proveedores } from '@models/tach';
-import { Busqueda, busquedaProveedores } from '@models/busqueda';
+import { Busqueda, BusquedaBuilder } from '@models/busqueda';
 import { HttpResponse } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { merge, of as observableOf, Subject } from 'rxjs';
@@ -29,7 +29,7 @@ export class ProveedorListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   readonly displayedColumns: string[] = ['opciones', 'Descripcion', 'Convenio', 'Telefono', 'Direccion', 'accion'];
-  busqueda: Busqueda = busquedaProveedores;
+  busqueda: Busqueda = BusquedaBuilder.PROVEEDOR;
   criterio = new Subject();
   data: Proveedor[] = [];
   expandedElement: Proveedor = null;
@@ -146,18 +146,15 @@ export class ProveedorListComponent implements OnInit, AfterViewInit {
   }
 
   navigateToPrincipal(busqueda: Busqueda) {
-    const extras: NavigationExtras = {
-      queryParams: { busqueda: JSON.stringify(busqueda) }, skipLocationChange: true
-    };
+    busqueda.tiempo = Date.now();
+    const extras: NavigationExtras = { queryParams: { busqueda: JSON.stringify(busqueda) }, skipLocationChange: true };
     this.router.navigate(['/principal/proveedores'], extras);
   }
 
   reload() {
-    if(this.busqueda == busquedaProveedores) {
-      this.initSearch();
-    } else {
-      this.navigateToPrincipal(busquedaProveedores);
-    }
+    const busqueda: Busqueda = BusquedaBuilder.PROVEEDOR;
+    busqueda.estado = this.busqueda.estado;
+    this.navigateToPrincipal(busqueda);
   }
 
   initSearch = () => this.criterio.next();

@@ -6,7 +6,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { SharedService } from '@shared_service/shared';
 import { RepuestoService }  from '../repuesto.service';
 import { Repuesto, Repuestos } from '@models/tach';
-import { Busqueda, busquedaRepuesto } from '@models/busqueda';
+import { Busqueda, BusquedaBuilder } from '@models/busqueda';
 import { HttpResponse } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { merge, of as observableOf, Subject } from 'rxjs';
@@ -33,7 +33,7 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
     'Modelo', 'Stock', 'Precio', 'Epoca', 'SubMarca', 'accion'];
   readonly mobileColumns: string[] = ['opciones', 'Codigo', 'Modelo', 'Stock', 'Precio', 'accion'];
   isMobile: boolean = false;
-  busqueda: Busqueda = busquedaRepuesto;
+  busqueda: Busqueda = BusquedaBuilder.REPUESTO;
   criterio = new Subject();
   data: Repuesto[] = [];
   expandedElement: Repuesto = null;
@@ -158,7 +158,7 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
   }
 
   openFilter() {
-    const busqueda: Busqueda = this.busqueda.operadorLogico == '&&' ? this.busqueda : busquedaRepuesto;
+    const busqueda: Busqueda = this.busqueda.operadorLogico == '&&' ? this.busqueda : BusquedaBuilder.REPUESTO;
     const dialogRef = this.dialog.open(FiltroComponent, {
       width: '720px', autoFocus: false, disableClose: true, data: busqueda, restoreFocus: false
     });
@@ -177,19 +177,16 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
   }
 
   navigateToPrincipal(busqueda: Busqueda) {
-    const extras: NavigationExtras = {
-      queryParams: { busqueda: JSON.stringify(busqueda) }, skipLocationChange: true
-    };
+    busqueda.tiempo = Date.now();
+    const extras: NavigationExtras = { queryParams: { busqueda: JSON.stringify(busqueda) }, skipLocationChange: true };
     this.router.navigate(['/principal/repuestos'], extras);
   }
 
   reload() {
     if(this.busqueda.operadorLogico == '&&') {
-      if(this.busqueda == busquedaRepuesto) {
-        this.initSearch();
-      } else {
-        this.navigateToPrincipal(busquedaRepuesto);
-      }
+      const busqueda: Busqueda = BusquedaBuilder.REPUESTO;
+      busqueda.estado = this.busqueda.estado;
+      this.navigateToPrincipal(busqueda);
     } else {
       this.router.navigate(['/principal/repuestos']);
     }

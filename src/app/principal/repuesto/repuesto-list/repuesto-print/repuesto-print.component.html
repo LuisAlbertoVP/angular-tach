@@ -13,29 +13,28 @@
     </ul>
     <div>{{ 'Cantidad: ' + busqueda.cantidad }}</div>
   </div>
-  <div class="container">
+  <div class="container-fluid">
     <div class="row bold">
-      <div class="col-1">Código</div>
-      <div class="col-2">Categoría</div>
-      <div class="col-2">Marca</div>
-      <div class="col-2">Modelo</div>
+      <div class="col-2">Código</div>
+      <div class="col-3">Modelo</div>
       <div class="col-1">Stock</div>
       <div class="col-1">Precio</div>
       <div class="col-1">Año</div>
-      <div class="col-2">SubMarca</div>
+      <div class="col-4">SubMarca</div>
     </div>
     <ng-container *ngFor="let repuesto of repuestos">
       <div class="row page-break">
-        <div class="col-1">{{ repuesto.codigo }}</div>
-        <div class="col-2">{{ repuesto.categoria.descripcion }}</div>
-        <div class="col-2">{{ repuesto.marca.descripcion }}</div>
-        <div class="col-2">{{ repuesto.modelo }}</div>
+        <div class="col-2">{{ repuesto.codigo }}</div>
+        <div class="col-3">{{ repuesto.modelo }}</div>
         <div class="col-1">{{ repuesto.stock }}</div>
         <div class="col-1">{{ repuesto.precio }}</div>
         <div class="col-1">{{ repuesto.epoca }}</div>
-        <div class="col-2">{{ repuesto.subMarca }}</div>
+        <div class="col-4">{{ repuesto.subMarca }}</div>
       </div>
-      <div class="col-12 spacer">{{ repuesto.descripcion }}</div>
+      <div class="col-12 spacer">
+        <span>{{ '[' + repuesto.categoria.descripcion + ' ' + repuesto.marca.descripcion + ']'}}</span>
+        {{ repuesto.descripcion }}
+      </div>
     </ng-container>
   </div>
 </div>
