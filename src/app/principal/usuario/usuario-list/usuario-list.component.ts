@@ -29,7 +29,7 @@ export class UsuarioListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   readonly displayedColumns: string[] = ['opciones', 'Nombres', 'NombreUsuario', 'Telefono', 'Celular', 'Correo', 'accion'];
-  busqueda: Busqueda = BusquedaBuilder.USUARIO;
+  busqueda: Busqueda = BusquedaBuilder.BuildUsuario();
   criterio = new Subject();
   data: User[] = [];
   expandedElement: User = null;
@@ -152,7 +152,7 @@ export class UsuarioListComponent implements OnInit, AfterViewInit {
   }
 
   reload() {
-    const busqueda: Busqueda = BusquedaBuilder.USUARIO;
+    const busqueda: Busqueda = BusquedaBuilder.BuildUsuario();
     busqueda.estado = this.busqueda.estado;
     this.navigateToPrincipal(busqueda);
   }

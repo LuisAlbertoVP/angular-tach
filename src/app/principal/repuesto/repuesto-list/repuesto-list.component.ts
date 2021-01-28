@@ -33,7 +33,7 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
     'Modelo', 'Stock', 'Precio', 'Epoca', 'SubMarca', 'accion'];
   readonly mobileColumns: string[] = ['opciones', 'Codigo', 'Modelo', 'Stock', 'Precio', 'accion'];
   isMobile: boolean = false;
-  busqueda: Busqueda = BusquedaBuilder.REPUESTO;
+  busqueda: Busqueda = BusquedaBuilder.BuildRepuesto();
   criterio = new Subject();
   data: Repuesto[] = [];
   expandedElement: Repuesto = null;
@@ -158,7 +158,7 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
   }
 
   openFilter() {
-    const busqueda: Busqueda = this.busqueda.operadorLogico == '&&' ? this.busqueda : BusquedaBuilder.REPUESTO;
+    const busqueda: Busqueda = this.busqueda.operadorLogico == '&&' ? this.busqueda : BusquedaBuilder.BuildRepuesto();
     const dialogRef = this.dialog.open(FiltroComponent, {
       width: '720px', autoFocus: false, disableClose: true, data: busqueda, restoreFocus: false
     });
@@ -184,7 +184,7 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
 
   reload() {
     if(this.busqueda.operadorLogico == '&&') {
-      const busqueda: Busqueda = BusquedaBuilder.REPUESTO;
+      const busqueda: Busqueda = BusquedaBuilder.BuildRepuesto();
       busqueda.estado = this.busqueda.estado;
       this.navigateToPrincipal(busqueda);
     } else {

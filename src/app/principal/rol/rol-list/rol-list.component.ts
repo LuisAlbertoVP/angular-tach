@@ -29,7 +29,7 @@ export class RolListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   readonly displayedColumns: string[] = ['opciones', 'Descripcion', 'FechaIngreso', 'FechaModificacion', 'accion'];
-  busqueda: Busqueda = BusquedaBuilder.BASE;
+  busqueda: Busqueda = BusquedaBuilder.BuildBase();
   criterio = new Subject();
   data: Rol[] = [];
   expandedElement: Rol = null;
@@ -152,7 +152,7 @@ export class RolListComponent implements OnInit, AfterViewInit {
   }
 
   reload() {
-    const busqueda: Busqueda = BusquedaBuilder.BASE;
+    const busqueda: Busqueda = BusquedaBuilder.BuildBase();
     busqueda.estado = this.busqueda.estado;
     this.navigateToPrincipal(busqueda);
   }

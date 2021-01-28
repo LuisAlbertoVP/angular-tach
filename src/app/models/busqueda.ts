@@ -81,8 +81,8 @@ const busquedaProveedor: Busqueda = {
 };
 
 export class BusquedaBuilder {
-  static readonly BASE: Busqueda = JSON.parse(JSON.stringify(busquedaBase));
-  static readonly USUARIO: Busqueda = JSON.parse(JSON.stringify(busquedaUsuario));
-  static readonly REPUESTO: Busqueda = JSON.parse(JSON.stringify(busquedaRepuesto));
-  static readonly PROVEEDOR: Busqueda = JSON.parse(JSON.stringify(busquedaProveedor));
+  static BuildBase = (): Busqueda => JSON.parse(JSON.stringify(busquedaBase));
+  static BuildUsuario = (): Busqueda => JSON.parse(JSON.stringify(busquedaUsuario));
+  static BuildRepuesto = (): Busqueda => JSON.parse(JSON.stringify(busquedaRepuesto));
+  static BuildProveedor = (): Busqueda => JSON.parse(JSON.stringify(busquedaProveedor));
 }

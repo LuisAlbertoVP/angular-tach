@@ -29,7 +29,7 @@ export class ProveedorListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   readonly displayedColumns: string[] = ['opciones', 'Descripcion', 'Convenio', 'Telefono', 'Direccion', 'accion'];
-  busqueda: Busqueda = BusquedaBuilder.PROVEEDOR;
+  busqueda: Busqueda = BusquedaBuilder.BuildProveedor();
   criterio = new Subject();
   data: Proveedor[] = [];
   expandedElement: Proveedor = null;
@@ -152,7 +152,7 @@ export class ProveedorListComponent implements OnInit, AfterViewInit {
   }
 
   reload() {
-    const busqueda: Busqueda = BusquedaBuilder.PROVEEDOR;
+    const busqueda: Busqueda = BusquedaBuilder.BuildProveedor();
     busqueda.estado = this.busqueda.estado;
     this.navigateToPrincipal(busqueda);
   }
