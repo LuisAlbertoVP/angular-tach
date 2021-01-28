@@ -8,14 +8,16 @@
       </div>
     </div>
     <h2 class="blue pt-3 pb-3 text-center">Transmisiones Automáticas Chabeli</h2>
-    <div *ngFor="let modulo of modulos" class="parent col-sm-6 col-md-4 col-xl-3 mb-5">
-      <div class="sparent m-3 cursor-point" (click)="navigate(modulo.ruta)">
-        <div class="img-container">
-          <div class="images">
-            <div class="front"><img [src]="'assets/' + modulo.imagen" /></div>
-            <div class="back"><img src="assets/siguiente.png" /></div>
+    <div class="row">
+      <div *ngFor="let modulo of modulos" class="parent col-sm-6 col-md-4 col-xl-3 mb-5">
+        <div class="sparent m-3 cursor-point" (click)="navigate(modulo.ruta)">
+          <div class="img-container">
+            <div class="images">
+              <div class="front"><img [src]="'assets/' + modulo.imagen" /></div>
+              <div class="back"><img src="assets/siguiente.png" /></div>
+            </div>
+            <a mat-raised-button color="primary">{{ modulo.descripcion }}</a>
           </div>
-          <a mat-raised-button color="primary">{{ modulo.descripcion }}</a>
         </div>
       </div>
     </div>

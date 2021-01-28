@@ -3,7 +3,7 @@
 .front, .back { position: absolute; }
 .container h1 { font-weight: 600; }
 .parent { display: inline-block; }
-.parent { border: 1px solid #AEAEE6; border-radius: 10px; }
+.row { border: 1px solid #AEAEE6; border-radius: 10px; }
 .shadow { padding-bottom: 40px; }
 .right { text-align: right; }
 h2 { font-family: 'Rouge Script', cursive; font-size: 22px; font-weight: normal; line-height: 48px; text-shadow: 1px 1px 2px #082b34; }
