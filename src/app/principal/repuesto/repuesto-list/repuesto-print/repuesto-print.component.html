@@ -1,6 +1,6 @@
 <div class="print-container">
   <div class="mb-3">
-    <h2 class="bold">Filtro(s)</h2>
+    <h2 class="bold">{{ busqueda.filtros.length > 1 ? 'Filtros' : 'Filtro' }}</h2>
     <ul class="list-unstyled shadow p-3">
       <li *ngFor="let filtro of busqueda.filtros">
         <span class="bold">{{ filtro.id + ' ' }}</span>
@@ -14,27 +14,17 @@
     <div>{{ 'Cantidad: ' + busqueda.cantidad }}</div>
   </div>
   <div class="container-fluid">
-    <div class="row bold">
-      <div class="col-2">Código</div>
-      <div class="col-3">Modelo</div>
-      <div class="col-1">Stock</div>
-      <div class="col-1">Precio</div>
-      <div class="col-1">Año</div>
-      <div class="col-4">SubMarca</div>
-    </div>
     <ng-container *ngFor="let repuesto of repuestos">
-      <div class="row page-break">
-        <div class="col-2">{{ repuesto.codigo }}</div>
-        <div class="col-3">{{ repuesto.modelo }}</div>
-        <div class="col-1">{{ repuesto.stock }}</div>
-        <div class="col-1">{{ repuesto.precio }}</div>
-        <div class="col-1">{{ repuesto.epoca }}</div>
-        <div class="col-4">{{ repuesto.subMarca }}</div>
+      <div class="col-12 d-flex page-break">
+        <span>{{ '[' + repuesto.categoria.descripcion + ' ' + repuesto.marca.descripcion + ']' }}</span>&nbsp;
+        <span>{{ repuesto?.subMarca ? repuesto.subMarca : '' }}</span>
+        <span class="ml-auto">{{ repuesto.codigo }}</span>
       </div>
-      <div class="col-12 spacer">
-        <span>{{ '[' + repuesto.categoria.descripcion + ' ' + repuesto.marca.descripcion + ']'}}</span>
-        {{ parseDateTime(repuesto.fechaIngreso) }}
+      <div class="col-12 d-flex page-break">
+        <span>{{ 'Cantidad: ' + repuesto.stock + ' Precio: ' + repuesto.precio }}</span>
+        <span class="ml-auto">{{ repuesto.modelo }}</span>
       </div>
+      <div class="spacer">{{ repuesto.descripcion }}</div>
     </ng-container>
   </div>
 </div>
