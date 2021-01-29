@@ -5,6 +5,7 @@ import { Busqueda } from '@models/busqueda';
 import { Repuesto, Repuestos } from '@models/tach';
 import { PrintingService } from '@print_service/*';
 import { RepuestoService }  from '../../repuesto.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-repuesto-print',
@@ -30,4 +31,6 @@ export class RepuestoPrintComponent implements OnInit {
       });
     });
   }
+
+  parseDateTime = (fecha: string) => moment(fecha).format('DD/MM/YYYY, hh:mm:ss A');
 }

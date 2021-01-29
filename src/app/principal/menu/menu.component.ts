@@ -34,7 +34,6 @@ export class MenuComponent implements OnInit {
     if(valor?.trim()) {
       this.navigate('/principal/repuestos/' + valor.trim());
     }
-    this.visible = false;
   }
 
   navigate = (url: string) => this.router.navigate([url]);

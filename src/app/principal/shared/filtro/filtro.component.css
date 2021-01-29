@@ -1,7 +1,23 @@
-.headers-align .mat-expansion-panel-header-title, .headers-align .mat-expansion-panel-header-description { flex-basis: 0; }
-.headers-align .mat-expansion-panel-header-description { justify-content: space-between; align-items: center; }
-.headers-align .mat-form-field + .mat-form-field { margin-left: 8px; }
-.content { width: 90%; margin: 0 auto; }
-.mt-flex { margin-top: 15px; }
-.w100 { width: 100px; }
-h1 { font-family: 'Trocchi' }
+h1 { 
+    font-family: 'Trocchi' 
+}
+.headers-align .mat-expansion-panel-header-title, .headers-align .mat-expansion-panel-header-description { 
+    flex-basis: 0; 
+}
+.headers-align .mat-expansion-panel-header-description { 
+    justify-content: space-between; 
+    align-items: center; 
+}
+.headers-align .mat-form-field + .mat-form-field { 
+    margin-left: 8px; 
+}
+.content { 
+    width: 90%; 
+    margin: 0 auto; 
+}
+.mt-flex { 
+    margin-top: 15px; 
+}
+.w100 { 
+    width: 100px; 
+}

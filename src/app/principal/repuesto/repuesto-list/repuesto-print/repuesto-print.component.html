@@ -33,7 +33,7 @@
       </div>
       <div class="col-12 spacer">
         <span>{{ '[' + repuesto.categoria.descripcion + ' ' + repuesto.marca.descripcion + ']'}}</span>
-        {{ repuesto.descripcion }}
+        {{ parseDateTime(repuesto.fechaIngreso) }}
       </div>
     </ng-container>
   </div>
