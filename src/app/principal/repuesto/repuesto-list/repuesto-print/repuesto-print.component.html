@@ -1,16 +1,18 @@
-<div class="print-container">
+<div *ngIf="busqueda" class="print-container">
   <div class="mb-3">
-    <h2 class="bold">{{ busqueda.filtros.length > 1 ? 'Filtros' : 'Filtro' }}</h2>
-    <ul class="list-unstyled shadow p-3">
-      <li *ngFor="let filtro of busqueda.filtros">
-        <span class="bold">{{ filtro.id + ' ' }}</span>
-        <span *ngIf="filtro.operador != 'between' && filtro.operador != 'multiple'">{{ filtro.criterio1 }}</span>
-        <span *ngIf="filtro.operador == 'between'">{{ filtro.criterio1 + ' ' + filtro.criterio2 }}</span>
-        <span *ngIf="filtro.operador == 'multiple'">
-          <ng-container *ngFor="let criterio of filtro.criterios">{{ criterio + ' ' }}</ng-container>
-        </span>
-      </li>
-    </ul>
+    <div *ngIf="busqueda.filtros.length > 0">
+      <h2 class="bold">{{ busqueda.filtros.length > 1 ? 'Filtros' : 'Filtro' }}</h2>
+      <ul class="list-unstyled">
+        <li *ngFor="let filtro of busqueda.filtros">
+          <span class="bold">{{ filtro.id + ': ' }}</span>
+          <span *ngIf="filtro.operador != 'between' && filtro.operador != 'multiple'">{{ filtro.criterio1 }}</span>
+          <span *ngIf="filtro.operador == 'between'">{{ 'De ' + filtro.criterio1 + ' a ' + filtro.criterio2 }}</span>
+          <span *ngIf="filtro.operador == 'multiple'">
+            <ng-container *ngFor="let criterio of filtro.criterios">{{ criterio + ' ' }}</ng-container>
+          </span>
+        </li>
+      </ul>
+    </div>
     <div>{{ 'Cantidad: ' + busqueda.cantidad }}</div>
   </div>
   <div class="container-fluid">
@@ -21,7 +23,7 @@
         <span class="ml-auto">{{ repuesto.codigo }}</span>
       </div>
       <div class="col-12 d-flex page-break">
-        <span>{{ 'Cantidad: ' + repuesto.stock + ' Precio: ' + repuesto.precio }}</span>
+        <span>{{ 'Stock: ' + repuesto.stock + ' Precio: ' + repuesto.precio }}</span>
         <span class="ml-auto">{{ repuesto.modelo }}</span>
       </div>
       <div class="spacer">{{ repuesto.descripcion }}</div>

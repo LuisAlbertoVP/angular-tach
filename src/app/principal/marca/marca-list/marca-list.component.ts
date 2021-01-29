@@ -55,6 +55,7 @@ export class MarcaListComponent implements OnInit, AfterViewInit {
     busqueda.orden = { activo: activo, direccion: direccion };
     busqueda.pagina = this.paginator.pageIndex;
     busqueda.cantidad = this.paginator.pageSize;
+    busqueda.filtros.push({ id: "Id", criterio1: '', operador: 'like' });
     for(let filtro of this.busqueda.filtros) {
       if(filtro.checked) {
         busqueda.filtros.push(filtro);

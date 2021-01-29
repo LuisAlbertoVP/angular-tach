@@ -26,7 +26,7 @@ export interface Busqueda {
 
 const busquedaBase: Busqueda = {
   filtros: [
-    { id: "Descripcion", nombre: "Descripción", criterio1: '', operador: 'like', checked: true },
+    { id: "Descripcion", nombre: "Descripción" },
     { id: "FechaIngreso", nombre: "Fecha de ingreso", esFecha: true },
     { id: "FechaModificacion", nombre: "Fecha de modificación", esFecha: true }
   ], estado: '2', operadorLogico: '&&'
@@ -34,7 +34,7 @@ const busquedaBase: Busqueda = {
 
 const busquedaUsuario: Busqueda = {
   filtros: [
-    { id: "Nombres", nombre: "Nombres", criterio1: '', operador: 'like', checked: true },
+    { id: "Nombres", nombre: "Nombres" },
     { id: "NombreUsuario", nombre: "Nombre de usuario" },
     { id: "Telefono", nombre: "Teléfono" },    
     { id: "Celular", nombre: "Celular" },
@@ -51,7 +51,7 @@ const busquedaUsuario: Busqueda = {
 
 const busquedaRepuesto: Busqueda = {
   filtros: [
-    { id: "Codigo", nombre: "Código", criterio1: '', operador: 'like', checked: true },
+    { id: "Codigo", nombre: "Código" },
     { id: "Marca.Descripcion", nombre: "Marca" },
     { id: "Categoria.Descripcion", nombre: "Categoría" },    
     { id: "Modelo", nombre: "Modelo" },
@@ -67,7 +67,7 @@ const busquedaRepuesto: Busqueda = {
 
 const busquedaProveedor: Busqueda = {
   filtros: [
-    { id: "Descripcion", nombre: "Descripción", criterio1: '', operador: 'like', checked: true },
+    { id: "Descripcion", nombre: "Descripción" },
     { id: "Convenio", nombre: "Convenio" },
     { id: "Telefono", nombre: "Teléfono" },
     { id: "Direccion", nombre: "Dirección" },
