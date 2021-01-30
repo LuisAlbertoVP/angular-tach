@@ -71,7 +71,13 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
     }
     for(let filtro of this.busqueda.filtros) {
       if(filtro.checked) {
-        busqueda.filtros.push(filtro);
+        if(filtro.operador == 'between') {
+          busqueda.filtros.push(filtro);
+        } else {
+          if(filtro.criterios.length > 0) {
+            busqueda.filtros.push(filtro);
+          }
+        }
       }
     }
     return busqueda;
