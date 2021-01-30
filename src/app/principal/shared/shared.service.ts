@@ -59,7 +59,7 @@ export class SharedService {
         criterios: this.fb.array(filtro?.criterios ? filtro.criterios : []),
         criterio1: [filtro?.criterio1 ? filtro.criterio1 : ''], 
         criterio2: [filtro?.criterio2 ? filtro.criterio2 : ''], 
-        operador: [filtro?.operador ? filtro.operador : filtro?.esFecha ? 'between' : 'like'],
+        operador: [filtro?.operador ? filtro.operador : filtro?.esFecha ? 'between' : 'contiene'],
         esFecha: [filtro?.esFecha],
         checked: [filtro?.checked]
       }));

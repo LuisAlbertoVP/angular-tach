@@ -44,10 +44,11 @@ export class FiltroComponent implements OnInit {
   clearCriterio2 = (filtro: FormControl) => filtro.get('criterio2').setValue('');
 
   clearCriterios(filtro: FormControl, value: string) {
-    switch(value) {
-      case 'multiple': this.criterios(filtro).clear(); break;
-      case 'between': this.clearCriterio1(filtro); this.clearCriterio2(filtro); break;
-      default: this.clearCriterio1(filtro); break;
+    if(value == 'between') {
+      this.clearCriterio1(filtro);
+      this.clearCriterio2(filtro);
+    } else {
+      this.criterios(filtro).clear();
     }
   }
 

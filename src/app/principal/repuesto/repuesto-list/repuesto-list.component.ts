@@ -67,7 +67,7 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
     busqueda.pagina = this.paginator.pageIndex;
     busqueda.cantidad = this.paginator.pageSize;
     if(busqueda.operadorLogico == '&&') {
-      busqueda.filtros.push({ id: "Id", criterio1: '', operador: 'like' });
+      busqueda.filtros.push({ id: "Id", criterios: [''], operador: 'contiene' });
     }
     for(let filtro of this.busqueda.filtros) {
       if(filtro.checked) {
@@ -90,8 +90,8 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
       if(criterio) {
         this.busqueda = { estado: '2', operadorLogico: '||', filtros: [] };
         this.busqueda.filtros.push(
-          { id: 'Codigo', criterio1: criterio, operador: 'like', checked: true },
-          { id: 'Modelo', criterio1: criterio, operador: 'like', checked: true }
+          { id: 'Codigo', criterios: [criterio], operador: 'contiene', checked: true },
+          { id: 'Modelo', criterios: [criterio], operador: 'contiene', checked: true }
         );
         this.initSearch();
       }
