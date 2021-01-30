@@ -15,20 +15,20 @@ import { HttpResponse } from '@angular/common/http';
   templateUrl: './rol-detail.component.html'
 })
 export class RolDetailComponent implements OnInit {
-  modulos: Modulo[];
-  isMobile: boolean = false;
   form = this.fb.group({
     id: [''],
     descripcion: ['', Validators.required]
   });
+  isMobile: boolean = false;
+  modulos: Modulo[];
 
   constructor(
-    sharedService: SharedService,
     @Inject(MAT_DIALOG_DATA) public rol: Rol,
-    private dialogRef: MatDialogRef<RolDetailComponent>,
     private auth: AuthService,
-    private service: RolService,
+    private dialogRef: MatDialogRef<RolDetailComponent>,
     private fb: FormBuilder,
+    private service: RolService,
+    private sharedService: SharedService,
     private snackBar: MatSnackBar
   ) {
     sharedService.isMobile$.subscribe(isMobile => this.isMobile = isMobile);
@@ -40,6 +40,24 @@ export class RolDetailComponent implements OnInit {
     if(this.rol) {
       this.form.patchValue(this.rol);
       this.setChecked()
+    }
+  }
+
+  guardar() {
+    if(this.form.valid) {
+      const rol: Rol = this.form.getRawValue();
+      rol.id = this.rol ? rol.id : uuid();
+      rol.usuarioIngreso = this.auth.nombreUsuario;
+      rol.usuarioModificacion = this.auth.nombreUsuario;
+      rol.modulos = this.modulos.filter(modulo => modulo.checked);
+      this.service.insertOrUpdate(rol).subscribe((response: HttpResponse<any>) => {
+        if(response.status == 200) {
+          this.sharedService.showMessage(response.body.result);
+          this.dialogRef.close(true);
+        }
+      });
+    } else {
+      this.snackBar.open('Algunos campos son invalidos', 'Error', {duration: 2000});
     }
   }
 
@@ -56,22 +74,4 @@ export class RolDetailComponent implements OnInit {
   }
 
   updateStatus = (position: number, checked: boolean) => this.modulos[position].checked = checked;
-
-  guardar() {
-    if(this.form.valid) {
-      const rol: Rol = this.form.getRawValue();
-      rol.id = this.rol ? rol.id : uuid();
-      rol.usuarioIngreso = this.auth.nombreUsuario;
-      rol.usuarioModificacion = this.auth.nombreUsuario;
-      rol.modulos = this.modulos.filter(modulo => modulo.checked);
-      this.service.insertOrUpdate(rol).subscribe((response: HttpResponse<any>) => {
-        if(response.status == 200) {
-          this.snackBar.open(response.body.result, 'Ok', {duration: 2000, panelClass: ['success']});
-          this.dialogRef.close(true);
-        }
-      });
-    } else {
-      this.snackBar.open('Algunos campos son invalidos', 'Error', {duration: 2000});
-    }
-  }
 }

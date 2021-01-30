@@ -16,20 +16,18 @@ export class FiltroComponent implements OnInit {
   form: FormGroup;
 
   constructor(
-    private dialogRef: MatDialogRef<FiltroComponent>,
     @Inject(MAT_DIALOG_DATA) public busqueda: Busqueda,
+    private dialogRef: MatDialogRef<FiltroComponent>,
     private service: SharedService
   ) {}
-
-  ngOnInit(): void {
-    this.form = this.service.getForm(this.busqueda);
-  }
 
   get filtros() {
     return this.form.get('filtros') as FormArray;
   }
 
-  criterios = (filtro: FormControl) => filtro.get('criterios') as FormArray;
+  ngOnInit(): void {
+    this.form = this.service.getBusquedaForm(this.busqueda);
+  }
 
   addCriterio(filtro: FormControl, event: MatChipInputEvent): void {
     const input = event.input;
@@ -42,6 +40,9 @@ export class FiltroComponent implements OnInit {
     }
   }
 
+  clearCriterio1 = (filtro: FormControl) => filtro.get('criterio1').setValue('');
+  clearCriterio2 = (filtro: FormControl) => filtro.get('criterio2').setValue('');
+
   clearCriterios(filtro: FormControl, value: string) {
     switch(value) {
       case 'multiple': this.criterios(filtro).clear(); break;
@@ -50,11 +51,7 @@ export class FiltroComponent implements OnInit {
     }
   }
 
-  removeCriterio = (filtro: FormControl, position: number) => this.criterios(filtro).removeAt(position);
-
-  clearCriterio1 = (filtro: FormControl) => filtro.get('criterio1').setValue('');
-
-  clearCriterio2 = (filtro: FormControl) => filtro.get('criterio2').setValue('');
-
+  criterios = (filtro: FormControl) => filtro.get('criterios') as FormArray;
   guardar = () => this.dialogRef.close(this.form.getRawValue());
+  removeCriterio = (filtro: FormControl, position: number) => this.criterios(filtro).removeAt(position);
 }

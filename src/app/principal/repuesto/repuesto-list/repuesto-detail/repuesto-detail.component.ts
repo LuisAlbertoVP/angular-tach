@@ -16,18 +16,18 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styles: ['.h160 { height: 160px; }']
 })
 export class RepuestoDetailComponent implements OnInit {
-  marcas: Base[] = [];
   categorias: Base[] = [];
-  isMobile: boolean = false;
   form: FormGroup;
-
+  isMobile: boolean = false;
+  marcas: Base[] = [];
+  
   constructor(
-    sharedService: SharedService,
     @Inject(MAT_DIALOG_DATA) public repuesto: Repuesto,
-    private dialogRef: MatDialogRef<RepuestoDetailComponent>,
     private auth: AuthService,
-    private service: RepuestoService,
     private control: RepuestoControlService,
+    private dialogRef: MatDialogRef<RepuestoDetailComponent>,
+    private service: RepuestoService,
+    private sharedService: SharedService,
     private snackBar: MatSnackBar
   ) {
     sharedService.isMobile$.subscribe(isMobile => this.isMobile = isMobile);
@@ -35,8 +35,8 @@ export class RepuestoDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.service.getForm().subscribe(repuestoForm => {
-      this.marcas = repuestoForm.marcas;
       this.categorias = repuestoForm.categorias;
+      this.marcas = repuestoForm.marcas;
       this.form = this.control.toFormGroup(this.repuesto);
     });
   }
@@ -49,7 +49,7 @@ export class RepuestoDetailComponent implements OnInit {
       repuesto.usuarioModificacion = this.auth.nombreUsuario;
       this.service.insertOrUpdate(repuesto).subscribe((response: HttpResponse<any>) => {
         if(response.status == 200) {
-          this.snackBar.open(response.body.result, 'Ok', {duration: 2000, panelClass: ['success']});
+          this.sharedService.showMessage(response.body.result);
           this.dialogRef.close(true);
         }
       });

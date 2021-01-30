@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, Validators } from '@angular/forms';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
@@ -15,9 +15,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   templateUrl: './cuenta.component.html',
   styles: ['.cuenta-screen > *:not(:last-child) { width: 100%; margin-top: 2px; margin-bottom: 2px; }']
 })
-export class CuentaComponent implements OnInit {
-  hide: boolean = true;
-  isMobile: boolean = false;
+export class CuentaComponent {
   form = this.fb.group({
     nombreUsuario: ['', Validators.required],
     nombres: ['', Validators.required],
@@ -29,12 +27,14 @@ export class CuentaComponent implements OnInit {
     fechaNacimiento: ['', Validators.required],
     clave: ['', [Validators.required, Validators.pattern('^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$')]]
   });
+  hide: boolean = true;
+  isMobile: boolean = false;
 
   constructor(
     breakpointObserver: BreakpointObserver,
-    public service: AuthService,
     private dialogRef: MatDialogRef<CuentaComponent>,
     private fb: FormBuilder,
+    public service: AuthService,
     private snackBar: MatSnackBar
   ) { 
     breakpointObserver.observe([
@@ -47,9 +47,6 @@ export class CuentaComponent implements OnInit {
         this.isMobile = false;
       }
     });
-  }
-
-  ngOnInit(): void {
   }
 
   crear() {

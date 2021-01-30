@@ -5,11 +5,11 @@ import { MatPaginatorIntl } from '@angular/material/paginator';
   providedIn: 'root'
 })
 export class PaginatorIntlService extends MatPaginatorIntl {
+  firstPageLabel: string = 'Primera página';
   itemsPerPageLabel: string  = 'Items por página: ';
+  lastPageLabel: string = 'Última página';
   previousPageLabel: string = 'Anterior página';
   nextPageLabel: string = 'Siguiente página';
-  lastPageLabel: string = 'Última página';
-  firstPageLabel: string = 'Primera página';
 
   constructor() { 
     super();

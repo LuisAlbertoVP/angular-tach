@@ -14,19 +14,19 @@ import { HttpResponse } from '@angular/common/http';
   templateUrl: 'categoria-detail.component.html',
 })
 export class CategoriaDetailComponent implements OnInit {
-  isMobile: boolean = false;
   form = this.fb.group({
     id: [''],
     descripcion: ['', Validators.required]
   });
+  isMobile: boolean = false;
 
   constructor(
-    sharedService: SharedService,
     @Inject(MAT_DIALOG_DATA) public categoria: Base,
-    private dialogRef: MatDialogRef<CategoriaDetailComponent>,
     private auth: AuthService,
-    private service: CategoriaService,
+    private dialogRef: MatDialogRef<CategoriaDetailComponent>,
     private fb: FormBuilder,
+    private service: CategoriaService,
+    private sharedService: SharedService,
     private snackBar: MatSnackBar
   ) {
     sharedService.isMobile$.subscribe(isMobile => this.isMobile = isMobile);
@@ -46,7 +46,7 @@ export class CategoriaDetailComponent implements OnInit {
       categoria.usuarioModificacion = this.auth.nombreUsuario;
       this.service.insertOrUpdate(categoria).subscribe((response: HttpResponse<any>) => {
         if(response.status == 200) {
-          this.snackBar.open(response.body.result, 'Ok', {duration: 2000, panelClass: ['success']});
+          this.sharedService.showMessage(response.body.result);
           this.dialogRef.close(true);
         }
       });

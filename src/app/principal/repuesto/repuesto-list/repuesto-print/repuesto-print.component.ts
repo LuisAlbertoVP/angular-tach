@@ -28,7 +28,7 @@ export class RepuestoPrintComponent implements OnInit {
         busqueda.filtros = busqueda.filtros.filter(filtro => filtro.id != 'Id');
         this.busqueda = busqueda;
         this.repuestos = (repuestos as HttpResponse<Repuestos>).body.data;
-        this.printing.dataOnLoad('/principal/repuestos');
+        this.printing.dataOnLoad();
       });
     });
   }

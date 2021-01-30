@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '@auth_service/*';
@@ -13,22 +13,19 @@ import { SHA256 } from 'crypto-js';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
-  hide: boolean = true;
+export class LoginComponent {
   form = this.fb.group({
     nombreUsuario: ['', Validators.required],
     clave: ['', Validators.required]
   });
+  hide: boolean = true;
 
   constructor(
-    private router: Router,
+    private dialog: MatDialog,
     private fb: FormBuilder,
+    private router: Router,
     private service: AuthService,
-    private dialog: MatDialog
-  ) { }
-
-  ngOnInit(): void {
-  }
+  ) {}
 
   login(): void {
     if(this.form.valid) {

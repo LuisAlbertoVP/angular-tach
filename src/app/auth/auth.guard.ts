@@ -8,7 +8,10 @@ import { Route } from '@angular/compiler/src/core';
 })
 export class AuthGuard implements CanLoad, CanActivate, CanActivateChild {
 
-  constructor(private service: AuthService, private router: Router) {}
+  constructor(
+    private service: AuthService, 
+    private router: Router
+  ) {}
 
   canLoad(route: Route): boolean {
     return this.checkLogin();
@@ -26,10 +29,6 @@ export class AuthGuard implements CanLoad, CanActivate, CanActivateChild {
     return Date.now() <  Date.parse(this.service.tokenExpiration);
   }
 
-  private hasToken() : boolean {
-    return this.service.token && this.checkDate();
-  }
-  
   private checkLogin(route?: string): boolean {
     if(route && route == '/') {
       if(!this.hasToken()) {
@@ -44,5 +43,9 @@ export class AuthGuard implements CanLoad, CanActivate, CanActivateChild {
       this.router.navigate(['/']);
       return false;
     }
+  }
+
+  private hasToken() : boolean {
+    return this.service.token && this.checkDate();
   }
 }

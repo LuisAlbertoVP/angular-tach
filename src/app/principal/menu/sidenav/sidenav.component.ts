@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '@auth_service/*';
 import { SharedService } from '@shared_service/*';
@@ -8,31 +8,28 @@ import { SharedService } from '@shared_service/*';
   templateUrl: './sidenav.component.html',
   styleUrls: ['./sidenav.component.css']
 })
-export class SidenavComponent implements OnInit {
+export class SidenavComponent {
   @Output('closeSidenav') closeSidenav = new EventEmitter();
 
   constructor(
-    private sharedService: SharedService,
+    private router: Router,
     public service: AuthService,
-    private router: Router
-  ) { }
+    private sharedService: SharedService
+  ) {}
 
-  ngOnInit(): void {
-  }
-
-  principal() {
+  logout() {
     this.sharedService.buildMenuBar({ title: 'Principal' });
-    this.navigate('/principal');
+    this.service.logout();
+    this.navigate('/');
   }
 
   navigate(link: string) {
     this.closeSidenav.emit();
     this.router.navigate([link]);
   }
-
-  logout() {
+  
+  principal() {
     this.sharedService.buildMenuBar({ title: 'Principal' });
-    this.service.logout();
-    this.navigate('/');
+    this.navigate('/principal');
   }
 }

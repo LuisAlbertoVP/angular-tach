@@ -4,7 +4,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { User } from '@models/auth';
-import { HttpErrorHandlerService, HandleError } from '../http-error-handler.service';
+import { HttpErrorHandlerService, HandleError } from '../../http-error-handler.service';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
@@ -14,15 +14,15 @@ const httpOptions = {
 @Injectable({
   providedIn: 'root'
 })
-export class PrincipalService {
+export class CuentaService {
   readonly url: string = 'http://localhost:8080/api/cuenta';
   private handleError: HandleError;
 
   constructor(
     private http: HttpClient,
     httpErrorHandler: HttpErrorHandlerService
-  ) { 
-    this.handleError = httpErrorHandler.createHandleError('PrincipalService');
+  ) {
+    this.handleError = httpErrorHandler.createHandleError('CuentaService');
   }
 
   getById = (id: string): Observable<User> => this.http.get<User>(`${this.url}/${id}`)

@@ -15,16 +15,16 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   templateUrl: './proveedor-detail.component.html'
 })
 export class ProveedorDetailComponent implements OnInit {
-  isMobile: boolean = false;
   form: FormGroup;
+  isMobile: boolean = false;
 
   constructor(
-    sharedService: SharedService,
     @Inject(MAT_DIALOG_DATA) public proveedor: Proveedor,
-    private dialogRef: MatDialogRef<ProveedorDetailComponent>,
     private auth: AuthService,
-    private service: ProveedorService,
     private control: ProveedorControlService,
+    private dialogRef: MatDialogRef<ProveedorDetailComponent>,
+    private service: ProveedorService,
+    private sharedService: SharedService,
     private snackBar: MatSnackBar
   ) {
     sharedService.isMobile$.subscribe(isMobile => this.isMobile = isMobile);
@@ -42,7 +42,7 @@ export class ProveedorDetailComponent implements OnInit {
       proveedor.usuarioModificacion = this.auth.nombreUsuario;
       this.service.insertOrUpdate(proveedor).subscribe((response: HttpResponse<any>) => {
         if(response.status == 200) {
-          this.snackBar.open(response.body.result, 'Ok', {duration: 2000, panelClass: ['success']});
+          this.sharedService.showMessage(response.body.result);
           this.dialogRef.close(true);
         }
       });

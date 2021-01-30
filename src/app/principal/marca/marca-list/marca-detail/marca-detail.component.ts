@@ -14,19 +14,19 @@ import { HttpResponse } from '@angular/common/http';
   templateUrl: 'marca-detail.component.html',
 })
 export class MarcaDetailComponent implements OnInit {
-  isMobile: boolean = false;
   form = this.fb.group({
     id: [''],
     descripcion: ['', Validators.required]
   });
+  isMobile: boolean = false;
 
   constructor(
-    sharedService: SharedService,
     @Inject(MAT_DIALOG_DATA) public marca: Base,
-    private dialogRef: MatDialogRef<MarcaDetailComponent>,
     private auth: AuthService,
-    private service: MarcaService,
+    private dialogRef: MatDialogRef<MarcaDetailComponent>,
     private fb: FormBuilder,
+    private service: MarcaService,
+    private sharedService: SharedService,
     private snackBar: MatSnackBar
   ) {
     sharedService.isMobile$.subscribe(isMobile => this.isMobile = isMobile);
@@ -46,7 +46,7 @@ export class MarcaDetailComponent implements OnInit {
       marca.usuarioModificacion = this.auth.nombreUsuario;
       this.service.insertOrUpdate(marca).subscribe((response: HttpResponse<any>) => {
         if(response.status == 200) {
-          this.snackBar.open(response.body.result, 'Ok', {duration: 2000, panelClass: ['success']});
+          this.sharedService.showMessage(response.body.result);
           this.dialogRef.close(true);
         }
       });

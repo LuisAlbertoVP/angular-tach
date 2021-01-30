@@ -17,18 +17,18 @@ import * as moment from 'moment';
   templateUrl: './usuario-detail.component.html'
 })
 export class UsuarioDetailComponent implements OnInit {
-  hide: boolean = true;
-  roles: Rol[] = [];
-  isMobile: boolean = false;
   form: FormGroup;
+  hide: boolean = true;
+  isMobile: boolean = false;  
+  roles: Rol[] = [];
 
   constructor(
-    sharedService: SharedService,
     @Inject(MAT_DIALOG_DATA) public usuario: User,
-    private dialogRef: MatDialogRef<UsuarioDetailComponent>,
     private auth: AuthService,
-    private service: UsuarioService,
     private control: UsuarioControlService,
+    private dialogRef: MatDialogRef<UsuarioDetailComponent>,
+    private service: UsuarioService,
+    private sharedService: SharedService,
     private snackBar: MatSnackBar
   ) {
     sharedService.isMobile$.subscribe(isMobile => this.isMobile = isMobile);
@@ -57,7 +57,7 @@ export class UsuarioDetailComponent implements OnInit {
       usuario.roles = roles;
       this.service.insertOrUpdate(usuario).subscribe((response: HttpResponse<any>) => {
         if(response.status == 200) {
-          this.snackBar.open(response.body.result, 'Ok', {duration: 2000, panelClass: ['success']});
+          this.sharedService.showMessage(response.body.result);
           this.dialogRef.close(true);
         }
       });

@@ -25,8 +25,25 @@ export class AuthService {
     this.handleError = httpErrorHandler.createHandleError('AuthService');
   }
 
-  login = (user: User) => this.http.post(`${this.url}/login`, user, httpOptions)
-      .pipe(catchError(this.handleError('login', user)));
+  get id() {
+    return localStorage.getItem('id');
+  }
+
+  get nombres() {
+    return localStorage.getItem('nombres');
+  }
+  
+  get nombreUsuario() {
+    return localStorage.getItem('nombreUsuario');
+  }
+
+  get token() { 
+    return localStorage.getItem('token_id'); 
+  }
+
+  get tokenExpiration() {
+    return localStorage.getItem('token_expiration');
+  }
 
   addAccount = (user: User) => this.http.post(`${this.url}/cuenta`, user, httpOptions)
       .pipe(catchError(this.handleError('addAccount', user)));
@@ -34,13 +51,8 @@ export class AuthService {
   getRolUser = (id: string): Observable<User> => this.http.get<User>(`${this.url}/cuenta/${id}/roles`)
       .pipe(catchError(this.handleError<User>('getRolUser')));
 
-  saveToken(user: User) {
-    localStorage.setItem('id', user.id);
-    localStorage.setItem('nombreUsuario', user.nombreUsuario);
-    localStorage.setItem('nombres', user.nombres);
-    localStorage.setItem('token_id', user.token.id);
-    localStorage.setItem('token_expiration', user.token.expiration);
-  }
+  login = (user: User) => this.http.post(`${this.url}/login`, user, httpOptions)
+      .pipe(catchError(this.handleError('login', user)));
 
   logout() {
     localStorage.removeItem('id');
@@ -50,23 +62,11 @@ export class AuthService {
     localStorage.removeItem('token_expiration');
   }
 
-  get id() {
-    return localStorage.getItem('id');
-  }
-
-  get nombreUsuario() {
-    return localStorage.getItem('nombreUsuario');
-  }
-
-  get nombres() {
-    return localStorage.getItem('nombres');
-  }
-
-  get token() { 
-    return localStorage.getItem('token_id'); 
-  }
-
-  get tokenExpiration() {
-    return localStorage.getItem('token_expiration');
+  saveToken(user: User) {
+    localStorage.setItem('id', user.id);
+    localStorage.setItem('nombreUsuario', user.nombreUsuario);
+    localStorage.setItem('nombres', user.nombres);
+    localStorage.setItem('token_id', user.token.id);
+    localStorage.setItem('token_expiration', user.token.expiration);
   }
 }

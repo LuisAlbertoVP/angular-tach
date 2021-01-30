@@ -3,7 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { User } from '@models/auth';
 import { SharedService } from '@shared_service/shared';
 import { AuthService } from '@auth_service/*';
-import { PrincipalService } from '../../principal.service';
+import { CuentaService } from '../cuenta.service';
 import { SHA256 } from 'crypto-js';
 import { HttpResponse } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -14,9 +14,6 @@ import * as moment from 'moment';
   templateUrl: './cuenta-detail.component.html'
 })
 export class CuentaDetailComponent implements OnInit {
-  id: string = this.auth.id;
-  hide: boolean = true;
-  isMobile: boolean = false;
   form = this.fb.group({
     nombreUsuario: ['', Validators.required],
     nombres: ['', Validators.required],
@@ -28,12 +25,15 @@ export class CuentaDetailComponent implements OnInit {
     fechaNacimiento: ['', Validators.required],
     clave: ['', Validators.pattern('^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$')]
   });
+  hide: boolean = true;
+  id: string = this.auth.id;
+  isMobile: boolean = false;
 
   constructor(
-    sharedService: SharedService,
-    private fb: FormBuilder,
     private auth: AuthService,
-    private service: PrincipalService,
+    private fb: FormBuilder,
+    private service: CuentaService,
+    private sharedService: SharedService,
     private snackBar: MatSnackBar
   ) {
     sharedService.buildMenuBar({ title: 'Cuenta' });
@@ -53,7 +53,7 @@ export class CuentaDetailComponent implements OnInit {
       usuario.clave = usuario.clave ? SHA256(usuario.clave).toString() : '';
       this.service.update(usuario).subscribe((response: HttpResponse<any>) => {
         if(response.status == 200) {
-          this.snackBar.open(response.body.result, 'Ok', {duration: 2000, panelClass: ['success']});
+          this.sharedService.showMessage(response.body.result);
         }
       });
     } else {

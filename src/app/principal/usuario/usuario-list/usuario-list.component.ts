@@ -8,7 +8,6 @@ import { UsuarioService }  from '../usuario.service';
 import { User, Users } from '@models/auth';
 import { Busqueda, BusquedaBuilder } from '@models/busqueda';
 import { HttpResponse } from '@angular/common/http';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { merge, of as observableOf, Subject } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { detailExpand } from '@animations/detailExpand';
@@ -25,31 +24,32 @@ import * as moment from 'moment';
   animations: detailExpand
 })
 export class UsuarioListComponent implements OnInit, AfterViewInit {
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatRadioGroup) radio: MatRadioGroup;
   @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
   readonly displayedColumns: string[] = ['opciones', 'Nombres', 'NombreUsuario', 'Telefono', 'Celular', 'Correo', 'accion'];
   busqueda: Busqueda = BusquedaBuilder.BuildUsuario();
   criterio = new Subject();
   data: User[] = [];
   expandedElement: User = null;
-  resultsLength: number = 0;
   isLoadingResults: boolean = true;
   isRateLimitReached: boolean = false;
+  resultsLength: number = 0;
 
   constructor(
-    sharedService: SharedService,
-    private router: Router,
     private activedRoute: ActivatedRoute,
+    private dialog: MatDialog,
+    private router: Router,
     private service: UsuarioService,
-    private snackBar: MatSnackBar,
-    private dialog: MatDialog
+    private sharedService: SharedService
   ) {
     sharedService.buildMenuBar({ title: 'Usuarios', filterEvent: () => this.openFilter() });
   }
 
   get newBusqueda() {
-    let busqueda: Busqueda = { filtros: [], estado: this.busqueda.estado, operadorLogico: this.busqueda.operadorLogico };
+    let busqueda: Busqueda = { 
+      filtros: [], estado: this.busqueda.estado, operadorLogico: this.busqueda.operadorLogico 
+    };
     const activo = this.sort.active ? this.sort.active : 'FechaModificacion';
     const direccion = this.sort.direction ? this.sort.direction : 'desc';
     busqueda.orden = { activo: activo, direccion: direccion };
@@ -79,7 +79,8 @@ export class UsuarioListComponent implements OnInit, AfterViewInit {
     criterio$.subscribe(() => this.paginator.pageIndex = 0);
     this.radio.change.subscribe(() => this.paginator.pageIndex = 0);
     this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-    merge(criterio$, this.radio.change, this.sort.sortChange, this.paginator.page).pipe(startWith({}), switchMap(() => {
+    merge(criterio$, this.radio.change, this.sort.sortChange, this.paginator.page).pipe(
+      startWith({}), switchMap(() => {
         this.isLoadingResults = true;
         return this.service.getAll(this.newBusqueda);
       }), map(data => {
@@ -92,46 +93,34 @@ export class UsuarioListComponent implements OnInit, AfterViewInit {
         this.isLoadingResults = false;
         this.isRateLimitReached = true;
         return observableOf([]);
-      })).subscribe(data => this.data = data);
-  }
-
-  updateEstado(user: User) {
-    const cloneUser = Object.assign({}, user);
-    cloneUser.estado = cloneUser.estado ? false : true;
-    this.service.setStatus(cloneUser).subscribe((response: HttpResponse<any>) => {
-      if(response?.status == 200) {
-        if(this.busqueda.estado == '2') {
-          user.estado = cloneUser.estado;
-        } else {
-          this.data = this.data.filter(oldUser => oldUser.id != user.id);
-        }
-        this.showMessage(response.body.result);
-      }
-    });
+      })
+    ).subscribe(data => this.data = data);
   }
 
   delete(user: User) {
     this.service.delete(user).subscribe((response: HttpResponse<any>) => {
       if(response?.status == 200) {
         this.data = this.data.filter(oldUser => oldUser.id != user.id);
-        this.showMessage(response.body.result);
+        this.sharedService.showMessage(response.body.result);
       }
     });
   }
 
-  openForm(user?: User) {
-    const dialogRef = this.dialog.open(UsuarioDetailComponent, {
-      width: '720px', autoFocus: false, disableClose: true, data: user
-    });
-    dialogRef.afterClosed().subscribe(result => result ? this.initSearch() : null);
+  navigateToPrincipal(busqueda: Busqueda) {
+    busqueda.tiempo = Date.now();
+    const extras: NavigationExtras = { 
+      queryParams: { busqueda: JSON.stringify(busqueda) }, skipLocationChange: true 
+    };
+    this.router.navigate(['/principal/usuarios'], extras);
   }
 
   openConfirmation(user: User) {
     const dialogRef = this.dialog.open(ConfirmacionComponent, {
-      width: '360px', autoFocus: false, disableClose: true, data: '¿Está seguro de que desea eliminar este usuario?'
+      width: '360px', autoFocus: false, disableClose: true, 
+      data: '¿Está seguro de que desea eliminar este usuario?'
     });
     dialogRef.afterClosed().subscribe(result => {
-      return result ? this.delete(user) : this.showMessage('No se han aplicado los cambios');
+      return result ? this.delete(user) : this.sharedService.showMessage('No se han aplicado los cambios');
     });
   }
 
@@ -146,10 +135,11 @@ export class UsuarioListComponent implements OnInit, AfterViewInit {
     });
   }
 
-  navigateToPrincipal(busqueda: Busqueda) {
-    busqueda.tiempo = Date.now();
-    const extras: NavigationExtras = { queryParams: { busqueda: JSON.stringify(busqueda) }, skipLocationChange: true };
-    this.router.navigate(['/principal/usuarios'], extras);
+  openForm(user?: User) {
+    const dialogRef = this.dialog.open(UsuarioDetailComponent, {
+      width: '720px', autoFocus: false, disableClose: true, data: user
+    });
+    dialogRef.afterClosed().subscribe(result => result ? this.initSearch() : null);
   }
 
   reload() {
@@ -158,13 +148,23 @@ export class UsuarioListComponent implements OnInit, AfterViewInit {
     this.navigateToPrincipal(busqueda);
   }
 
+  updateEstado(user: User) {
+    const cloneUser = Object.assign({}, user);
+    cloneUser.estado = cloneUser.estado ? false : true;
+    this.service.setStatus(cloneUser).subscribe((response: HttpResponse<any>) => {
+      if(response?.status == 200) {
+        if(this.busqueda.estado == '2') {
+          user.estado = cloneUser.estado;
+        } else {
+          this.data = this.data.filter(oldUser => oldUser.id != user.id);
+        }
+        this.sharedService.showMessage(response.body.result);
+      }
+    });
+  }
+
   initSearch = () => this.criterio.next();
-
   parseDate = (fecha: string) => moment(fecha).format('DD/MM/YYYY');
-
   parseDateTime = (fecha: string) => moment(fecha).format('DD/MM/YYYY, hh:mm:ss A');
-
   parseArray = (array: any[]) => array.map(element => element.descripcion).join(', ');
-
-  showMessage = (message: string) => this.snackBar.open(message, 'Ok', {duration: 2000, panelClass: ['success']});
 }

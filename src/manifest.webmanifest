@@ -1,6 +1,6 @@
 {
-  "name": "tach",
-  "short_name": "tach",
+  "name": "TACH Inventario",
+  "short_name": "TACH Inventario",
   "theme_color": "#1976d2",
   "background_color": "#fafafa",
   "display": "standalone",

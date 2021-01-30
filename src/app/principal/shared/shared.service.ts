@@ -1,6 +1,7 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Injectable } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Busqueda, Filtro } from '@models/busqueda';
 import { MenuBar } from '@models/menu';
 import { BehaviorSubject } from 'rxjs';
@@ -9,14 +10,15 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class SharedService {
-  private menuBar = new BehaviorSubject<MenuBar>({ title: 'Principal' });
-  menuBar$ = this.menuBar.asObservable();
   private isMobile = new BehaviorSubject<boolean>(false);
+  private menuBar = new BehaviorSubject<MenuBar>({ title: 'Principal' });
   isMobile$ = this.isMobile.asObservable();
+  menuBar$ = this.menuBar.asObservable();
 
   constructor(
     breakpointObserver: BreakpointObserver,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private snackBar: MatSnackBar
   ) { 
     breakpointObserver.observe([
       Breakpoints.XSmall,
@@ -30,9 +32,22 @@ export class SharedService {
       }
     });
   }
+  
 
   buildMenuBar(menuBar: MenuBar) {
     this.menuBar.next(menuBar);
+  }
+
+  getBusquedaForm(busqueda: Busqueda) {
+    return this.fb.group({
+      filtros: this.fb.array(this.getFiltros(busqueda.filtros)),
+      estado: busqueda.estado,
+      operadorLogico: '&&'
+    });
+  }
+
+  showMessage(message: string) {
+    this.snackBar.open(message, 'Ok', {duration: 2000, panelClass: ['success']});
   }
 
   private getFiltros(filtros: Filtro[]) {
@@ -50,13 +65,5 @@ export class SharedService {
       }));
     }
     return newFiltros;
-  }
-
-  public getForm(busqueda: Busqueda) {
-    return this.fb.group({
-      filtros: this.fb.array(this.getFiltros(busqueda.filtros)),
-      estado: busqueda.estado,
-      operadorLogico: '&&'
-    });
   }
 }

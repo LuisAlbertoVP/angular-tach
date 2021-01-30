@@ -8,7 +8,6 @@ import { CategoriaService }  from '../categoria.service';
 import { Base, Bases } from '@models/tach';
 import { Busqueda, BusquedaBuilder } from '@models/busqueda';
 import { HttpResponse } from '@angular/common/http';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { merge, of as observableOf, Subject } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { detailExpand } from '@animations/detailExpand';
@@ -33,17 +32,16 @@ export class CategoriaListComponent implements OnInit, AfterViewInit {
   criterio = new Subject();
   data: Base[] = [];
   expandedElement: Base = null;
-  resultsLength: number = 0;
   isLoadingResults: boolean = true;
   isRateLimitReached: boolean = false;
+  resultsLength: number = 0;
 
   constructor(
-    sharedService: SharedService,
-    private router: Router,
     private activedRoute: ActivatedRoute,
+    private dialog: MatDialog,
+    private router: Router,
     private service: CategoriaService,
-    private snackBar: MatSnackBar,
-    private dialog: MatDialog
+    private sharedService: SharedService
   ) { 
     sharedService.buildMenuBar({ title: 'Categorías', filterEvent: () => this.openFilter() });
   }
@@ -59,7 +57,9 @@ export class CategoriaListComponent implements OnInit, AfterViewInit {
   }
 
   get newBusqueda() {
-    let busqueda: Busqueda = { filtros: [], estado: this.busqueda.estado, operadorLogico: this.busqueda.operadorLogico };
+    let busqueda: Busqueda = { 
+      filtros: [], estado: this.busqueda.estado, operadorLogico: this.busqueda.operadorLogico 
+    };
     const activo = this.sort.active ? this.sort.active : 'FechaModificacion';
     const direccion = this.sort.direction ? this.sort.direction : 'desc';
     busqueda.orden = { activo: activo, direccion: direccion };
@@ -79,7 +79,8 @@ export class CategoriaListComponent implements OnInit, AfterViewInit {
     criterio$.subscribe(() => this.paginator.pageIndex = 0);
     this.radio.change.subscribe(() => this.paginator.pageIndex = 0);
     this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-    merge(criterio$, this.radio.change, this.sort.sortChange, this.paginator.page).pipe(startWith({}), switchMap(() => {
+    merge(criterio$, this.radio.change, this.sort.sortChange, this.paginator.page).pipe(
+      startWith({}), switchMap(() => {
         this.isLoadingResults = true;
         return this.service.getAll(this.newBusqueda);
       }), map(data => {
@@ -92,7 +93,8 @@ export class CategoriaListComponent implements OnInit, AfterViewInit {
         this.isLoadingResults = false;
         this.isRateLimitReached = true;
         return observableOf([]);
-      })).subscribe(data => this.data = data);
+      })
+    ).subscribe(data => this.data = data);
   }
 
   updateEstado(categoria: Base) {
@@ -105,7 +107,7 @@ export class CategoriaListComponent implements OnInit, AfterViewInit {
         } else {
           this.data = this.data.filter(oldCategoria => oldCategoria.id != categoria.id);
         }
-        this.showMessage(response.body.result);
+        this.sharedService.showMessage(response.body.result);
       }
     });
   }
@@ -114,24 +116,26 @@ export class CategoriaListComponent implements OnInit, AfterViewInit {
     this.service.delete(categoria).subscribe((response: HttpResponse<any>) => {
       if(response?.status == 200) {
         this.data = this.data.filter(oldCategoria => oldCategoria.id != categoria.id);
-        this.showMessage(response.body.result);
+        this.sharedService.showMessage(response.body.result);
       }
     });
   }
 
-  openForm(categoria?: Base) {
-    const dialogRef = this.dialog.open(CategoriaDetailComponent, {
-      width: '520px', autoFocus: false, disableClose: true, data: categoria
-    });
-    dialogRef.afterClosed().subscribe(result => result ? this.initSearch() : null);
+  navigateToPrincipal(busqueda: Busqueda) {
+    busqueda.tiempo = Date.now();
+    const extras: NavigationExtras = { 
+      queryParams: { busqueda: JSON.stringify(busqueda) }, skipLocationChange: true 
+    };
+    this.router.navigate(['/principal/categorias'], extras);
   }
 
   openConfirmation(categoria: Base) {
     const dialogRef = this.dialog.open(ConfirmacionComponent, {
-      width: '360px', autoFocus: false, disableClose: true, data: '¿Está seguro de que desea eliminar esta categoría?'
+      width: '360px', autoFocus: false, disableClose: true, 
+      data: '¿Está seguro de que desea eliminar esta categoría?'
     });
     dialogRef.afterClosed().subscribe(result => {
-      return result ? this.delete(categoria) : this.showMessage('No se han aplicado los cambios');
+      return result ? this.delete(categoria) : this.sharedService.showMessage('No se han aplicado los cambios');
     });
   }
 
@@ -146,10 +150,11 @@ export class CategoriaListComponent implements OnInit, AfterViewInit {
     });
   }
 
-  navigateToPrincipal(busqueda: Busqueda) {
-    busqueda.tiempo = Date.now();
-    const extras: NavigationExtras = { queryParams: { busqueda: JSON.stringify(busqueda) }, skipLocationChange: true };
-    this.router.navigate(['/principal/categorias'], extras);
+  openForm(categoria?: Base) {
+    const dialogRef = this.dialog.open(CategoriaDetailComponent, {
+      width: '520px', autoFocus: false, disableClose: true, data: categoria
+    });
+    dialogRef.afterClosed().subscribe(result => result ? this.initSearch() : null);
   }
 
   reload() {
@@ -159,8 +164,5 @@ export class CategoriaListComponent implements OnInit, AfterViewInit {
   }
 
   initSearch = () => this.criterio.next();
-
   parseDateTime = (fecha: string) => moment(fecha).format('DD/MM/YYYY, hh:mm:ss A');
-
-  showMessage = (message: string) => this.snackBar.open(message, 'Ok', {duration: 2000, panelClass: ['success']});
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '@auth_service/*';
 import { SharedService } from '@shared_service/*';
@@ -9,21 +9,26 @@ import { menuBase, MenuBar, MenuItem } from '@models/menu';
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.css']
 })
-export class MenuComponent implements OnInit {
+export class MenuComponent {
   menuBar: MenuBar;
   menuItems: MenuItem[] = menuBase;
   visible: boolean = false;
 
   constructor(
-    private sharedService: SharedService,
+    private router: Router,
     private service: AuthService,
-    private router: Router
+    private sharedService: SharedService
   ) {
     sharedService.menuBar$.subscribe(menuBar => this.menuBar = menuBar);
   }
 
-  ngOnInit(): void {
+  logout() {
+    this.sharedService.buildMenuBar({ title: 'Principal' });
+    this.service.logout();
+    this.navigate('/');
   }
+  
+  navigate = (url: string) => this.router.navigate([url]);
 
   principal() {
     this.sharedService.buildMenuBar({ title: 'Principal' });
@@ -34,13 +39,5 @@ export class MenuComponent implements OnInit {
     if(valor?.trim()) {
       this.navigate('/principal/repuestos/' + valor.trim());
     }
-  }
-
-  navigate = (url: string) => this.router.navigate([url]);
-
-  logout() {
-    this.sharedService.buildMenuBar({ title: 'Principal' });
-    this.service.logout();
-    this.navigate('/');
   }
 }
