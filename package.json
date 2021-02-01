@@ -25,6 +25,7 @@
     "@types/crypto-js": "^4.0.1",
     "@types/uuid": "^8.3.0",
     "bootstrap": "^5.0.0-beta1",
+    "chart.js": "^2.9.4",
     "crypto-js": "^4.0.0",
     "moment": "^2.29.1",
     "rxjs": "~6.6.0",

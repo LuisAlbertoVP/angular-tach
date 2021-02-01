@@ -25,6 +25,9 @@ const routes: Routes = [
             path: 'sistema', loadChildren: () => import('./sistema/sistema.module').then(m => m.SistemaModule) 
           },
           { 
+            path: 'reporte', loadChildren: () => import('./reporte/reporte.module').then(m => m.ReporteModule) 
+          },
+          { 
             path: 'usuarios', loadChildren: () => import('./usuario/usuario.module').then(m => m.UsuarioModule), 
             canLoad: [RolGuard], data: { modulo: 'Usuarios'} 
           },
