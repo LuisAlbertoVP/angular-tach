@@ -38,6 +38,7 @@ export class CuentaComponent {
     private snackBar: MatSnackBar
   ) { 
     breakpointObserver.observe([
+      Breakpoints.XSmall,
       Breakpoints.Small,
       Breakpoints.HandsetPortrait
     ]).subscribe(result => {

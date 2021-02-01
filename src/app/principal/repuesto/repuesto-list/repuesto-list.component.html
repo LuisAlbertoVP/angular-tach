@@ -7,8 +7,7 @@
     <div class="d-flex w-100 mt-1">
       <mat-radio-group (change)="busqueda.estado = $event.value" class="margin">
         <mat-radio-button value="0">Deshabilitados</mat-radio-button>
-        <mat-radio-button value="1">Habilitados</mat-radio-button>
-        <mat-radio-button value="2" checked>Todo</mat-radio-button>
+        <mat-radio-button value="1" checked>Habilitados</mat-radio-button>
       </mat-radio-group>
       <button mat-mini-fab color="primary" (click)="openForm()" class="ml-auto" type="button"><mat-icon>add</mat-icon></button>
     </div>
@@ -18,7 +17,7 @@
       <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
       <div class="text-danger bold" *ngIf="isRateLimitReached">El tiempo se ha agotado, recargue la página</div>
     </div>
-    <div class="table-container">
+    <div class="table-container" [class.isMobile]="isMobile">
       <table mat-table [dataSource]="data" multiTemplateDataRows matSort class="w-100 position-relative">
         <ng-container matColumnDef="opciones">
           <th mat-header-cell *matHeaderCellDef></th>

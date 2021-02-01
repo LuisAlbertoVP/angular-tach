@@ -27,12 +27,13 @@ export class RolListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatRadioGroup) radio: MatRadioGroup;
   @ViewChild(MatSort) sort: MatSort;
-  readonly displayedColumns: string[] = ['opciones', 'Descripcion', 'FechaIngreso', 'FechaModificacion', 'accion'];
+  readonly displayedColumns: string[] = ['opciones', 'Descripcion', 'FechaModificacion', 'accion'];
   busqueda: Busqueda = BusquedaBuilder.BuildBase();
   criterio = new Subject();
   data: Rol[] = [];
   expandedElement: Rol = null;
   isLoadingResults: boolean = true;
+  isMobile: boolean = false;
   isRateLimitReached: boolean = false;
   resultsLength: number = 0;
 
@@ -44,6 +45,7 @@ export class RolListComponent implements OnInit, AfterViewInit {
     private sharedService: SharedService
   ) {
     sharedService.buildMenuBar({ title: 'Roles', filterEvent: () => this.openFilter() });
+    sharedService.isMobile$.subscribe(isMobile => this.isMobile = isMobile);
   }
 
   ngOnInit(): void {
@@ -123,7 +125,7 @@ export class RolListComponent implements OnInit, AfterViewInit {
   openConfirmation(rol: Rol) {
     const dialogRef = this.dialog.open(ConfirmacionComponent, {
       width: '360px', autoFocus: false, disableClose: true, 
-      data: '¿Está seguro de que desea eliminar este rol?'
+      data: '¿Está seguro de que desea eliminar definitivamente este rol?'
     });
     dialogRef.afterClosed().subscribe(result => {
       return result ? this.delete(rol) : this.sharedService.showMessage('No se han aplicado los cambios');
@@ -159,11 +161,7 @@ export class RolListComponent implements OnInit, AfterViewInit {
     cloneRol.estado = cloneRol.estado ? false : true;
     this.service.setStatus(cloneRol).subscribe((response: HttpResponse<any>) => {
       if(response?.status == 200) {
-        if(this.busqueda.estado == '2') {
-          rol.estado = cloneRol.estado;
-        } else {
-          this.data = this.data.filter(oldRol => oldRol.id != rol.id);
-        }
+        this.data = this.data.filter(oldRol => oldRol.id != rol.id);
         this.sharedService.showMessage(response.body.result);
       }
     });

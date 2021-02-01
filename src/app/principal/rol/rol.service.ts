@@ -15,7 +15,7 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class RolService {
-  readonly url: string = 'http://localhost:8080/api/roles';
+  readonly url: string = 'http://192.168.1.126:8080/api/roles';
   private handleError: HandleError;
 
   constructor(

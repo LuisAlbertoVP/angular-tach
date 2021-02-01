@@ -94,7 +94,7 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
     this.activedRoute.paramMap.subscribe(params => {
       const criterio: string = params.get('id');
       if(criterio) {
-        this.busqueda = { estado: '2', operadorLogico: '||', filtros: [] };
+        this.busqueda = { estado: '1', operadorLogico: '||', filtros: [] };
         this.busqueda.filtros.push(
           { id: 'Codigo', criterios: [criterio], operador: 'contiene', checked: true },
           { id: 'Modelo', criterios: [criterio], operador: 'contiene', checked: true }
@@ -147,7 +147,7 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
   openConfirmation(repuesto: Repuesto) {
     const dialogRef = this.dialog.open(ConfirmacionComponent, {
       width: '360px', autoFocus: false, disableClose: true, 
-      data: '¿Está seguro de que desea eliminar este repuesto?'
+      data: '¿Está seguro de que desea eliminar definitivamente este repuesto?'
     });
     dialogRef.afterClosed().subscribe(result => {
       return result ? this.delete(repuesto) : this.sharedService.showMessage('No se han aplicado los cambios');
@@ -196,11 +196,7 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
     cloneRepuesto.estado = cloneRepuesto.estado ? false : true;
     this.service.setStatus(cloneRepuesto).subscribe((response: HttpResponse<any>) => {
       if(response?.status == 200) {
-        if(this.busqueda.estado == '2') {
-          repuesto.estado = cloneRepuesto.estado;
-        } else {
-          this.data = this.data.filter(oldRepuesto => oldRepuesto.id != repuesto.id);
-        }
+        this.data = this.data.filter(oldRepuesto => oldRepuesto.id != repuesto.id);
         this.sharedService.showMessage(response.body.result);
       }
     });

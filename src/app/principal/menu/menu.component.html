@@ -1,10 +1,12 @@
 <div class="principal-container es-mobile">
   <mat-toolbar color="primary" class="principal-toolbar">
-    <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
     <div class="w-100 d-flex">
-      <h1 (click)="principal()" class="cursor-point">{{ menuBar.title }}</h1>
-      <span class="ml-auto"></span>
-      <input *ngIf="visible" #input (keyup.enter)="search(input.value)" placeholder="Ingrese código o modelo" type="text" class="input-search" />
+      <ng-container *ngIf="!isMobile || !visible">
+        <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
+        <h1 (click)="principal()" class="cursor-point mr-auto">{{ menuBar.title }}</h1>
+      </ng-container>
+      <input *ngIf="visible" #input (keyup.enter)="search(input.value)" placeholder="Ingrese código o modelo" type="text" class="input-search" 
+        [class.wmobile]="isMobile && visible"/>
       <a mat-icon-button (click)="visible=!visible" class="not-hover"><mat-icon>search</mat-icon></a>
       <a *ngIf="menuBar.filterEvent" mat-icon-button (click)="menuBar.filterEvent()" class="not-hover"><mat-icon>filter_list</mat-icon></a>
       <a mat-icon-button [matMenuTriggerFor]="menu" class="not-hover"><mat-icon>more_vert</mat-icon></a>

@@ -10,6 +10,7 @@ import { menuBase, MenuBar, MenuItem } from '@models/menu';
   styleUrls: ['./menu.component.css']
 })
 export class MenuComponent {
+  isMobile: boolean = false;
   menuBar: MenuBar;
   menuItems: MenuItem[] = menuBase;
   visible: boolean = false;
@@ -20,6 +21,7 @@ export class MenuComponent {
     private sharedService: SharedService
   ) {
     sharedService.menuBar$.subscribe(menuBar => this.menuBar = menuBar);
+    sharedService.isMobile$.subscribe(isMobile => this.isMobile = isMobile);
   }
 
   logout() {

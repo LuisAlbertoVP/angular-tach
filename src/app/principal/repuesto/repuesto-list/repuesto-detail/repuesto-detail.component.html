@@ -7,7 +7,7 @@
         <mat-form-field class="w-100" appearance="outline">
           <mat-label>Código</mat-label>
           <input matInput formControlName="codigo" placeholder="Ingrese un codigo" required />
-          <mat-icon matSuffix>money_icon</mat-icon>
+          <mat-icon matSuffix>pin</mat-icon>
           <mat-error *ngIf="form.get('codigo').hasError('required')">Código requerido</mat-error>
         </mat-form-field>
         <ng-container formGroupName="categoria">

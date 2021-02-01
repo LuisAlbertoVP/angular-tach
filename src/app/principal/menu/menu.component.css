@@ -20,6 +20,12 @@
 .not-hover:hover * { 
   color: rgb(203, 217, 236); 
 }
+.mr-auto {
+  margin-right: auto;
+}
+.wmobile {
+  width: 100%;
+}
 .input-search { 
   font-size: 14px; 
   padding: 0px 15px; 

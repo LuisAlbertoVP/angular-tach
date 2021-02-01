@@ -33,6 +33,7 @@ export class ProveedorListComponent implements OnInit, AfterViewInit {
   data: Proveedor[] = [];
   expandedElement: Proveedor = null;
   isLoadingResults: boolean = true;
+  isMobile: boolean = false;
   isRateLimitReached: boolean = false;
   resultsLength: number = 0;
 
@@ -44,6 +45,7 @@ export class ProveedorListComponent implements OnInit, AfterViewInit {
     private sharedService: SharedService
   ) { 
     sharedService.buildMenuBar({ title: 'Proveedores', filterEvent: () => this.openFilter() });
+    sharedService.isMobile$.subscribe(isMobile => this.isMobile = isMobile);
   }
 
   get newBusqueda() {
@@ -123,7 +125,7 @@ export class ProveedorListComponent implements OnInit, AfterViewInit {
   openConfirmation(proveedor: Proveedor) {
     const dialogRef = this.dialog.open(ConfirmacionComponent, {
       width: '360px', autoFocus: false, disableClose: true, 
-      data: '¿Está seguro de que desea eliminar este proveedor?'
+      data: '¿Está seguro de que desea eliminar definitivamente este proveedor?'
     });
     dialogRef.afterClosed().subscribe(result => {
       return result ? this.delete(proveedor) : this.sharedService.showMessage('No se han aplicado los cambios');
@@ -159,11 +161,7 @@ export class ProveedorListComponent implements OnInit, AfterViewInit {
     cloneProveedor.estado = cloneProveedor.estado ? false : true;
     this.service.setStatus(cloneProveedor).subscribe((response: HttpResponse<any>) => {
       if(response?.status == 200) {
-        if(this.busqueda.estado == '2') {
-          proveedor.estado = cloneProveedor.estado;
-        } else {
-          this.data = this.data.filter(oldProveedor => oldProveedor.id != proveedor.id);
-        }
+        this.data = this.data.filter(oldProveedor => oldProveedor.id != proveedor.id);
         this.sharedService.showMessage(response.body.result);
       }
     });

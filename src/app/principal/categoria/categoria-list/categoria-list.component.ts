@@ -33,6 +33,7 @@ export class CategoriaListComponent implements OnInit, AfterViewInit {
   data: Base[] = [];
   expandedElement: Base = null;
   isLoadingResults: boolean = true;
+  isMobile: boolean = false;
   isRateLimitReached: boolean = false;
   resultsLength: number = 0;
 
@@ -44,6 +45,7 @@ export class CategoriaListComponent implements OnInit, AfterViewInit {
     private sharedService: SharedService
   ) { 
     sharedService.buildMenuBar({ title: 'Categorías', filterEvent: () => this.openFilter() });
+    sharedService.isMobile$.subscribe(isMobile => this.isMobile = isMobile);
   }
 
   ngOnInit(): void {
@@ -103,21 +105,6 @@ export class CategoriaListComponent implements OnInit, AfterViewInit {
     ).subscribe(data => this.data = data);
   }
 
-  updateEstado(categoria: Base) {
-    const cloneCategoria = Object.assign({}, categoria);
-    cloneCategoria.estado = cloneCategoria.estado ? false : true;
-    this.service.setStatus(cloneCategoria).subscribe((response: HttpResponse<any>) => {
-      if(response?.status == 200) {
-        if(this.busqueda.estado == '2') {
-          categoria.estado = cloneCategoria.estado;
-        } else {
-          this.data = this.data.filter(oldCategoria => oldCategoria.id != categoria.id);
-        }
-        this.sharedService.showMessage(response.body.result);
-      }
-    });
-  }
-
   delete(categoria: Base) {
     this.service.delete(categoria).subscribe((response: HttpResponse<any>) => {
       if(response?.status == 200) {
@@ -138,7 +125,7 @@ export class CategoriaListComponent implements OnInit, AfterViewInit {
   openConfirmation(categoria: Base) {
     const dialogRef = this.dialog.open(ConfirmacionComponent, {
       width: '360px', autoFocus: false, disableClose: true, 
-      data: '¿Está seguro de que desea eliminar esta categoría?'
+      data: '¿Está seguro de que desea eliminar definitivamente esta categoría?'
     });
     dialogRef.afterClosed().subscribe(result => {
       return result ? this.delete(categoria) : this.sharedService.showMessage('No se han aplicado los cambios');
@@ -167,6 +154,17 @@ export class CategoriaListComponent implements OnInit, AfterViewInit {
     const busqueda: Busqueda = BusquedaBuilder.BuildBase();
     busqueda.estado = this.busqueda.estado;
     this.navigateToPrincipal(busqueda);
+  }
+
+  updateEstado(categoria: Base) {
+    const cloneCategoria = Object.assign({}, categoria);
+    cloneCategoria.estado = cloneCategoria.estado ? false : true;
+    this.service.setStatus(cloneCategoria).subscribe((response: HttpResponse<any>) => {
+      if(response?.status == 200) {
+        this.data = this.data.filter(oldCategoria => oldCategoria.id != categoria.id);
+        this.sharedService.showMessage(response.body.result);
+      }
+    });
   }
 
   initSearch = () => this.criterio.next();

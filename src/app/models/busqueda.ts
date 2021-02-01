@@ -27,26 +27,26 @@ export interface Busqueda {
 const busquedaBase: Busqueda = {
   filtros: [
     { id: "Descripcion", nombre: "Descripción" },
-    { id: "FechaIngreso", nombre: "Fecha de ingreso", esFecha: true },
-    { id: "FechaModificacion", nombre: "Fecha de modificación", esFecha: true }
-  ], estado: '2', operadorLogico: '&&'
+    { id: "FechaIngreso", nombre: "Ingreso", esFecha: true },
+    { id: "FechaModificacion", nombre: "Modificación", esFecha: true }
+  ], estado: '1', operadorLogico: '&&'
 };
 
 const busquedaUsuario: Busqueda = {
   filtros: [
     { id: "Nombres", nombre: "Nombres" },
-    { id: "NombreUsuario", nombre: "Nombre de usuario" },
+    { id: "NombreUsuario", nombre: "Usuario" },
     { id: "Telefono", nombre: "Teléfono" },    
     { id: "Celular", nombre: "Celular" },
     { id: "Correo", nombre: "Correo" },
     { id: "Cedula", nombre: "Cedula" },
     { id: "Direccion", nombre: "Dirección" },
-    { id: "FechaNacimiento", nombre: "Fecha de nacimiento", esFecha: true },
-    { id: "FechaContratacion", nombre: "Fecha de contratación", esFecha: true },
+    { id: "FechaNacimiento", nombre: "Nacimiento", esFecha: true },
+    { id: "FechaContratacion", nombre: "Contratación", esFecha: true },
     { id: "Salario", nombre: "Salario" },
-    { id: "FechaIngreso", nombre: "Fecha de ingreso", esFecha: true },
-    { id: "FechaModificacion", nombre: "Fecha de modificación", esFecha: true }
-  ], estado: '2', operadorLogico: '&&'
+    { id: "FechaIngreso", nombre: "Ingreso", esFecha: true },
+    { id: "FechaModificacion", nombre: "Modificación", esFecha: true }
+  ], estado: '1', operadorLogico: '&&'
 };
 
 const busquedaRepuesto: Busqueda = {
@@ -60,9 +60,9 @@ const busquedaRepuesto: Busqueda = {
     { id: "Stock", nombre: "Cantidad" },
     { id: "Precio", nombre: "Precio" },
     { id: "Descripcion", nombre: "Descripción" },
-    { id: "FechaIngreso", nombre: "Fecha de ingreso", esFecha: true },
-    { id: "FechaModificacion", nombre: "Fecha de modificación", esFecha: true }
-  ], estado: '2', operadorLogico: '&&'
+    { id: "FechaIngreso", nombre: "Ingreso", esFecha: true },
+    { id: "FechaModificacion", nombre: "Modificación", esFecha: true }
+  ], estado: '1', operadorLogico: '&&'
 };
 
 const busquedaProveedor: Busqueda = {
@@ -71,13 +71,13 @@ const busquedaProveedor: Busqueda = {
     { id: "Convenio", nombre: "Convenio" },
     { id: "Telefono", nombre: "Teléfono" },
     { id: "Direccion", nombre: "Dirección" },
-    { id: "TipoProveedor", nombre: "Tipo de proveedor" },
+    { id: "TipoProveedor", nombre: "Tipo" },
     { id: "Contacto", nombre: "Contacto" },
-    { id: "TelefonoContacto", nombre: "Teléfono de contacto" },
-    { id: "CorreoContacto", nombre: "Correo de contacto" },
-    { id: "FechaIngreso", nombre: "Fecha de ingreso", esFecha: true },
-    { id: "FechaModificacion", nombre: "Fecha de modificación", esFecha: true }
-  ], estado: '2', operadorLogico: '&&'
+    { id: "TelefonoContacto", nombre: "Teléfono" },
+    { id: "CorreoContacto", nombre: "Correo" },
+    { id: "FechaIngreso", nombre: "Ingreso", esFecha: true },
+    { id: "FechaModificacion", nombre: "Modificación", esFecha: true }
+  ], estado: '1', operadorLogico: '&&'
 };
 
 export class BusquedaBuilder {

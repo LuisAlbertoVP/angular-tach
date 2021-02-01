@@ -11,6 +11,9 @@ tr.element-row:not(.expanded-row):active {
   overflow: auto; 
   max-height: 445px; 
 }
+.isMobile {
+  max-height: 345px;
+}
 .element-row td { 
   border-bottom-width: 0; 
 }

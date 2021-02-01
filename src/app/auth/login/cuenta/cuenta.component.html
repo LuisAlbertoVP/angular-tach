@@ -11,14 +11,14 @@
       <mat-form-field class="w-100" appearance="outline">
         <mat-label>Cedula</mat-label>
         <input formControlName="cedula" matInput #cedula maxlength="10" placeholder="Ingrese cedula" type="text" required />
-        <mat-icon matSuffix>perm_identity</mat-icon>
+        <mat-icon matSuffix>badge</mat-icon>
           <mat-hint align="end">{{ cedula.value?.length }} / 10</mat-hint>
         <mat-error *ngIf="form.get('cedula').hasError('required')">Cedula es requerida</mat-error>
         <mat-error *ngIf="form.get('cedula').hasError('pattern')">Cedula debe tener 10 dígitos</mat-error>
       </mat-form-field>
       <mat-form-field class="w-100" appearance="outline">
         <mat-label>Correo</mat-label>
-        <input formControlName="correo" matInput placeholder="Ingrese correo" type="text" required />
+        <input formControlName="correo" matInput placeholder="Ingrese correo" type="email" required />
         <mat-icon matSuffix>mail</mat-icon>
         <mat-error *ngIf="form.get('correo').hasError('required')">Correo es requerido</mat-error>
         <mat-error *ngIf="form.get('correo').hasError('pattern')">Ingrese una dirección de correo válida</mat-error>
@@ -50,7 +50,7 @@
       </mat-form-field>
       <mat-form-field class="w-100" appearance="outline">
         <mat-label>Usuario</mat-label>
-        <input formControlName="nombreUsuario" matInput placeholder="Ingrese usuario" type="text" required />
+        <input formControlName="nombreUsuario" matInput placeholder="Ingrese usuario" type="text" required autocapitalize="none" />
         <mat-icon matSuffix>person</mat-icon>
         <mat-error *ngIf="form.get('nombreUsuario').hasError('required')">Usuario es requerido</mat-error>
       </mat-form-field>

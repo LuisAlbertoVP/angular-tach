@@ -15,7 +15,7 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class CategoriaService {
-  readonly url: string = 'http://localhost:8080/api/categorias';
+  readonly url: string = 'http://192.168.1.126:8080/api/categorias';
   private handleError: HandleError;
 
   constructor(

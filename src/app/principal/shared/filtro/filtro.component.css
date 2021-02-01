@@ -9,7 +9,12 @@ h1 {
     align-items: center; 
 }
 .headers-align .mat-form-field + .mat-form-field { 
-    margin-left: 8px; 
+    margin-left: 10px; 
+}
+.headers-align .mat-expansion-panel-header-title {
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .content { 
     width: 90%; 

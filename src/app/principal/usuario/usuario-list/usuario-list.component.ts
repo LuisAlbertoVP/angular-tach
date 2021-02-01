@@ -27,12 +27,14 @@ export class UsuarioListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatRadioGroup) radio: MatRadioGroup;
   @ViewChild(MatSort) sort: MatSort;
-  readonly displayedColumns: string[] = ['opciones', 'Nombres', 'NombreUsuario', 'Telefono', 'Celular', 'Correo', 'accion'];
+  readonly mobileColumns: string[] = ['opciones', 'Nombres', 'NombreUsuario', 'accion'];
+  readonly normalColumns: string[] = ['opciones', 'Nombres', 'NombreUsuario', 'Telefono', 'Celular', 'Cedula', 'accion'];
   busqueda: Busqueda = BusquedaBuilder.BuildUsuario();
   criterio = new Subject();
   data: User[] = [];
   expandedElement: User = null;
   isLoadingResults: boolean = true;
+  isMobile: boolean = false;
   isRateLimitReached: boolean = false;
   resultsLength: number = 0;
 
@@ -44,6 +46,11 @@ export class UsuarioListComponent implements OnInit, AfterViewInit {
     private sharedService: SharedService
   ) {
     sharedService.buildMenuBar({ title: 'Usuarios', filterEvent: () => this.openFilter() });
+    sharedService.isMobile$.subscribe(isMobile => this.isMobile = isMobile);
+  }
+
+  get columns() {
+    return this.isMobile ? this.mobileColumns : this.normalColumns;
   }
 
   get newBusqueda() {
@@ -123,7 +130,7 @@ export class UsuarioListComponent implements OnInit, AfterViewInit {
   openConfirmation(user: User) {
     const dialogRef = this.dialog.open(ConfirmacionComponent, {
       width: '360px', autoFocus: false, disableClose: true, 
-      data: '¿Está seguro de que desea eliminar este usuario?'
+      data: '¿Está seguro de que desea eliminar definitivamente este usuario?'
     });
     dialogRef.afterClosed().subscribe(result => {
       return result ? this.delete(user) : this.sharedService.showMessage('No se han aplicado los cambios');
@@ -159,11 +166,7 @@ export class UsuarioListComponent implements OnInit, AfterViewInit {
     cloneUser.estado = cloneUser.estado ? false : true;
     this.service.setStatus(cloneUser).subscribe((response: HttpResponse<any>) => {
       if(response?.status == 200) {
-        if(this.busqueda.estado == '2') {
-          user.estado = cloneUser.estado;
-        } else {
-          this.data = this.data.filter(oldUser => oldUser.id != user.id);
-        }
+        this.data = this.data.filter(oldUser => oldUser.id != user.id);
         this.sharedService.showMessage(response.body.result);
       }
     });

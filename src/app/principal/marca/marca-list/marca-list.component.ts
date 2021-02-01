@@ -33,6 +33,7 @@ export class MarcaListComponent implements OnInit, AfterViewInit {
   data: Base[] = [];
   expandedElement: Base = null;
   isLoadingResults: boolean = true;
+  isMobile: boolean = false;
   isRateLimitReached: boolean = false;
   resultsLength: number = 0;
 
@@ -44,6 +45,7 @@ export class MarcaListComponent implements OnInit, AfterViewInit {
     private sharedService: SharedService
   ) { 
     sharedService.buildMenuBar({ title: 'Marcas', filterEvent: () => this.openFilter() });
+    sharedService.isMobile$.subscribe(isMobile => this.isMobile = isMobile);
   }
 
   get newBusqueda() {
@@ -123,7 +125,7 @@ export class MarcaListComponent implements OnInit, AfterViewInit {
   openConfirmation(marca: Base) {
     const dialogRef = this.dialog.open(ConfirmacionComponent, {
       width: '360px', autoFocus: false, disableClose: true, 
-      data: '¿Está seguro de que desea eliminar esta marca?'
+      data: '¿Está seguro de que desea eliminar definitivamente esta marca?'
     });
     dialogRef.afterClosed().subscribe(result => {
       return result ? this.delete(marca) : this.sharedService.showMessage('No se han aplicado los cambios');
@@ -159,11 +161,7 @@ export class MarcaListComponent implements OnInit, AfterViewInit {
     cloneMarca.estado = cloneMarca.estado ? false : true;
     this.service.setStatus(cloneMarca).subscribe((response: HttpResponse<any>) => {
       if(response?.status == 200) {
-        if(this.busqueda.estado == '2') {
-          marca.estado = cloneMarca.estado;
-        } else {
-          this.data = this.data.filter(oldMarca => oldMarca.id != marca.id);
-        }
+        this.data = this.data.filter(oldMarca => oldMarca.id != marca.id);
         this.sharedService.showMessage(response.body.result);
       }
     });
