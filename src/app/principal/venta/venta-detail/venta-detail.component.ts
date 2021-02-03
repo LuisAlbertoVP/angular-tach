@@ -74,10 +74,15 @@ export class VentaDetailComponent {
     dialogRef.afterClosed().subscribe(result => {
       if(result) {
         if(this.data.length > 0) {
+          let date: string = moment(this.fecha.value).format('YYYY-MM-DD');
+          let time: string = '00:00:00';
+          if(date == moment().format('YYYY-MM-DD')) {
+            time = moment().format('HH:mm:ss');
+          }
           const venta: Venta = { 
             id: uuid(), repuestos: this.mimifiedRepuestos(), cantidad: this.cantidad, total: this.total, 
             descripcion: this.descripcion.value, usuarioIngreso: this.auth.nombreUsuario, 
-            fechaIngreso: moment(this.fecha.value).format('YYYY-MM-DD')
+            fechaIngreso: moment(date + ' ' + time).format()
           };
           this.service.insertOrUpdate(venta).subscribe((response: HttpResponse<any>) => {
             if(response.status == 200) {
