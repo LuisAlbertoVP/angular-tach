@@ -1,31 +1,21 @@
-export interface AddEvent {
-  (url: string): void;
+export interface Modulo {
+  id: number;
+  descripcion?: string;
+  ruta?: string;
+  imagen?: string;
+  checked?: boolean;
 }
 
-export interface PrintEvent {
-  (url: string): void;
-}
-
-export interface MenuBar {
-  title: string;
-  filterEvent?: AddEvent;
-  printEvent?: PrintEvent;
-}
-
-export interface MenuItem {
-  nombre: string;
-  url?: string;
-}
-
-export const menuBase: MenuItem[] = [
-  { nombre: 'Compras', url: '/principal/compras' },
-  { nombre: 'Ventas', url: '/principal/ventas' },
-  { nombre: 'divider' },
-  { nombre: 'Categorías', url: '/principal/categorias' },
-  { nombre: 'Marcas', url: '/principal/marcas' },
-  { nombre: 'Proveedores', url: '/principal/proveedores' },
-  { nombre: 'Repuestos', url: '/principal/repuestos' },
-  { nombre: 'divider' },
-  { nombre: 'Roles', url: '/principal/roles' },
-  { nombre: 'Usuarios', url: '/principal/usuarios' }
+export const listModulos: Modulo[] = [
+  { id: 1, descripcion: 'Categorías', ruta: '/principal/categorias', imagen: 'categoria.png' },
+  { id: 2, descripcion: 'Compras', ruta: '/principal/compras', imagen: 'compra.png' },
+  { id: 0, descripcion: 'Cuenta', ruta: '/principal/cuenta', imagen: 'cuenta.png' },
+  { id: 3, descripcion: 'Marcas', ruta: '/principal/marcas', imagen: 'marca.png' },
+  { id: 4, descripcion: 'Proveedores', ruta: '/principal/proveedores', imagen: 'proveedor.png' },
+  { id: 5, descripcion: 'Repuestos', ruta: '/principal/repuestos', imagen: 'repuesto.png' },
+  { id: 6, descripcion: 'Usuarios', ruta: '/principal/usuarios', imagen: 'usuario.png' },
+  { id: 0, descripcion: 'Reportes', ruta: '/principal/reporte', imagen: 'reporte.png' },
+  { id: 7, descripcion: 'Roles', ruta: '/principal/roles', imagen: 'rol.png' },
+  { id: 0, descripcion: 'Sistema', ruta: '/principal/sistema', imagen: 'sistema.png' },
+  { id: 8, descripcion: 'Ventas', ruta: '/principal/ventas', imagen: 'venta.png' }
 ];

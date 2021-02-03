@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '@auth_service/*';
-import { User } from '@models/auth';
+import { User } from '@models/entity';
 import { HttpResponse } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { CuentaComponent } from './cuenta/cuenta.component';

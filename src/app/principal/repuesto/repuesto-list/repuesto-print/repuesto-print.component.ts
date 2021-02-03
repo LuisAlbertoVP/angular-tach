@@ -2,7 +2,7 @@ import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Busqueda } from '@models/busqueda';
-import { Repuesto, Repuestos } from '@models/tach';
+import { Repuesto, Table } from '@models/entity';
 import { PrintingService } from '@print_service/*';
 import { RepuestoService }  from '../../repuesto.service';
 
@@ -27,7 +27,7 @@ export class RepuestoPrintComponent implements OnInit {
       this.service.getAll(busqueda).subscribe(repuestos => {
         busqueda.filtros = busqueda.filtros.filter(filtro => filtro.id != 'Id');
         this.busqueda = busqueda;
-        this.repuestos = (repuestos as HttpResponse<Repuestos>).body.data;
+        this.repuestos = (repuestos as HttpResponse<Table<Repuesto>>).body.data;
         this.printing.dataOnLoad();
       });
     });

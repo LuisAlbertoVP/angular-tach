@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Base } from '@models/tach';
+import { Marca } from '@models/entity';
 import { SharedService } from '@shared_service/shared';
 import { AuthService } from '@auth_service/*';
 import { MarcaService } from '../../marca.service';
@@ -21,7 +21,7 @@ export class MarcaDetailComponent implements OnInit {
   isMobile: boolean = false;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public marca: Base,
+    @Inject(MAT_DIALOG_DATA) public marca: Marca,
     private auth: AuthService,
     private dialogRef: MatDialogRef<MarcaDetailComponent>,
     private fb: FormBuilder,

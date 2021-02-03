@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Base } from '@models/tach';
+import { Categoria } from '@models/entity';
 import { SharedService } from '@shared_service/shared';
 import { AuthService } from '@auth_service/*';
 import { CategoriaService } from '../../categoria.service';
@@ -21,7 +21,7 @@ export class CategoriaDetailComponent implements OnInit {
   isMobile: boolean = false;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public categoria: Base,
+    @Inject(MAT_DIALOG_DATA) public categoria: Categoria,
     private auth: AuthService,
     private dialogRef: MatDialogRef<CategoriaDetailComponent>,
     private fb: FormBuilder,

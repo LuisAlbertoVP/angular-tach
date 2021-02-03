@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '@auth_service/*';
 import { SharedService } from '@shared_service/*';
-import { menuBase, MenuBar, MenuItem } from '@models/menu';
+import { menuBase, MenuBar, MenuItem } from '@models/menu-bar';
 
 @Component({
   selector: 'app-menu',

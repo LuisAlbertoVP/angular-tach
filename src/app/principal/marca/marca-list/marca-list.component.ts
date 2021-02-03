@@ -5,7 +5,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { SharedService } from '@shared_service/shared';
 import { MarcaService }  from '../marca.service';
-import { Base, Bases } from '@models/tach';
+import { Marca, Table } from '@models/entity';
 import { Busqueda, BusquedaBuilder } from '@models/busqueda';
 import { HttpResponse } from '@angular/common/http';
 import { merge, of as observableOf, Subject } from 'rxjs';
@@ -30,8 +30,8 @@ export class MarcaListComponent implements OnInit, AfterViewInit {
   readonly displayedColumns: string[] = ['opciones', 'Descripcion', 'Repuestos.Count', 'accion'];
   busqueda: Busqueda = BusquedaBuilder.BuildBase();
   criterio = new Subject();
-  data: Base[] = [];
-  expandedElement: Base = null;
+  data: Marca[] = [];
+  expandedElement: Marca = null;
   isLoadingResults: boolean = true;
   isMobile: boolean = false;
   isRateLimitReached: boolean = false;
@@ -92,7 +92,7 @@ export class MarcaListComponent implements OnInit, AfterViewInit {
         this.isLoadingResults = true;
         return this.service.getAll(this.newBusqueda);
       }), map(data => {
-        const marcas: Bases = (data as HttpResponse<Bases>).body;
+        const marcas: Table<Marca> = (data as HttpResponse<Table<Marca>>).body;
         this.isLoadingResults = false;
         this.isRateLimitReached = false;
         this.resultsLength = marcas.total;
@@ -105,7 +105,7 @@ export class MarcaListComponent implements OnInit, AfterViewInit {
     ).subscribe(data => this.data = data);
   }
 
-  delete(marca: Base) {
+  delete(marca: Marca) {
     this.service.delete(marca).subscribe((response: HttpResponse<any>) => {
       if(response?.status == 200) {
         this.data = this.data.filter(oldMarca => oldMarca.id != marca.id);
@@ -122,7 +122,7 @@ export class MarcaListComponent implements OnInit, AfterViewInit {
     this.router.navigate(['/principal/marcas'], extras);
   }
 
-  openConfirmation(marca: Base) {
+  openConfirmation(marca: Marca) {
     const dialogRef = this.dialog.open(ConfirmacionComponent, {
       width: '360px', autoFocus: false, disableClose: true, 
       data: '¿Está seguro de que desea eliminar definitivamente esta marca?'
@@ -143,7 +143,7 @@ export class MarcaListComponent implements OnInit, AfterViewInit {
     });
   }
 
-  openForm(marca?: Base) {
+  openForm(marca?: Marca) {
     const dialogRef = this.dialog.open(MarcaDetailComponent, {
       width: '520px', autoFocus: false, disableClose: true, data: marca
     });
@@ -156,7 +156,7 @@ export class MarcaListComponent implements OnInit, AfterViewInit {
     this.navigateToPrincipal(busqueda);
   }
 
-  updateEstado(marca: Base) {
+  updateEstado(marca: Marca) {
     const cloneMarca = Object.assign({}, marca);
     cloneMarca.estado = cloneMarca.estado ? false : true;
     this.service.setStatus(cloneMarca).subscribe((response: HttpResponse<any>) => {

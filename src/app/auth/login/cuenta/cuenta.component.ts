@@ -3,7 +3,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, Validators } from '@angular/forms';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { AuthService } from '@auth_service/*';
-import { User } from '@models/auth';
+import { User } from '@models/entity';
 import { HttpResponse } from '@angular/common/http';
 import { SHA256 } from 'crypto-js';
 import { v4 as uuid } from 'uuid';

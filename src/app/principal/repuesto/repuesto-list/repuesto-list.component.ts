@@ -5,7 +5,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { SharedService } from '@shared_service/shared';
 import { RepuestoService }  from '../repuesto.service';
-import { Repuesto, Repuestos } from '@models/tach';
+import { Repuesto, Table } from '@models/entity';
 import { Busqueda, BusquedaBuilder } from '@models/busqueda';
 import { HttpResponse } from '@angular/common/http';
 import { merge, of as observableOf, Subject } from 'rxjs';
@@ -114,7 +114,7 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
         this.isLoadingResults = true;  
         return this.service.getAll(this.newBusqueda);
       }), map(data => {
-        const repuestos: Repuestos = (data as HttpResponse<Repuestos>).body;
+        const repuestos: Table<Repuesto> = (data as HttpResponse<Table<Repuesto>>).body;
         this.isLoadingResults = false;
         this.isRateLimitReached = false;
         this.resultsLength = repuestos.total;

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { User, Rol } from '@models/auth';
+import { User, Rol } from '@models/entity';
 
 @Injectable({
   providedIn: 'root'

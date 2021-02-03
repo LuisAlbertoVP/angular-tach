@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Busqueda, Filtro } from '@models/busqueda';
-import { MenuBar } from '@models/menu';
+import { MenuBar } from '@models/menu-bar';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({

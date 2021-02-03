@@ -1,8 +1,8 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { ReporteService } from '../reporte.service';
 import { Chart } from 'chart.js';
-import { Base } from '@models/tach';
-import { Reporte } from '@models/reporte';
+import { Categoria, Marca } from '@models/entity';
+import { Reporte } from '@models/form';
 
 @Component({
   selector: 'app-reporte-detail',
@@ -31,10 +31,9 @@ export class ReporteDetailComponent implements OnDestroy, AfterViewInit {
     });
   }
 
-  private buildColors(array: Base[]) {
-    let background = [];
-    let borders = [];
-    for(let i = 0; i < array.length; i++) {
+  private buildColors(length: number) {
+    let background = [], borders = [];
+    for(let i = 0; i < length; i++) {
       let o = Math.round, random = Math.random, s = 255;
       let r = o(random()*s), g = o(random()*s), b = o(random()*s);
       background.push('rgba(' +r + ',' + g + ',' + b + ',' + 0.2 + ')');
@@ -43,15 +42,16 @@ export class ReporteDetailComponent implements OnDestroy, AfterViewInit {
     return { background: background, borders: borders };
   }
 
-  private buildPieChart(ctx: ElementRef<HTMLCanvasElement>, id: string, array: Base[]) {
-    let colors = this.buildColors(array);
+  private buildPieChart(ctx: ElementRef<HTMLCanvasElement>, id: string, entity: Categoria[] | Marca[]) {
+
+    let colors = this.buildColors(entity.length);
     this.chart = new Chart(ctx.nativeElement.getContext('2d'), {
       type: 'horizontalBar',
       data: {
-        labels: array.map(base => base.descripcion),
+        labels: entity.map(base => base.descripcion),
         datasets: [{
           label: id,
-          data: array.map(base => base.stock),
+          data: entity.map(base => base.stock),
           backgroundColor: colors.background,
           borderColor: colors.borders,
           borderWidth: 1

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
-import { Base, Bases } from '@models/tach';
+import { Marca, Table } from '@models/entity';
 import { Busqueda } from '@models/busqueda';
 import { HttpErrorHandlerService, HandleError } from '../../http-error-handler.service';
 
@@ -26,14 +26,14 @@ export class MarcaService {
   }
 
   getAll = (busqueda: Busqueda) => this.http.post(`${this.url}/all`, busqueda, httpOptions)
-      .pipe(catchError(this.handleError<Bases>('getAll')));
+      .pipe(catchError(this.handleError<Table<Marca>>('getAll')));
 
-  insertOrUpdate = (marca: Base) => this.http.post(this.url, marca, httpOptions)
+  insertOrUpdate = (marca: Marca) => this.http.post(this.url, marca, httpOptions)
       .pipe(catchError(this.handleError('insertOrUpdate', marca)));
 
-  setStatus = (marca: Base) => this.http.post(`${this.url}/${marca.id}/status`, marca, httpOptions)
+  setStatus = (marca: Marca) => this.http.post(`${this.url}/${marca.id}/status`, marca, httpOptions)
       .pipe(catchError(this.handleError('setStatus', marca)));
 
-  delete = (marca: Base) => this.http.post(`${this.url}/${marca.id}/delete`, marca, httpOptions)
+  delete = (marca: Marca) => this.http.post(`${this.url}/${marca.id}/delete`, marca, httpOptions)
       .pipe(catchError(this.handleError('delete', marca)));
 }

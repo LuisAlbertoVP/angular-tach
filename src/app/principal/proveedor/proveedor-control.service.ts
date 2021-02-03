@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Proveedor } from '@models/tach';
+import { Proveedor } from '@models/entity';
 
 @Injectable({
   providedIn: 'root'

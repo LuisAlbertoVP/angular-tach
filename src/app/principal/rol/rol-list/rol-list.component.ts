@@ -5,7 +5,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { SharedService } from '@shared_service/shared';
 import { RolService }  from '../rol.service';
-import { Rol, Roles } from '@models/auth';
+import { Rol, Table } from '@models/entity';
 import { Busqueda, BusquedaBuilder } from '@models/busqueda';
 import { HttpResponse } from '@angular/common/http';
 import { merge, of as observableOf, Subject } from 'rxjs';
@@ -92,7 +92,7 @@ export class RolListComponent implements OnInit, AfterViewInit {
         this.isLoadingResults = true;
         return this.service.getAll(this.newBusqueda);
       }), map(data => {
-        const roles: Roles = (data as HttpResponse<Roles>).body;
+        const roles: Table<Rol> = (data as HttpResponse<Table<Rol>>).body;
         this.isLoadingResults = false;
         this.isRateLimitReached = false;
         this.resultsLength = roles.total;

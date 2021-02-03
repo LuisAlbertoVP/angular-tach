@@ -1,8 +1,9 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { FormBuilder, Validators } from '@angular/forms';
-import { listModulos } from '@models/modulos';
-import { Modulo, Rol } from '@models/auth';
+import { listModulos } from '@models/menu';
+import { Modulo } from '@models/menu';
+import { Rol } from '@models/entity';
 import { SharedService } from '@shared_service/shared';
 import { AuthService } from '@auth_service/*';
 import { RolService } from '../../rol.service';

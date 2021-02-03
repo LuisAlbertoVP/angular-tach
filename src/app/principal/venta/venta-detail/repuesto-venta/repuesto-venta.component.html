@@ -1,0 +1,32 @@
+<div>
+  <h2 mat-dialog-title class="text-center blue">Agregar Repuesto</h2>
+  <mat-dialog-content class="mat-typography">
+    <div class="m0-auto" [style.width]="isMobile ? '250px' : '325px'">
+      <mat-form-field appearance="fill" style="width: 90%;">
+        <mat-label>Código</mat-label>
+        <input matInput placeholder="Ingrese código del repuesto" #search />
+      </mat-form-field>
+      <button mat-icon-button color="primary" (click)="buscar(search.value)"  style="width: 10%;"><mat-icon>find_replace</mat-icon></button>
+      <ul class="list-unstyled">
+        <li class="d-flex"><span class="bold">Código</span><span class="ml-auto">{{ repuesto?.codigo }}</span></li>
+        <li class="d-flex"><span class="bold">Categoría</span><span class="ml-auto">{{ repuesto?.categoria?.descripcion }}</span></li>
+        <li class="d-flex"><span class="bold">Marca</span><span class="ml-auto">{{ repuesto?.marca?.descripcion }}</span></li>
+        <li class="d-flex"><span class="bold">Modelo</span><span class="ml-auto">{{ repuesto?.modelo }}</span></li>
+        <li class="d-flex"><span class="bold">Año</span><span class="ml-auto">{{ repuesto?.epoca }}</span></li>
+        <li class="d-flex"><span class="bold">Precio</span><span class="ml-auto">{{ repuesto?.precio }}</span></li>
+      </ul>
+      <div class="text-center">
+        <mat-form-field appearance="outline">
+          <mat-label>Cantidad</mat-label>
+          <input matInput [formControl]="cantidad" placeholder="Ingrese cantidad" type="number" required />
+          <mat-error *ngIf="cantidad.hasError('required')">Cantidad es requerida</mat-error>
+          <mat-error *ngIf="cantidad.hasError('min')">La cantidad debe ser mayor a 0</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions class="d-flex justify-content-around">
+    <button mat-raised-button mat-dialog-close type="button">Cancelar</button>
+    <button mat-raised-button color="primary" (click)="guardar()" type="button">Agregar</button>
+  </mat-dialog-actions>
+</div>

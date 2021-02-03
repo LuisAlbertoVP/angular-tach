@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { FormGroup } from '@angular/forms';
-import { Repuesto, Base } from '@models/tach';
+import { Categoria, Marca, Repuesto } from '@models/entity';
 import { SharedService } from '@shared_service/shared';
 import { AuthService } from '@auth_service/*';
 import { RepuestoService } from '../../repuesto.service';
@@ -16,10 +16,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styles: ['.h160 { height: 160px; }']
 })
 export class RepuestoDetailComponent implements OnInit {
-  categorias: Base[] = [];
+  categorias: Categoria[] = [];
   form: FormGroup;
   isMobile: boolean = false;
-  marcas: Base[] = [];
+  marcas: Marca[] = [];
   
   constructor(
     @Inject(MAT_DIALOG_DATA) public repuesto: Repuesto,

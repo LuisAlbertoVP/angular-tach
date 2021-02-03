@@ -3,7 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { Repuesto, RepuestoForm, Repuestos } from '@models/tach';
+import { Repuesto, Table } from '@models/entity';
+import { RepuestoForm } from '@models/form';
 import { Busqueda } from '@models/busqueda';
 import { HttpErrorHandlerService, HandleError } from '../../http-error-handler.service';
 
@@ -27,7 +28,7 @@ export class RepuestoService {
   }
 
   getAll = (busqueda: Busqueda) => this.http.post(`${this.url}/all`, busqueda, httpOptions)
-      .pipe(catchError(this.handleError<Repuestos>('getAll')));
+      .pipe(catchError(this.handleError<Table<Repuesto>>('getAll')));
 
   getForm = (): Observable<RepuestoForm> => this.http.get<RepuestoForm>(`${this.url}/form`)
       .pipe(catchError(this.handleError<RepuestoForm>('getForm')));

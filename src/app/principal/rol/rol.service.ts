@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
-import { Rol, Roles } from '@models/auth';
+import { Rol, Table } from '@models/entity';
 import { Busqueda } from '@models/busqueda';
 import { HttpErrorHandlerService, HandleError } from '../../http-error-handler.service';
 
@@ -26,7 +26,7 @@ export class RolService {
   }
 
   getAll = (busqueda: Busqueda) => this.http.post(`${this.url}/all`, busqueda, httpOptions)
-      .pipe(catchError(this.handleError<Roles>('getAll')));
+      .pipe(catchError(this.handleError<Table<Rol>>('getAll')));
 
   insertOrUpdate = (rol: Rol) => this.http.post(this.url, rol, httpOptions)
       .pipe(catchError(this.handleError('insertOrUpdate', rol)));

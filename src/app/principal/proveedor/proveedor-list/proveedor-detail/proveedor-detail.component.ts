@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { FormGroup } from '@angular/forms';
-import { Proveedor } from '@models/tach';
+import { Proveedor } from '@models/entity';
 import { SharedService } from '@shared_service/shared';
 import { AuthService } from '@auth_service/*';
 import { ProveedorService } from '../../proveedor.service';

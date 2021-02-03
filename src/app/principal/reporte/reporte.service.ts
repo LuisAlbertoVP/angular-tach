@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { Reporte } from '@models/reporte';
+import { Reporte } from '@models/form';
 import { HttpErrorHandlerService, HandleError } from '../../http-error-handler.service';
 
 const httpOptions = {

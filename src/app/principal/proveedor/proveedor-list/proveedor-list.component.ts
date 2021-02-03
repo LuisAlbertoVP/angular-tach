@@ -5,7 +5,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { SharedService } from '@shared_service/shared';
 import { ProveedorService }  from '../proveedor.service';
-import { Proveedor, Proveedores } from '@models/tach';
+import { Proveedor, Table } from '@models/entity';
 import { Busqueda, BusquedaBuilder } from '@models/busqueda';
 import { HttpResponse } from '@angular/common/http';
 import { merge, of as observableOf, Subject } from 'rxjs';
@@ -92,7 +92,7 @@ export class ProveedorListComponent implements OnInit, AfterViewInit {
         this.isLoadingResults = true;
         return this.service.getAll(this.newBusqueda);
       }), map(data => {
-        const proveedores: Proveedores = (data as HttpResponse<Proveedores>).body;
+        const proveedores: Table<Proveedor> = (data as HttpResponse<Table<Proveedor>>).body;
         this.isLoadingResults = false;
         this.isRateLimitReached = false;
         this.resultsLength = proveedores.total;

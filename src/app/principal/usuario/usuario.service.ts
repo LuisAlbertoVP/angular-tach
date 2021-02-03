@@ -3,7 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { User, UserForm, Users } from '@models/auth';
+import { User, Table } from '@models/entity';
+import { UserForm } from '@models/form';
 import { Busqueda } from '@models/busqueda';
 import { HttpErrorHandlerService, HandleError } from '../../http-error-handler.service';
 
@@ -27,7 +28,7 @@ export class UsuarioService {
   }
 
   getAll = (busqueda: Busqueda) => this.http.post(`${this.url}/all`, busqueda, httpOptions)
-      .pipe(catchError(this.handleError<Users>('getAll')));
+      .pipe(catchError(this.handleError<Table<User>>('getAll')));
 
   getForm = (): Observable<UserForm> => this.http.get<UserForm>(`${this.url}/form`)
       .pipe(catchError(this.handleError<UserForm>('getForm')));

@@ -4,7 +4,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { HttpErrorHandlerService, HandleError } from '../http-error-handler.service';
-import { User } from '@models/auth';
+import { User } from '@models/entity';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type':  'application/json' }),

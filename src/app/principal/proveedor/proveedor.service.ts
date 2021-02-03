@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { Proveedor, Proveedores } from '@models/tach';
+import { Proveedor, Table } from '@models/entity';
 import { Busqueda } from '@models/busqueda';
 import { HttpErrorHandlerService, HandleError } from '../../http-error-handler.service';
 
@@ -27,7 +27,7 @@ export class ProveedorService {
   }
 
   getAll = (busqueda: Busqueda) => this.http.post(`${this.url}/all`, busqueda, httpOptions)
-      .pipe(catchError(this.handleError<Proveedores>('getAll')));
+      .pipe(catchError(this.handleError<Table<Proveedor>>('getAll')));
 
   getById = (id: string): Observable<Proveedor> => this.http.get<Proveedor>(`${this.url}/${id}`)
       .pipe(catchError(this.handleError<Proveedor>('getById')));

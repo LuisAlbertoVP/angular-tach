@@ -5,7 +5,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { SharedService } from '@shared_service/shared';
 import { UsuarioService }  from '../usuario.service';
-import { User, Users } from '@models/auth';
+import { User, Table } from '@models/entity';
 import { Busqueda, BusquedaBuilder } from '@models/busqueda';
 import { HttpResponse } from '@angular/common/http';
 import { merge, of as observableOf, Subject } from 'rxjs';
@@ -97,7 +97,7 @@ export class UsuarioListComponent implements OnInit, AfterViewInit {
         this.isLoadingResults = true;
         return this.service.getAll(this.newBusqueda);
       }), map(data => {
-        const usuarios: Users = (data as HttpResponse<Users>).body;
+        const usuarios: Table<User> = (data as HttpResponse<Table<User>>).body;
         this.isLoadingResults = false;
         this.isRateLimitReached = false;
         this.resultsLength = usuarios.total;

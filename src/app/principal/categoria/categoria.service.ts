@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
-import { Base, Bases } from '@models/tach';
+import { Categoria, Table } from '@models/entity';
 import { Busqueda } from '@models/busqueda';
 import { HttpErrorHandlerService, HandleError } from '../../http-error-handler.service';
 
@@ -26,14 +26,14 @@ export class CategoriaService {
   }
 
   getAll = (busqueda: Busqueda) => this.http.post(`${this.url}/all`, busqueda, httpOptions)
-      .pipe(catchError(this.handleError<Bases>('getAll')));
+      .pipe(catchError(this.handleError<Table<Categoria>>('getAll')));
 
-  insertOrUpdate = (categoria: Base) => this.http.post(this.url, categoria, httpOptions)
+  insertOrUpdate = (categoria: Categoria) => this.http.post(this.url, categoria, httpOptions)
       .pipe(catchError(this.handleError('insertOrUpdate', categoria)));
 
-  setStatus = (categoria: Base) => this.http.post(`${this.url}/${categoria.id}/status`, categoria, httpOptions)
+  setStatus = (categoria: Categoria) => this.http.post(`${this.url}/${categoria.id}/status`, categoria, httpOptions)
       .pipe(catchError(this.handleError('setStatus', categoria)));
 
-  delete = (categoria: Base) => this.http.post(`${this.url}/${categoria.id}/delete`, categoria, httpOptions)
+  delete = (categoria: Categoria) => this.http.post(`${this.url}/${categoria.id}/delete`, categoria, httpOptions)
       .pipe(catchError(this.handleError('delete', categoria)));
 }

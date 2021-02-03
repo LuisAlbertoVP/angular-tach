@@ -5,7 +5,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { SharedService } from '@shared_service/shared';
 import { CategoriaService }  from '../categoria.service';
-import { Base, Bases } from '@models/tach';
+import { Categoria, Table } from '@models/entity';
 import { Busqueda, BusquedaBuilder } from '@models/busqueda';
 import { HttpResponse } from '@angular/common/http';
 import { merge, of as observableOf, Subject } from 'rxjs';
@@ -30,8 +30,8 @@ export class CategoriaListComponent implements OnInit, AfterViewInit {
   readonly displayedColumns: string[] = ['opciones', 'Descripcion', 'Repuestos.Count', 'accion'];
   busqueda: Busqueda = BusquedaBuilder.BuildBase();
   criterio = new Subject();
-  data: Base[] = [];
-  expandedElement: Base = null;
+  data: Categoria[] = [];
+  expandedElement: Categoria = null;
   isLoadingResults: boolean = true;
   isMobile: boolean = false;
   isRateLimitReached: boolean = false;
@@ -92,7 +92,7 @@ export class CategoriaListComponent implements OnInit, AfterViewInit {
         this.isLoadingResults = true;
         return this.service.getAll(this.newBusqueda);
       }), map(data => {
-        const categorias: Bases = (data as HttpResponse<Bases>).body;
+        const categorias: Table<Categoria> = (data as HttpResponse<Table<Categoria>>).body;
         this.isLoadingResults = false;
         this.isRateLimitReached = false;
         this.resultsLength = categorias.total;
@@ -105,7 +105,7 @@ export class CategoriaListComponent implements OnInit, AfterViewInit {
     ).subscribe(data => this.data = data);
   }
 
-  delete(categoria: Base) {
+  delete(categoria: Categoria) {
     this.service.delete(categoria).subscribe((response: HttpResponse<any>) => {
       if(response?.status == 200) {
         this.data = this.data.filter(oldCategoria => oldCategoria.id != categoria.id);
@@ -122,7 +122,7 @@ export class CategoriaListComponent implements OnInit, AfterViewInit {
     this.router.navigate(['/principal/categorias'], extras);
   }
 
-  openConfirmation(categoria: Base) {
+  openConfirmation(categoria: Categoria) {
     const dialogRef = this.dialog.open(ConfirmacionComponent, {
       width: '360px', autoFocus: false, disableClose: true, 
       data: '¿Está seguro de que desea eliminar definitivamente esta categoría?'
@@ -143,7 +143,7 @@ export class CategoriaListComponent implements OnInit, AfterViewInit {
     });
   }
 
-  openForm(categoria?: Base) {
+  openForm(categoria?: Categoria) {
     const dialogRef = this.dialog.open(CategoriaDetailComponent, {
       width: '520px', autoFocus: false, disableClose: true, data: categoria
     });
@@ -156,7 +156,7 @@ export class CategoriaListComponent implements OnInit, AfterViewInit {
     this.navigateToPrincipal(busqueda);
   }
 
-  updateEstado(categoria: Base) {
+  updateEstado(categoria: Categoria) {
     const cloneCategoria = Object.assign({}, categoria);
     cloneCategoria.estado = cloneCategoria.estado ? false : true;
     this.service.setStatus(cloneCategoria).subscribe((response: HttpResponse<any>) => {
