@@ -1,4 +1,4 @@
-export interface AddEvent {
+export interface FilterEvent {
   (url: string): void;
 }
 
@@ -8,7 +8,7 @@ export interface PrintEvent {
 
 export interface MenuBar {
   title: string;
-  filterEvent?: AddEvent;
+  filterEvent?: FilterEvent;
   printEvent?: PrintEvent;
 }
 

@@ -62,7 +62,10 @@ export class VentaDetailComponent {
     this.descripcion.patchValue('');
   }
 
-  delete = (repuesto: Repuesto) => this.data = this.data.filter(r => r.id != repuesto.id);
+  delete(repuesto: Repuesto) {
+    this.data = this.data.filter(r => r.id != repuesto.id)
+    this.calcular();
+  }
 
   guardar() {
     const dialogRef = this.dialog.open(DialogConfirm, {
@@ -72,8 +75,9 @@ export class VentaDetailComponent {
       if(result) {
         if(this.data.length > 0) {
           const venta: Venta = { 
-            id: uuid(), repuestos: this.mimifiedRepuestos(), cantidad: this.cantidad, total: this.total, descripcion: 
-            this.descripcion.value, usuarioIngreso: this.auth.nombreUsuario, fechaIngreso: this.fecha.value
+            id: uuid(), repuestos: this.mimifiedRepuestos(), cantidad: this.cantidad, total: this.total, 
+            descripcion: this.descripcion.value, usuarioIngreso: this.auth.nombreUsuario, 
+            fechaIngreso: moment(this.fecha.value).format('YYYY-MM-DD')
           };
           this.service.insertOrUpdate(venta).subscribe((response: HttpResponse<any>) => {
             if(response.status == 200) {

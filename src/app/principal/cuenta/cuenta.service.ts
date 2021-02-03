@@ -1,21 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { HttpHeaders } from '@angular/common/http';
+import { httpOptions, urlCuenta } from '@models/http';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { User } from '@models/entity';
 import { HttpErrorHandlerService, HandleError } from '../../http-error-handler.service';
 
-const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-  observe: 'response' as const
-};
-
 @Injectable({
   providedIn: 'root'
 })
 export class CuentaService {
-  readonly url: string = 'http://192.168.1.126:8080/api/cuenta';
   private handleError: HandleError;
 
   constructor(
@@ -25,9 +19,9 @@ export class CuentaService {
     this.handleError = httpErrorHandler.createHandleError('CuentaService');
   }
 
-  getById = (id: string): Observable<User> => this.http.get<User>(`${this.url}/${id}`)
+  getById = (id: string): Observable<User> => this.http.get<User>(`${urlCuenta}/${id}`)
       .pipe(catchError(this.handleError<User>('getById')));
 
-  update = (user: User) => this.http.post(`${this.url}/update`, user, httpOptions)
+  update = (user: User) => this.http.post(`${urlCuenta}/update`, user, httpOptions)
       .pipe(catchError(this.handleError('update', user)));
 }

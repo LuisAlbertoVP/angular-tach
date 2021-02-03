@@ -19,10 +19,29 @@ export interface Categoria extends Entity {
   stock?: number;
 }
 
+export interface Cliente extends Person {
+  tipoCliente?: TipoCliente;
+}
+
+export interface Compra extends Transaccion {
+  proveedor?: Proveedor;
+}
+
 export interface Marca extends Entity {
   id?: string;
   descripcion?: string;
   stock?: number;
+}
+
+export interface Person extends Entity {
+  id?: string;
+  nombres?: string;
+  cedula?: string;
+  direccion?: string;
+  correo?: string;
+  telefono?: string;
+  celular?: string;
+  fechaNacimiento?: string;
 }
 
 export interface Proveedor extends Entity {
@@ -56,33 +75,34 @@ export interface Rol extends Entity {
   modulos?: Modulo[];
 }
 
+export enum TipoCliente {
+  Cliente = 'Cliente',
+  SujetoRetenido = 'Sujeto Retenido',
+  Destinatario = 'Destinatario'
+}
+
 export interface Token {
   id?: string;
   expiration?: string;
 }
 
-export interface User extends Entity {
+export interface Transaccion extends Entity {
   id?: string;
+  repuestos?: Repuesto[];
+  cantidad?: number;
+  total?: number;
+  descripcion?: string;
+}
+
+export interface User extends Person {
   nombreUsuario?: string;
-  nombres?: string;
   clave?: string;
-  nuevaClave?: string;
-  cedula?: string;
-  direccion?: string;
-  correo?: string;
-  telefono?: string;
-  celular?: string;
-  fechaNacimiento?: string;
   fechaContratacion?: string;
   salario?: number;
   roles?: Rol[];
   token?: Token;
 }
 
-export interface Venta extends Entity {
-  id?: string;
-  descripcion?: string;
-  repuestos?: Repuesto[];
-  cantidad?: number;
-  total?: number;
+export interface Venta extends Transaccion {
+  cliente?: Cliente;
 }

@@ -1,21 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { HttpHeaders } from '@angular/common/http';
+import { urlReporte } from '@models/http';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Reporte } from '@models/form';
 import { HttpErrorHandlerService, HandleError } from '../../http-error-handler.service';
 
-const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-  observe: 'response' as const
-};
 
 @Injectable({
   providedIn: 'root'
 })
 export class ReporteService {
-  readonly url: string = 'http://192.168.1.126:8080/api/reportes';
   private handleError: HandleError;
 
   constructor(
@@ -25,6 +20,6 @@ export class ReporteService {
     this.handleError = httpErrorHandler.createHandleError('ReporteService');
   }
 
-  get = (): Observable<Reporte> => this.http.get<Reporte>(this.url)
+  get = (): Observable<Reporte> => this.http.get<Reporte>(urlReporte)
       .pipe(catchError(this.handleError<Reporte>('get')));
 }

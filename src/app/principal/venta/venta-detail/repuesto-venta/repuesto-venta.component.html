@@ -8,12 +8,18 @@
       </mat-form-field>
       <button mat-icon-button color="primary" (click)="buscar(search.value)"  style="width: 10%;"><mat-icon>find_replace</mat-icon></button>
       <ul class="list-unstyled">
-        <li class="d-flex"><span class="bold">Código</span><span class="ml-auto">{{ repuesto?.codigo }}</span></li>
-        <li class="d-flex"><span class="bold">Categoría</span><span class="ml-auto">{{ repuesto?.categoria?.descripcion }}</span></li>
-        <li class="d-flex"><span class="bold">Marca</span><span class="ml-auto">{{ repuesto?.marca?.descripcion }}</span></li>
-        <li class="d-flex"><span class="bold">Modelo</span><span class="ml-auto">{{ repuesto?.modelo }}</span></li>
-        <li class="d-flex"><span class="bold">Año</span><span class="ml-auto">{{ repuesto?.epoca }}</span></li>
-        <li class="d-flex"><span class="bold">Precio</span><span class="ml-auto">{{ repuesto?.precio }}</span></li>
+        <li class="d-flex"><span class="bold">Código</span>
+          <span class="ml-auto">{{ repuesto?.codigo ? repuesto.codigo : 'Vacío' }}</span></li>
+        <li class="d-flex"><span class="bold">Categoría</span>
+          <span class="ml-auto">{{ repuesto?.categoria ? repuesto.categoria.descripcion : 'Vacío' }}</span></li>
+        <li class="d-flex"><span class="bold">Marca</span>
+          <span class="ml-auto">{{ repuesto?.marca ? repuesto.marca.descripcion : 'Vacío' }}</span></li>
+        <li class="d-flex"><span class="bold">Modelo</span>
+          <span class="ml-auto">{{ repuesto?.modelo ? repuesto.modelo : 'Vacío' }}</span></li>
+        <li class="d-flex"><span class="bold">Año</span>
+          <span class="ml-auto">{{ repuesto?.epoca ? repuesto.epoca : 'Vacío' }}</span></li>
+        <li class="d-flex"><span class="bold">Precio</span>
+          <span class="ml-auto">{{ repuesto?.precio ? repuesto.precio : 'Vacío' }}</span></li>
       </ul>
       <div class="text-center">
         <mat-form-field appearance="outline">
