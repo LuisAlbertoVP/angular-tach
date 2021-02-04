@@ -2,15 +2,15 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Repuesto } from '@models/entity';
-import { SharedService } from '@shared_service/shared';
-import { VentaService } from '../../venta.service';
+import { SharedService } from '@shared/shared.service';
+import { VentaService } from '../../../venta/venta.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
-  selector: 'app-repuesto-venta',
-  templateUrl: './repuesto-venta.component.html'
+  selector: 'app-repuesto-search',
+  templateUrl: './repuesto-search.component.html'
 })
-export class RepuestoVentaComponent implements OnInit {
+export class RepuestoSearchComponent implements OnInit {
   cantidad = this.fb.control(0, [Validators.required, Validators.min(1)]);
   isMobile: boolean = false;
   
@@ -18,7 +18,7 @@ export class RepuestoVentaComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public repuesto: Repuesto,
     sharedService: SharedService,
     private fb: FormBuilder,
-    private dialogRef: MatDialogRef<RepuestoVentaComponent>,
+    private dialogRef: MatDialogRef<RepuestoSearchComponent>,
     private service: VentaService,
     private snackBar: MatSnackBar
   ) {

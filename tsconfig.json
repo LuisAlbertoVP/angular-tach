@@ -7,8 +7,7 @@
     "paths": {
       "@animations/*": ["src/app/animations/*"],
       "@models/*": ["src/app/models/*"],
-      "@shared_service/*": ["src/app/principal/shared/shared.service.ts"], 
-      "@print_service/*": ["src/app/principal/shared/printing.service.ts"], 
+      "@shared/*": ["src/app/principal/shared/*"],
       "@auth_service/*": ["src/app/auth/auth.service.ts"]
     },
     "sourceMap": true,

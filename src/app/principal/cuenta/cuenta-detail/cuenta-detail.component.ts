@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { User } from '@models/entity';
-import { SharedService } from '@shared_service/shared';
+import { SharedService } from '@shared/shared.service';
 import { AuthService } from '@auth_service/*';
 import { CuentaService } from '../cuenta.service';
 import { SHA256 } from 'crypto-js';

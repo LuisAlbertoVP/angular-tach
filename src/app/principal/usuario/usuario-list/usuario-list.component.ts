@@ -3,7 +3,7 @@ import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { MatRadioGroup } from '@angular/material/radio';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
-import { SharedService } from '@shared_service/shared';
+import { SharedService } from '@shared/shared.service';
 import { UsuarioService }  from '../usuario.service';
 import { User, Table } from '@models/entity';
 import { Busqueda, BusquedaBuilder } from '@models/busqueda';
@@ -13,8 +13,8 @@ import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { detailExpand } from '@animations/detailExpand';
 import { MatDialog } from '@angular/material/dialog';
 import { UsuarioDetailComponent } from './usuario-detail/usuario-detail.component';
-import { ConfirmacionComponent } from '../../shared/confirmacion/confirmacion.component';
-import { FiltroComponent } from '../../shared/filtro/filtro.component';
+import { ConfirmacionComponent } from '@shared/general-shared/confirmacion/confirmacion.component';
+import { FiltroComponent } from '@shared/general-shared/filtro/filtro.component';
 import * as moment from 'moment';
 
 @Component({

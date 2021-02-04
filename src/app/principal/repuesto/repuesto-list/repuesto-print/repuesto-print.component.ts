@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Busqueda } from '@models/busqueda';
 import { Repuesto, Table } from '@models/entity';
-import { PrintingService } from '@print_service/*';
+import { PrintingService } from '@shared/printing.service';
 import { RepuestoService }  from '../../repuesto.service';
 
 @Component({

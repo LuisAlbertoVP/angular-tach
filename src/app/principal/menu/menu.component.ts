@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '@auth_service/*';
-import { SharedService } from '@shared_service/*';
+import { SharedService } from '@shared/shared.service';
 import { menuBase, MenuBar, MenuItem } from '@models/menu-bar';
 
 @Component({

@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { SharedModule } from '../shared/shared.module';
+import { GeneralSharedModule } from '@shared/general-shared/general-shared.module';
 import { UsuarioRoutingModule } from './usuario-routing.module';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -11,7 +11,7 @@ import { UsuarioDetailComponent } from './usuario-list/usuario-detail/usuario-de
 @NgModule({
   declarations: [UsuarioListComponent, UsuarioDetailComponent],
   imports: [
-    SharedModule,
+    GeneralSharedModule,
     UsuarioRoutingModule,
     MatNativeDateModule,
     MatDatepickerModule,

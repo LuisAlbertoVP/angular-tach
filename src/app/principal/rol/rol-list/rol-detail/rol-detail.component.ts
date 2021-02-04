@@ -4,7 +4,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { listModulos } from '@models/menu';
 import { Modulo } from '@models/menu';
 import { Rol } from '@models/entity';
-import { SharedService } from '@shared_service/shared';
+import { SharedService } from '@shared/shared.service';
 import { AuthService } from '@auth_service/*';
 import { RolService } from '../../rol.service';
 import { v4 as uuid } from 'uuid';

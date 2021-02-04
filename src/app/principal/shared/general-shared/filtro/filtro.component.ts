@@ -4,7 +4,7 @@ import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { Busqueda } from '@models/busqueda';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { SharedService } from '@shared_service/*';
+import { SharedService } from '@shared/shared.service';
 
 @Component({
   selector: 'app-filtro',

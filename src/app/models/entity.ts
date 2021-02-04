@@ -25,6 +25,13 @@ export interface Cliente extends Person {
 
 export interface Compra extends Transaccion {
   proveedor?: Proveedor;
+  compraDetalle?: CompraDetalle[];
+}
+
+export interface CompraDetalle {
+  compraId?: string;
+  repuestoId?: string;
+  cantidad?: number;
 }
 
 export interface Marca extends Entity {
@@ -88,7 +95,6 @@ export interface Token {
 
 export interface Transaccion extends Entity {
   id?: string;
-  repuestos?: Repuesto[];
   cantidad?: number;
   total?: number;
   descripcion?: string;
@@ -105,4 +111,11 @@ export interface User extends Person {
 
 export interface Venta extends Transaccion {
   cliente?: Cliente;
+  ventaDetalle?: VentaDetalle[];
+}
+
+export interface VentaDetalle {
+  repuestoId?: string;
+  ventaId?: string;
+  cantidad?: number;
 }

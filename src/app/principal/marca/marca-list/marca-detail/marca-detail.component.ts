@@ -2,7 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Marca } from '@models/entity';
-import { SharedService } from '@shared_service/shared';
+import { SharedService } from '@shared/shared.service';
 import { AuthService } from '@auth_service/*';
 import { MarcaService } from '../../marca.service';
 import { v4 as uuid } from 'uuid';
