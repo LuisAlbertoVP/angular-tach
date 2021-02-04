@@ -6,12 +6,7 @@
         <div>Usuario: <span class="bold">{{ auth.nombres }}</span></div>
       </div>
       <div class="ml-auto">
-        <mat-form-field appearance="fill" class="fecha">
-          <mat-label>Fecha</mat-label>
-          <input matInput [formControl]="fecha" [matDatepicker]="picker" required />
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
+        <img src="assets/logo.png" />
       </div>
     </div>
   </div>
@@ -61,8 +56,14 @@
         <li class="d-flex"><span class="bold">Total</span><span class="ml-auto">{{ total }}</span></li>
       </ul>
       <mat-divider></mat-divider>
-      <mat-form-field class="w-100 mt-4" appearance="outline">
-        <mat-label>Descripción</mat-label>
+      <mat-form-field class="w-100 mt-4 fecha" appearance="fill">
+        <mat-label>Fecha</mat-label>
+        <input matInput [formControl]="fecha" [matDatepicker]="picker" required />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field class="w-100 mt-2" appearance="outline">
+        <mat-label>Detalles de venta</mat-label>
         <textarea matInput [formControl]="descripcion" class="h-descripcion"></textarea>
       </mat-form-field>
     </div>

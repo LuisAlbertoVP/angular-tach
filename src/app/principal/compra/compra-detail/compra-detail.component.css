@@ -1,0 +1,26 @@
+img {
+  width: 120px;
+}
+.row { 
+  margin-top: 20px; 
+  margin-bottom: 10px; 
+}
+.tag {
+  height: 100px;
+}
+.fecha {
+  margin-bottom: -1.25em;
+}
+.table-container { 
+  max-height: 400px; 
+  height: 400px; 
+}
+tr.element-row:not(.expanded-row):hover { 
+  background: whitesmoke; 
+}
+tr.element-row:not(.expanded-row):active { 
+  background: #efefef; 
+}
+.h-descripcion{
+  height: 125px;
+}
