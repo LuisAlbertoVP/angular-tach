@@ -41,14 +41,14 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="openBusqueda(row)" class="element-row cursor-point"></tr>
         <tr class="mat-row" *matNoDataRow>
-          <td class="mat-cell" colspan="4">Lista vacía</td>
+          <td class="mat-cell" colspan="4">Lista de ventas vacía</td>
         </tr>
       </table>  
     </div>
     <div class="col-4">
       <div class="d-flex">
         <button mat-icon-button color="primary" (click)="openBusqueda()"><mat-icon>add_shopping_cart</mat-icon></button>
-        <button mat-icon-button color="primary" (click)="guardar()" class="ml-auto"><mat-icon>save</mat-icon></button>
+        <button mat-icon-button color="primary" (click)="guardar()" class="ml-auto"><mat-icon>point_of_sale</mat-icon></button>
       </div>
       <mat-divider></mat-divider>
       <ul class="mt-4 list-unstyled">

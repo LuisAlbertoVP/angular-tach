@@ -70,7 +70,7 @@ export class CompraDetailComponent {
 
   guardar() {
     const dialogRef = this.dialog.open(ConfirmacionComponent, {
-      width: '360px', autoFocus: false, disableClose: true, data: "¿Desea guardar la venta?"
+      width: '360px', autoFocus: false, disableClose: true, data: "¿Desea guardar la compra?"
     });
     dialogRef.afterClosed().subscribe(result => {
       if(result) {
@@ -92,7 +92,7 @@ export class CompraDetailComponent {
             }
           });
         } else {
-          this.snackBar.open('Lista de repuestos vacía', 'Error', {duration: 2000});
+          this.snackBar.open('Lista de compras vacía', 'Error', {duration: 2000});
         }
       }
     });

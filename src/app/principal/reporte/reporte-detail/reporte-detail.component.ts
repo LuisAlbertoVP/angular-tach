@@ -3,6 +3,7 @@ import { ReporteService } from '../reporte.service';
 import { Chart } from 'chart.js';
 import { Categoria, Marca } from '@models/entity';
 import { Reporte } from '@models/form';
+import { SharedService } from '@shared/shared.service';
 
 @Component({
   selector: 'app-reporte-detail',
@@ -12,12 +13,16 @@ import { Reporte } from '@models/form';
 export class ReporteDetailComponent implements OnDestroy, AfterViewInit {
   @ViewChild('categorias', {static: false}) categoriasCanvas: ElementRef<HTMLCanvasElement>;
   @ViewChild('marcas', {static: false}) marcasCanvas: ElementRef<HTMLCanvasElement>;
-  reporte: Reporte = null;
   chart: Chart = null;
+  isMobile: boolean = false;
+  reporte: Reporte = null;
 
   constructor(
-    private service: ReporteService
-  ) { }
+    private service: ReporteService,
+    sharedService: SharedService
+  ) { 
+    sharedService.isMobile$.subscribe(isMobile => this.isMobile = isMobile);
+  }
 
   ngOnDestroy(): void {
     this.chart.destroy();

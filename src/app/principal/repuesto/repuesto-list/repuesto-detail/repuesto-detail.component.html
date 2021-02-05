@@ -38,8 +38,8 @@
         </mat-form-field>
         <mat-form-field class="w-100" appearance="outline">
           <mat-label>Cantidad</mat-label>
-          <input matInput formControlName="stock" placeholder="Ingrese una cantidad" required />
-          <mat-icon matSuffix>bar_chart</mat-icon>
+          <input matInput formControlName="stock" placeholder="Ingrese una cantidad" type="number" required />
+          <mat-icon matSuffix>inventory</mat-icon>
           <mat-error *ngIf="form.get('stock').hasError('required')">Cantidad requerida</mat-error>
         </mat-form-field>
         <mat-form-field class="w-100" appearance="outline">

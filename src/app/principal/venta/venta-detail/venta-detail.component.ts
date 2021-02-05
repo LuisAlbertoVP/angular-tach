@@ -92,7 +92,7 @@ export class VentaDetailComponent {
             }
           });
         } else {
-          this.snackBar.open('Lista de repuestos vacía', 'Error', {duration: 2000});
+          this.snackBar.open('Lista de ventas vacía', 'Error', {duration: 2000});
         }
       }
     });

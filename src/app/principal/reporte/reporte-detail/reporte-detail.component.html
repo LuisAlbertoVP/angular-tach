@@ -5,14 +5,18 @@
         <mat-icon>category</mat-icon>
         Categorías
       </ng-template>
-      <canvas #categorias></canvas>
+      <div class="m0-auto shadow mt-3 mb-3 p-3" [class.w-75]="!isMobile">
+        <canvas #categorias></canvas>
+      </div>
     </mat-tab>
     <mat-tab>
       <ng-template mat-tab-label>
         <mat-icon>local_offer</mat-icon>
         Marcas
       </ng-template>
-      <canvas #marcas></canvas>
+      <div class="m0-auto shadow mt-3 mb-3 p-3" [class.w-75]="!isMobile">
+        <canvas #marcas></canvas>
+      </div>
     </mat-tab>
     <mat-tab>
       <ng-template mat-tab-label>
