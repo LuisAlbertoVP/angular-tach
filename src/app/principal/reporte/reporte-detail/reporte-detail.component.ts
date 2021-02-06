@@ -20,7 +20,8 @@ export class ReporteDetailComponent implements OnDestroy, AfterViewInit {
   constructor(
     private service: ReporteService,
     sharedService: SharedService
-  ) { 
+  ) {
+    sharedService.buildMenuBar({ title: 'Reporte' });
     sharedService.isMobile$.subscribe(isMobile => this.isMobile = isMobile);
   }
 
@@ -48,7 +49,6 @@ export class ReporteDetailComponent implements OnDestroy, AfterViewInit {
   }
 
   private buildPieChart(ctx: ElementRef<HTMLCanvasElement>, id: string, entity: Categoria[] | Marca[]) {
-
     let colors = this.buildColors(entity.length);
     this.chart = new Chart(ctx.nativeElement.getContext('2d'), {
       type: 'horizontalBar',

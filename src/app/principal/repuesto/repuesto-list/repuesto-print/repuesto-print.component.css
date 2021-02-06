@@ -1,10 +1,22 @@
+div img {
+  width: 100px;
+}
 .print-container { 
   margin: 0; 
   height: 100%; 
-  overflow: hidden 
+  overflow: hidden;
 }
-.page-break, .spacer { 
-  page-break-after: always; 
+.page-break {
+  page-break-after: always;
+}
+table {
+  page-break-after: always;
+}
+thead { 
+  display: table-header-group;
+}
+tfoot { 
+  display: table-footer-group; 
 }
 .spacer { 
   border-bottom: 1px solid lightgray; 

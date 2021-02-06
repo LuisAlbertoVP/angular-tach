@@ -38,5 +38,7 @@ tr.element-row:not(.expanded-row):active {
   justify-content: center;
 }
 @media print {
-  .repuestos { display: none; }
+  .repuestos { 
+    display: none; 
+  }
 }
