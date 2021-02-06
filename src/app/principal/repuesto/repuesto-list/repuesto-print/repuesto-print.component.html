@@ -1,38 +1,7 @@
-<!--<div *ngIf="busqueda" class="print-container">
-  <div class="header mb-3">
-    <div *ngIf="busqueda.filtros.length > 0">
-      <h2 class="bold">{{ busqueda.filtros.length > 1 ? 'Filtros' : 'Filtro' }}</h2>
-      <ul class="list-unstyled">
-        <li *ngFor="let filtro of busqueda.filtros">
-          <span class="bold">{{ filtro.id + ': ' }}</span>
-          <span *ngIf="filtro.operador == 'between'; else elseBlock">{{ 'De ' + filtro.criterio1 + ' a ' + filtro.criterio2 }}</span>
-          <ng-template #elseBlock>
-            <span *ngFor="let criterio of filtro.criterios">{{ criterio }}&nbsp;</span>
-          </ng-template>
-        </li>
-      </ul>
-    </div>
-    <div>{{ 'Cantidad: ' + busqueda.cantidad }}</div>
-  </div>
-  <div class="container-fluid">
-    <ng-container *ngFor="let repuesto of repuestos">
-      <div class="col-12 d-flex page-break">
-        <span>{{ '[' + repuesto.categoria.descripcion + ' ' + repuesto.marca.descripcion + ']' }}</span>&nbsp;
-        <span>{{ repuesto?.subMarca ? repuesto.subMarca : '' }}</span>
-        <span class="ml-auto">{{ repuesto.codigo }}</span>
-      </div>
-      <div class="col-12 d-flex page-break">
-        <span>{{ 'Stock: ' + repuesto.stock + ' Precio: ' + repuesto.precio }}</span>
-        <span class="ml-auto">{{ repuesto.modelo }}</span>
-      </div>
-      <div class="spacer">{{ repuesto.descripcion }}</div>
-    </ng-container>
-  </div>
-</div>-->
 <table>
   <thead><tr><td>
     <div class="d-flex w-100">
-      <div>
+      <div *ngIf="busqueda">
         <div *ngIf="busqueda.filtros.length > 0">
           <h2 class="bold">{{ busqueda.filtros.length > 1 ? 'Filtros' : 'Filtro' }}</h2>
           <ul class="list-unstyled">
@@ -50,9 +19,6 @@
       <div class="ml-auto"><img src="assets/logo.png" /></div>
     </div>
   </td></tr></thead>
-  <tfoot><tr><td>
-    <div>GG</div>
-  </td></tr></tfoot>
   <tbody><tr><td>
     <div>
       <ng-container *ngFor="let repuesto of repuestos">

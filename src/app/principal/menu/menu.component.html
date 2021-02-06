@@ -41,7 +41,7 @@
       </mat-menu>
     </div>
   </mat-toolbar>
-  <mat-sidenav-container class="principal-sidenav" [style.marginTop.px]="56">
+  <mat-sidenav-container class="principal-sidenav">
     <mat-sidenav #snav mode="over" [opened]="false" [fixedInViewport]="true" fixedTopGap="56">
       <app-sidenav (closeSidenav)="snav.toggle()"></app-sidenav>
     </mat-sidenav>
