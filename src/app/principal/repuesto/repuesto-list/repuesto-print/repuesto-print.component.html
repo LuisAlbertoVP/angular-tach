@@ -1,33 +1,36 @@
 <table>
-  <thead><tr><td>
-    <div class="d-flex w-100">
-      <div *ngIf="busqueda">
-        <div *ngIf="busqueda.filtros.length > 0">
-          <h2 class="bold">{{ busqueda.filtros.length > 1 ? 'Filtros' : 'Filtro' }}</h2>
-          <ul class="list-unstyled">
-            <li *ngFor="let filtro of busqueda.filtros">
-              <span class="bold">{{ filtro.id + ': ' }}</span>
-              <span *ngIf="filtro.operador == 'between'; else elseBlock">{{ 'De ' + filtro.criterio1 + ' a ' + filtro.criterio2 }}</span>
-              <ng-template #elseBlock>
-                <span *ngFor="let criterio of filtro.criterios">{{ criterio }}&nbsp;</span>
-              </ng-template>
-            </li>
-          </ul>
+  <thead><tr><th>
+    <div class="pt-2 pb-2">
+      <div class="d-flex w-100 p-2 header">
+        <div *ngIf="busqueda">
+          <div *ngIf="busqueda.filtros.length > 0">
+            <h2 class="bold">{{ busqueda.filtros.length > 1 ? 'Filtros' : 'Filtro' }}</h2>
+            <ul class="list-unstyled">
+              <li *ngFor="let filtro of busqueda.filtros">
+                <span class="bold">{{ filtro.id + ': ' }}</span>
+                <span *ngIf="filtro.operador == 'between'; else elseBlock">{{ 'De ' + filtro.criterio1 + ' a ' + filtro.criterio2 }}</span>
+                <ng-template #elseBlock>
+                  <span *ngIf="filtro.operador == '!='">[No contiene]&nbsp;</span>
+                  <span class="capitalize">{{ parseArray(filtro.criterios) }}</span>
+                </ng-template>
+              </li>
+            </ul>
+          </div>
+          <div>{{ 'Cantidad: ' + busqueda.cantidad }}</div>
         </div>
-        <div>{{ 'Cantidad: ' + busqueda.cantidad }}</div>
+        <div class="ml-auto"><img src="assets/logo.png" /></div>
       </div>
-      <div class="ml-auto"><img src="assets/logo.png" /></div>
     </div>
-  </td></tr></thead>
+  </th></tr></thead>
   <tbody><tr><td>
     <div>
       <ng-container *ngFor="let repuesto of repuestos">
-        <div class="col-12 d-flex">
+        <div class="d-flex w-100">
           <span>{{ '[' + repuesto.categoria.descripcion + ' ' + repuesto.marca.descripcion + ']' }}</span>&nbsp;
           <span>{{ repuesto?.subMarca ? repuesto.subMarca : '' }}</span>
-          <span class="ml-auto">{{ repuesto.codigo }}</span>
+          <span class="ml-auto codigo">{{ repuesto.codigo }}</span>
         </div>
-        <div class="col-12 d-flex">
+        <div class="d-flex w-100">
           <span>{{ 'Stock: ' + repuesto.stock + ' Precio: ' + repuesto.precio }}</span>
           <span class="ml-auto">{{ repuesto.modelo }}</span>
         </div>

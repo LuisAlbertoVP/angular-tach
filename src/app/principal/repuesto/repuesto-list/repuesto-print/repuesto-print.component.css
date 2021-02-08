@@ -1,11 +1,15 @@
 div img {
   width: 100px;
 }
-table {
-  page-break-after: always;
+.header{
+  border:1px solid silver; 
+  border-radius: 10px;
 }
-thead { 
-  display: table-header-group;
+.codigo {
+  color: slateblue;
+}
+.capitalize {
+  text-transform: capitalize;
 }
 .spacer { 
   border-bottom: 1px solid lightgray; 

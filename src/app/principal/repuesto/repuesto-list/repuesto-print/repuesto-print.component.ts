@@ -12,7 +12,7 @@ import { RepuestoService }  from '../../repuesto.service';
   styleUrls: ['./repuesto-print.component.css']
 })
 export class RepuestoPrintComponent implements OnInit {
-  busqueda: Busqueda;
+  busqueda: Busqueda = null;
   repuestos: Repuesto[] = [];
 
   constructor(
@@ -32,4 +32,6 @@ export class RepuestoPrintComponent implements OnInit {
       });
     });
   }
+
+  parseArray = (array: string[]) => array.map(element => element).join(', ');
 }
