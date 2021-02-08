@@ -13,6 +13,7 @@ import { SidenavComponent } from './menu/sidenav/sidenav.component';
 import { BaseComponent } from './menu/base/base.component';
 import { HttpErrorHandlerService } from '../http-error-handler.service';
 import { httpInterceptorProviders } from '../http-interceptors/index';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
   declarations: [MenuComponent, SidenavComponent, BaseComponent],
@@ -25,7 +26,8 @@ import { httpInterceptorProviders } from '../http-interceptors/index';
     MatMenuModule,
     MatSidenavModule,
     MatListModule,
-    MatDividerModule
+    MatDividerModule,
+    MatProgressBarModule
   ],
   providers: [
     HttpErrorHandlerService,

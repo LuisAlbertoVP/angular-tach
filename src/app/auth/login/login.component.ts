@@ -19,6 +19,7 @@ export class LoginComponent {
     clave: ['', Validators.required]
   });
   hide: boolean = true;
+  isLoading: boolean = false;
 
   constructor(
     private dialog: MatDialog,
@@ -31,7 +32,9 @@ export class LoginComponent {
     if(this.form.valid) {
       const user: User = this.form.getRawValue();
       user.clave = SHA256(user.clave).toString();
+      this.isLoading = true;
       this.service.login(user).subscribe((response: HttpResponse<User>) => {
+        this.isLoading = false;
         if(response.status == 200) {
           this.service.saveToken(response.body);
           this.router.navigate(['/principal']);

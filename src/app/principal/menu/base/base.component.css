@@ -1,3 +1,13 @@
+a { 
+    font-size: 12px; 
+}
+h2 { 
+    font-family: 'Rouge Script', cursive; 
+    font-size: 22px; 
+    font-weight: normal; 
+    line-height: 48px; 
+    text-shadow: 1px 1px 2px #082b34; 
+}
 .center > * { 
     align-self: center; 
 }
@@ -22,13 +32,6 @@
 }
 .right { 
     text-align: right; 
-}
-h2 { 
-    font-family: 'Rouge Script', cursive; 
-    font-size: 22px; 
-    font-weight: normal; 
-    line-height: 48px; 
-    text-shadow: 1px 1px 2px #082b34; 
 }
 .parent:hover .images, .back { 
     transform: rotateY(180deg); 
@@ -59,7 +62,4 @@ h2 {
 }
 .back img {  
     width: 60px; 
-}
-a { 
-    font-size: 12px; 
 }

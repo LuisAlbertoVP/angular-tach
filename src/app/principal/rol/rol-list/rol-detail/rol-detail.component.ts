@@ -21,7 +21,7 @@ export class RolDetailComponent implements OnInit {
     descripcion: ['', Validators.required]
   });
   isMobile: boolean = false;
-  modulos: Modulo[];
+  modulos: Modulo[] = [];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public rol: Rol,
