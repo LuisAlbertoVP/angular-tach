@@ -21,5 +21,5 @@ export class BaseComponent implements OnInit {
     this.modulos = JSON.parse(JSON.stringify(listModulos));
   }
 
-  navigate = (url: string) => this.router.navigate([url]);
+  navigate = (modulo: Modulo) => this.router.navigate([modulo.ruta]).then(() => modulo.checked = false);
 }

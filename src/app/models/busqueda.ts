@@ -1,9 +1,14 @@
+import { MatPaginator } from "@angular/material/paginator";
+import { MatSort } from "@angular/material/sort";
+import { Observable } from "rxjs";
+
 export interface Filtro {
   id: string;
   nombre?: string;
   criterio1?: string;
   criterio2?: string;
   criterios?: string[];
+  data?: string[];
   operador?: string;
   esFecha?: boolean;
   checked?: boolean;
@@ -16,7 +21,7 @@ export interface Orden {
 
 export interface Busqueda {
   filtros: Filtro[];
-  estado: string;
+  estado: boolean;
   orden?: Orden;
   pagina?: number;
   cantidad?: number;
@@ -29,7 +34,7 @@ const busquedaBase: Busqueda = {
     { id: "Descripcion", nombre: "Descripción" },
     { id: "FechaIngreso", nombre: "Ingreso", esFecha: true },
     { id: "FechaModificacion", nombre: "Modificación", esFecha: true }
-  ], estado: '1', operadorLogico: '&&'
+  ], estado: true, operadorLogico: '&&'
 };
 
 const busquedaUsuario: Busqueda = {
@@ -46,7 +51,7 @@ const busquedaUsuario: Busqueda = {
     { id: "Salario", nombre: "Salario" },
     { id: "FechaIngreso", nombre: "Ingreso", esFecha: true },
     { id: "FechaModificacion", nombre: "Modificación", esFecha: true }
-  ], estado: '1', operadorLogico: '&&'
+  ], estado: true, operadorLogico: '&&'
 };
 
 const busquedaRepuesto: Busqueda = {
@@ -62,7 +67,7 @@ const busquedaRepuesto: Busqueda = {
     { id: "Descripcion", nombre: "Descripción" },
     { id: "FechaIngreso", nombre: "Ingreso", esFecha: true },
     { id: "FechaModificacion", nombre: "Modificación", esFecha: true }
-  ], estado: '1', operadorLogico: '&&'
+  ], estado: true, operadorLogico: '&&'
 };
 
 const busquedaProveedor: Busqueda = {
@@ -77,12 +82,62 @@ const busquedaProveedor: Busqueda = {
     { id: "CorreoContacto", nombre: "Correo" },
     { id: "FechaIngreso", nombre: "Ingreso", esFecha: true },
     { id: "FechaModificacion", nombre: "Modificación", esFecha: true }
-  ], estado: '1', operadorLogico: '&&'
+  ], estado: true, operadorLogico: '&&'
+};
+
+const busquedaVenta: Busqueda = {
+  filtros: [
+    { id: "Cantidad", nombre: "Cantidad" },
+    { id: "Total", nombre: "Total" },
+    { id: "Descripcion", nombre: "Descripción" },
+    { id: "FechaIngreso", nombre: "Ingreso", esFecha: true }
+  ], estado: true, operadorLogico: '&&'
 };
 
 export class BusquedaBuilder {
+  paginator: MatPaginator = null;
+  sort: MatSort =  null;
+
+  constructor(
+    criterio: Observable<unknown>, 
+    paginator: MatPaginator, 
+    sort: MatSort
+  ) {
+    criterio.subscribe(() => this.paginator.pageIndex = 0);
+    sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
+    this.paginator = paginator;
+    this.sort = sort;
+  }
+
+  newBusqueda(currentBusqueda: Busqueda, orden: string = 'FechaModificacion') {
+    let busqueda: Busqueda = { 
+      filtros: [], estado: currentBusqueda.estado, operadorLogico: currentBusqueda.operadorLogico 
+    };
+    const activo = this.sort.active ? this.sort.active : orden;
+    const direccion = this.sort.direction ? this.sort.direction : 'desc';
+    busqueda.orden = { activo: activo, direccion: direccion };
+    busqueda.pagina = this.paginator.pageIndex;
+    busqueda.cantidad = this.paginator.pageSize;
+    if(busqueda.operadorLogico == '&&') {
+      busqueda.filtros.push({ id: "Id", criterios: [''], operador: 'contiene' });
+    }
+    for(let filtro of currentBusqueda.filtros) {
+      if(filtro.checked) {
+        if(filtro.operador == 'between') {
+          busqueda.filtros.push(filtro);
+        } else {
+          if(filtro.criterios.length > 0) {
+            busqueda.filtros.push(filtro);
+          }
+        }
+      }
+    }
+    return busqueda;
+  }
+
   static BuildBase = (): Busqueda => JSON.parse(JSON.stringify(busquedaBase));
   static BuildUsuario = (): Busqueda => JSON.parse(JSON.stringify(busquedaUsuario));
   static BuildRepuesto = (): Busqueda => JSON.parse(JSON.stringify(busquedaRepuesto));
   static BuildProveedor = (): Busqueda => JSON.parse(JSON.stringify(busquedaProveedor));
+  static BuildVenta = (): Busqueda => JSON.parse(JSON.stringify(busquedaVenta));
 }

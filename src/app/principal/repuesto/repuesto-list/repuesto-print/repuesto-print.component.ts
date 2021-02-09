@@ -1,10 +1,10 @@
-import { HttpResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Busqueda } from '@models/busqueda';
-import { Repuesto, Table } from '@models/entity';
+import { Component, OnInit } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
 import { PrintingService } from '@shared/printing.service';
 import { RepuestoService }  from '../../repuesto.service';
+import { Busqueda } from '@models/busqueda';
+import { Repuesto, Table } from '@models/entity';
 
 @Component({
   selector: 'app-repuesto-print',

@@ -14,30 +14,28 @@ export class AuthGuard implements CanLoad, CanActivate, CanActivateChild {
   ) {}
 
   canLoad(route: Route): boolean {
-    return this.checkLogin();
+    return this._checkLogin();
   }
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    return this.checkLogin(state.url);
+    return this._checkLogin(state.url);
   }
 
   canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     return this.canActivate(route, state);
   }
 
-  private checkDate(): boolean {
-    return Date.now() <  Date.parse(this.service.tokenExpiration);
-  }
+  private _checkDate = (): boolean => Date.now() <  Date.parse(this.service.tokenExpiration);
 
-  private checkLogin(route?: string): boolean {
+  private _checkLogin(route?: string): boolean {
     if(route && route == '/') {
-      if(!this.hasToken()) {
+      if(!this._hasToken()) {
         return true; 
       }
       this.router.navigate(['/principal']);
       return false;
     } else {
-      if(this.hasToken()) {
+      if(this._hasToken()) {
         return true; 
       }
       this.router.navigate(['/']);
@@ -45,7 +43,5 @@ export class AuthGuard implements CanLoad, CanActivate, CanActivateChild {
     }
   }
 
-  private hasToken() : boolean {
-    return this.service.token && this.checkDate();
-  }
+  private _hasToken = () : boolean => this.service.token && this._checkDate();
 }

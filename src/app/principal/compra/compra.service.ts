@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { httpOptions, urlCompra } from '@models/http';
-import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { Repuesto, Compra } from '@models/entity';
+import { Compra, Table } from '@models/entity';
+import { Busqueda } from '@models/busqueda';
 import { HttpErrorHandlerService, HandleError } from '../../http-error-handler.service';
 
 @Injectable({
@@ -19,9 +19,12 @@ export class CompraService {
     this.handleError = httpErrorHandler.createHandleError('CompraService');
   }
 
-  getRepuesto = (id: string): Observable<Repuesto> => this.http.get<Repuesto>(`${urlCompra}/repuestos/${id}`)
-      .pipe(catchError(this.handleError<Repuesto>('getRepuesto')));
+  getAll = (busqueda: Busqueda) => this.http.post(`${urlCompra}/all`, busqueda, httpOptions)
+      .pipe(catchError(this.handleError<Table<Compra>>('getAll')));
 
   insertOrUpdate = (compra: Compra) => this.http.post(urlCompra, compra, httpOptions)
       .pipe(catchError(this.handleError('insertOrUpdate', compra)));
+
+  setStatus = (compra: Compra) => this.http.post(`${urlCompra}/${compra.id}/status`, compra, httpOptions)
+      .pipe(catchError(this.handleError('setStatus', compra)));
 }

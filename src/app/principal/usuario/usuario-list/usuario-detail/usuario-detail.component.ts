@@ -1,15 +1,14 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { FormGroup } from '@angular/forms';
-import { User, Rol } from '@models/entity';
-import { SharedService } from '@shared/shared.service';
+import { HttpResponse } from '@angular/common/http';
+import { MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { AuthService } from '@auth_service/*';
-import { UsuarioService } from '../../usuario.service';
+import { SharedService } from '@shared/shared.service';
 import { UsuarioControlService } from '../../usuario-control.service';
+import { UsuarioService } from '../../usuario.service';
+import { User, Rol } from '@models/entity';
 import { SHA256 } from 'crypto-js';
 import { v4 as uuid } from 'uuid';
-import { HttpResponse } from '@angular/common/http';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import * as moment from 'moment';
 
 @Component({
@@ -28,8 +27,7 @@ export class UsuarioDetailComponent implements OnInit {
     private control: UsuarioControlService,
     private dialogRef: MatDialogRef<UsuarioDetailComponent>,
     private service: UsuarioService,
-    private sharedService: SharedService,
-    private snackBar: MatSnackBar
+    private sharedService: SharedService
   ) {
     sharedService.isMobile$.subscribe(isMobile => this.isMobile = isMobile);
   }
@@ -62,7 +60,7 @@ export class UsuarioDetailComponent implements OnInit {
         }
       });
     } else {
-      this.snackBar.open('Algunos campos son invalidos', 'Error', {duration: 2000});
+      this.sharedService.showErrorMessage('Algunos campos son invalidos');
     }
   }
 }

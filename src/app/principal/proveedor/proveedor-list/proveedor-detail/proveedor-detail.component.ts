@@ -1,14 +1,13 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { FormGroup } from '@angular/forms';
-import { Proveedor } from '@models/entity';
-import { SharedService } from '@shared/shared.service';
-import { AuthService } from '@auth_service/*';
-import { ProveedorService } from '../../proveedor.service';
-import { ProveedorControlService } from '../../proveedor-control.service';
-import { v4 as uuid } from 'uuid';
 import { HttpResponse } from '@angular/common/http';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { AuthService } from '@auth_service/*';
+import { ProveedorControlService } from '../../proveedor-control.service';
+import { ProveedorService } from '../../proveedor.service';
+import { SharedService } from '@shared/shared.service';
+import { Proveedor } from '@models/entity';
+import { v4 as uuid } from 'uuid';
 
 @Component({
   selector: 'app-proveedor-detail',
@@ -24,8 +23,7 @@ export class ProveedorDetailComponent implements OnInit {
     private control: ProveedorControlService,
     private dialogRef: MatDialogRef<ProveedorDetailComponent>,
     private service: ProveedorService,
-    private sharedService: SharedService,
-    private snackBar: MatSnackBar
+    private sharedService: SharedService
   ) {
     sharedService.isMobile$.subscribe(isMobile => this.isMobile = isMobile);
   }
@@ -47,7 +45,7 @@ export class ProveedorDetailComponent implements OnInit {
         }
       });
     } else {
-      this.snackBar.open('Algunos campos son invalidos', 'Error', {duration: 2000});
+      this.sharedService.showErrorMessage('Algunos campos son invalidos');
     }
   }
 }

@@ -1,14 +1,13 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { FormGroup } from '@angular/forms';
-import { Categoria, Marca, Repuesto } from '@models/entity';
-import { SharedService } from '@shared/shared.service';
-import { AuthService } from '@auth_service/*';
-import { RepuestoService } from '../../repuesto.service';
-import { RepuestoControlService } from '../../repuesto-control.service';
-import { v4 as uuid } from 'uuid';
 import { HttpResponse } from '@angular/common/http';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { AuthService } from '@auth_service/*';
+import { RepuestoControlService } from '../../repuesto-control.service';
+import { RepuestoService } from '../../repuesto.service';
+import { SharedService } from '@shared/shared.service';
+import { Categoria, Marca, Repuesto } from '@models/entity';
+import { v4 as uuid } from 'uuid';
 
 @Component({
   selector: 'app-repuesto-detail',
@@ -17,7 +16,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class RepuestoDetailComponent implements OnInit {
   categorias: Categoria[] = [];
-  form: FormGroup;
+  form: FormGroup = null;
   isMobile: boolean = false;
   marcas: Marca[] = [];
   
@@ -27,8 +26,7 @@ export class RepuestoDetailComponent implements OnInit {
     private control: RepuestoControlService,
     private dialogRef: MatDialogRef<RepuestoDetailComponent>,
     private service: RepuestoService,
-    private sharedService: SharedService,
-    private snackBar: MatSnackBar
+    private sharedService: SharedService
   ) {
     sharedService.isMobile$.subscribe(isMobile => this.isMobile = isMobile);
   }
@@ -54,7 +52,7 @@ export class RepuestoDetailComponent implements OnInit {
         }
       });
     } else {
-      this.snackBar.open('Algunos campos son invalidos', 'Error', {duration: 2000});
+      this.sharedService.showErrorMessage('Algunos campos son invalidos');
     }
   }
 }

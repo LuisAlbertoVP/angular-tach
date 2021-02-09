@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { GeneralSharedModule } from '@shared/general-shared/general-shared.module';
+import { SharedModule } from '@shared/shared.module';
 import { ProveedorRoutingModule } from './proveedor-routing.module';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { ProveedorListComponent } from './proveedor-list/proveedor-list.component';
@@ -9,7 +9,7 @@ import { ProveedorDetailComponent } from './proveedor-list/proveedor-detail/prov
 @NgModule({
   declarations: [ProveedorListComponent, ProveedorDetailComponent],
   imports: [
-    GeneralSharedModule,
+    SharedModule,
     ProveedorRoutingModule,
     MatSlideToggleModule
   ]

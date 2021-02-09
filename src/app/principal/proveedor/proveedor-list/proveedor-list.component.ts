@@ -1,20 +1,20 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
-import { MatRadioGroup } from '@angular/material/radio';
-import { MatSort } from '@angular/material/sort';
-import { MatPaginator } from '@angular/material/paginator';
-import { SharedService } from '@shared/shared.service';
-import { ProveedorService }  from '../proveedor.service';
-import { Proveedor, Table } from '@models/entity';
-import { Busqueda, BusquedaBuilder } from '@models/busqueda';
 import { HttpResponse } from '@angular/common/http';
-import { merge, of as observableOf, Subject } from 'rxjs';
-import { catchError, map, startWith, switchMap } from 'rxjs/operators';
-import { detailExpand } from '@animations/detailExpand';
 import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { ProveedorService }  from '../proveedor.service';
+import { SharedService } from '@shared/shared.service';
+import { Busqueda, BusquedaBuilder } from '@models/busqueda';
+import { ConfirmationData } from '@models/confirmacion';
+import { Proveedor, Table } from '@models/entity';
+import { catchError, map, startWith, switchMap } from 'rxjs/operators';
+import { merge, of as observableOf, Subject } from 'rxjs';
+import { ConfirmacionComponent } from '@shared/confirmacion/confirmacion.component';
+import { FiltroComponent } from '@shared/filtro/filtro.component';
 import { ProveedorDetailComponent } from './proveedor-detail/proveedor-detail.component';
-import { ConfirmacionComponent } from '@shared/general-shared/confirmacion/confirmacion.component';
-import { FiltroComponent } from '@shared/general-shared/filtro/filtro.component';
+import { detailExpand } from '@animations/detailExpand';
 import * as moment from 'moment';
 
 @Component({
@@ -25,11 +25,11 @@ import * as moment from 'moment';
 })
 export class ProveedorListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatRadioGroup) radio: MatRadioGroup;
   @ViewChild(MatSort) sort: MatSort;
   readonly displayedColumns: string[] = ['opciones', 'Descripcion', 'Convenio', 'Telefono', 'Direccion', 'accion'];
   busqueda: Busqueda = BusquedaBuilder.BuildProveedor();
   criterio = new Subject();
+  criterio$ = this.criterio.asObservable();
   data: Proveedor[] = [];
   expandedElement: Proveedor = null;
   isLoadingResults: boolean = true;
@@ -48,30 +48,6 @@ export class ProveedorListComponent implements OnInit, AfterViewInit {
     sharedService.isMobile$.subscribe(isMobile => this.isMobile = isMobile);
   }
 
-  get newBusqueda() {
-    let busqueda: Busqueda = { 
-      filtros: [], estado: this.busqueda.estado, operadorLogico: this.busqueda.operadorLogico 
-    };
-    const activo = this.sort.active ? this.sort.active : 'FechaModificacion';
-    const direccion = this.sort.direction ? this.sort.direction : 'desc';
-    busqueda.orden = { activo: activo, direccion: direccion };
-    busqueda.pagina = this.paginator.pageIndex;
-    busqueda.cantidad = this.paginator.pageSize;
-    busqueda.filtros.push({ id: "Id", criterios: [''], operador: 'contiene' });
-    for(let filtro of this.busqueda.filtros) {
-      if(filtro.checked) {
-        if(filtro.operador == 'between') {
-          busqueda.filtros.push(filtro);
-        } else {
-          if(filtro.criterios.length > 0) {
-            busqueda.filtros.push(filtro);
-          }
-        }
-      }
-    }
-    return busqueda;
-  }
-
   ngOnInit(): void {
     this.activedRoute.queryParamMap.subscribe(params => {
       const busqueda: Busqueda = JSON.parse(params.get('busqueda'));
@@ -83,14 +59,11 @@ export class ProveedorListComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    const criterio$ = this.criterio.asObservable();
-    criterio$.subscribe(() => this.paginator.pageIndex = 0);
-    this.radio.change.subscribe(() => this.paginator.pageIndex = 0);
-    this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-    merge(criterio$, this.radio.change, this.sort.sortChange, this.paginator.page).pipe(
+    const builder = new BusquedaBuilder(this.criterio$, this.paginator, this.sort);
+    merge(this.criterio$, this.sort.sortChange, this.paginator.page).pipe(
       startWith({}), switchMap(() => {
         this.isLoadingResults = true;
-        return this.service.getAll(this.newBusqueda);
+        return this.service.getAll(builder.newBusqueda(this.busqueda));
       }), map(data => {
         const proveedores: Table<Proveedor> = (data as HttpResponse<Table<Proveedor>>).body;
         this.isLoadingResults = false;
@@ -103,6 +76,11 @@ export class ProveedorListComponent implements OnInit, AfterViewInit {
         return observableOf([]);
       })
     ).subscribe(data => this.data = data);
+  }
+
+  changeEstado() {
+    this.busqueda.estado = !this.busqueda.estado;
+    this.initSearch();
   }
 
   delete(proveedor: Proveedor) {
@@ -123,12 +101,12 @@ export class ProveedorListComponent implements OnInit, AfterViewInit {
   }
 
   openConfirmation(proveedor: Proveedor) {
+    const data: ConfirmationData = { seccion: "Proveedores", accion: "Eliminar" };
     const dialogRef = this.dialog.open(ConfirmacionComponent, {
-      width: '360px', autoFocus: false, disableClose: true, 
-      data: '¿Está seguro de que desea eliminar definitivamente este proveedor?'
+      width: '360px', autoFocus: false, disableClose: true, data: data
     });
     dialogRef.afterClosed().subscribe(result => {
-      return result ? this.delete(proveedor) : this.sharedService.showMessage('No se han aplicado los cambios');
+      return result ? this.delete(proveedor) : this.sharedService.showWarningMessage('No se han aplicado los cambios');
     });
   }
 

@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { User } from '@models/entity';
-import { SharedService } from '@shared/shared.service';
+import { HttpResponse } from '@angular/common/http';
 import { AuthService } from '@auth_service/*';
 import { CuentaService } from '../cuenta.service';
+import { SharedService } from '@shared/shared.service';
+import { User } from '@models/entity';
 import { SHA256 } from 'crypto-js';
-import { HttpResponse } from '@angular/common/http';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import * as moment from 'moment';
 
 @Component({
@@ -33,8 +32,7 @@ export class CuentaDetailComponent implements OnInit {
     private auth: AuthService,
     private fb: FormBuilder,
     private service: CuentaService,
-    private sharedService: SharedService,
-    private snackBar: MatSnackBar
+    private sharedService: SharedService
   ) {
     sharedService.buildMenuBar({ title: 'Cuenta' });
     sharedService.isMobile$.subscribe(isMobile => this.isMobile = isMobile);
@@ -57,7 +55,7 @@ export class CuentaDetailComponent implements OnInit {
         }
       });
     } else {
-      this.snackBar.open('Algunos campos son invalidos', 'Error', {duration: 2000});
+      this.sharedService.showErrorMessage('Algunos campos son invalidos');
     }
   }
 }

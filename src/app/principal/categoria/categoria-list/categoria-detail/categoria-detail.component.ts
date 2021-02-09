@@ -1,13 +1,12 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Categoria } from '@models/entity';
-import { SharedService } from '@shared/shared.service';
+import { HttpResponse } from '@angular/common/http';
+import { MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { AuthService } from '@auth_service/*';
 import { CategoriaService } from '../../categoria.service';
+import { SharedService } from '@shared/shared.service';
+import { Categoria } from '@models/entity';
 import { v4 as uuid } from 'uuid';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-categoria-detail',
@@ -26,8 +25,7 @@ export class CategoriaDetailComponent implements OnInit {
     private dialogRef: MatDialogRef<CategoriaDetailComponent>,
     private fb: FormBuilder,
     private service: CategoriaService,
-    private sharedService: SharedService,
-    private snackBar: MatSnackBar
+    private sharedService: SharedService
   ) {
     sharedService.isMobile$.subscribe(isMobile => this.isMobile = isMobile);
   }
@@ -51,7 +49,7 @@ export class CategoriaDetailComponent implements OnInit {
         }
       });
     } else {
-      this.snackBar.open('Campo invalido', 'Error', {duration: 2000});
+      this.sharedService.showErrorMessage('Campo invalido');
     }
   }
 }

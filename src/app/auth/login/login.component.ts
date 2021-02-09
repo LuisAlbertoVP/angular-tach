@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
-import { AuthService } from '@auth_service/*';
-import { User } from '@models/entity';
 import { HttpResponse } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+import { AuthService } from '@auth_service/*';
 import { CuentaComponent } from './cuenta/cuenta.component';
+import { User } from '@models/entity';
 import { SHA256 } from 'crypto-js';
 
 @Component({

@@ -18,9 +18,6 @@
 .es-mobile .principal-sidenav { 
   flex: 1 0 auto; 
 }
-.not-hover:hover * { 
-  color: rgb(203, 217, 236); 
-}
 .mr-auto {
   margin-right: auto;
 }

@@ -1,22 +1,23 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
-import { MatRadioGroup } from '@angular/material/radio';
-import { MatSort } from '@angular/material/sort';
-import { MatPaginator } from '@angular/material/paginator';
-import { SharedService } from '@shared/shared.service';
-import { RepuestoService }  from '../repuesto.service';
-import { Repuesto, Table } from '@models/entity';
-import { Busqueda, BusquedaBuilder } from '@models/busqueda';
 import { HttpResponse } from '@angular/common/http';
-import { merge, of as observableOf, Subject } from 'rxjs';
-import { catchError, map, startWith, switchMap } from 'rxjs/operators';
-import { detailExpand } from '@animations/detailExpand';
 import { MatDialog } from '@angular/material/dialog';
-import { RepuestoDetailComponent } from './repuesto-detail/repuesto-detail.component';
-import { ConfirmacionComponent } from '@shared/general-shared/confirmacion/confirmacion.component';
-import { FiltroComponent } from '@shared/general-shared/filtro/filtro.component';
-import * as moment from 'moment';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 import { PrintingService } from '@shared/printing.service';
+import { RepuestoService }  from '../repuesto.service';
+import { SharedService } from '@shared/shared.service';
+import { Busqueda, BusquedaBuilder } from '@models/busqueda';
+import { ConfirmationData } from '@models/confirmacion';
+import { Repuesto, Table } from '@models/entity';
+import { RepuestoForm } from '@models/form';
+import { catchError, map, startWith, switchMap } from 'rxjs/operators';
+import { merge, of as observableOf, Subject } from 'rxjs';
+import { ConfirmacionComponent } from '@shared/confirmacion/confirmacion.component';
+import { FiltroComponent } from '@shared/filtro/filtro.component';
+import { RepuestoDetailComponent } from './repuesto-detail/repuesto-detail.component';
+import { detailExpand } from '@animations/detailExpand';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-repuesto-list',
@@ -26,13 +27,14 @@ import { PrintingService } from '@shared/printing.service';
 })
 export class RepuestoListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatRadioGroup) radio: MatRadioGroup;
   @ViewChild(MatSort) sort: MatSort;
   readonly mobileColumns: string[] = ['opciones', 'Codigo', 'Modelo', 'Stock', 'Precio', 'accion'];
   readonly normalColumns: string[] = ['opciones', 'Codigo', 'Categoria.Descripcion', 'Marca.Descripcion', 
     'Modelo', 'Stock', 'Precio', 'Epoca', 'SubMarca', 'accion'];
+  builder: BusquedaBuilder =  null;
   busqueda: Busqueda = BusquedaBuilder.BuildRepuesto();
   criterio = new Subject();
+  criterio$ = this.criterio.asObservable();
   data: Repuesto[] = [];
   expandedElement: Repuesto = null;
   isLoadingResults: boolean = true;
@@ -57,32 +59,6 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
     return this.isMobile ? this.mobileColumns : this.normalColumns;
   }
 
-  get newBusqueda() {
-    let busqueda: Busqueda = { 
-      filtros: [], estado: this.busqueda.estado, operadorLogico: this.busqueda.operadorLogico 
-    };
-    const activo = this.sort.active ? this.sort.active : 'FechaModificacion';
-    const direccion = this.sort.direction ? this.sort.direction : 'desc';
-    busqueda.orden = { activo: activo, direccion: direccion };
-    busqueda.pagina = this.paginator.pageIndex;
-    busqueda.cantidad = this.paginator.pageSize;
-    if(busqueda.operadorLogico == '&&') {
-      busqueda.filtros.push({ id: "Id", criterios: [''], operador: 'contiene' });
-    }
-    for(let filtro of this.busqueda.filtros) {
-      if(filtro.checked) {
-        if(filtro.operador == 'between') {
-          busqueda.filtros.push(filtro);
-        } else {
-          if(filtro.criterios.length > 0) {
-            busqueda.filtros.push(filtro);
-          }
-        }
-      }
-    }
-    return busqueda;
-  }
-
   ngOnInit(): void {
     this.activedRoute.queryParamMap.subscribe(params => {
       const busqueda: Busqueda = JSON.parse(params.get('busqueda'));
@@ -94,7 +70,7 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
     this.activedRoute.paramMap.subscribe(params => {
       const criterio: string = params.get('id');
       if(criterio) {
-        this.busqueda = { estado: '1', operadorLogico: '||', filtros: [] };
+        this.busqueda = { estado: true, operadorLogico: '||', filtros: [] };
         this.busqueda.filtros.push(
           { id: 'Codigo', criterios: [criterio], operador: 'contiene', checked: true },
           { id: 'Modelo', criterios: [criterio], operador: 'contiene', checked: true }
@@ -105,14 +81,11 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    const criterio$ = this.criterio.asObservable();
-    criterio$.subscribe(() => this.paginator.pageIndex = 0);
-    this.radio.change.subscribe(() => this.paginator.pageIndex = 0);
-    this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-    merge(criterio$, this.radio.change, this.sort.sortChange, this.paginator.page).pipe(
+    this.builder = new BusquedaBuilder(this.criterio$, this.paginator, this.sort);
+    merge(this.criterio$, this.sort.sortChange, this.paginator.page).pipe(
       startWith({}), switchMap(() => {
         this.isLoadingResults = true;  
-        return this.service.getAll(this.newBusqueda);
+        return this.service.getAll(this.builder.newBusqueda(this.busqueda));
       }), map(data => {
         const repuestos: Table<Repuesto> = (data as HttpResponse<Table<Repuesto>>).body;
         this.isLoadingResults = false;
@@ -125,6 +98,22 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
         return observableOf([]);
       })
     ).subscribe(data => this.data = data);
+  }
+
+  buildBusquedaForm(repuestoForm: RepuestoForm): Busqueda {
+    const busqueda: Busqueda = this.busqueda.operadorLogico == '&&' ? this.busqueda : BusquedaBuilder.BuildRepuesto();
+    for(let filtro of busqueda.filtros) {
+      switch(filtro.nombre) {
+        case 'Marca': filtro.data = repuestoForm.marcas.map(marca => marca.descripcion); break
+        case 'Categoría': filtro.data = repuestoForm.categorias.map(categoria => categoria.descripcion); break;
+      }
+    }
+    return busqueda;
+  }
+
+  changeEstado() {
+    this.busqueda.estado = !this.busqueda.estado;
+    this.initSearch();
   }
 
   delete(repuesto: Repuesto) {
@@ -145,25 +134,25 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
   }
 
   openConfirmation(repuesto: Repuesto) {
+    const data: ConfirmationData = { seccion: "Repuestos", accion: "Eliminar" };
     const dialogRef = this.dialog.open(ConfirmacionComponent, {
-      width: '360px', autoFocus: false, disableClose: true, 
-      data: '¿Está seguro de que desea eliminar definitivamente este repuesto?'
+      width: '360px', autoFocus: false, disableClose: true, data: data
     });
     dialogRef.afterClosed().subscribe(result => {
-      return result ? this.delete(repuesto) : this.sharedService.showMessage('No se han aplicado los cambios');
+      return result ? this.delete(repuesto) : this.sharedService.showWarningMessage('No se han aplicado los cambios');
     });
   }
 
   openFilter() {
-    const busqueda: Busqueda = this.busqueda.operadorLogico == '&&' ? this.busqueda : 
-      BusquedaBuilder.BuildRepuesto();
-    const dialogRef = this.dialog.open(FiltroComponent, {
-      width: '720px', autoFocus: false, disableClose: true, data: busqueda, restoreFocus: false
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      if(result) {
-        this.navigateToPrincipal(result);
-      }
+    this.service.getForm().subscribe(form => {
+      const dialogRef = this.dialog.open(FiltroComponent, {
+        width: '720px', autoFocus: false, disableClose: true, data: this.buildBusquedaForm(form), restoreFocus: false
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        if(result) {
+          this.navigateToPrincipal(result);
+        }
+      });
     });
   }
 
@@ -175,7 +164,7 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
   }
 
   openPrint() {
-    const busqueda: Busqueda = this.newBusqueda;
+    const busqueda: Busqueda = this.builder.newBusqueda(this.busqueda);
     busqueda.pagina = 0;
     busqueda.cantidad = this.resultsLength;
     this.printing.printWindow(this.router.url, busqueda);

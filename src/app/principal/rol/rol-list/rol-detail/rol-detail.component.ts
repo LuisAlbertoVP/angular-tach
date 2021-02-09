@@ -1,15 +1,13 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { FormBuilder, Validators } from '@angular/forms';
-import { listModulos } from '@models/menu';
-import { Modulo } from '@models/menu';
-import { Rol } from '@models/entity';
-import { SharedService } from '@shared/shared.service';
+import { HttpResponse } from '@angular/common/http';
+import { MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { AuthService } from '@auth_service/*';
 import { RolService } from '../../rol.service';
+import { SharedService } from '@shared/shared.service';
+import { listModulos, Modulo } from '@models/menu';
+import { Rol } from '@models/entity';
 import { v4 as uuid } from 'uuid';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-rol-detail',
@@ -29,8 +27,7 @@ export class RolDetailComponent implements OnInit {
     private dialogRef: MatDialogRef<RolDetailComponent>,
     private fb: FormBuilder,
     private service: RolService,
-    private sharedService: SharedService,
-    private snackBar: MatSnackBar
+    private sharedService: SharedService
   ) {
     sharedService.isMobile$.subscribe(isMobile => this.isMobile = isMobile);
   }
@@ -58,7 +55,7 @@ export class RolDetailComponent implements OnInit {
         }
       });
     } else {
-      this.snackBar.open('Algunos campos son invalidos', 'Error', {duration: 2000});
+      this.sharedService.showErrorMessage('Algunos campos son invalidos');
     }
   }
 

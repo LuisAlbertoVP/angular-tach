@@ -1,10 +1,10 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Repuesto } from '@models/entity';
-import { SharedService } from '@shared/shared.service';
-import { VentaService } from '../../../venta/venta.service';
+import { MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { RepuestoService } from '../../repuesto/repuesto.service';
+import { SharedService } from '@shared/shared.service';
+import { Repuesto } from '@models/entity';
 
 @Component({
   selector: 'app-repuesto-search',
@@ -19,7 +19,7 @@ export class RepuestoSearchComponent implements OnInit {
     sharedService: SharedService,
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<RepuestoSearchComponent>,
-    private service: VentaService,
+    private service: RepuestoService,
     private snackBar: MatSnackBar
   ) {
     sharedService.isMobile$.subscribe(isMobile => this.isMobile = isMobile);
@@ -41,7 +41,7 @@ export class RepuestoSearchComponent implements OnInit {
     if(this.cantidad.valid) {
       if(this.repuesto) {
         this.repuesto.stock = this.cantidad.value;
-        this.repuesto.descripcion = this.descripcion(this.repuesto);
+        this.repuesto.descripcion = this._descripcion(this.repuesto);
         this.dialogRef.close(this.repuesto);
       } else {
         this.showError('Realice una búsqueda del repuesto');
@@ -51,10 +51,10 @@ export class RepuestoSearchComponent implements OnInit {
     }
   }
 
-  private descripcion(repuesto: Repuesto) {
+  showError = (message: string) => this.snackBar.open(message, 'Error', {duration: 2000});
+  
+  private _descripcion(repuesto: Repuesto) {
     return repuesto.categoria.descripcion + ' ' + repuesto.marca.descripcion + ' ' +
       repuesto.modelo + ' ' + repuesto.epoca;
   }
-
-  showError = (message: string) => this.snackBar.open(message, 'Error', {duration: 2000});
 }

@@ -23,6 +23,9 @@ legend {
 .bold { 
     font-weight: bold; 
 }
+.not-hover:hover * { 
+    color: rgb(203, 217, 236); 
+}
 .mat-elevation-z8 { 
     overflow: auto; 
 }
@@ -46,6 +49,9 @@ legend {
 }
 .success .mat-simple-snackbar-action, .blue  { 
     color: #3f51b5 
+}
+.warning .mat-simple-snackbar-action {
+    color: yellow;
 }
 .shadow {
     box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;

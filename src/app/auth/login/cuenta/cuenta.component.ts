@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
-import { FormBuilder, Validators } from '@angular/forms';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { FormBuilder, Validators } from '@angular/forms';
+import { HttpResponse } from '@angular/common/http';
+import { MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '@auth_service/*';
 import { User } from '@models/entity';
-import { HttpResponse } from '@angular/common/http';
 import { SHA256 } from 'crypto-js';
 import { v4 as uuid } from 'uuid';
 import * as moment from 'moment';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-cuenta',

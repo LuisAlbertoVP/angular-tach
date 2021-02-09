@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
-import { TransaccionSharedModule } from '@shared/transaccion-shared/transaccion-shared.module';
+import { SharedModule } from '@shared/shared.module';
 import { VentaRoutingModule } from './venta-routing.module';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { VentaDetailComponent } from './venta-detail/venta-detail.component';
 import { VentaListComponent } from './venta-list/venta-list.component';
 
@@ -8,8 +10,10 @@ import { VentaListComponent } from './venta-list/venta-list.component';
 @NgModule({
   declarations: [VentaDetailComponent, VentaListComponent],
   imports: [
-    TransaccionSharedModule,
-    VentaRoutingModule
+    SharedModule,
+    VentaRoutingModule,
+    MatNativeDateModule,
+    MatDatepickerModule
   ]
 })
 export class VentaModule { }

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { httpOptions, urlVenta } from '@models/http';
-import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { Repuesto, Venta } from '@models/entity';
+import { Venta, Table } from '@models/entity';
+import { Busqueda } from '@models/busqueda';
 import { HttpErrorHandlerService, HandleError } from '../../http-error-handler.service';
 
 @Injectable({
@@ -19,9 +19,12 @@ export class VentaService {
     this.handleError = httpErrorHandler.createHandleError('VentaService');
   }
 
-  getRepuesto = (id: string): Observable<Repuesto> => this.http.get<Repuesto>(`${urlVenta}/repuestos/${id}`)
-      .pipe(catchError(this.handleError<Repuesto>('getRepuesto')));
+  getAll = (busqueda: Busqueda) => this.http.post(`${urlVenta}/all`, busqueda, httpOptions)
+      .pipe(catchError(this.handleError<Table<Venta>>('getAll')));
 
   insertOrUpdate = (venta: Venta) => this.http.post(urlVenta, venta, httpOptions)
       .pipe(catchError(this.handleError('insertOrUpdate', venta)));
+
+  setStatus = (venta: Venta) => this.http.post(`${urlVenta}/${venta.id}/status`, venta, httpOptions)
+      .pipe(catchError(this.handleError('setStatus', venta)));
 }

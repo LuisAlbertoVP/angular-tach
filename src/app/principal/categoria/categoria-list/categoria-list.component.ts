@@ -1,20 +1,20 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
-import { MatRadioGroup } from '@angular/material/radio';
-import { MatSort } from '@angular/material/sort';
-import { MatPaginator } from '@angular/material/paginator';
-import { SharedService } from '@shared/shared.service';
-import { CategoriaService }  from '../categoria.service';
-import { Categoria, Table } from '@models/entity';
-import { Busqueda, BusquedaBuilder } from '@models/busqueda';
 import { HttpResponse } from '@angular/common/http';
-import { merge, of as observableOf, Subject } from 'rxjs';
-import { catchError, map, startWith, switchMap } from 'rxjs/operators';
-import { detailExpand } from '@animations/detailExpand';
 import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { CategoriaService }  from '../categoria.service';
+import { SharedService } from '@shared/shared.service';
+import { Busqueda, BusquedaBuilder } from '@models/busqueda';
+import { ConfirmationData } from '@models/confirmacion';
+import { Categoria, Table } from '@models/entity';
+import { catchError, map, startWith, switchMap } from 'rxjs/operators';
+import { merge, of as observableOf, Subject } from 'rxjs';
 import { CategoriaDetailComponent } from './categoria-detail/categoria-detail.component';
-import { ConfirmacionComponent } from '@shared/general-shared/confirmacion/confirmacion.component';
-import { FiltroComponent } from '@shared/general-shared/filtro/filtro.component';
+import { ConfirmacionComponent } from '@shared/confirmacion/confirmacion.component';
+import { FiltroComponent } from '@shared/filtro/filtro.component';
+import { detailExpand } from '@animations/detailExpand';
 import * as moment from 'moment';
 
 @Component({
@@ -24,12 +24,12 @@ import * as moment from 'moment';
   animations: detailExpand
 })
 export class CategoriaListComponent implements OnInit, AfterViewInit {
-  @ViewChild(MatRadioGroup) radio: MatRadioGroup;
-  @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
   readonly displayedColumns: string[] = ['opciones', 'Descripcion', 'Repuestos.Count', 'accion'];
   busqueda: Busqueda = BusquedaBuilder.BuildBase();
   criterio = new Subject();
+  criterio$ = this.criterio.asObservable();
   data: Categoria[] = [];
   expandedElement: Categoria = null;
   isLoadingResults: boolean = true;
@@ -58,39 +58,12 @@ export class CategoriaListComponent implements OnInit, AfterViewInit {
     });
   }
 
-  get newBusqueda() {
-    let busqueda: Busqueda = { 
-      filtros: [], estado: this.busqueda.estado, operadorLogico: this.busqueda.operadorLogico 
-    };
-    const activo = this.sort.active ? this.sort.active : 'FechaModificacion';
-    const direccion = this.sort.direction ? this.sort.direction : 'desc';
-    busqueda.orden = { activo: activo, direccion: direccion };
-    busqueda.pagina = this.paginator.pageIndex;
-    busqueda.cantidad = this.paginator.pageSize;
-    busqueda.filtros.push({ id: "Id", criterios: [''], operador: 'contiene' });
-    for(let filtro of this.busqueda.filtros) {
-      if(filtro.checked) {
-        if(filtro.operador == 'between') {
-          busqueda.filtros.push(filtro);
-        } else {
-          if(filtro.criterios.length > 0) {
-            busqueda.filtros.push(filtro);
-          }
-        }
-      }
-    }
-    return busqueda;
-  }
-
   ngAfterViewInit(): void {
-    const criterio$ = this.criterio.asObservable();
-    criterio$.subscribe(() => this.paginator.pageIndex = 0);
-    this.radio.change.subscribe(() => this.paginator.pageIndex = 0);
-    this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-    merge(criterio$, this.radio.change, this.sort.sortChange, this.paginator.page).pipe(
+    const builder = new BusquedaBuilder(this.criterio$, this.paginator, this.sort);
+    merge(this.criterio$, this.sort.sortChange, this.paginator.page).pipe(
       startWith({}), switchMap(() => {
         this.isLoadingResults = true;
-        return this.service.getAll(this.newBusqueda);
+        return this.service.getAll(builder.newBusqueda(this.busqueda));
       }), map(data => {
         const categorias: Table<Categoria> = (data as HttpResponse<Table<Categoria>>).body;
         this.isLoadingResults = false;
@@ -103,6 +76,11 @@ export class CategoriaListComponent implements OnInit, AfterViewInit {
         return observableOf([]);
       })
     ).subscribe(data => this.data = data);
+  }
+
+  changeEstado() {
+    this.busqueda.estado = !this.busqueda.estado;
+    this.initSearch();
   }
 
   delete(categoria: Categoria) {
@@ -123,12 +101,12 @@ export class CategoriaListComponent implements OnInit, AfterViewInit {
   }
 
   openConfirmation(categoria: Categoria) {
+    const data: ConfirmationData = { seccion: "Categorías", accion: "Eliminar" };
     const dialogRef = this.dialog.open(ConfirmacionComponent, {
-      width: '360px', autoFocus: false, disableClose: true, 
-      data: '¿Está seguro de que desea eliminar definitivamente esta categoría?'
+      width: '360px', autoFocus: false, disableClose: true, data: data
     });
     dialogRef.afterClosed().subscribe(result => {
-      return result ? this.delete(categoria) : this.sharedService.showMessage('No se han aplicado los cambios');
+      return result ? this.delete(categoria) : this.sharedService.showWarningMessage('No se han aplicado los cambios');
     });
   }
 

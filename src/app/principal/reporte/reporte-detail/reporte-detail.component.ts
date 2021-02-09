@@ -32,12 +32,12 @@ export class ReporteDetailComponent implements OnDestroy, AfterViewInit {
   ngAfterViewInit() {
     this.service.get().subscribe(reporte => {
       this.reporte = reporte;
-      this.buildPieChart(this.categoriasCanvas, 'Categorías', reporte.categorias);
-      this.buildPieChart(this.marcasCanvas, 'Marcas', reporte.marcas);
+      this._buildChart(this.categoriasCanvas, 'Categorías', reporte.categorias);
+      this._buildChart(this.marcasCanvas, 'Marcas', reporte.marcas);
     });
   }
 
-  private buildColors(length: number) {
+  private _buildColors(length: number) {
     let background = [], borders = [];
     for(let i = 0; i < length; i++) {
       let o = Math.round, random = Math.random, s = 255;
@@ -48,8 +48,8 @@ export class ReporteDetailComponent implements OnDestroy, AfterViewInit {
     return { background: background, borders: borders };
   }
 
-  private buildPieChart(ctx: ElementRef<HTMLCanvasElement>, id: string, entity: Categoria[] | Marca[]) {
-    let colors = this.buildColors(entity.length);
+  private _buildChart(ctx: ElementRef<HTMLCanvasElement>, id: string, entity: Categoria[] | Marca[]) {
+    let colors = this._buildColors(entity.length);
     this.chart = new Chart(ctx.nativeElement.getContext('2d'), {
       type: 'horizontalBar',
       data: {

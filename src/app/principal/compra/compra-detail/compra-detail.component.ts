@@ -1,16 +1,16 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { HttpResponse } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
-import { SharedService } from '@shared/shared.service';
 import { AuthService } from '@auth_service/*';
-import { Compra, CompraDetalle, Repuesto } from '@models/entity';
 import { CompraService } from '../compra.service';
-import { ConfirmacionComponent } from '@shared/transaccion-shared/confirmacion/confirmacion.component';
-import { RepuestoSearchComponent } from '@shared/transaccion-shared/repuesto-search/repuesto-search.component';
+import { SharedService } from '@shared/shared.service';
+import { Compra, CompraDetalle, Repuesto } from '@models/entity';
+import { ConfirmationData } from '@models/confirmacion';
+import { ConfirmacionComponent } from '@shared/confirmacion/confirmacion.component';
+import { RepuestoSearchComponent } from '@shared/repuesto-search/repuesto-search.component';
 import { v4 as uuid } from 'uuid';
 import * as moment from 'moment';
-import { HttpResponse } from '@angular/common/http';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-compra-detail',
@@ -30,8 +30,7 @@ export class CompraDetailComponent {
     private dialog: MatDialog,
     private fb: FormBuilder,
     private service: CompraService,
-    private sharedService: SharedService,
-    private snackBar: MatSnackBar
+    private sharedService: SharedService
   ) {
     sharedService.buildMenuBar({ title: 'Compra' });
   }
@@ -42,14 +41,14 @@ export class CompraDetailComponent {
     });
     dialogRef.afterClosed().subscribe((result: Repuesto) => {
       if(result) {
-        const temp: Repuesto = this.hasRepuesto(result.id);
+        const temp: Repuesto = this._hasRepuesto(result.id);
         if(temp != null) {
           temp.stock = result.stock;
           temp.precio = result.precio;
-          this.calcular();
+          this._calcular();
         } else {
-          this.data = this.data.concat([result]);
-          this.calcular();
+          this.data = [result].concat(this.data);
+          this._calcular();
         }
       }
     });
@@ -65,12 +64,13 @@ export class CompraDetailComponent {
 
   delete(repuesto: Repuesto) {
     this.data = this.data.filter(r => r.id != repuesto.id)
-    this.calcular();
+    this._calcular();
   }
 
   guardar() {
+    const data: ConfirmationData = { seccion: "Compras", accion: "Continuar" };
     const dialogRef = this.dialog.open(ConfirmacionComponent, {
-      width: '360px', autoFocus: false, disableClose: true, data: "¿Desea guardar la compra?"
+      width: '360px', autoFocus: false, disableClose: true, data: data
     });
     dialogRef.afterClosed().subscribe(result => {
       if(result) {
@@ -81,7 +81,7 @@ export class CompraDetailComponent {
             time = moment().format('HH:mm:ss');
           }
           const compra: Compra = { 
-            id: uuid(), compraDetalle: this.buildCompraDetalle(), cantidad: this.cantidad, total: this.total, 
+            id: uuid(), compraDetalle: this._buildCompraDetalle(), cantidad: this.cantidad, total: this.total, 
             descripcion: this.descripcion.value, usuarioIngreso: this.auth.nombreUsuario, 
             fechaIngreso: moment(date + ' ' + time).format()
           };
@@ -92,13 +92,13 @@ export class CompraDetailComponent {
             }
           });
         } else {
-          this.snackBar.open('Lista de compras vacía', 'Error', {duration: 2000});
+          this.sharedService.showErrorMessage('Lista de compras vacía');
         }
       }
     });
   }
 
-  private buildCompraDetalle() {
+  private _buildCompraDetalle() {
     let compraDetalle: CompraDetalle[] = [];
     for(let repuesto of this.data) {
       compraDetalle.push({ repuestoId: repuesto.id, cantidad: repuesto.stock });
@@ -106,7 +106,7 @@ export class CompraDetailComponent {
     return compraDetalle;
   }
 
-  private calcular() {
+  private _calcular() {
     let cantidad = 0, total = 0;
     for(let repuesto of this.data) {
       cantidad += repuesto.stock;
@@ -116,7 +116,7 @@ export class CompraDetailComponent {
     this.total = total;
   }
 
-  private hasRepuesto(id: string): Repuesto {
+  private _hasRepuesto(id: string): Repuesto {
     for(let repuesto of this.data) {
       if(repuesto.id == id) {
         return repuesto;
