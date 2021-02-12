@@ -28,8 +28,9 @@
   font-size: 14px; 
   padding: 0px 15px; 
   outline: none; 
-  border-radius: 15px; 
-  border: 1px solid silver; 
+  border-radius: 6px;
+  background-color: #dfe3ee; 
+  border: 1px solid #4d648d; 
 }
 @media print {
   mat-toolbar { 
