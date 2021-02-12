@@ -11,6 +11,13 @@ button {
 a { 
     text-decoration: none !important; 
 }
+dt, dd {
+    float: left;
+    width: 50%;
+}
+dd {
+    overflow-wrap: break-word;
+}
 legend { 
     font-size: 18px; 
 }
