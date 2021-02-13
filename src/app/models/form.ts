@@ -1,4 +1,4 @@
-import { Categoria, Marca, Rol } from "./entity";
+import { Categoria, Compra, Marca, Rol, Venta } from "./entity";
 
 export interface UserForm {
   roles: Rol[];
@@ -10,5 +10,6 @@ export interface RepuestoForm {
 }
 
 export interface Reporte extends RepuestoForm {
-
+  compras: Compra[];
+  ventas: Venta[];
 }

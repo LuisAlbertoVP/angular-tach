@@ -1,9 +1,10 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { ReporteService } from '../reporte.service';
-import { Chart } from 'chart.js';
-import { Categoria, Marca } from '@models/entity';
+import { Categoria, Marca, Transaccion } from '@models/entity';
 import { Reporte } from '@models/form';
 import { SharedService } from '@shared/shared.service';
+import { Chart } from 'chart.js';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-reporte-detail',
@@ -12,8 +13,11 @@ import { SharedService } from '@shared/shared.service';
 })
 export class ReporteDetailComponent implements OnDestroy, AfterViewInit {
   @ViewChild('categorias', {static: false}) categoriasCanvas: ElementRef<HTMLCanvasElement>;
+  @ViewChild('compras', {static: false}) comprasCanvas: ElementRef<HTMLCanvasElement>;
   @ViewChild('marcas', {static: false}) marcasCanvas: ElementRef<HTMLCanvasElement>;
+  @ViewChild('ventas', {static: false}) ventasCanvas: ElementRef<HTMLCanvasElement>;
   chart: Chart = null;
+  isLoading: boolean = true;
   isMobile: boolean = false;
   reporte: Reporte = null;
 
@@ -31,9 +35,14 @@ export class ReporteDetailComponent implements OnDestroy, AfterViewInit {
 
   ngAfterViewInit() {
     this.service.get().subscribe(reporte => {
+      this.isLoading = false;
       this.reporte = reporte;
-      this._buildChart(this.categoriasCanvas, 'Categorías', reporte.categorias);
-      this._buildChart(this.marcasCanvas, 'Marcas', reporte.marcas);
+      const compras = this._groupTransaccionDatesBy('w', reporte.compras);
+      const ventas = this._groupTransaccionDatesBy('w', reporte.ventas); 
+      this._buildPieChart(this.categoriasCanvas, 'Categorías', reporte.categorias);
+      this._buildPieChart(this.marcasCanvas, 'Marcas', reporte.marcas);
+      this._buildLineChart(this.comprasCanvas, 'Compras', compras);
+      this._buildLineChart(this.ventasCanvas, 'Ventas', ventas);
     });
   }
 
@@ -48,10 +57,10 @@ export class ReporteDetailComponent implements OnDestroy, AfterViewInit {
     return { background: background, borders: borders };
   }
 
-  private _buildChart(ctx: ElementRef<HTMLCanvasElement>, id: string, entity: Categoria[] | Marca[]) {
+  private _buildPieChart(ctx: ElementRef<HTMLCanvasElement>, id: string, entity: Categoria[] | Marca[]) {
     let colors = this._buildColors(entity.length);
     this.chart = new Chart(ctx.nativeElement.getContext('2d'), {
-      type: 'horizontalBar',
+      type: 'pie',
       data: {
         labels: entity.map(base => base.descripcion),
         datasets: [{
@@ -61,7 +70,63 @@ export class ReporteDetailComponent implements OnDestroy, AfterViewInit {
           borderColor: colors.borders,
           borderWidth: 1
         }]
+      },
+      options: {
+        title: { display: true, text: id },
+        legend: { display: true, position: 'right' }
       }
     });
+  }
+
+  private _buildLineChart(ctx: ElementRef<HTMLCanvasElement>, id: string, transaccion: Transaccion[]) {
+    let colors = this._buildColors(transaccion.length);
+    this.chart = new Chart(ctx.nativeElement.getContext('2d'), {
+      type: 'line',
+      data: {
+        labels: transaccion.map(base => base.fechaIngreso),
+        datasets: [{
+          label: id,
+          data: transaccion.map(base => base.cantidad),
+          backgroundColor: colors.background,
+          borderColor: colors.borders,
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          xAxes: [{
+            ticks: { autoSkip: false, callback: this._callbackDates }
+         }]
+        }
+      }
+    });
+  }
+
+  private _callbackDates(date: string) {
+    const dates: string[] = date.split(' a ');
+    const format = moment(dates[0]).locale('es').format('MMM w');
+    return format.charAt(0).toUpperCase() + format.slice(1);
+  }
+
+  private _groupTransaccionDatesBy(format: string, transacciones: Transaccion[]): Transaccion[] {
+    const dates = this._groupDatesBy(format, transacciones), dataParsed: Transaccion[] = [];
+    for(let [_, data] of dates) {
+      const fechaStart = data[0].fechaIngreso, fechaEnd = data[data.length - 1].fechaIngreso;
+      const fecha = moment(fechaStart).format('YYYY-MM-DD') + ' a ' + moment(fechaEnd).format('YYYY-MM-DD');
+      const cantidad = data.reduce((previus, venta) => previus + venta.cantidad, 0);
+      dataParsed.push({ fechaIngreso: fecha, cantidad: cantidad });
+    }
+    return dataParsed;
+  }
+
+  private _groupDatesBy(format: string, transacciones: Transaccion[]): Map<string, Transaccion[]> {
+    return transacciones.reduce((previus, transaccion) => {
+      const date: string = moment(transaccion.fechaIngreso).format(format);
+      if(!previus.has(date)) {
+        previus.set(date, []);
+      }
+      previus.get(date).push(transaccion);
+      return previus;
+    }, new Map<string, Transaccion[]>());
   }
 }

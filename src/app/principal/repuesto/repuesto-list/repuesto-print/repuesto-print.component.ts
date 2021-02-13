@@ -21,6 +21,10 @@ export class RepuestoPrintComponent implements OnInit {
     private service: RepuestoService
   ) { }
 
+  get stock() {
+    return this.repuestos.reduce((previus, repuesto) => previus + repuesto.stock, 0);
+  }
+
   ngOnInit(): void {
     this.activatedRoute.queryParamMap.subscribe(params => {
       const busqueda: Busqueda = JSON.parse(params.get('printObject'));
