@@ -30,11 +30,15 @@ tr.mat-footer-row {
 .margin > * { 
     margin-left: 2px; margin-right: 2px; 
 }
-.bold { 
+.bold, .text-error { 
     font-weight: bold; 
 }
 .not-hover:hover * { 
     color: rgb(203, 217, 236); 
+}
+.text-error {
+    color: #980000;
+    font-size: 15px;
 }
 .mat-elevation-z8 { 
     overflow: auto; 

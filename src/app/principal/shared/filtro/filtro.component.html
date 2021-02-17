@@ -33,9 +33,9 @@
                   <mat-chip *ngFor="let criterio of criterios(filtro).controls; let i=index" [removable]="true" (removed)="removeCriterio(filtro, i)">
                     {{ criterio.value }}<mat-icon matChipRemove>cancel</mat-icon></mat-chip>
                   <input #input [matAutocomplete]="auto" [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                    (matChipInputTokenEnd)="addCriterio(filtro, $event)" placeholder="Ingrese los criterios" />
+                    (matChipInputTokenEnd)="addCriterio(filtro, $event)" (keyup)="filter($event.target.value, i)" placeholder="Ingrese los criterios" />
                   <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected(filtro, $event); input.value=''">
-                    <mat-option *ngFor="let value of data(filtro).controls">{{ value.value }}</mat-option>
+                    <mat-option *ngFor="let valor of data[i]">{{ valor }}</mat-option>
                   </mat-autocomplete>
                 </mat-chip-list>
               </mat-form-field>

@@ -13,6 +13,7 @@ import { Busqueda, Filtro } from '@models/busqueda';
 })
 export class FiltroComponent implements OnInit {
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+  data: string[][] = [];
   form: FormGroup = null;
 
   constructor(
@@ -59,8 +60,14 @@ export class FiltroComponent implements OnInit {
     }
   }
 
+  filter(valor: string, index: number) {
+    const valorFiltrado = valor.toLowerCase(), filtro = this.busqueda.filtros[index];
+    if(filtro?.data) {
+      this.data[index] = filtro.data.filter(value => value.toLowerCase().indexOf(valorFiltrado) === 0);
+    }
+  }
+
   criterios = (filtro: FormControl) => filtro.get('criterios') as FormArray;
-  data = (filtro: FormControl) => filtro.get('data') as FormArray;
   guardar = () => this.dialogRef.close(this.form.getRawValue());
   removeCriterio = (filtro: FormControl, position: number) => this.criterios(filtro).removeAt(position);
 
@@ -74,10 +81,10 @@ export class FiltroComponent implements OnInit {
         criterio1: [filtro?.criterio1 ? filtro.criterio1 : ''], 
         criterio2: [filtro?.criterio2 ? filtro.criterio2 : ''], 
         operador: [filtro?.operador ? filtro.operador : filtro?.esFecha ? 'between' : 'contiene'],
-        data: this.fb.array(filtro?.data ? filtro.data : []),
         esFecha: [filtro?.esFecha],
         checked: [filtro?.checked]
       }));
+      this.data.push(filtro?.data ? filtro.data : []);
     }
     return newFiltros;
   }

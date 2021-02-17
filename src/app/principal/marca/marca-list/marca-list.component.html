@@ -9,10 +9,10 @@
   <div class="w-100 p-3 mt-3 mat-elevation-z8">
     <div class="loading-shade" *ngIf="isLoadingResults || isRateLimitReached">
       <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
-      <div class="text-danger bold" *ngIf="isRateLimitReached">El tiempo se ha agotado, recargue la página</div>
+      <div class="text-error" *ngIf="isRateLimitReached">El tiempo se ha agotado, vuelva a intentarlo más tarde</div>
     </div>
-    <div class="table-container" [class.isMobile]="isMobile">
-      <table mat-table [dataSource]="data" multiTemplateDataRows matSort class="w-100 position-relative">
+    <div class="table-container position-relative" [class.isMobile]="isMobile">
+      <table mat-table [dataSource]="data" multiTemplateDataRows matSort class="w-100">
         <ng-container matColumnDef="opciones">
           <th mat-header-cell *matHeaderCellDef>
             <a mat-icon-button [matMenuTriggerFor]="menu" class="not-hover"><mat-icon>more_vert</mat-icon></a>
