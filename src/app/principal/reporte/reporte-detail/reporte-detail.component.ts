@@ -39,8 +39,8 @@ export class ReporteDetailComponent implements OnDestroy, AfterViewInit {
       this.reporte = reporte;
       const compras = this._groupTransaccionDatesBy('w', reporte.compras);
       const ventas = this._groupTransaccionDatesBy('w', reporte.ventas); 
-      this._buildPieChart(this.categoriasCanvas, 'Categorías', reporte.categorias);
-      this._buildPieChart(this.marcasCanvas, 'Marcas', reporte.marcas);
+      this._buildPieChart(this.categoriasCanvas, 'Categorías', reporte.categorias.slice(0 , 5));
+      this._buildPieChart(this.marcasCanvas, 'Marcas', reporte.marcas.slice(0, 5));
       this._buildLineChart(this.comprasCanvas, 'Compras', compras);
       this._buildLineChart(this.ventasCanvas, 'Ventas', ventas);
     });

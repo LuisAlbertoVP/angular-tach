@@ -16,10 +16,10 @@ export class RepuestoSearchComponent implements OnInit {
   
   constructor(
     @Inject(MAT_DIALOG_DATA) public repuesto: Repuesto,
-    sharedService: SharedService,
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<RepuestoSearchComponent>,
     private service: RepuestoService,
+    private sharedService: SharedService,
     private snackBar: MatSnackBar
   ) {
     sharedService.isMobile$.subscribe(isMobile => this.isMobile = isMobile);
@@ -31,7 +31,13 @@ export class RepuestoSearchComponent implements OnInit {
 
   buscar(id: string) {
     if(id?.trim()) {
-      this.service.getRepuesto(id.trim()).subscribe(repuesto => this.repuesto = repuesto);
+      this.service.getRepuesto(id.trim()).subscribe(repuesto => {
+        if(repuesto) {
+          this.repuesto = repuesto;
+        } else {
+          this.sharedService.showErrorMessage('No existe el repuesto');
+        }
+      });
     } else {
       this.showError('Ingrese un criterio de búsqueda');
     }

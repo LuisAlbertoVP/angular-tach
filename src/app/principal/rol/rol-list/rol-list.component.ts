@@ -68,7 +68,7 @@ export class RolListComponent implements OnInit, AfterViewInit {
         const roles: Table<Rol> = (data as HttpResponse<Table<Rol>>).body;
         this.isLoadingResults = false;
         this.isRateLimitReached = false;
-        this.resultsLength = roles.total;
+        this.resultsLength = roles.cantidad;
         return roles.data;
       }), catchError(() => {
         this.isLoadingResults = false;

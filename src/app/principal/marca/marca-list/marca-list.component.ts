@@ -26,7 +26,7 @@ import * as moment from 'moment';
 export class MarcaListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  readonly displayedColumns: string[] = ['opciones', 'Descripcion', 'Repuestos.Count', 'accion'];
+  readonly displayedColumns: string[] = ['opciones', 'Descripcion', 'Repuestos.Sum(Stock)', 'Repuestos.Sum(Precio)', 'accion'];
   busqueda: Busqueda = BusquedaBuilder.BuildBase();
   criterio = new Subject();
   criterio$ = this.criterio.asObservable();
@@ -36,6 +36,8 @@ export class MarcaListComponent implements OnInit, AfterViewInit {
   isMobile: boolean = false;
   isRateLimitReached: boolean = false;
   resultsLength: number = 0;
+  resultsStock: number = 0;
+  resultsPrecio: number = 0;
 
   constructor(
     private activedRoute: ActivatedRoute,
@@ -68,7 +70,9 @@ export class MarcaListComponent implements OnInit, AfterViewInit {
         const marcas: Table<Marca> = (data as HttpResponse<Table<Marca>>).body;
         this.isLoadingResults = false;
         this.isRateLimitReached = false;
-        this.resultsLength = marcas.total;
+        this.resultsLength = marcas.cantidad;
+        this.resultsStock = marcas.stock;
+        this.resultsPrecio = marcas.precio;
         return marcas.data;
       }), catchError(() => {
         this.isLoadingResults = false;

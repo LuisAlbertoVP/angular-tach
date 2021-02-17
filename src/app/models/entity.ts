@@ -2,7 +2,9 @@ import { Modulo } from "./menu";
 
 export interface Table<T> {
   data: T[];
-  total: number;
+  cantidad: number;
+  stock?: number;
+  precio?: number;
 }
 
 export interface Entity {
@@ -17,6 +19,7 @@ export interface Categoria extends Entity {
   id?: string;
   descripcion?: string;
   stock?: number;
+  precio?: number;
 }
 
 export interface Cliente extends Person {
@@ -38,6 +41,7 @@ export interface Marca extends Entity {
   id?: string;
   descripcion?: string;
   stock?: number;
+  precio?: number;
 }
 
 export interface Person extends Entity {

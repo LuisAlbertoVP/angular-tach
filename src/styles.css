@@ -21,6 +21,9 @@ dd {
 legend { 
     font-size: 18px; 
 }
+tr.mat-footer-row {
+    font-weight: bold;
+}
 .ml-auto { 
     margin-left: auto !important; 
 }

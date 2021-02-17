@@ -30,7 +30,7 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
   readonly mobileColumns: string[] = ['opciones', 'Codigo', 'Modelo', 'Stock', 'Precio', 'accion'];
   readonly normalColumns: string[] = ['opciones', 'Codigo', 'Categoria.Descripcion', 'Marca.Descripcion', 
-    'Modelo', 'Stock', 'Precio', 'Epoca', 'SubMarca', 'accion'];
+    'Modelo', 'Epoca', 'SubMarca', 'Stock', 'Precio', 'accion'];
   builder: BusquedaBuilder =  null;
   busqueda: Busqueda = BusquedaBuilder.BuildRepuesto();
   criterio = new Subject();
@@ -41,6 +41,8 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
   isMobile: boolean = false;
   isRateLimitReached: boolean = false;
   resultsLength: number = 0;
+  resultsStock: number = 0;
+  resultsPrecio: number = 0;
 
   constructor(
     private activedRoute: ActivatedRoute,
@@ -90,7 +92,9 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
         const repuestos: Table<Repuesto> = (data as HttpResponse<Table<Repuesto>>).body;
         this.isLoadingResults = false;
         this.isRateLimitReached = false;
-        this.resultsLength = repuestos.total;
+        this.resultsLength = repuestos.cantidad;
+        this.resultsStock = repuestos.stock;
+        this.resultsPrecio = repuestos.precio;
         return repuestos.data;
       }), catchError(() => {
         this.isLoadingResults = false;

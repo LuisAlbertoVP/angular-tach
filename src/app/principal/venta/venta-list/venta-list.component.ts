@@ -23,7 +23,7 @@ import * as moment from 'moment';
 export class VentaListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  readonly displayedColumns: string[] = ['opciones', 'Cantidad', 'Total', 'FechaIngreso', 'accion'];
+  readonly displayedColumns: string[] = ['opciones', 'FechaIngreso', 'Cantidad', 'Total', 'accion'];
   busqueda: Busqueda = BusquedaBuilder.BuildVenta();
   criterio = new Subject();
   criterio$ = this.criterio.asObservable();
@@ -33,6 +33,8 @@ export class VentaListComponent implements OnInit, AfterViewInit {
   isMobile: boolean = false;
   isRateLimitReached: boolean = false;
   resultsLength: number = 0;
+  resultsStock: number = 0;
+  resultsPrecio: number = 0;
 
   constructor(
     private activedRoute: ActivatedRoute,
@@ -65,7 +67,9 @@ export class VentaListComponent implements OnInit, AfterViewInit {
         const ventas: Table<Venta> = (data as HttpResponse<Table<Venta>>).body;
         this.isLoadingResults = false;
         this.isRateLimitReached = false;
-        this.resultsLength = ventas.total;
+        this.resultsLength = ventas.cantidad;
+        this.resultsStock = ventas.stock;
+        this.resultsPrecio = ventas.precio;
         return ventas.data;
       }), catchError(() => {
         this.isLoadingResults = false;

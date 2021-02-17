@@ -68,7 +68,7 @@ export class ProveedorListComponent implements OnInit, AfterViewInit {
         const proveedores: Table<Proveedor> = (data as HttpResponse<Table<Proveedor>>).body;
         this.isLoadingResults = false;
         this.isRateLimitReached = false;
-        this.resultsLength = proveedores.total;
+        this.resultsLength = proveedores.cantidad;
         return proveedores.data;
       }), catchError(() => {
         this.isLoadingResults = false;

@@ -26,7 +26,7 @@ import * as moment from 'moment';
 export class CategoriaListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  readonly displayedColumns: string[] = ['opciones', 'Descripcion', 'Repuestos.Count', 'accion'];
+  readonly displayedColumns: string[] = ['opciones', 'Descripcion', 'Repuestos.Sum(Stock)', 'Repuestos.Sum(Precio)', 'accion'];
   busqueda: Busqueda = BusquedaBuilder.BuildBase();
   criterio = new Subject();
   criterio$ = this.criterio.asObservable();
@@ -36,6 +36,8 @@ export class CategoriaListComponent implements OnInit, AfterViewInit {
   isMobile: boolean = false;
   isRateLimitReached: boolean = false;
   resultsLength: number = 0;
+  resultsStock: number = 0;
+  resultsPrecio: number = 0;
 
   constructor(
     private activedRoute: ActivatedRoute,
@@ -68,7 +70,9 @@ export class CategoriaListComponent implements OnInit, AfterViewInit {
         const categorias: Table<Categoria> = (data as HttpResponse<Table<Categoria>>).body;
         this.isLoadingResults = false;
         this.isRateLimitReached = false;
-        this.resultsLength = categorias.total;
+        this.resultsLength = categorias.cantidad;
+        this.resultsStock = categorias.stock;
+        this.resultsPrecio = categorias.precio;
         return categorias.data;
       }), catchError(() => {
         this.isLoadingResults = false;

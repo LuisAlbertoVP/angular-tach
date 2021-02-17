@@ -73,7 +73,7 @@ export class UsuarioListComponent implements OnInit, AfterViewInit {
         const usuarios: Table<User> = (data as HttpResponse<Table<User>>).body;
         this.isLoadingResults = false;
         this.isRateLimitReached = false;
-        this.resultsLength = usuarios.total;
+        this.resultsLength = usuarios.cantidad;
         return usuarios.data;
       }), catchError(() => {
         this.isLoadingResults = false;
