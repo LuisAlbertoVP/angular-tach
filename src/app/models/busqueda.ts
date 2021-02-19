@@ -85,12 +85,15 @@ const busquedaProveedor: Busqueda = {
   ], estado: true, operadorLogico: '&&'
 };
 
-const busquedaVenta: Busqueda = {
+const busquedaTransaccion: Busqueda = {
   filtros: [
+    { id: "Fecha", nombre: "Fecha", esFecha: true },
     { id: "Cantidad", nombre: "Cantidad" },
     { id: "Total", nombre: "Total" },
+    { id: "Direccion", nombre: "Dirección" },
     { id: "Descripcion", nombre: "Descripción" },
-    { id: "FechaIngreso", nombre: "Ingreso", esFecha: true }
+    { id: "FechaIngreso", nombre: "Ingreso", esFecha: true },
+    { id: "FechaModificacion", nombre: "Modificación", esFecha: true }
   ], estado: true, operadorLogico: '&&'
 };
 
@@ -139,5 +142,5 @@ export class BusquedaBuilder {
   static BuildUsuario = (): Busqueda => JSON.parse(JSON.stringify(busquedaUsuario));
   static BuildRepuesto = (): Busqueda => JSON.parse(JSON.stringify(busquedaRepuesto));
   static BuildProveedor = (): Busqueda => JSON.parse(JSON.stringify(busquedaProveedor));
-  static BuildVenta = (): Busqueda => JSON.parse(JSON.stringify(busquedaVenta));
+  static BuildTransaccion = (): Busqueda => JSON.parse(JSON.stringify(busquedaTransaccion));
 }

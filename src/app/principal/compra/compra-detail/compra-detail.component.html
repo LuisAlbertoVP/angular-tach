@@ -3,7 +3,12 @@
     <div class="d-flex tag">
       <div>
         <h2 class="blue">Compra</h2>
-        <div>Usuario: <span class="bold">{{ auth.nombres }}</span></div>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a [routerLink]="['/principal/compras']" class="blue">Compras</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ id ? 'Modificar Compra' : 'Nueva Compra' }}</li>
+          </ol>
+        </nav>
       </div>
       <div class="ml-auto">
         <img src="assets/logo.png" />
@@ -45,10 +50,10 @@
         </tr>
       </table>  
     </div>
-    <div class="col-4">
+    <form [formGroup]="form" (ngSubmit)="guardar()" class="col-4">
       <div class="d-flex">
-        <button mat-icon-button color="primary" (click)="openBusqueda()"><mat-icon>add_shopping_cart</mat-icon></button>
-        <button mat-icon-button color="primary" (click)="guardar()" class="ml-auto"><mat-icon>save</mat-icon></button>
+        <button mat-icon-button color="primary" (click)="openBusqueda()" type="button"><mat-icon>add_shopping_cart</mat-icon></button>
+        <button mat-icon-button color="primary" type="submit" class="ml-auto"><mat-icon>save</mat-icon></button>
       </div>
       <mat-divider></mat-divider>
       <ul class="mt-4 list-unstyled">
@@ -56,16 +61,16 @@
         <li class="d-flex"><span class="bold">Total</span><span class="ml-auto">{{ total | currency }}</span></li>
       </ul>
       <mat-divider></mat-divider>
-      <mat-form-field class="w-100 mt-4 fecha" appearance="fill">
+      <mat-form-field class="no-error mt-4" appearance="fill">
         <mat-label>Fecha</mat-label>
-        <input matInput [formControl]="fecha" [matDatepicker]="picker" required />
+        <input matInput formControlName="fecha" [matDatepicker]="picker" required />
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
-      <mat-form-field class="w-100 mt-2" appearance="outline">
+      <mat-form-field class="no-error mt-2" appearance="outline">
         <mat-label>Detalles de compra</mat-label>
-        <textarea matInput [formControl]="descripcion" class="h-descripcion"></textarea>
+        <textarea matInput formControlName="descripcion" class="h-descripcion"></textarea>
       </mat-form-field>
-    </div>
+    </form>
   </div>
 </div>

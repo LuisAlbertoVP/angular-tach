@@ -83,7 +83,7 @@ export class ReporteDetailComponent implements OnDestroy, AfterViewInit {
     this.chart = new Chart(ctx.nativeElement.getContext('2d'), {
       type: 'line',
       data: {
-        labels: transaccion.map(base => base.fechaIngreso),
+        labels: transaccion.map(base => base.fecha),
         datasets: [{
           label: id,
           data: transaccion.map(base => base.cantidad),
@@ -111,17 +111,17 @@ export class ReporteDetailComponent implements OnDestroy, AfterViewInit {
   private _groupTransaccionDatesBy(format: string, transacciones: Transaccion[]): Transaccion[] {
     const dates = this._groupDatesBy(format, transacciones), dataParsed: Transaccion[] = [];
     for(let [_, data] of dates) {
-      const fechaStart = data[0].fechaIngreso, fechaEnd = data[data.length - 1].fechaIngreso;
+      const fechaStart = data[0].fecha, fechaEnd = data[data.length - 1].fecha;
       const fecha = moment(fechaStart).format('YYYY-MM-DD') + ' a ' + moment(fechaEnd).format('YYYY-MM-DD');
       const cantidad = data.reduce((previus, venta) => previus + venta.cantidad, 0);
-      dataParsed.push({ fechaIngreso: fecha, cantidad: cantidad });
+      dataParsed.push({ fecha: fecha, cantidad: cantidad });
     }
     return dataParsed;
   }
 
   private _groupDatesBy(format: string, transacciones: Transaccion[]): Map<string, Transaccion[]> {
     return transacciones.reduce((previus, transaccion) => {
-      const date: string = moment(transaccion.fechaIngreso).format(format);
+      const date: string = moment(transaccion.fecha).format(format);
       if(!previus.has(date)) {
         previus.set(date, []);
       }

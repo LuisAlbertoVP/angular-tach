@@ -26,15 +26,15 @@
           <td mat-cell *matCellDef="let row" (click)="$event.stopPropagation()">
             <a mat-icon-button [matMenuTriggerFor]="menu"><mat-icon>more_vert</mat-icon></a>
             <mat-menu #menu="matMenu">
-              <a mat-menu-item >
+              <a mat-menu-item (click)="edit(row.id)">
                 <mat-icon>description</mat-icon><span>Detalles</span></a>
             </mat-menu>
           </td>
           <td mat-footer-cell *matFooterCellDef></td>
         </ng-container>
-        <ng-container matColumnDef="FechaIngreso">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha ingreso</th>
-          <td mat-cell *matCellDef="let row">{{ parseDate(row.fechaIngreso) }}</td>
+        <ng-container matColumnDef="Fecha">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha</th>
+          <td mat-cell *matCellDef="let row">{{ parseDate(row.fecha) }}</td>
           <td mat-footer-cell *matFooterCellDef>Total</td>
         </ng-container>
         <ng-container matColumnDef="Cantidad">
@@ -58,7 +58,8 @@
             <div class="element-detail" [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'">
               <div class="m0-auto shadow p-3 mb-3" [style.width]="isMobile ? '75%' : '50%'">
                 <dl>
-                  <dt class="blue">Ingresado Por</dt><dd>{{ '"' + row.usuarioIngreso + '" ' + parseDate(row.fechaIngreso) }}</dd>
+                  <dt class="blue">Ingresado Por</dt><dd>{{ '"' + row.usuarioIngreso + '" ' + parseDateTime(row.fechaIngreso) }}</dd>
+                  <dt class="blue">Últ. Modificación</dt><dd>{{ '"' + row.usuarioModificacion + '" ' + parseDateTime(row.fechaModificacion) }}</dd>
                   <dt class="blue">Descripción</dt><dd>{{ row.descripcion ? row.descripcion : 'Vacío' }}</dd>
                 </dl>           
               </div>

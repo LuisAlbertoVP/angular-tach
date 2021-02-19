@@ -8,12 +8,13 @@ img {
 .tag {
   height: 100px;
 }
-.fecha {
+.no-error {
   margin-bottom: -1.25em;
+  width: 100%;
 }
 .table-container { 
-  max-height: 400px; 
-  height: 400px; 
+  max-height: 475px; 
+  height: 475px; 
 }
 tr.element-row:not(.expanded-row):hover { 
   background: whitesmoke; 
@@ -22,5 +23,5 @@ tr.element-row:not(.expanded-row):active {
   background: #efefef; 
 }
 .h-descripcion{
-  height: 125px;
+  height: 98px;
 }

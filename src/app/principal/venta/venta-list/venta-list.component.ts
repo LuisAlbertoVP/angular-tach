@@ -23,8 +23,8 @@ import * as moment from 'moment';
 export class VentaListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  readonly displayedColumns: string[] = ['opciones', 'FechaIngreso', 'Cantidad', 'Total', 'accion'];
-  busqueda: Busqueda = BusquedaBuilder.BuildVenta();
+  readonly displayedColumns: string[] = ['opciones', 'Fecha', 'Direccion', 'Cantidad', 'Total', 'accion'];
+  busqueda: Busqueda = BusquedaBuilder.BuildTransaccion();
   criterio = new Subject();
   criterio$ = this.criterio.asObservable();
   data: Venta[] = [];
@@ -84,6 +84,10 @@ export class VentaListComponent implements OnInit, AfterViewInit {
     this.initSearch();
   }
 
+  edit(id: string) {
+    this.router.navigate(['/principal/ventas/venta', id]);
+  }
+
   navigateToPrincipal(busqueda: Busqueda) {
     busqueda.tiempo = Date.now();
     const extras: NavigationExtras = { 
@@ -104,7 +108,7 @@ export class VentaListComponent implements OnInit, AfterViewInit {
   }
 
   reload() {
-    const busqueda: Busqueda = BusquedaBuilder.BuildVenta();
+    const busqueda: Busqueda = BusquedaBuilder.BuildTransaccion();
     busqueda.estado = this.busqueda.estado;
     this.navigateToPrincipal(busqueda);
   }
@@ -122,4 +126,5 @@ export class VentaListComponent implements OnInit, AfterViewInit {
 
   initSearch = () => this.criterio.next();
   parseDate = (fecha: string) => moment(fecha).format('DD/MM/YYYY');
+  parseDateTime = (fecha: string) => moment(fecha).format('DD/MM/YYYY, hh:mm:ss A');
 }

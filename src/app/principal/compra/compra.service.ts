@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { httpOptions, urlCompra } from '@models/http';
+import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Compra, Table } from '@models/entity';
 import { Busqueda } from '@models/busqueda';
@@ -18,6 +19,9 @@ export class CompraService {
   ) { 
     this.handleError = httpErrorHandler.createHandleError('CompraService');
   }
+
+  get = (id: string): Observable<Compra> => this.http.get(`${urlCompra}/${id}`)
+      .pipe(catchError(this.handleError<Compra>('get')));
 
   getAll = (busqueda: Busqueda) => this.http.post(`${urlCompra}/all`, busqueda, httpOptions)
       .pipe(catchError(this.handleError<Table<Compra>>('getAll')));

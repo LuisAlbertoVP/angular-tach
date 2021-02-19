@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { HttpResponse } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
@@ -17,22 +18,47 @@ import * as moment from 'moment';
   templateUrl: './compra-detail.component.html',
   styleUrls: ['./compra-detail.component.css']
 })
-export class CompraDetailComponent {
+export class CompraDetailComponent implements OnInit {
   cantidad: number = 0;
   displayedColumns: string[] = ['codigo', 'descripcion', 'stock', 'precio', 'total', 'accion'];
   data: Repuesto[] = [];
-  descripcion = this.fb.control('');
-  fecha = this.fb.control(moment().toDate(), Validators.required);
+  form = this.fb.group({
+    id: [uuid()],
+    descripcion: [''],
+    fecha: [moment().toDate(), Validators.required]
+  });
+  id: string = '';
   total: number = 0;
 
   constructor(
-    public auth: AuthService,
+    private activedRoute: ActivatedRoute,
+    private auth: AuthService,
     private dialog: MatDialog,
     private fb: FormBuilder,
     private service: CompraService,
     private sharedService: SharedService
   ) {
     sharedService.buildMenuBar({ title: 'Compra' });
+  }
+
+  ngOnInit() {
+    this.activedRoute.paramMap.subscribe(params => {
+      this.id = params.get('id');
+      if(this.id) {
+        this.service.get(this.id).subscribe(compra => {
+          if(compra?.id) {
+            this.data = compra.compraDetalle.map(compraDetalle => {
+              const repuesto: Repuesto = compraDetalle.repuesto;
+              repuesto.stock = compraDetalle.cantidad;
+              repuesto.descripcion = this._descripcion(compraDetalle.repuesto);
+              return repuesto;
+            });
+            this._calcular();
+            this.form.patchValue({ id: compra.id, descripcion: compra.descripcion, fecha: compra.fecha });
+          }
+        });
+      }
+    });
   }
 
   openBusqueda(repuesto?: Repuesto) {
@@ -58,8 +84,7 @@ export class CompraDetailComponent {
     this.data = [];
     this.cantidad = 0;
     this.total = 0;
-    this.fecha.patchValue(moment().toDate());
-    this.descripcion.patchValue('');
+    this.form.patchValue({ id: uuid(), descripcion: '', fecha: moment().toDate() });
   }
 
   delete(repuesto: Repuesto) {
@@ -75,20 +100,17 @@ export class CompraDetailComponent {
     dialogRef.afterClosed().subscribe(result => {
       if(result) {
         if(this.data.length > 0) {
-          let date: string = moment(this.fecha.value).format('YYYY-MM-DD');
-          let time: string = '00:00:00';
-          if(date == moment().format('YYYY-MM-DD')) {
-            time = moment().format('HH:mm:ss');
-          }
-          const compra: Compra = { 
-            id: uuid(), compraDetalle: this._buildCompraDetalle(), cantidad: this.cantidad, total: this.total, 
-            descripcion: this.descripcion.value, usuarioIngreso: this.auth.nombreUsuario, 
-            fechaIngreso: moment(date + ' ' + time).format()
-          };
+          const compra: Compra = this.form.getRawValue();
+          compra.compraDetalle = this._buildCompraDetalle();
+          compra.cantidad = this.cantidad;
+          compra.total = this.total;
+          compra.fecha = moment(compra.fecha).format('YYYY-MM-DD');
+          compra.usuarioIngreso = this.auth.nombreUsuario;
+          compra.usuarioModificacion = this.auth.nombreUsuario;
           this.service.insertOrUpdate(compra).subscribe((response: HttpResponse<any>) => {
             if(response.status == 200) {
               this.sharedService.showMessage(response.body.result);
-              this.clear();
+              if(!this.id) this.clear();
             }
           });
         } else {
@@ -114,6 +136,11 @@ export class CompraDetailComponent {
     }
     this.cantidad = cantidad;
     this.total = total;
+  }
+
+  private _descripcion(repuesto: Repuesto) {
+    return repuesto.categoria.descripcion + ' ' + repuesto.marca.descripcion + ' ' +
+      repuesto.modelo + ' ' + repuesto.epoca;
   }
 
   private _hasRepuesto(id: string): Repuesto {
