@@ -1,6 +1,5 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
-import { HttpResponse } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -8,14 +7,13 @@ import { MarcaService }  from '../marca.service';
 import { SharedService } from '@shared/shared.service';
 import { Busqueda, BusquedaBuilder } from '@models/busqueda';
 import { ConfirmationData } from '@models/confirmacion';
-import { Marca, Table } from '@models/entity';
+import { Marca } from '@models/entity';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { merge, of as observableOf, Subject } from 'rxjs';
 import { ConfirmacionComponent } from '@shared/confirmacion/confirmacion.component';
 import { FiltroComponent } from '@shared/filtro/filtro.component';
 import { MarcaDetailComponent } from './marca-detail/marca-detail.component';
 import { detailExpand } from '@animations/detailExpand';
-import * as moment from 'moment';
 
 @Component({
   selector: 'app-marca-list',
@@ -44,7 +42,7 @@ export class MarcaListComponent implements OnInit, AfterViewInit {
     private dialog: MatDialog,
     private router: Router,
     private service: MarcaService,
-    private sharedService: SharedService
+    public sharedService: SharedService
   ) { 
     sharedService.buildMenuBar({ title: 'Marcas', filterEvent: () => this.openFilter() });
     sharedService.isMobile$.subscribe(isMobile => this.isMobile = isMobile);
@@ -66,14 +64,13 @@ export class MarcaListComponent implements OnInit, AfterViewInit {
       startWith({}), switchMap(() => {
         this.isLoadingResults = true;
         return this.service.getAll(builder.newBusqueda(this.busqueda));
-      }), map(data => {
-        const marcas: Table<Marca> = (data as HttpResponse<Table<Marca>>).body;
+      }), map(response => {
         this.isLoadingResults = false;
         this.isRateLimitReached = false;
-        this.resultsLength = marcas.cantidad;
-        this.resultsStock = marcas.stock;
-        this.resultsPrecio = marcas.precio;
-        return marcas.data;
+        this.resultsLength = response.body.cantidad;
+        this.resultsStock = response.body.stock;
+        this.resultsPrecio = response.body.precio;
+        return response.body.data;
       }), catchError(() => {
         this.isLoadingResults = false;
         this.isRateLimitReached = true;
@@ -88,9 +85,9 @@ export class MarcaListComponent implements OnInit, AfterViewInit {
   }
 
   delete(marca: Marca) {
-    this.service.delete(marca).subscribe((response: HttpResponse<any>) => {
+    this.service.delete(marca).subscribe(response => {
       if(response?.status == 200) {
-        this.data = this.data.filter(oldMarca => oldMarca.id != marca.id);
+        this.data = this.data.filter(old => old.id != marca.id);
         this.sharedService.showMessage(response.body.result);
       }
     });
@@ -119,9 +116,7 @@ export class MarcaListComponent implements OnInit, AfterViewInit {
       width: '720px', autoFocus: false, disableClose: true, data: this.busqueda, restoreFocus: false
     });
     dialogRef.afterClosed().subscribe(result => {
-      if(result) {
-        this.navigateToPrincipal(result);
-      }
+      if(result) this.navigateToPrincipal(result);
     });
   }
 
@@ -139,16 +134,15 @@ export class MarcaListComponent implements OnInit, AfterViewInit {
   }
 
   updateEstado(marca: Marca) {
-    const cloneMarca = Object.assign({}, marca);
-    cloneMarca.estado = cloneMarca.estado ? false : true;
-    this.service.setStatus(cloneMarca).subscribe((response: HttpResponse<any>) => {
+    const clone: Marca = Object.assign({}, marca);
+    clone.estado = clone.estado ? false : true;
+    this.service.setStatus(clone).subscribe(response => {
       if(response?.status == 200) {
-        this.data = this.data.filter(oldMarca => oldMarca.id != marca.id);
+        this.data = this.data.filter(old => old.id != marca.id);
         this.sharedService.showMessage(response.body.result);
       }
     });
   }
 
   initSearch = () => this.criterio.next();
-  parseDateTime = (fecha: string) => moment(fecha).format('DD/MM/YYYY, hh:mm:ss A');
 }

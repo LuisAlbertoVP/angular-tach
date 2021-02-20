@@ -65,8 +65,8 @@
             <div class="element-detail" [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'">
               <div class="m0-auto shadow p-3 mb-3" [style.width]="isMobile ? '75%' : '50%'">
                 <dl>
-                  <dt class="blue">Ingresado Por</dt><dd>{{ '"' + row.usuarioIngreso + '" ' + parseDateTime(row.fechaIngreso) }}</dd>
-                  <dt class="blue">Últ. Modificación</dt><dd>{{ '"' + row.usuarioModificacion + '" ' + parseDateTime(row.fechaModificacion) }}</dd>
+                  <dt class="blue">Ingresado Por</dt><dd>{{ '"' + row.usuarioIngreso + '" ' + sharedService.parseDateTime(row.fechaIngreso) }}</dd>
+                  <dt class="blue">Últ. Modificación</dt><dd>{{ '"' + row.usuarioModificacion + '" ' + sharedService.parseDateTime(row.fechaModificacion) }}</dd>
                   <ng-container *ngIf="isMobile">
                     <dt class="blue">Teléfono</dt><dd>{{ row.telefono }}</dd>
                     <dt class="blue">Celular</dt><dd>{{ row.celular }}</dd>
@@ -74,10 +74,10 @@
                   </ng-container>
                   <dt class="blue">Correo</dt><dd>{{ row.correo }}</dd>
                   <dt class="blue">Dirección</dt><dd>{{ row.direccion }}</dd>
-                  <dt class="blue">Fecha Nacimiento</dt><dd>{{ parseDate(row.fechaNacimiento) }}</dd>
-                  <dt class="blue">Fecha Contratación</dt><dd>{{ parseDate(row.fechaContratacion) }}</dd>
+                  <dt class="blue">Fecha Nacimiento</dt><dd>{{ sharedService.parseDate(row.fechaNacimiento) }}</dd>
+                  <dt class="blue">Fecha Contratación</dt><dd>{{ sharedService.parseDate(row.fechaContratacion) }}</dd>
                   <dt class="blue">Salario</dt><dd>{{ row.salario }}</dd>
-                  <dt class="blue">Roles</dt><dd>{{ parseArray(row.roles) }}</dd>
+                  <dt class="blue">Roles</dt><dd>{{ sharedService.parseArray(row.roles) }}</dd>
                 </dl>          
               </div>
             </div>

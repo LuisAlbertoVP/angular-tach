@@ -1,16 +1,15 @@
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
-import { HttpResponse } from '@angular/common/http';
+import { FormGroup, NgForm } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from '@auth_service/*';
 import { CompraService } from '../compra.service';
+import { CompraControlService } from '../compra-control.service';
 import { SharedService } from '@shared/shared.service';
 import { Compra, CompraDetalle, Repuesto } from '@models/entity';
 import { ConfirmationData } from '@models/confirmacion';
 import { ConfirmacionComponent } from '@shared/confirmacion/confirmacion.component';
 import { RepuestoSearchComponent } from '@shared/repuesto-search/repuesto-search.component';
-import { v4 as uuid } from 'uuid';
 import * as moment from 'moment';
 
 @Component({
@@ -22,19 +21,15 @@ export class CompraDetailComponent implements OnInit {
   cantidad: number = 0;
   displayedColumns: string[] = ['codigo', 'descripcion', 'stock', 'precio', 'total', 'accion'];
   data: Repuesto[] = [];
-  form = this.fb.group({
-    id: [uuid()],
-    descripcion: [''],
-    fecha: [moment().toDate(), Validators.required]
-  });
+  form: FormGroup = null;
   id: string = '';
   total: number = 0;
 
   constructor(
     private activedRoute: ActivatedRoute,
     private auth: AuthService,
+    private control: CompraControlService,
     private dialog: MatDialog,
-    private fb: FormBuilder,
     private service: CompraService,
     private sharedService: SharedService
   ) {
@@ -42,22 +37,19 @@ export class CompraDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.activedRoute.paramMap.subscribe(params => {
-      this.id = params.get('id');
-      if(this.id) {
-        this.service.get(this.id).subscribe(compra => {
-          if(compra?.id) {
-            this.data = compra.compraDetalle.map(compraDetalle => {
-              const repuesto: Repuesto = compraDetalle.repuesto;
-              repuesto.stock = compraDetalle.cantidad;
-              repuesto.descripcion = this._descripcion(compraDetalle.repuesto);
-              return repuesto;
-            });
-            this._calcular();
-            this.form.patchValue({ id: compra.id, descripcion: compra.descripcion, fecha: compra.fecha });
-          }
+    this.id = this.activedRoute.snapshot.paramMap.get('id');
+    this.service.getCompra(this.id).subscribe(compraForm => {
+      const compra: Compra = compraForm?.compra;
+      if(compra) {
+        this.data = compra.compraDetalle.map(compraDetalle => {
+          const repuesto: Repuesto = compraDetalle.repuesto;
+          repuesto.stock = compraDetalle.cantidad;
+          repuesto.descripcion = this._descripcion(compraDetalle.repuesto);
+          return repuesto;
         });
+        this._calcular();
       }
+      this.form = this.control.toFormGroup(compra);
     });
   }
 
@@ -80,11 +72,11 @@ export class CompraDetailComponent implements OnInit {
     });
   }
 
-  clear() {
+  clear(form: NgForm) {
     this.data = [];
     this.cantidad = 0;
     this.total = 0;
-    this.form.patchValue({ id: uuid(), descripcion: '', fecha: moment().toDate() });
+    form.resetForm();
   }
 
   delete(repuesto: Repuesto) {
@@ -92,14 +84,14 @@ export class CompraDetailComponent implements OnInit {
     this._calcular();
   }
 
-  guardar() {
-    const data: ConfirmationData = { seccion: "Compras", accion: "Continuar" };
-    const dialogRef = this.dialog.open(ConfirmacionComponent, {
-      width: '360px', autoFocus: false, disableClose: true, data: data
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      if(result) {
-        if(this.data.length > 0) {
+  guardar(form: NgForm) {
+    if(this.form.valid && this.data.length > 0) {
+      const data: ConfirmationData = { seccion: "Compras", accion: "Continuar" };
+      const dialogRef = this.dialog.open(ConfirmacionComponent, {
+        width: '360px', autoFocus: false, disableClose: true, data: data
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        if(result) {
           const compra: Compra = this.form.getRawValue();
           compra.compraDetalle = this._buildCompraDetalle();
           compra.cantidad = this.cantidad;
@@ -107,17 +99,17 @@ export class CompraDetailComponent implements OnInit {
           compra.fecha = moment(compra.fecha).format('YYYY-MM-DD');
           compra.usuarioIngreso = this.auth.nombreUsuario;
           compra.usuarioModificacion = this.auth.nombreUsuario;
-          this.service.insertOrUpdate(compra).subscribe((response: HttpResponse<any>) => {
-            if(response.status == 200) {
+          this.service.insertOrUpdate(compra).subscribe(response => {
+            if(response?.status == 200) {
               this.sharedService.showMessage(response.body.result);
-              if(!this.id) this.clear();
+              if(!this.id) this.clear(form);
             }
           });
-        } else {
-          this.sharedService.showErrorMessage('Lista de compras vacía');
         }
-      }
-    });
+      });
+    } else {
+      this.sharedService.showErrorMessage('Compra inválida');
+    }
   }
 
   private _buildCompraDetalle() {

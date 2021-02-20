@@ -1,6 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { HttpResponse } from '@angular/common/http';
 import { MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { AuthService } from '@auth_service/*';
 import { RolService } from '../../rol.service';
@@ -45,17 +44,17 @@ export class RolDetailComponent implements OnInit {
     if(this.form.valid) {
       const rol: Rol = this.form.getRawValue();
       rol.id = this.rol ? rol.id : uuid();
+      rol.modulos = this.modulos.filter(modulo => modulo.checked);
       rol.usuarioIngreso = this.auth.nombreUsuario;
       rol.usuarioModificacion = this.auth.nombreUsuario;
-      rol.modulos = this.modulos.filter(modulo => modulo.checked);
-      this.service.insertOrUpdate(rol).subscribe((response: HttpResponse<any>) => {
+      this.service.insertOrUpdate(rol).subscribe(response => {
         if(response.status == 200) {
           this.sharedService.showMessage(response.body.result);
           this.dialogRef.close(true);
         }
       });
     } else {
-      this.sharedService.showErrorMessage('Algunos campos son invalidos');
+      this.sharedService.showErrorMessage('Algunos campos son inválidos');
     }
   }
 

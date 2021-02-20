@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Repuesto } from '@models/entity';
+import { v4 as uuid } from 'uuid';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class RepuestoControlService {
 
   toFormGroup(repuesto: Repuesto) {
     return this.fb.group({
-      id: [repuesto?.id],
+      id: [repuesto?.id ? repuesto.id : uuid()],
       codigo: [repuesto?.codigo, Validators.required],
       categoria: this.fb.group({ id: [repuesto?.categoria?.id, Validators.required] }),
       marca: this.fb.group({ id: [repuesto?.marca?.id, Validators.required] }),

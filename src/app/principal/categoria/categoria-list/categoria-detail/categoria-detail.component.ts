@@ -1,6 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { HttpResponse } from '@angular/common/http';
 import { MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { AuthService } from '@auth_service/*';
 import { CategoriaService } from '../../categoria.service';
@@ -29,7 +28,7 @@ export class CategoriaDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      id: [this.categoria?.id],
+      id: [this.categoria?.id ? this.categoria.id : uuid()],
       descripcion: [this.categoria?.descripcion, Validators.required]
     });
   }
@@ -37,17 +36,16 @@ export class CategoriaDetailComponent implements OnInit {
   guardar() {
     if(this.form.valid) {
       const categoria = this.form.getRawValue();
-      categoria.id = this.categoria ? categoria.id : uuid();
       categoria.usuarioIngreso = this.auth.nombreUsuario;
       categoria.usuarioModificacion = this.auth.nombreUsuario;
-      this.service.insertOrUpdate(categoria).subscribe((response: HttpResponse<any>) => {
-        if(response.status == 200) {
+      this.service.insertOrUpdate(categoria).subscribe(response => {
+        if(response?.status == 200) {
           this.sharedService.showMessage(response.body.result);
           this.dialogRef.close(true);
         }
       });
     } else {
-      this.sharedService.showErrorMessage('Campo invalido');
+      this.sharedService.showErrorMessage('Campo inválido');
     }
   }
 }

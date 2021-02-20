@@ -1,6 +1,5 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
-import { HttpResponse } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -8,14 +7,13 @@ import { RolService }  from '../rol.service';
 import { SharedService } from '@shared/shared.service';
 import { Busqueda, BusquedaBuilder } from '@models/busqueda';
 import { ConfirmationData } from '@models/confirmacion';
-import { Rol, Table } from '@models/entity';
+import { Rol } from '@models/entity';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { merge, of as observableOf, Subject } from 'rxjs';
 import { ConfirmacionComponent } from '@shared/confirmacion/confirmacion.component';
 import { FiltroComponent } from '@shared/filtro/filtro.component';
 import { RolDetailComponent } from './rol-detail/rol-detail.component';
 import { detailExpand } from '@animations/detailExpand';
-import * as moment from 'moment';
 
 @Component({
   selector: 'app-rol-list',
@@ -42,7 +40,7 @@ export class RolListComponent implements OnInit, AfterViewInit {
     private dialog: MatDialog,
     private router: Router,
     private service: RolService,
-    private sharedService: SharedService
+    public sharedService: SharedService
   ) {
     sharedService.buildMenuBar({ title: 'Roles', filterEvent: () => this.openFilter() });
     sharedService.isMobile$.subscribe(isMobile => this.isMobile = isMobile);
@@ -64,12 +62,11 @@ export class RolListComponent implements OnInit, AfterViewInit {
       startWith({}), switchMap(() => {
         this.isLoadingResults = true;
         return this.service.getAll(builder.newBusqueda(this.busqueda));
-      }), map(data => {
-        const roles: Table<Rol> = (data as HttpResponse<Table<Rol>>).body;
+      }), map(response => {
         this.isLoadingResults = false;
         this.isRateLimitReached = false;
-        this.resultsLength = roles.cantidad;
-        return roles.data;
+        this.resultsLength = response.body.cantidad;
+        return response.body.data;
       }), catchError(() => {
         this.isLoadingResults = false;
         this.isRateLimitReached = true;
@@ -84,9 +81,9 @@ export class RolListComponent implements OnInit, AfterViewInit {
   }
 
   delete(rol: Rol) {
-    this.service.delete(rol).subscribe((response: HttpResponse<any>) => {
+    this.service.delete(rol).subscribe(response => {
       if(response?.status == 200) {
-        this.data = this.data.filter(oldRol => oldRol.id != rol.id);
+        this.data = this.data.filter(old => old.id != rol.id);
         this.sharedService.showMessage(response.body.result);
       }
     });
@@ -115,9 +112,7 @@ export class RolListComponent implements OnInit, AfterViewInit {
       width: '720px', autoFocus: false, disableClose: true, data: this.busqueda, restoreFocus: false
     });
     dialogRef.afterClosed().subscribe(result => {
-      if(result) {
-        this.navigateToPrincipal(result);
-      }
+      if(result) this.navigateToPrincipal(result);
     });
   }
 
@@ -135,17 +130,15 @@ export class RolListComponent implements OnInit, AfterViewInit {
   }
 
   updateEstado(rol: Rol) {
-    const cloneRol = Object.assign({}, rol);
-    cloneRol.estado = cloneRol.estado ? false : true;
-    this.service.setStatus(cloneRol).subscribe((response: HttpResponse<any>) => {
+    const clone: Rol = Object.assign({}, rol);
+    clone.estado = clone.estado ? false : true;
+    this.service.setStatus(clone).subscribe(response => {
       if(response?.status == 200) {
-        this.data = this.data.filter(oldRol => oldRol.id != rol.id);
+        this.data = this.data.filter(old => old.id != rol.id);
         this.sharedService.showMessage(response.body.result);
       }
     });
   }
 
   initSearch = () => this.criterio.next();
-  parseArray = (array: any[]) => array.map(element => element.descripcion).join(', ');
-  parseDateTime = (fecha: string) => moment(fecha).format('DD/MM/YYYY, hh:mm:ss A');
 }

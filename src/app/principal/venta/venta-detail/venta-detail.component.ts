@@ -1,16 +1,15 @@
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
-import { HttpResponse } from '@angular/common/http';
+import { FormGroup, NgForm } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from '@auth_service/*';
 import { SharedService } from '@shared/shared.service';
 import { VentaService } from '../venta.service';
-import { Venta, VentaDetalle, Repuesto } from '@models/entity';
+import { VentaControlService } from '../venta-control.service';
+import { Venta, VentaDetalle, Repuesto, Cliente } from '@models/entity';
 import { ConfirmationData } from '@models/confirmacion';
 import { ConfirmacionComponent } from '@shared/confirmacion/confirmacion.component';
 import { RepuestoSearchComponent } from '@shared/repuesto-search/repuesto-search.component';
-import { v4 as uuid } from 'uuid';
 import * as moment from 'moment';
 
 @Component({
@@ -20,21 +19,18 @@ import * as moment from 'moment';
 })
 export class VentaDetailComponent implements OnInit {
   cantidad: number = 0;
+  clientes: Cliente[] = [];
   displayedColumns: string[] = ['codigo', 'descripcion', 'stock', 'precio', 'total', 'accion'];
   data: Repuesto[] = [];
-  form = this.fb.group({
-    descripcion: [''],
-    direccion: [''],
-    fecha: [moment().toDate(), Validators.required]
-  });
+  form: FormGroup = null;
   id: string = '';
   total: number = 0;
 
   constructor(
     private activedRoute: ActivatedRoute,
     private auth: AuthService,
+    private control: VentaControlService,
     private dialog: MatDialog,
-    private fb: FormBuilder,
     private service: VentaService,
     private sharedService: SharedService
   ) {
@@ -42,22 +38,20 @@ export class VentaDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.activedRoute.paramMap.subscribe(params => {
-      this.id = params.get('id');
-      if(this.id) {
-        this.service.get(this.id).subscribe(venta => {
-          if(venta?.id) {
-            this.data = venta.ventaDetalle.map(ventaDetalle => {
-              const repuesto: Repuesto = ventaDetalle.repuesto;
-              repuesto.stock = ventaDetalle.cantidad;
-              repuesto.descripcion = this._descripcion(ventaDetalle.repuesto);
-              return repuesto;
-            });
-            this._calcular();
-            this.form.patchValue({ descripcion: venta.descripcion, direccion: venta.direccion, fecha: venta.fecha });
-          }
+    this.id = this.activedRoute.snapshot.paramMap.get('id');
+    this.service.getForm(this.id).subscribe(ventaForm => {
+      const venta: Venta = ventaForm?.venta;
+      if(venta) {
+        this.data = venta.ventaDetalle.map(detalle => {
+          const repuesto: Repuesto = detalle.repuesto;
+          repuesto.stock = detalle.cantidad;
+          repuesto.descripcion = this._descripcion(detalle.repuesto);
+          return repuesto;
         });
+        this._calcular();
       }
+      this.clientes = ventaForm.clientes;
+      this.form = this.control.toFormGroup(venta);
     });
   }
 
@@ -80,11 +74,11 @@ export class VentaDetailComponent implements OnInit {
     });
   }
 
-  clear() {
+  clear(form: NgForm) {
     this.data = [];
     this.cantidad = 0;
     this.total = 0;
-    this.form.patchValue({ descripcion: '', direccion: '', fecha: moment().toDate() });
+    form.resetForm();
   }
 
   delete(repuesto: Repuesto) {
@@ -92,33 +86,32 @@ export class VentaDetailComponent implements OnInit {
     this._calcular();
   }
 
-  guardar() {
-    const data: ConfirmationData = { seccion: "Ventas", accion: "Continuar" };
-    const dialogRef = this.dialog.open(ConfirmacionComponent, {
-      width: '360px', autoFocus: false, disableClose: true, data: data
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      if(result) {
-        if(this.data.length > 0) {
+  guardar(form: NgForm) {
+    if(this.form.valid && this.data.length > 0) {
+      const data: ConfirmationData = { seccion: "Ventas", accion: "Continuar" };
+      const dialogRef = this.dialog.open(ConfirmacionComponent, {
+        width: '360px', autoFocus: false, disableClose: true, data: data
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        if(result) {
           const venta: Venta = this.form.getRawValue();
-          venta.id = this.id ? this.id : uuid();
           venta.ventaDetalle = this._buildVentaDetalle();
           venta.cantidad = this.cantidad;
           venta.total = this.total;
           venta.fecha = moment(venta.fecha).format('YYYY-MM-DD');
           venta.usuarioIngreso = this.auth.nombreUsuario;
           venta.usuarioModificacion = this.auth.nombreUsuario;
-          this.service.insertOrUpdate(venta).subscribe((response: HttpResponse<any>) => {
-            if(response.status == 200) {
+          this.service.insertOrUpdate(venta).subscribe(response => {
+            if(response?.status == 200) {
               this.sharedService.showMessage(response.body.result);
-              if(!this.id) this.clear();
+              if(!this.id) this.clear(form);
             }
           });
-        } else {
-          this.sharedService.showErrorMessage('Lista de ventas vacía');
         }
-      }
-    });
+      });
+    } else {
+      this.sharedService.showErrorMessage('Venta inválida');
+    }
   }
 
   private _buildVentaDetalle() {

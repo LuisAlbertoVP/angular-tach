@@ -34,7 +34,7 @@
         </ng-container>
         <ng-container matColumnDef="Fecha">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha</th>
-          <td mat-cell *matCellDef="let row">{{ parseDate(row.fecha) }}</td>
+          <td mat-cell *matCellDef="let row">{{ sharedService.parseDate(row.fecha) }}</td>
           <td mat-footer-cell *matFooterCellDef>Total</td>
         </ng-container>
         <ng-container matColumnDef="Cantidad">
@@ -58,8 +58,8 @@
             <div class="element-detail" [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'">
               <div class="m0-auto shadow p-3 mb-3" [style.width]="isMobile ? '75%' : '50%'">
                 <dl>
-                  <dt class="blue">Ingresado Por</dt><dd>{{ '"' + row.usuarioIngreso + '" ' + parseDateTime(row.fechaIngreso) }}</dd>
-                  <dt class="blue">Últ. Modificación</dt><dd>{{ '"' + row.usuarioModificacion + '" ' + parseDateTime(row.fechaModificacion) }}</dd>
+                  <dt class="blue">Ingresado Por</dt><dd>{{ '"' + row.usuarioIngreso + '" ' + sharedService.parseDateTime(row.fechaIngreso) }}</dd>
+                  <dt class="blue">Últ. Modificación</dt><dd>{{ '"' + row.usuarioModificacion + '" ' + sharedService.parseDateTime(row.fechaModificacion) }}</dd>
                   <dt class="blue">Descripción</dt><dd>{{ row.descripcion ? row.descripcion : 'Vacío' }}</dd>
                 </dl>           
               </div>

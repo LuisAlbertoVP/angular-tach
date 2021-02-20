@@ -57,7 +57,7 @@ export class CuentaDetailComponent implements OnInit {
         }
       });
     } else {
-      this.sharedService.showErrorMessage('Algunos campos son invalidos');
+      this.sharedService.showErrorMessage('Algunos campos son inválidos');
     }
   }
 }

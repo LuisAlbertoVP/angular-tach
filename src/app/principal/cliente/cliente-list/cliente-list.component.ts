@@ -1,6 +1,5 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
-import { HttpResponse } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -8,14 +7,13 @@ import { SharedService } from '@shared/shared.service';
 import { ClienteService }  from '../cliente.service';
 import { Busqueda, BusquedaBuilder } from '@models/busqueda';
 import { ConfirmationData } from '@models/confirmacion';
-import { Cliente, Table, TipoCliente } from '@models/entity';
+import { Cliente, TipoCliente } from '@models/entity';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { merge, of as observableOf, Subject } from 'rxjs';
 import { ConfirmacionComponent } from '@shared/confirmacion/confirmacion.component';
 import { FiltroComponent } from '@shared/filtro/filtro.component';
 import { ClienteDetailComponent } from './cliente-detail/cliente-detail.component';
 import { detailExpand } from '@animations/detailExpand';
-import * as moment from 'moment';
 
 @Component({
   selector: 'app-cliente-list',
@@ -43,7 +41,7 @@ export class ClienteListComponent implements OnInit, AfterViewInit {
     private dialog: MatDialog,
     private router: Router,
     private service: ClienteService,
-    private sharedService: SharedService
+    public sharedService: SharedService
   ) {
     sharedService.buildMenuBar({ title: 'Clientes', filterEvent: () => this.openFilter() });
     sharedService.isMobile$.subscribe(isMobile => this.isMobile = isMobile);
@@ -69,12 +67,11 @@ export class ClienteListComponent implements OnInit, AfterViewInit {
       startWith({}), switchMap(() => {
         this.isLoadingResults = true;
         return this.service.getAll(builder.newBusqueda(this.busqueda));
-      }), map(data => {
-        const clientes: Table<Cliente> = (data as HttpResponse<Table<Cliente>>).body;
+      }), map(response => {
         this.isLoadingResults = false;
         this.isRateLimitReached = false;
-        this.resultsLength = clientes.cantidad;
-        return clientes.data;
+        this.resultsLength = response.body.cantidad;
+        return response.body.data;
       }), catchError(() => {
         this.isLoadingResults = false;
         this.isRateLimitReached = true;
@@ -89,9 +86,9 @@ export class ClienteListComponent implements OnInit, AfterViewInit {
   }
 
   delete(cliente: Cliente) {
-    this.service.delete(cliente).subscribe((response: HttpResponse<any>) => {
+    this.service.delete(cliente).subscribe(response => {
       if(response?.status == 200) {
-        this.data = this.data.filter(oldCliente => oldCliente.id != cliente.id);
+        this.data = this.data.filter(old => old.id != cliente.id);
         this.sharedService.showMessage(response.body.result);
       }
     });
@@ -120,9 +117,7 @@ export class ClienteListComponent implements OnInit, AfterViewInit {
       width: '720px', autoFocus: false, disableClose: true, data: this.busqueda, restoreFocus: false
     });
     dialogRef.afterClosed().subscribe(result => {
-      if(result) {
-        this.navigateToPrincipal(result);
-      }
+      if(result) this.navigateToPrincipal(result);
     });
   }
 
@@ -140,18 +135,16 @@ export class ClienteListComponent implements OnInit, AfterViewInit {
   }
 
   updateEstado(cliente: Cliente) {
-    const cloneCliente = Object.assign({}, cliente);
-    cloneCliente.estado = cloneCliente.estado ? false : true;
-    this.service.setStatus(cloneCliente).subscribe((response: HttpResponse<any>) => {
+    const clone: Cliente = Object.assign({}, cliente);
+    clone.estado = clone.estado ? false : true;
+    this.service.setStatus(clone).subscribe(response => {
       if(response?.status == 200) {
-        this.data = this.data.filter(oldCliente => oldCliente.id != cliente.id);
+        this.data = this.data.filter(old => old.id != cliente.id);
         this.sharedService.showMessage(response.body.result);
       }
     });
   }
 
   initSearch = () => this.criterio.next();
-  parseDate = (fecha: string) => moment(fecha).format('DD/MM/YYYY');
-  parseDateTime = (fecha: string) => moment(fecha).format('DD/MM/YYYY, hh:mm:ss A');
   parseTipoCliente = (tipoCliente: TipoCliente) => TipoCliente[tipoCliente];
 }

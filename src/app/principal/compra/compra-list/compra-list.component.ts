@@ -1,18 +1,16 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
-import { HttpResponse } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { CompraService }  from '../compra.service';
 import { SharedService } from '@shared/shared.service';
 import { Busqueda, BusquedaBuilder } from '@models/busqueda';
-import { Compra, Table } from '@models/entity';
+import { Compra } from '@models/entity';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { merge, of as observableOf, Subject } from 'rxjs';
 import { FiltroComponent } from '@shared/filtro/filtro.component';
 import { detailExpand } from '@animations/detailExpand';
-import * as moment from 'moment';
 
 @Component({
   selector: 'app-compra-list',
@@ -41,7 +39,7 @@ export class CompraListComponent implements OnInit, AfterViewInit {
     private dialog: MatDialog,
     private router: Router,
     private service: CompraService,
-    private sharedService: SharedService
+    public sharedService: SharedService
   ) {
     sharedService.buildMenuBar({ title: 'Compras', filterEvent: () => this.openFilter() });
     sharedService.isMobile$.subscribe(isMobile => this.isMobile = isMobile);
@@ -63,14 +61,13 @@ export class CompraListComponent implements OnInit, AfterViewInit {
       startWith({}), switchMap(() => {
         this.isLoadingResults = true;
         return this.service.getAll(builder.newBusqueda(this.busqueda, 'FechaIngreso'));
-      }), map(data => {
-        const compras: Table<Compra> = (data as HttpResponse<Table<Compra>>).body;
+      }), map(response => {
         this.isLoadingResults = false;
         this.isRateLimitReached = false;
-        this.resultsLength = compras.cantidad;
-        this.resultsStock = compras.stock;
-        this.resultsPrecio = compras.precio;
-        return compras.data;
+        this.resultsLength = response.body.cantidad;
+        this.resultsStock = response.body.stock;
+        this.resultsPrecio = response.body.precio;
+        return response.body.data;
       }), catchError(() => {
         this.isLoadingResults = false;
         this.isRateLimitReached = true;
@@ -114,17 +111,15 @@ export class CompraListComponent implements OnInit, AfterViewInit {
   }
 
   updateEstado(compra: Compra) {
-    const cloneCompra = Object.assign({}, compra);
-    cloneCompra.estado = cloneCompra.estado ? false : true;
-    this.service.setStatus(cloneCompra).subscribe((response: HttpResponse<any>) => {
+    const clone: Compra = Object.assign({}, compra);
+    clone.estado = clone.estado ? false : true;
+    this.service.setStatus(clone).subscribe(response => {
       if(response?.status == 200) {
-        this.data = this.data.filter(oldCompra => oldCompra.id != compra.id);
+        this.data = this.data.filter(old => old.id != compra.id);
         this.sharedService.showMessage(response.body.result);
       }
     });
   }
 
   initSearch = () => this.criterio.next();
-  parseDate = (fecha: string) => moment(fecha).format('DD/MM/YYYY');
-  parseDateTime = (fecha: string) => moment(fecha).format('DD/MM/YYYY, hh:mm:ss A');
 }

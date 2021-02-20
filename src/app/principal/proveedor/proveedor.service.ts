@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { httpOptions, urlProveedor } from '@models/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { httpOptions, Response, urlProveedor } from '@models/http';
 import { catchError } from 'rxjs/operators';
 import { Proveedor, Table } from '@models/entity';
 import { Busqueda } from '@models/busqueda';
@@ -11,7 +10,7 @@ import { HttpErrorHandlerService, HandleError } from '../../http-error-handler.s
   providedIn: 'root'
 })
 export class ProveedorService {
-  private handleError: HandleError;
+  private handleError: HandleError = null;
 
   constructor(
     private http: HttpClient,
@@ -20,18 +19,15 @@ export class ProveedorService {
     this.handleError = httpErrorHandler.createHandleError('ProveedorService');
   }
 
-  getAll = (busqueda: Busqueda) => this.http.post(`${urlProveedor}/all`, busqueda, httpOptions)
-      .pipe(catchError(this.handleError<Table<Proveedor>>('getAll')));
+  getAll = (busqueda: Busqueda) => this.http.post<Table<Proveedor>>(`${urlProveedor}/all`, busqueda, httpOptions)
+      .pipe(catchError(this.handleError<HttpResponse<Table<Proveedor>>>('getAll')));
 
-  getById = (id: string): Observable<Proveedor> => this.http.get<Proveedor>(`${urlProveedor}/${id}`)
-      .pipe(catchError(this.handleError<Proveedor>('getById')));
+  insertOrUpdate = (proveedor: Proveedor) => this.http.post<Response>(urlProveedor, proveedor, httpOptions)
+      .pipe(catchError(this.handleError<HttpResponse<Response>>('insertOrUpdate')));
 
-  insertOrUpdate = (proveedor: Proveedor) => this.http.post(urlProveedor, proveedor, httpOptions)
-      .pipe(catchError(this.handleError('insertOrUpdate', proveedor)));
+  setStatus = (proveedor: Proveedor) => this.http.post<Response>(`${urlProveedor}/${proveedor.id}/status`, proveedor, httpOptions)
+      .pipe(catchError(this.handleError<HttpResponse<Response>>('setStatus')));
 
-  setStatus = (proveedor: Proveedor) => this.http.post(`${urlProveedor}/${proveedor.id}/status`, proveedor, httpOptions)
-      .pipe(catchError(this.handleError('setStatus', proveedor)));
-
-  delete = (proveedor: Proveedor) => this.http.post(`${urlProveedor}/${proveedor.id}/delete`, proveedor, httpOptions)
-      .pipe(catchError(this.handleError('delete', proveedor)));
+  delete = (proveedor: Proveedor) => this.http.post<Response>(`${urlProveedor}/${proveedor.id}/delete`, proveedor, httpOptions)
+      .pipe(catchError(this.handleError<HttpResponse<Response>>('delete')));
 }

@@ -1,6 +1,5 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
-import { HttpResponse } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -8,14 +7,13 @@ import { ProveedorService }  from '../proveedor.service';
 import { SharedService } from '@shared/shared.service';
 import { Busqueda, BusquedaBuilder } from '@models/busqueda';
 import { ConfirmationData } from '@models/confirmacion';
-import { Proveedor, Table } from '@models/entity';
+import { Proveedor } from '@models/entity';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { merge, of as observableOf, Subject } from 'rxjs';
 import { ConfirmacionComponent } from '@shared/confirmacion/confirmacion.component';
 import { FiltroComponent } from '@shared/filtro/filtro.component';
 import { ProveedorDetailComponent } from './proveedor-detail/proveedor-detail.component';
 import { detailExpand } from '@animations/detailExpand';
-import * as moment from 'moment';
 
 @Component({
   selector: 'app-proveedor-list',
@@ -42,7 +40,7 @@ export class ProveedorListComponent implements OnInit, AfterViewInit {
     private dialog: MatDialog,
     private router: Router,
     private service: ProveedorService,
-    private sharedService: SharedService
+    public sharedService: SharedService
   ) { 
     sharedService.buildMenuBar({ title: 'Proveedores', filterEvent: () => this.openFilter() });
     sharedService.isMobile$.subscribe(isMobile => this.isMobile = isMobile);
@@ -64,12 +62,11 @@ export class ProveedorListComponent implements OnInit, AfterViewInit {
       startWith({}), switchMap(() => {
         this.isLoadingResults = true;
         return this.service.getAll(builder.newBusqueda(this.busqueda));
-      }), map(data => {
-        const proveedores: Table<Proveedor> = (data as HttpResponse<Table<Proveedor>>).body;
+      }), map(response => {
         this.isLoadingResults = false;
         this.isRateLimitReached = false;
-        this.resultsLength = proveedores.cantidad;
-        return proveedores.data;
+        this.resultsLength = response.body.cantidad;
+        return response.body.data;
       }), catchError(() => {
         this.isLoadingResults = false;
         this.isRateLimitReached = true;
@@ -84,9 +81,9 @@ export class ProveedorListComponent implements OnInit, AfterViewInit {
   }
 
   delete(proveedor: Proveedor) {
-    this.service.delete(proveedor).subscribe((response: HttpResponse<any>) => {
+    this.service.delete(proveedor).subscribe(response => {
       if(response?.status == 200) {
-        this.data = this.data.filter(oldProveedor => oldProveedor.id != proveedor.id);
+        this.data = this.data.filter(old => old.id != proveedor.id);
         this.sharedService.showMessage(response.body.result);
       }
     });
@@ -115,9 +112,7 @@ export class ProveedorListComponent implements OnInit, AfterViewInit {
       width: '720px', autoFocus: false, disableClose: true, data: this.busqueda, restoreFocus: false
     });
     dialogRef.afterClosed().subscribe(result => {
-      if(result) {
-        this.navigateToPrincipal(result);
-      }
+      if(result) this.navigateToPrincipal(result);
     });
   }
 
@@ -135,16 +130,15 @@ export class ProveedorListComponent implements OnInit, AfterViewInit {
   }
 
   updateEstado(proveedor: Proveedor) {
-    const cloneProveedor = Object.assign({}, proveedor);
-    cloneProveedor.estado = cloneProveedor.estado ? false : true;
-    this.service.setStatus(cloneProveedor).subscribe((response: HttpResponse<any>) => {
+    const clone: Proveedor = Object.assign({}, proveedor);
+    clone.estado = clone.estado ? false : true;
+    this.service.setStatus(clone).subscribe(response => {
       if(response?.status == 200) {
-        this.data = this.data.filter(oldProveedor => oldProveedor.id != proveedor.id);
+        this.data = this.data.filter(old => old.id != proveedor.id);
         this.sharedService.showMessage(response.body.result);
       }
     });
   }
 
   initSearch = () => this.criterio.next();
-  parseDateTime = (fecha: string) => moment(fecha).format('DD/MM/YYYY, hh:mm:ss A');
 }

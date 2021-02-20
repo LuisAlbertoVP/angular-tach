@@ -1,6 +1,5 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
-import { HttpResponse } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -8,14 +7,13 @@ import { CategoriaService }  from '../categoria.service';
 import { SharedService } from '@shared/shared.service';
 import { Busqueda, BusquedaBuilder } from '@models/busqueda';
 import { ConfirmationData } from '@models/confirmacion';
-import { Categoria, Table } from '@models/entity';
+import { Categoria } from '@models/entity';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { merge, of as observableOf, Subject } from 'rxjs';
 import { CategoriaDetailComponent } from './categoria-detail/categoria-detail.component';
 import { ConfirmacionComponent } from '@shared/confirmacion/confirmacion.component';
 import { FiltroComponent } from '@shared/filtro/filtro.component';
 import { detailExpand } from '@animations/detailExpand';
-import * as moment from 'moment';
 
 @Component({
   selector: 'app-categoria-list',
@@ -44,7 +42,7 @@ export class CategoriaListComponent implements OnInit, AfterViewInit {
     private dialog: MatDialog,
     private router: Router,
     private service: CategoriaService,
-    private sharedService: SharedService
+    public sharedService: SharedService
   ) { 
     sharedService.buildMenuBar({ title: 'Categorías', filterEvent: () => this.openFilter() });
     sharedService.isMobile$.subscribe(isMobile => this.isMobile = isMobile);
@@ -66,14 +64,13 @@ export class CategoriaListComponent implements OnInit, AfterViewInit {
       startWith({}), switchMap(() => {
         this.isLoadingResults = true;
         return this.service.getAll(builder.newBusqueda(this.busqueda));
-      }), map(data => {
-        const categorias: Table<Categoria> = (data as HttpResponse<Table<Categoria>>).body;
+      }), map(response => {
         this.isLoadingResults = false;
         this.isRateLimitReached = false;
-        this.resultsLength = categorias.cantidad;
-        this.resultsStock = categorias.stock;
-        this.resultsPrecio = categorias.precio;
-        return categorias.data;
+        this.resultsLength = response.body.cantidad;
+        this.resultsStock = response.body.stock;
+        this.resultsPrecio = response.body.precio;
+        return response.body.data;
       }), catchError(() => {
         this.isLoadingResults = false;
         this.isRateLimitReached = true;
@@ -88,9 +85,9 @@ export class CategoriaListComponent implements OnInit, AfterViewInit {
   }
 
   delete(categoria: Categoria) {
-    this.service.delete(categoria).subscribe((response: HttpResponse<any>) => {
+    this.service.delete(categoria).subscribe(response => {
       if(response?.status == 200) {
-        this.data = this.data.filter(oldCategoria => oldCategoria.id != categoria.id);
+        this.data = this.data.filter(old => old.id != categoria.id);
         this.sharedService.showMessage(response.body.result);
       }
     });
@@ -119,9 +116,7 @@ export class CategoriaListComponent implements OnInit, AfterViewInit {
       width: '720px', autoFocus: false, disableClose: true, data: this.busqueda, restoreFocus: false
     });
     dialogRef.afterClosed().subscribe(result => {
-      if(result) {
-        this.navigateToPrincipal(result);
-      }
+      if(result) this.navigateToPrincipal(result);
     });
   }
 
@@ -139,16 +134,15 @@ export class CategoriaListComponent implements OnInit, AfterViewInit {
   }
 
   updateEstado(categoria: Categoria) {
-    const cloneCategoria = Object.assign({}, categoria);
-    cloneCategoria.estado = cloneCategoria.estado ? false : true;
-    this.service.setStatus(cloneCategoria).subscribe((response: HttpResponse<any>) => {
+    const clone: Categoria = Object.assign({}, categoria);
+    clone.estado = clone.estado ? false : true;
+    this.service.setStatus(clone).subscribe(response => {
       if(response?.status == 200) {
-        this.data = this.data.filter(oldCategoria => oldCategoria.id != categoria.id);
+        this.data = this.data.filter(old => old.id != categoria.id);
         this.sharedService.showMessage(response.body.result);
       }
     });
   }
 
   initSearch = () => this.criterio.next();
-  parseDateTime = (fecha: string) => moment(fecha).format('DD/MM/YYYY, hh:mm:ss A');
 }

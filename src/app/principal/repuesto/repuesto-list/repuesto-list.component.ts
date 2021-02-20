@@ -1,6 +1,5 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
-import { HttpResponse } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -9,7 +8,7 @@ import { RepuestoService }  from '../repuesto.service';
 import { SharedService } from '@shared/shared.service';
 import { Busqueda, BusquedaBuilder } from '@models/busqueda';
 import { ConfirmationData } from '@models/confirmacion';
-import { Repuesto, Table } from '@models/entity';
+import { Repuesto } from '@models/entity';
 import { RepuestoForm } from '@models/form';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { merge, of as observableOf, Subject } from 'rxjs';
@@ -17,7 +16,6 @@ import { ConfirmacionComponent } from '@shared/confirmacion/confirmacion.compone
 import { FiltroComponent } from '@shared/filtro/filtro.component';
 import { RepuestoDetailComponent } from './repuesto-detail/repuesto-detail.component';
 import { detailExpand } from '@animations/detailExpand';
-import * as moment from 'moment';
 
 @Component({
   selector: 'app-repuesto-list',
@@ -50,7 +48,7 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
     private printing: PrintingService,
     private router: Router,
     private service: RepuestoService,
-    private sharedService: SharedService
+    public sharedService: SharedService
   ) {
     sharedService.buildMenuBar({ title: 'Repuestos', filterEvent: () => this.openFilter(),
       printEvent: () => this.openPrint() });
@@ -88,14 +86,13 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
       startWith({}), switchMap(() => {
         this.isLoadingResults = true;  
         return this.service.getAll(this.builder.newBusqueda(this.busqueda));
-      }), map(data => {
-        const repuestos: Table<Repuesto> = (data as HttpResponse<Table<Repuesto>>).body;
+      }), map(response => {
         this.isLoadingResults = false;
         this.isRateLimitReached = false;
-        this.resultsLength = repuestos.cantidad;
-        this.resultsStock = repuestos.stock;
-        this.resultsPrecio = repuestos.precio;
-        return repuestos.data;
+        this.resultsLength = response.body.cantidad;
+        this.resultsStock = response.body.stock;
+        this.resultsPrecio = response.body.precio;
+        return response.body.data;
       }), catchError(() => {
         this.isLoadingResults = false;
         this.isRateLimitReached = true;
@@ -121,9 +118,9 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
   }
 
   delete(repuesto: Repuesto) {
-    this.service.delete(repuesto).subscribe((response: HttpResponse<any>) => {
+    this.service.delete(repuesto).subscribe(response => {
       if(response?.status == 200) {
-        this.data = this.data.filter(oldRepuesto => oldRepuesto.id != repuesto.id);
+        this.data = this.data.filter(old => old.id != repuesto.id);
         this.sharedService.showMessage(response.body.result);
       }
     });
@@ -153,9 +150,7 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
         width: '720px', autoFocus: false, disableClose: true, data: this.buildBusquedaForm(form), restoreFocus: false
       });
       dialogRef.afterClosed().subscribe(result => {
-        if(result) {
-          this.navigateToPrincipal(result);
-        }
+        if(result) this.navigateToPrincipal(result);
       });
     });
   }
@@ -185,16 +180,15 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
   }
 
   updateEstado(repuesto: Repuesto) {
-    const cloneRepuesto = Object.assign({}, repuesto);
-    cloneRepuesto.estado = cloneRepuesto.estado ? false : true;
-    this.service.setStatus(cloneRepuesto).subscribe((response: HttpResponse<any>) => {
+    const clone: Repuesto = Object.assign({}, repuesto);
+    clone.estado = clone.estado ? false : true;
+    this.service.setStatus(clone).subscribe(response => {
       if(response?.status == 200) {
-        this.data = this.data.filter(oldRepuesto => oldRepuesto.id != repuesto.id);
+        this.data = this.data.filter(old => old.id != repuesto.id);
         this.sharedService.showMessage(response.body.result);
       }
     });
   }
 
   initSearch = () => this.criterio.next();
-  parseDateTime = (fecha: string) => moment(fecha).format('DD/MM/YYYY, hh:mm:ss A');
 }

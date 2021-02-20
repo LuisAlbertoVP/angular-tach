@@ -36,12 +36,10 @@ export class FiltroComponent implements OnInit {
 
   addCriterio(filtro: FormControl, event: MatChipInputEvent) {
     const input = event.input, value = event.value;
-    if ((value || '').trim()) {
+    if((value || '').trim()) {
       this.criterios(filtro).push(new FormControl(value));
     }
-    if (input) {
-      input.value = '';
-    }
+    if(input) input.value = '';
   }
 
   selected(filtro: FormControl, event: MatAutocompleteSelectedEvent) {

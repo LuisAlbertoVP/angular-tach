@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { httpOptions, urlVenta } from '@models/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { httpOptions, Response, urlVenta } from '@models/http';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Venta, Table } from '@models/entity';
+import { VentaForm } from '@models/form';
 import { Busqueda } from '@models/busqueda';
 import { HttpErrorHandlerService, HandleError } from '../../http-error-handler.service';
 
@@ -11,7 +12,7 @@ import { HttpErrorHandlerService, HandleError } from '../../http-error-handler.s
   providedIn: 'root'
 })
 export class VentaService {
-  private handleError: HandleError;
+  private handleError: HandleError = null;
 
   constructor(
     private http: HttpClient,
@@ -20,15 +21,15 @@ export class VentaService {
     this.handleError = httpErrorHandler.createHandleError('VentaService');
   }
 
-  get = (id: string): Observable<Venta> => this.http.get(`${urlVenta}/${id}`)
-      .pipe(catchError(this.handleError<Venta>('get')));
+  getForm = (id: string): Observable<VentaForm> => this.http.get<VentaForm>(`${urlVenta}/${id}`)
+      .pipe(catchError(this.handleError<VentaForm>('get')));
 
-  getAll = (busqueda: Busqueda) => this.http.post(`${urlVenta}/all`, busqueda, httpOptions)
-      .pipe(catchError(this.handleError<Table<Venta>>('getAll')));
+  getAll = (busqueda: Busqueda) => this.http.post<Table<Venta>>(`${urlVenta}/all`, busqueda, httpOptions)
+      .pipe(catchError(this.handleError<HttpResponse<Table<Venta>>>('getAll')));
 
-  insertOrUpdate = (venta: Venta) => this.http.post(urlVenta, venta, httpOptions)
-      .pipe(catchError(this.handleError('insertOrUpdate', venta)));
+  insertOrUpdate = (venta: Venta) => this.http.post<Response>(urlVenta, venta, httpOptions)
+      .pipe(catchError(this.handleError<HttpResponse<Response>>('insertOrUpdate')));
 
-  setStatus = (venta: Venta) => this.http.post(`${urlVenta}/${venta.id}/status`, venta, httpOptions)
-      .pipe(catchError(this.handleError('setStatus', venta)));
+  setStatus = (venta: Venta) => this.http.post<Response>(`${urlVenta}/${venta.id}/status`, venta, httpOptions)
+      .pipe(catchError(this.handleError<HttpResponse<Response>>('setStatus')));
 }

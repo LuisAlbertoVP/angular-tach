@@ -1,5 +1,9 @@
 import { HttpHeaders } from '@angular/common/http';
 
+export interface Response {
+  result: string;
+}
+
 export const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type':  'application/json' }),
   observe: 'response' as const

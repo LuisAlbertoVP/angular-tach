@@ -3,6 +3,7 @@ import { SharedModule } from '@shared/shared.module';
 import { VentaRoutingModule } from './venta-routing.module';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatSelectModule } from '@angular/material/select';
 import { VentaDetailComponent } from './venta-detail/venta-detail.component';
 import { VentaListComponent } from './venta-list/venta-list.component';
 
@@ -13,7 +14,8 @@ import { VentaListComponent } from './venta-list/venta-list.component';
     SharedModule,
     VentaRoutingModule,
     MatNativeDateModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatSelectModule
   ]
 })
 export class VentaModule { }

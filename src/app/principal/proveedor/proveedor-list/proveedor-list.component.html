@@ -61,8 +61,8 @@
             <div class="element-detail" [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'">
               <div class="m0-auto shadow p-3 mb-3" [style.width]="isMobile ? '75%' : '50%'">
                 <dl>
-                  <dt class="blue">Ingresado Por</dt><dd>{{ '"' + row.usuarioIngreso + '" ' + parseDateTime(row.fechaIngreso) }}</dd>
-                  <dt class="blue">Últ. Modificación</dt><dd>{{ '"' + row.usuarioModificacion + '" ' + parseDateTime(row.fechaModificacion) }}</dd>
+                  <dt class="blue">Ingresado Por</dt><dd>{{ '"' + row.usuarioIngreso + '" ' + sharedService.parseDateTime(row.fechaIngreso) }}</dd>
+                  <dt class="blue">Últ. Modificación</dt><dd>{{ '"' + row.usuarioModificacion + '" ' + sharedService.parseDateTime(row.fechaModificacion) }}</dd>
                   <dt class="blue">Tipo de proveedor</dt><dd>{{ row.tipoProveedor ? row.tipoProveedor : 'Vacío' }}</dd>
                   <dt class="blue">Contacto</dt><dd>{{ row.contacto ? row.contacto : 'Vacío' }}</dd>
                   <dt class="blue">Teléfono del contacto</dt><dd>{{ row.telefonoContacto ? row.telefonoContacto : 'Vacío' }}</dd>

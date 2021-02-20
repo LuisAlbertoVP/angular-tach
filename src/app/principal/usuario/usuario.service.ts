@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { httpOptions, urlUsuario } from '@models/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { httpOptions, Response, urlUsuario } from '@models/http';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { User, Table } from '@models/entity';
@@ -12,7 +12,7 @@ import { HttpErrorHandlerService, HandleError } from '../../http-error-handler.s
   providedIn: 'root'
 })
 export class UsuarioService {
-  private handleError: HandleError;
+  private handleError: HandleError = null;
 
   constructor(
     private http: HttpClient,
@@ -21,18 +21,18 @@ export class UsuarioService {
     this.handleError = httpErrorHandler.createHandleError('UsuarioService');
   }
 
-  getAll = (busqueda: Busqueda) => this.http.post(`${urlUsuario}/all`, busqueda, httpOptions)
-      .pipe(catchError(this.handleError<Table<User>>('getAll')));
-
   getForm = (): Observable<UserForm> => this.http.get<UserForm>(`${urlUsuario}/form`)
       .pipe(catchError(this.handleError<UserForm>('getForm')));
 
-  insertOrUpdate = (user: User) => this.http.post(urlUsuario, user, httpOptions)
-      .pipe(catchError(this.handleError('insertOrUpdate', user)));
+  getAll = (busqueda: Busqueda) => this.http.post<Table<User>>(`${urlUsuario}/all`, busqueda, httpOptions)
+      .pipe(catchError(this.handleError<HttpResponse<Table<User>>>('getAll')));
 
-  setStatus = (user: User) => this.http.post(`${urlUsuario}/${user.id}/status`, user, httpOptions)
-      .pipe(catchError(this.handleError('setStatus', user)));
+  insertOrUpdate = (user: User) => this.http.post<Response>(urlUsuario, user, httpOptions)
+      .pipe(catchError(this.handleError<HttpResponse<Response>>('insertOrUpdate')));
 
-  delete = (user: User) => this.http.post(`${urlUsuario}/${user.id}/delete`, user, httpOptions)
-      .pipe(catchError(this.handleError('delete', user)));
+  setStatus = (user: User) => this.http.post<Response>(`${urlUsuario}/${user.id}/status`, user, httpOptions)
+      .pipe(catchError(this.handleError<HttpResponse<Response>>('setStatus')));
+
+  delete = (user: User) => this.http.post<Response>(`${urlUsuario}/${user.id}/delete`, user, httpOptions)
+      .pipe(catchError(this.handleError<HttpResponse<Response>>('delete')));
 }

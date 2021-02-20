@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { httpOptions, urlCategoria } from '@models/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { httpOptions, Response, urlCategoria } from '@models/http';
 import { catchError } from 'rxjs/operators';
 import { Categoria, Table } from '@models/entity';
 import { Busqueda } from '@models/busqueda';
@@ -10,7 +10,7 @@ import { HttpErrorHandlerService, HandleError } from '../../http-error-handler.s
   providedIn: 'root'
 })
 export class CategoriaService {
-  private handleError: HandleError;
+  private handleError: HandleError = null;
 
   constructor(
     private http: HttpClient,
@@ -19,15 +19,15 @@ export class CategoriaService {
     this.handleError = httpErrorHandler.createHandleError('CategoriaService');
   }
 
-  getAll = (busqueda: Busqueda) => this.http.post(`${urlCategoria}/all`, busqueda, httpOptions)
-      .pipe(catchError(this.handleError<Table<Categoria>>('getAll')));
+  getAll = (busqueda: Busqueda) => this.http.post<Table<Categoria>>(`${urlCategoria}/all`, busqueda, httpOptions)
+      .pipe(catchError(this.handleError<HttpResponse<Table<Categoria>>>('getAll')));
 
-  insertOrUpdate = (categoria: Categoria) => this.http.post(urlCategoria, categoria, httpOptions)
-      .pipe(catchError(this.handleError('insertOrUpdate', categoria)));
+  insertOrUpdate = (categoria: Categoria) => this.http.post<Response>(urlCategoria, categoria, httpOptions)
+      .pipe(catchError(this.handleError<HttpResponse<Response>>('insertOrUpdate')));
 
-  setStatus = (categoria: Categoria) => this.http.post(`${urlCategoria}/${categoria.id}/status`, categoria, httpOptions)
-      .pipe(catchError(this.handleError('setStatus', categoria)));
+  setStatus = (categoria: Categoria) => this.http.post<Response>(`${urlCategoria}/${categoria.id}/status`, categoria, httpOptions)
+      .pipe(catchError(this.handleError<HttpResponse<Response>>('setStatus')));
 
-  delete = (categoria: Categoria) => this.http.post(`${urlCategoria}/${categoria.id}/delete`, categoria, httpOptions)
-      .pipe(catchError(this.handleError('delete', categoria)));
+  delete = (categoria: Categoria) => this.http.post<Response>(`${urlCategoria}/${categoria.id}/delete`, categoria, httpOptions)
+      .pipe(catchError(this.handleError<HttpResponse<Response>>('delete')));
 }

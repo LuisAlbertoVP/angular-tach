@@ -1,6 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { HttpResponse } from '@angular/common/http';
 import { MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { AuthService } from '@auth_service/*';
 import { MarcaService } from '../../marca.service';
@@ -40,14 +39,14 @@ export class MarcaDetailComponent implements OnInit {
       marca.id = this.marca ? marca.id : uuid();
       marca.usuarioIngreso = this.auth.nombreUsuario;
       marca.usuarioModificacion = this.auth.nombreUsuario;
-      this.service.insertOrUpdate(marca).subscribe((response: HttpResponse<any>) => {
-        if(response.status == 200) {
+      this.service.insertOrUpdate(marca).subscribe(response => {
+        if(response?.status == 200) {
           this.sharedService.showMessage(response.body.result);
           this.dialogRef.close(true);
         }
       });
     } else {
-      this.sharedService.showErrorMessage('Campo invalido');
+      this.sharedService.showErrorMessage('Campo inválido');
     }
   }
 }

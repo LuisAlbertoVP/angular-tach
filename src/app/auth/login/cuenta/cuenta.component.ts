@@ -64,7 +64,7 @@ export class CuentaComponent {
         }
       });
     } else {
-      this.snackBar.open('Algunos campos son invalidos', 'Error', {duration: 2000});
+      this.snackBar.open('Algunos campos son inválidos', 'Error', {duration: 2000});
     }
   }
 }

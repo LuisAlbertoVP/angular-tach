@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { httpOptions, urlCompra } from '@models/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { httpOptions, Response, urlCompra } from '@models/http';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Compra, Table } from '@models/entity';
+import { CompraForm } from '@models/form';
 import { Busqueda } from '@models/busqueda';
 import { HttpErrorHandlerService, HandleError } from '../../http-error-handler.service';
 
@@ -11,7 +12,7 @@ import { HttpErrorHandlerService, HandleError } from '../../http-error-handler.s
   providedIn: 'root'
 })
 export class CompraService {
-  private handleError: HandleError;
+  private handleError: HandleError = null;
 
   constructor(
     private http: HttpClient,
@@ -20,15 +21,15 @@ export class CompraService {
     this.handleError = httpErrorHandler.createHandleError('CompraService');
   }
 
-  get = (id: string): Observable<Compra> => this.http.get(`${urlCompra}/${id}`)
-      .pipe(catchError(this.handleError<Compra>('get')));
+  getCompra = (id: string): Observable<CompraForm> => this.http.get<CompraForm>(`${urlCompra}/${id}`)
+      .pipe(catchError(this.handleError<CompraForm>('get')));
 
-  getAll = (busqueda: Busqueda) => this.http.post(`${urlCompra}/all`, busqueda, httpOptions)
-      .pipe(catchError(this.handleError<Table<Compra>>('getAll')));
+  getAll = (busqueda: Busqueda) => this.http.post<Table<Compra>>(`${urlCompra}/all`, busqueda, httpOptions)
+      .pipe(catchError(this.handleError<HttpResponse<Table<Compra>>>('getAll')));
 
-  insertOrUpdate = (compra: Compra) => this.http.post(urlCompra, compra, httpOptions)
-      .pipe(catchError(this.handleError('insertOrUpdate', compra)));
+  insertOrUpdate = (compra: Compra) => this.http.post<Response>(urlCompra, compra, httpOptions)
+      .pipe(catchError(this.handleError<HttpResponse<Response>>('insertOrUpdate')));
 
-  setStatus = (compra: Compra) => this.http.post(`${urlCompra}/${compra.id}/status`, compra, httpOptions)
-      .pipe(catchError(this.handleError('setStatus', compra)));
+  setStatus = (compra: Compra) => this.http.post<Response>(`${urlCompra}/${compra.id}/status`, compra, httpOptions)
+      .pipe(catchError(this.handleError<HttpResponse<Response>>('setStatus')));
 }

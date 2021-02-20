@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { User, Rol } from '@models/entity';
+import { v4 as uuid } from 'uuid';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,7 @@ export class UsuarioControlService {
 
   toFormGroup(user: User) {
     return this.fb.group({
-      id: [user?.id],
+      id: [user?.id ? user.id : uuid()],
       nombreUsuario: [user?.nombreUsuario, Validators.required],
       nombres: [user?.nombres, Validators.required],
       cedula: [user?.cedula, [Validators.required, Validators.pattern('^[0-9]{10}$')]],

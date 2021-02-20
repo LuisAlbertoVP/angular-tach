@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MenuBar } from '@models/menu-bar';
 import { BehaviorSubject } from 'rxjs';
+import * as moment from 'moment';
 
 @Injectable({
   providedIn: 'root'
@@ -30,19 +31,17 @@ export class SharedService {
     });
   }
   
-  buildMenuBar(menuBar: MenuBar) {
-    this.menuBar.next(menuBar);
-  }
+  buildMenuBar = (menuBar: MenuBar) => this.menuBar.next(menuBar);
 
-  showErrorMessage(message: string) {
-    this.snackBar.open(message, 'Error', {duration: 2000});
-  }
+  showErrorMessage = (message: string) => this.snackBar.open(message, 'Error', {duration: 2000});
 
-  showMessage(message: string) {
-    this.snackBar.open(message, 'Ok', {duration: 2000, panelClass: ['success']});
-  }
+  showMessage = (message: string) => this.snackBar.open(message, 'Ok', {duration: 2000, panelClass: ['success']});
 
-  showWarningMessage(message: string) {
-    this.snackBar.open(message, 'Ok', {duration: 2000, panelClass: ['warning']});
-  }
+  showWarningMessage = (message: string) => this.snackBar.open(message, 'Ok', {duration: 2000, panelClass: ['warning']});
+
+  parseArray = (array: any[]) => array.map(element => element.descripcion).join(', ');
+
+  parseDate = (fecha: string) => moment(fecha).format('DD/MM/YYYY');
+
+  parseDateTime = (fecha: string) => moment(fecha).format('DD/MM/YYYY, hh:mm:ss A');
 }

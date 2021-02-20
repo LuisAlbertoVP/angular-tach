@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { httpOptions, urlRol } from '@models/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { httpOptions, Response, urlRol } from '@models/http';
 import { catchError } from 'rxjs/operators';
 import { Rol, Table } from '@models/entity';
 import { Busqueda } from '@models/busqueda';
@@ -10,7 +10,7 @@ import { HttpErrorHandlerService, HandleError } from '../../http-error-handler.s
   providedIn: 'root'
 })
 export class RolService {
-  private handleError: HandleError;
+  private handleError: HandleError = null;
 
   constructor(
     private http: HttpClient,
@@ -19,15 +19,15 @@ export class RolService {
     this.handleError = httpErrorHandler.createHandleError('RolService');
   }
 
-  getAll = (busqueda: Busqueda) => this.http.post(`${urlRol}/all`, busqueda, httpOptions)
-      .pipe(catchError(this.handleError<Table<Rol>>('getAll')));
+  getAll = (busqueda: Busqueda) => this.http.post<Table<Rol>>(`${urlRol}/all`, busqueda, httpOptions)
+      .pipe(catchError(this.handleError<HttpResponse<Table<Rol>>>('getAll')));
 
-  insertOrUpdate = (rol: Rol) => this.http.post(urlRol, rol, httpOptions)
-      .pipe(catchError(this.handleError('insertOrUpdate', rol)));
+  insertOrUpdate = (rol: Rol) => this.http.post<Response>(urlRol, rol, httpOptions)
+      .pipe(catchError(this.handleError<HttpResponse<Response>>('insertOrUpdate')));
 
-  setStatus = (rol: Rol) => this.http.post(`${urlRol}/${rol.id}/status`, rol, httpOptions)
-      .pipe(catchError(this.handleError('setStatus', rol)));
+  setStatus = (rol: Rol) => this.http.post<Response>(`${urlRol}/${rol.id}/status`, rol, httpOptions)
+      .pipe(catchError(this.handleError<HttpResponse<Response>>('setStatus')));
 
-  delete = (rol: Rol) => this.http.post(`${urlRol}/${rol.id}/delete`, rol, httpOptions)
-      .pipe(catchError(this.handleError('delete', rol)));
+  delete = (rol: Rol) => this.http.post<Response>(`${urlRol}/${rol.id}/delete`, rol, httpOptions)
+      .pipe(catchError(this.handleError<HttpResponse<Response>>('delete')));
 }
