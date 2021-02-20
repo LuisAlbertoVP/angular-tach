@@ -41,7 +41,7 @@ export class CompraDetailComponent implements OnInit {
     sharedService.buildMenuBar({ title: 'Compra' });
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.activedRoute.paramMap.subscribe(params => {
       this.id = params.get('id');
       if(this.id) {

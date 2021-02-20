@@ -20,40 +20,42 @@ const routes: Routes = [
           },
           { 
             path: 'cuenta', loadChildren: () => import('./cuenta/cuenta.module').then(m => m.CuentaModule) 
+          },          
+          { 
+            path: 'categorias', loadChildren: () => import('./categoria/categoria.module').then(m => m.CategoriaModule), 
+            canLoad: [RolGuard], data: { modulo: 'Categorias'} 
           },
           { 
-            path: 'sistema', loadChildren: () => import('./sistema/sistema.module').then(m => m.SistemaModule) 
+            path: 'clientes', loadChildren: () => import('./cliente/cliente.module').then(m => m.ClienteModule), 
+            canLoad: [RolGuard], data: { modulo: 'Clientes'} 
           },
           { 
-            path: 'reporte', loadChildren: () => import('./reporte/reporte.module').then(m => m.ReporteModule) 
-          },
-          { 
-            path: 'usuarios', loadChildren: () => import('./usuario/usuario.module').then(m => m.UsuarioModule), 
-            canLoad: [RolGuard], data: { modulo: 'Usuarios'} 
-          },
-          {
-            path: 'roles', loadChildren: () => import('./rol/rol.module').then(m => m.RolModule), 
-            canLoad: [RolGuard], data: { modulo: 'Roles'} 
-          },
-          { 
-            path: 'proveedores', loadChildren: () => import('./proveedor/proveedor.module').then(m => m.ProveedorModule), 
-            canLoad: [RolGuard], data: { modulo: 'Proveedores'} 
+            path: 'compras', loadChildren: () => import('./compra/compra.module').then(m => m.CompraModule), 
+            canLoad: [RolGuard], data: { modulo: 'Compras'} 
           },
           { 
             path: 'marcas', loadChildren: () => import('./marca/marca.module').then(m => m.MarcaModule), 
             canLoad: [RolGuard], data: { modulo: 'Marcas'} 
           },
           { 
-            path: 'categorias', loadChildren: () => import('./categoria/categoria.module').then(m => m.CategoriaModule), 
-            canLoad: [RolGuard], data: { modulo: 'Categorias'} 
+            path: 'proveedores', loadChildren: () => import('./proveedor/proveedor.module').then(m => m.ProveedorModule), 
+            canLoad: [RolGuard], data: { modulo: 'Proveedores'} 
+          },
+          { 
+            path: 'reporte', loadChildren: () => import('./reporte/reporte.module').then(m => m.ReporteModule),
+            canLoad: [RolGuard], data: { modulo: 'Reportes'} 
           },
           { 
             path: 'repuestos', loadChildren: () => import('./repuesto/repuesto.module').then(m => m.RepuestoModule), 
             canLoad: [RolGuard], data: { modulo: 'Repuestos'} 
           },
+          {
+            path: 'roles', loadChildren: () => import('./rol/rol.module').then(m => m.RolModule), 
+            canLoad: [RolGuard], data: { modulo: 'Roles'} 
+          },
           { 
-            path: 'compras', loadChildren: () => import('./compra/compra.module').then(m => m.CompraModule), 
-            canLoad: [RolGuard], data: { modulo: 'Compras'} 
+            path: 'usuarios', loadChildren: () => import('./usuario/usuario.module').then(m => m.UsuarioModule), 
+            canLoad: [RolGuard], data: { modulo: 'Usuarios'} 
           },
           { 
             path: 'ventas', loadChildren: () => import('./venta/venta.module').then(m => m.VentaModule), 

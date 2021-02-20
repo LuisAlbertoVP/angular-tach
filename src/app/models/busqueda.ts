@@ -37,6 +37,21 @@ const busquedaBase: Busqueda = {
   ], estado: true, operadorLogico: '&&'
 };
 
+const busquedaCliente: Busqueda = {
+  filtros: [
+    { id: "Nombres", nombre: "Nombres" },
+    { id: "Telefono", nombre: "Teléfono" },    
+    { id: "Celular", nombre: "Celular" },
+    { id: "Correo", nombre: "Correo" },
+    { id: "Cedula", nombre: "Cedula" },
+    { id: "Direccion", nombre: "Dirección" },
+    { id: "TipoCliente", nombre: "Tipo" },
+    { id: "FechaNacimiento", nombre: "Nacimiento", esFecha: true },
+    { id: "FechaIngreso", nombre: "Ingreso", esFecha: true },
+    { id: "FechaModificacion", nombre: "Modificación", esFecha: true }
+  ], estado: true, operadorLogico: '&&'
+};
+
 const busquedaUsuario: Busqueda = {
   filtros: [
     { id: "Nombres", nombre: "Nombres" },
@@ -139,6 +154,7 @@ export class BusquedaBuilder {
   }
 
   static BuildBase = (): Busqueda => JSON.parse(JSON.stringify(busquedaBase));
+  static BuildCliente = (): Busqueda => JSON.parse(JSON.stringify(busquedaCliente));
   static BuildUsuario = (): Busqueda => JSON.parse(JSON.stringify(busquedaUsuario));
   static BuildRepuesto = (): Busqueda => JSON.parse(JSON.stringify(busquedaRepuesto));
   static BuildProveedor = (): Busqueda => JSON.parse(JSON.stringify(busquedaProveedor));

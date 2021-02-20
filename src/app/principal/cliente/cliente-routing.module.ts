@@ -1,11 +1,13 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { SistemaDetailComponent } from './sistema-detail/sistema-detail.component';
+import { ClienteListComponent } from './cliente-list/cliente-list.component';
+import { RolGuard } from 'src/app/auth/rol.guard';
 
 const routes: Routes = [
   {
     path: '',
-    component: SistemaDetailComponent
+    component: ClienteListComponent,
+    canActivate: [RolGuard]
   }
 ];
 
@@ -13,4 +15,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class SistemaRoutingModule { }
+export class ClienteRoutingModule { }

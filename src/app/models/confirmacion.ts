@@ -17,6 +17,7 @@ export class ConfirmationDelete {
   generate(seccion: Seccion): ConfirmationDialog {
     switch(seccion) {
       case "Categorías": return this.build('esta categoría');
+      case "Clientes": return this.build('este cliente');
       case "Marcas": return this.build('esta marca');
       case "Proveedores": return this.build('este proveedor');
       case "Repuestos": return this.build('este repuesto');

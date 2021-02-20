@@ -17,7 +17,7 @@ export class BaseComponent implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.modulos = JSON.parse(JSON.stringify(listModulos));
   }
 

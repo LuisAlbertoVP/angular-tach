@@ -1,0 +1,69 @@
+<form [formGroup]="form" (ngSubmit)="guardar()">
+  <h2 mat-dialog-title class="text-center blue">{{ !cliente ? 'Nuevo Cliente' : 'Modificar Cliente' }}</h2>
+  <mat-dialog-content class="mat-typography">
+    <div class="m0-auto" [style.width]="isMobile ? '250px' : '325px'">
+      <fieldset class="mb-2">
+        <legend class="mb-3 blue">Detalles de cuenta</legend>
+        <mat-form-field class="w-100" appearance="outline">
+          <mat-label>Nombres</mat-label>
+          <input formControlName="nombres" matInput placeholder="Ingrese nombres" type="text" required />
+          <mat-icon matSuffix>person</mat-icon>
+          <mat-error *ngIf="form.get('nombres').hasError('required')">Nombres son requeridos</mat-error>
+        </mat-form-field>
+        <mat-form-field class="w-100" appearance="outline">
+          <mat-label>Cedula</mat-label>
+          <input formControlName="cedula" #cedula maxlength="10" matInput placeholder="Ingrese cedula" type="text" required />
+          <mat-icon matSuffix>badge</mat-icon>
+          <mat-hint align="end">{{ cedula.value?.length }} / 10</mat-hint>
+          <mat-error *ngIf="form.get('cedula').hasError('required')">Cedula es requerida</mat-error>
+          <mat-error *ngIf="form.get('cedula').hasError('pattern')">Cedula debe tener 10 dígitos</mat-error>
+        </mat-form-field>
+        <mat-form-field class="w-100" appearance="outline">
+          <mat-label>Correo</mat-label>
+          <input formControlName="correo" matInput placeholder="Ingrese correo" type="email" required />
+          <mat-icon matSuffix>mail</mat-icon>
+          <mat-error *ngIf="form.get('correo').hasError('required')">Correo es requerido</mat-error>
+          <mat-error *ngIf="form.get('correo').hasError('pattern')">Ingrese una dirección de correo válida</mat-error>
+        </mat-form-field>
+        <mat-form-field class="w-100" appearance="outline">
+          <mat-label>Dirección</mat-label>
+          <input formControlName="direccion" matInput placeholder="Ingrese dirección" type="text" required />
+          <mat-icon matSuffix>location_on</mat-icon>
+          <mat-error *ngIf="form.get('direccion').hasError('required')">Dirección es requerida</mat-error>
+        </mat-form-field>
+        <mat-form-field class="w-100" appearance="outline">
+          <mat-label>Teléfono</mat-label>
+          <input formControlName="telefono" matInput placeholder="Ingrese teléfono" type="text" required />
+          <mat-icon matSuffix>phone</mat-icon>
+          <mat-error *ngIf="form.get('telefono').hasError('required')">Teléfono es requerido</mat-error>
+        </mat-form-field>
+        <mat-form-field class="w-100" appearance="outline">
+          <mat-label>Celular</mat-label>
+          <input formControlName="celular" matInput placeholder="Ingrese celular" type="text" required />
+          <mat-icon matSuffix>phone</mat-icon>
+          <mat-error *ngIf="form.get('celular').hasError('required')">Celular es requerido</mat-error>
+        </mat-form-field>
+        <mat-form-field class="w-100" appearance="outline">
+          <mat-label>Fecha de nacimiento</mat-label>
+          <input matInput formControlName="fechaNacimiento" [matDatepicker]="picker" required />
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="form.get('fechaNacimiento').hasError('required')">Fecha de nacimiento es requerida</mat-error>
+        </mat-form-field>
+        <mat-form-field class="w-100" appearance="outline">
+          <mat-label>Tipo de cliente</mat-label>
+          <mat-select formControlName="tipoCliente" required>
+            <mat-option value="Cliente">Cliente</mat-option>
+            <mat-option value="SujetoRetenido">Sujeto Retenido</mat-option>
+            <mat-option value="Destinatario">Destinatario</mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.get('tipoCliente').hasError('required')">Tipo de cliente es requerido</mat-error>
+        </mat-form-field>
+      </fieldset>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions class="d-flex justify-content-around">
+    <button mat-raised-button mat-dialog-close type="button">Cancelar</button>
+    <button mat-raised-button color="primary" type="submit">Guardar</button>
+  </mat-dialog-actions>
+</form>
