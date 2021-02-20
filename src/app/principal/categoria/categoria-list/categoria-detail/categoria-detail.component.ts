@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpResponse } from '@angular/common/http';
 import { MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { AuthService } from '@auth_service/*';
@@ -13,10 +13,7 @@ import { v4 as uuid } from 'uuid';
   templateUrl: 'categoria-detail.component.html',
 })
 export class CategoriaDetailComponent implements OnInit {
-  form = this.fb.group({
-    id: [''],
-    descripcion: ['', Validators.required]
-  });
+  form: FormGroup = null;
   isMobile: boolean = false;
 
   constructor(
@@ -31,9 +28,10 @@ export class CategoriaDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if(this.categoria) {
-      this.form.patchValue(this.categoria);
-    }
+    this.form = this.fb.group({
+      id: [this.categoria?.id],
+      descripcion: [this.categoria?.descripcion, Validators.required]
+    });
   }
 
   guardar() {

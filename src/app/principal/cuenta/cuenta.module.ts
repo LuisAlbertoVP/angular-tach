@@ -5,6 +5,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CuentaRoutingModule } from './cuenta-routing.module';
@@ -20,6 +21,7 @@ import { CuentaDetailComponent } from './cuenta-detail/cuenta-detail.component';
     MatDatepickerModule,
     MatButtonModule,
     MatIconModule,
+    MatProgressSpinnerModule,
     HttpClientModule,
     ReactiveFormsModule,
     CuentaRoutingModule

@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpResponse } from '@angular/common/http';
 import { MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { AuthService } from '@auth_service/*';
@@ -14,10 +14,7 @@ import { v4 as uuid } from 'uuid';
   templateUrl: './rol-detail.component.html'
 })
 export class RolDetailComponent implements OnInit {
-  form = this.fb.group({
-    id: [''],
-    descripcion: ['', Validators.required]
-  });
+  form: FormGroup = null;
   isMobile: boolean = false;
   modulos: Modulo[] = [];
 
@@ -33,10 +30,13 @@ export class RolDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.form = this.fb.group({
+      id: [this.rol?.id],
+      descripcion: [this.rol?.descripcion, Validators.required]
+    });
     this.modulos = JSON.parse(JSON.stringify(listModulos));
     this.modulos = this.modulos.filter(modulo => modulo.id != 0);
     if(this.rol) {
-      this.form.patchValue(this.rol);
       this.setChecked()
     }
   }

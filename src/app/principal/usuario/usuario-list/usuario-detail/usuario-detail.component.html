@@ -1,99 +1,102 @@
-<form *ngIf="form" [formGroup]="form" (ngSubmit)="guardar()">
-  <h2 mat-dialog-title class="text-center blue">{{ !usuario ? 'Nuevo Usuario' : 'Modificar Usuario' }}</h2>
-  <mat-dialog-content class="mat-typography">
-    <div class="m0-auto" [style.width]="isMobile ? '250px' : '325px'">
-      <fieldset class="mb-2">
-        <legend class="mb-3 blue">Detalles de cuenta</legend>
-        <mat-form-field class="w-100" appearance="outline">
-          <mat-label>Nombres</mat-label>
-          <input formControlName="nombres" matInput placeholder="Ingrese nombres" type="text" required />
-          <mat-icon matSuffix>person</mat-icon>
-          <mat-error *ngIf="form.get('nombres').hasError('required')">Nombres son requeridos</mat-error>
-        </mat-form-field>
-        <mat-form-field class="w-100" appearance="outline">
-          <mat-label>Cedula</mat-label>
-          <input formControlName="cedula" #cedula maxlength="10" matInput placeholder="Ingrese cedula" type="text" required />
-          <mat-icon matSuffix>badge</mat-icon>
-          <mat-hint align="end">{{ cedula.value?.length }} / 10</mat-hint>
-          <mat-error *ngIf="form.get('cedula').hasError('required')">Cedula es requerida</mat-error>
-          <mat-error *ngIf="form.get('cedula').hasError('pattern')">Cedula debe tener 10 dígitos</mat-error>
-        </mat-form-field>
-        <mat-form-field class="w-100" appearance="outline">
-          <mat-label>Correo</mat-label>
-          <input formControlName="correo" matInput placeholder="Ingrese correo" type="email" required />
-          <mat-icon matSuffix>mail</mat-icon>
-          <mat-error *ngIf="form.get('correo').hasError('required')">Correo es requerido</mat-error>
-          <mat-error *ngIf="form.get('correo').hasError('pattern')">Ingrese una dirección de correo válida</mat-error>
-        </mat-form-field>
-        <mat-form-field class="w-100" appearance="outline">
-          <mat-label>Dirección</mat-label>
-          <input formControlName="direccion" matInput placeholder="Ingrese dirección" type="text" required />
-          <mat-icon matSuffix>location_on</mat-icon>
-          <mat-error *ngIf="form.get('direccion').hasError('required')">Dirección es requerida</mat-error>
-        </mat-form-field>
-        <mat-form-field class="w-100" appearance="outline">
-          <mat-label>Teléfono</mat-label>
-          <input formControlName="telefono" matInput placeholder="Ingrese teléfono" type="text" required />
-          <mat-icon matSuffix>phone</mat-icon>
-          <mat-error *ngIf="form.get('telefono').hasError('required')">Teléfono es requerido</mat-error>
-        </mat-form-field>
-        <mat-form-field class="w-100" appearance="outline">
-          <mat-label>Celular</mat-label>
-          <input formControlName="celular" matInput placeholder="Ingrese celular" type="text" required />
-          <mat-icon matSuffix>phone</mat-icon>
-          <mat-error *ngIf="form.get('celular').hasError('required')">Celular es requerido</mat-error>
-        </mat-form-field>
-        <mat-form-field class="w-100" appearance="outline">
-          <mat-label>Fecha de nacimiento</mat-label>
-          <input matInput formControlName="fechaNacimiento" [matDatepicker]="picker" required />
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-          <mat-error *ngIf="form.get('fechaNacimiento').hasError('required')">Fecha de nacimiento es requerida</mat-error>
-        </mat-form-field>
-        <mat-form-field class="w-100" appearance="outline">
-          <mat-label>Roles</mat-label>
-          <mat-select formControlName="roles" multiple required>
-            <mat-option *ngFor="let rol of roles" [value]="rol.id">{{ rol.descripcion }}</mat-option>
-          </mat-select>
-          <mat-error *ngIf="form.get('roles').hasError('required')">Rol es requerido</mat-error>
-        </mat-form-field>
-      </fieldset>
-      <fieldset class="mt-3 mb-2">
-        <legend class="mb-3 blue">Detalles laborales</legend>
-        <mat-form-field class="w-100" appearance="outline">
-          <mat-label>Fecha de contratación</mat-label>
-          <input matInput formControlName="fechaContratacion" [matDatepicker]="picker2" required />
-          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-          <mat-datepicker #picker2></mat-datepicker>
-          <mat-error *ngIf="form.get('fechaContratacion').hasError('required')">Fecha de contratación es requerida</mat-error>
-        </mat-form-field>
-        <mat-form-field class="w-100" appearance="outline">
-          <mat-label>Salario</mat-label>
-          <input formControlName="salario" matInput placeholder="Ingrese salario" type="text" required />
-          <mat-icon matSuffix>monetization_on</mat-icon>
-          <mat-error *ngIf="form.get('salario').hasError('required')">Salario es requerido</mat-error>
-        </mat-form-field>
-      </fieldset>
-      <fieldset class="mt-3 mb-2">
-        <legend class="mb-3 blue">Inicio de sesión</legend>
-        <mat-form-field class="w-100" appearance="outline">
-          <mat-label>Usuario</mat-label>
-          <input formControlName="nombreUsuario" matInput placeholder="Ingrese usuario" type="text" required autocapitalize="none" />
-          <mat-icon matSuffix>person</mat-icon>
-          <mat-error *ngIf="form.get('nombreUsuario').hasError('required')">Usuario es requerido</mat-error>
-        </mat-form-field>
-        <mat-form-field class="w-100" appearance="outline">
-          <mat-label>Nueva Contraseña</mat-label>
-          <input formControlName="clave" matInput [type]="hide ? 'password' : 'text'" placeholder="Ingrese contraseña" autocomplete="new-password" />
-          <button mat-icon-button matSuffix (click)="hide = !hide" type="button">
-            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-          </button>
-        </mat-form-field>
-      </fieldset>
-    </div>
-  </mat-dialog-content>
-  <mat-dialog-actions class="d-flex justify-content-around">
-    <button mat-raised-button mat-dialog-close type="button">Cancelar</button>
-    <button mat-raised-button color="primary" type="submit">Guardar</button>
-  </mat-dialog-actions>
-</form>
+<mat-spinner *ngIf="!form; else elseBlock" color="accent" mode="indeterminate" class="m0-auto"></mat-spinner>
+<ng-template #elseBlock>
+  <form [formGroup]="form" (ngSubmit)="guardar()">
+    <h2 mat-dialog-title class="text-center blue">{{ !usuario ? 'Nuevo Usuario' : 'Modificar Usuario' }}</h2>
+    <mat-dialog-content class="mat-typography">
+      <div class="m0-auto" [style.width]="isMobile ? '250px' : '325px'">
+        <fieldset class="mb-2">
+          <legend class="mb-3 blue">Detalles de cuenta</legend>
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Nombres</mat-label>
+            <input formControlName="nombres" matInput placeholder="Ingrese nombres" type="text" required />
+            <mat-icon matSuffix>person</mat-icon>
+            <mat-error *ngIf="form.get('nombres').hasError('required')">Nombres son requeridos</mat-error>
+          </mat-form-field>
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Cedula</mat-label>
+            <input formControlName="cedula" #cedula maxlength="10" matInput placeholder="Ingrese cedula" type="text" required />
+            <mat-icon matSuffix>badge</mat-icon>
+            <mat-hint align="end">{{ cedula.value?.length }} / 10</mat-hint>
+            <mat-error *ngIf="form.get('cedula').hasError('required')">Cedula es requerida</mat-error>
+            <mat-error *ngIf="form.get('cedula').hasError('pattern')">Cedula debe tener 10 dígitos</mat-error>
+          </mat-form-field>
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Correo</mat-label>
+            <input formControlName="correo" matInput placeholder="Ingrese correo" type="email" required />
+            <mat-icon matSuffix>mail</mat-icon>
+            <mat-error *ngIf="form.get('correo').hasError('required')">Correo es requerido</mat-error>
+            <mat-error *ngIf="form.get('correo').hasError('pattern')">Ingrese una dirección de correo válida</mat-error>
+          </mat-form-field>
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Dirección</mat-label>
+            <input formControlName="direccion" matInput placeholder="Ingrese dirección" type="text" required />
+            <mat-icon matSuffix>location_on</mat-icon>
+            <mat-error *ngIf="form.get('direccion').hasError('required')">Dirección es requerida</mat-error>
+          </mat-form-field>
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Teléfono</mat-label>
+            <input formControlName="telefono" matInput placeholder="Ingrese teléfono" type="text" required />
+            <mat-icon matSuffix>phone</mat-icon>
+            <mat-error *ngIf="form.get('telefono').hasError('required')">Teléfono es requerido</mat-error>
+          </mat-form-field>
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Celular</mat-label>
+            <input formControlName="celular" matInput placeholder="Ingrese celular" type="text" required />
+            <mat-icon matSuffix>phone</mat-icon>
+            <mat-error *ngIf="form.get('celular').hasError('required')">Celular es requerido</mat-error>
+          </mat-form-field>
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Fecha de nacimiento</mat-label>
+            <input matInput formControlName="fechaNacimiento" [matDatepicker]="picker" required />
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="form.get('fechaNacimiento').hasError('required')">Fecha de nacimiento es requerida</mat-error>
+          </mat-form-field>
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Roles</mat-label>
+            <mat-select formControlName="roles" multiple required>
+              <mat-option *ngFor="let rol of roles" [value]="rol.id">{{ rol.descripcion }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.get('roles').hasError('required')">Rol es requerido</mat-error>
+          </mat-form-field>
+        </fieldset>
+        <fieldset class="mt-3 mb-2">
+          <legend class="mb-3 blue">Detalles laborales</legend>
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Fecha de contratación</mat-label>
+            <input matInput formControlName="fechaContratacion" [matDatepicker]="picker2" required />
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+            <mat-error *ngIf="form.get('fechaContratacion').hasError('required')">Fecha de contratación es requerida</mat-error>
+          </mat-form-field>
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Salario</mat-label>
+            <input formControlName="salario" matInput placeholder="Ingrese salario" type="text" required />
+            <mat-icon matSuffix>monetization_on</mat-icon>
+            <mat-error *ngIf="form.get('salario').hasError('required')">Salario es requerido</mat-error>
+          </mat-form-field>
+        </fieldset>
+        <fieldset class="mt-3 mb-2">
+          <legend class="mb-3 blue">Inicio de sesión</legend>
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Usuario</mat-label>
+            <input formControlName="nombreUsuario" matInput placeholder="Ingrese usuario" type="text" required autocapitalize="none" />
+            <mat-icon matSuffix>person</mat-icon>
+            <mat-error *ngIf="form.get('nombreUsuario').hasError('required')">Usuario es requerido</mat-error>
+          </mat-form-field>
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Nueva Contraseña</mat-label>
+            <input formControlName="clave" matInput [type]="hide ? 'password' : 'text'" placeholder="Ingrese contraseña" autocomplete="new-password" />
+            <button mat-icon-button matSuffix (click)="hide = !hide" type="button">
+              <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+          </mat-form-field>
+        </fieldset>
+      </div>
+    </mat-dialog-content>
+    <mat-dialog-actions class="d-flex justify-content-around">
+      <button mat-raised-button mat-dialog-close type="button">Cancelar</button>
+      <button mat-raised-button color="primary" type="submit">Guardar</button>
+    </mat-dialog-actions>
+  </form>
+</ng-template>

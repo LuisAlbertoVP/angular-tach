@@ -14,7 +14,7 @@ import { v4 as uuid } from 'uuid';
   templateUrl: './proveedor-detail.component.html'
 })
 export class ProveedorDetailComponent implements OnInit {
-  form: FormGroup;
+  form: FormGroup = null;
   isMobile: boolean = false;
 
   constructor(

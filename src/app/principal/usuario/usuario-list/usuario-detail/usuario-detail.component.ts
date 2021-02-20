@@ -16,7 +16,7 @@ import * as moment from 'moment';
   templateUrl: './usuario-detail.component.html'
 })
 export class UsuarioDetailComponent implements OnInit {
-  form: FormGroup;
+  form: FormGroup = null;
   hide: boolean = true;
   isMobile: boolean = false;  
   roles: Rol[] = [];

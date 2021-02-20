@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpResponse } from '@angular/common/http';
 import { AuthService } from '@auth_service/*';
 import { CuentaService } from '../cuenta.service';
@@ -13,17 +13,7 @@ import * as moment from 'moment';
   templateUrl: './cuenta-detail.component.html'
 })
 export class CuentaDetailComponent implements OnInit {
-  form = this.fb.group({
-    nombreUsuario: ['', Validators.required],
-    nombres: ['', Validators.required],
-    cedula: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
-    correo: ['',[ Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')]],
-    direccion: ['', Validators.required],
-    telefono: ['', Validators.required],
-    celular: ['', Validators.required],
-    fechaNacimiento: ['', Validators.required],
-    clave: ['', Validators.pattern('^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$')]
-  });
+  form: FormGroup = null;
   hide: boolean = true;
   id: string = this.auth.id;
   isMobile: boolean = false;
@@ -39,7 +29,19 @@ export class CuentaDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.service.getById(this.id).subscribe(usuario => this.form.patchValue(usuario));
+    this.service.getById(this.id).subscribe(usuario => {
+      this.form = this.fb.group({
+        nombres: [usuario?.nombres, Validators.required],
+        cedula: [usuario?.cedula, [Validators.required, Validators.pattern('^[0-9]{10}$')]],
+        correo: [usuario?.correo,[ Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')]],
+        direccion: [usuario?.direccion, Validators.required],
+        telefono: [usuario?.telefono, Validators.required],
+        celular: [usuario?.celular, Validators.required],
+        fechaNacimiento: [usuario?.fechaNacimiento, Validators.required],
+        nombreUsuario: [usuario?.nombreUsuario, Validators.required],
+        clave: [usuario?.clave, Validators.pattern('^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$')]
+      });
+    });
   }
 
   guardar() {

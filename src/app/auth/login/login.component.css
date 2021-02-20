@@ -7,7 +7,8 @@ img {
     background-image: linear-gradient(120deg, #2f88c4, #9b4bbd); 
 }
 .login-screen {
-    width: 400px; 
+    width: 400px;
+    height: 625px;
     margin: 0;
     position: absolute; 
     top: 50%; 
