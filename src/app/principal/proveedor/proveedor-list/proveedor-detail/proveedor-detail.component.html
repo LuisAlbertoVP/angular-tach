@@ -6,23 +6,23 @@
         <legend class="mb-3 blue">General</legend>
         <mat-form-field class="w-100" appearance="outline">
           <mat-label>Descripción</mat-label>
-          <input matInput formControlName="descripcion" placeholder="Ingrese una descripcion" required />
+          <input matInput formControlName="descripcion" placeholder="Ingrese una descripcion" type="text" required />
           <mat-icon matSuffix>business</mat-icon>
           <mat-error *ngIf="form.get('descripcion').hasError('required')">Descripción requerida</mat-error>
         </mat-form-field>
         <mat-form-field class="w-100" appearance="outline">
           <mat-label>Teléfono</mat-label>
-          <input matInput formControlName="telefono" placeholder="Ingrese un teléfono" />
+          <input matInput formControlName="telefono" placeholder="Ingrese un teléfono" type="text" />
           <mat-icon matSuffix>phone</mat-icon>
         </mat-form-field>
         <mat-form-field class="w-100" appearance="outline">
           <mat-label>Dirección</mat-label>
-          <input matInput formControlName="direccion" placeholder="Ingrese una dirección" />
+          <input matInput formControlName="direccion" placeholder="Ingrese una dirección" type="text" />
           <mat-icon matSuffix>location_on</mat-icon>
         </mat-form-field>
         <mat-form-field class="w-100" appearance="outline">
           <mat-label>Tipo de proveedor</mat-label>
-          <input matInput formControlName="tipoProveedor" placeholder="Ingrese un tipo de proveedor" />
+          <input matInput formControlName="tipoProveedor" placeholder="Ingrese un tipo de proveedor" type="text" />
           <mat-icon matSuffix>description</mat-icon>
         </mat-form-field>
         <div class="w-100 mb-4 d-flex">
@@ -33,17 +33,17 @@
         <legend class="mb-3 blue">Información de contacto</legend>
         <mat-form-field class="w-100" appearance="outline">
           <mat-label>Contacto</mat-label>
-          <input matInput formControlName="contacto" placeholder="Ingrese un contacto" />
+          <input matInput formControlName="contacto" placeholder="Ingrese un contacto" type="text" />
           <mat-icon matSuffix>person</mat-icon>
         </mat-form-field>
         <mat-form-field class="w-100" appearance="outline">
           <mat-label>Teléfono del contacto</mat-label>
-          <input matInput formControlName="telefonoContacto" placeholder="Ingrese un teléfono del contacto" />
+          <input matInput formControlName="telefonoContacto" placeholder="Ingrese un teléfono del contacto" type="text" />
           <mat-icon matSuffix>phone</mat-icon>
         </mat-form-field>
         <mat-form-field class="w-100" appearance="outline">
           <mat-label>Correo del contacto</mat-label>
-          <input matInput formControlName="correoContacto" placeholder="Ingrese un correo del contacto" />
+          <input matInput formControlName="correoContacto" placeholder="Ingrese un correo del contacto" type="email" />
           <mat-icon matSuffix>mail</mat-icon>
         </mat-form-field>
       </fieldset>

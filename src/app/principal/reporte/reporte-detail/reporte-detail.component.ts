@@ -33,7 +33,7 @@ export class ReporteDetailComponent implements OnDestroy, AfterViewInit {
     this.chart.destroy();
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this.service.get().subscribe(reporte => {
       this.isLoading = false;
       this.reporte = reporte;

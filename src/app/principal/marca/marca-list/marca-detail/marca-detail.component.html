@@ -4,7 +4,7 @@
     <div class="m0-auto" [style.width]="isMobile ? '250px' : '325px'">
       <mat-form-field class="w-100" appearance="outline">
         <mat-label>Ingrese marca</mat-label>
-        <input matInput formControlName="descripcion" required />
+        <input matInput formControlName="descripcion" type="text" required />
         <mat-icon matSuffix>local_offer</mat-icon>
         <mat-error *ngIf="form.get('descripcion').hasError('required')">Descripción es requerida</mat-error>
       </mat-form-field>

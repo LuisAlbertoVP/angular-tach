@@ -14,7 +14,7 @@
         <a mat-menu-item [matMenuTriggerFor]="nuevo">
           <mat-icon>add_circle_outline</mat-icon><span>Nuevo</span></a>
           <a mat-menu-item (click)="navigate('/principal')">
-            <mat-icon>home</mat-icon><span>Inicio</span></a>
+            <mat-icon>home</mat-icon><span>Menú Principal</span></a>
         <a mat-menu-item (click)="navigate('/principal/cuenta')">
           <mat-icon>account_circle</mat-icon><span>Cuenta</span></a>
         <a *ngIf="menuBar.printEvent" mat-menu-item (click)="menuBar.printEvent()">

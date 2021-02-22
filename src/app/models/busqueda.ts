@@ -10,7 +10,8 @@ export interface Filtro {
   criterios?: string[];
   data?: string[];
   operador?: string;
-  esFecha?: boolean;
+  tipo?: string;
+  tipoNativo?: string;
   checked?: boolean;
 }
 
@@ -31,84 +32,84 @@ export interface Busqueda {
 
 const busquedaBase: Busqueda = {
   filtros: [
-    { id: "Descripcion", nombre: "Descripción" },
-    { id: "FechaIngreso", nombre: "Ingreso", esFecha: true },
-    { id: "FechaModificacion", nombre: "Modificación", esFecha: true }
+    { id: "Descripcion", nombre: "Descripción", tipo: 'text' },
+    { id: "FechaIngreso", nombre: "Ingreso", tipo: 'date' },
+    { id: "FechaModificacion", nombre: "Modificación", tipo: 'date' }
   ], estado: true, operadorLogico: '&&'
 };
 
 const busquedaCliente: Busqueda = {
   filtros: [
-    { id: "Nombres", nombre: "Nombres" },
-    { id: "Telefono", nombre: "Teléfono" },    
-    { id: "Celular", nombre: "Celular" },
-    { id: "Correo", nombre: "Correo" },
-    { id: "Cedula", nombre: "Cedula" },
-    { id: "Direccion", nombre: "Dirección" },
-    { id: "TipoCliente", nombre: "Tipo" },
-    { id: "FechaNacimiento", nombre: "Nacimiento", esFecha: true },
-    { id: "FechaIngreso", nombre: "Ingreso", esFecha: true },
-    { id: "FechaModificacion", nombre: "Modificación", esFecha: true }
+    { id: "Nombres", nombre: "Nombres", tipo: 'text' },
+    { id: "Telefono", nombre: "Teléfono", tipo: 'text' },    
+    { id: "Celular", nombre: "Celular", tipo: 'text' },
+    { id: "Correo", nombre: "Correo", tipo: 'text' },
+    { id: "Cedula", nombre: "Cedula", tipo: 'text' },
+    { id: "Direccion", nombre: "Dirección", tipo: 'text' },
+    { id: "TipoCliente", nombre: "Tipo", tipo: 'text' },
+    { id: "FechaNacimiento", nombre: "Nacimiento", tipo: 'date' },
+    { id: "FechaIngreso", nombre: "Ingreso", tipo: 'date' },
+    { id: "FechaModificacion", nombre: "Modificación", tipo: 'date' }
   ], estado: true, operadorLogico: '&&'
 };
 
 const busquedaUsuario: Busqueda = {
   filtros: [
-    { id: "Nombres", nombre: "Nombres" },
-    { id: "NombreUsuario", nombre: "Usuario" },
-    { id: "Telefono", nombre: "Teléfono" },    
-    { id: "Celular", nombre: "Celular" },
-    { id: "Correo", nombre: "Correo" },
-    { id: "Cedula", nombre: "Cedula" },
-    { id: "Direccion", nombre: "Dirección" },
-    { id: "FechaNacimiento", nombre: "Nacimiento", esFecha: true },
-    { id: "FechaContratacion", nombre: "Contratación", esFecha: true },
-    { id: "Salario", nombre: "Salario" },
-    { id: "FechaIngreso", nombre: "Ingreso", esFecha: true },
-    { id: "FechaModificacion", nombre: "Modificación", esFecha: true }
+    { id: "Nombres", nombre: "Nombres", tipo: 'text' },
+    { id: "NombreUsuario", nombre: "Usuario", tipo: 'text' },
+    { id: "Telefono", nombre: "Teléfono", tipo: 'text' },    
+    { id: "Celular", nombre: "Celular", tipo: 'text' },
+    { id: "Correo", nombre: "Correo", tipo: 'text' },
+    { id: "Cedula", nombre: "Cedula", tipo: 'text' },
+    { id: "Direccion", nombre: "Dirección", tipo: 'text' },
+    { id: "FechaNacimiento", nombre: "Nacimiento", tipo: 'date' },
+    { id: "FechaContratacion", nombre: "Contratación", tipo: 'date' },
+    { id: "Salario", nombre: "Salario", tipo: 'number' },
+    { id: "FechaIngreso", nombre: "Ingreso", tipo: 'date' },
+    { id: "FechaModificacion", nombre: "Modificación", tipo: 'date' }
   ], estado: true, operadorLogico: '&&'
 };
 
 const busquedaRepuesto: Busqueda = {
   filtros: [
-    { id: "Codigo", nombre: "Código" },
-    { id: "Marca.Descripcion", nombre: "Marca" },
-    { id: "Categoria.Descripcion", nombre: "Categoría" },    
-    { id: "Modelo", nombre: "Modelo" },
-    { id: "Epoca", nombre: "Año" },
-    { id: "SubMarca", nombre: "SubMarca" },
-    { id: "Stock", nombre: "Cantidad" },
-    { id: "Precio", nombre: "Precio" },
-    { id: "Descripcion", nombre: "Descripción" },
-    { id: "FechaIngreso", nombre: "Ingreso", esFecha: true },
-    { id: "FechaModificacion", nombre: "Modificación", esFecha: true }
+    { id: "Codigo", nombre: "Código", tipo: 'text' },
+    { id: "Marca.Descripcion", nombre: "Marca", tipo: 'text' },
+    { id: "Categoria.Descripcion", nombre: "Categoría", tipo: 'text' },    
+    { id: "Modelo", nombre: "Modelo", tipo: 'text' },
+    { id: "Epoca", nombre: "Año", tipo: 'text' },
+    { id: "SubMarca", nombre: "SubMarca", tipo: 'text' },
+    { id: "Stock", nombre: "Cantidad", tipo: 'number', tipoNativo: 'int' },
+    { id: "Precio", nombre: "Precio", tipo: 'number' },
+    { id: "Descripcion", nombre: "Descripción", tipo: 'text' },
+    { id: "FechaIngreso", nombre: "Ingreso", tipo: 'date' },
+    { id: "FechaModificacion", nombre: "Modificación", tipo: 'date' }
   ], estado: true, operadorLogico: '&&'
 };
 
 const busquedaProveedor: Busqueda = {
   filtros: [
-    { id: "Descripcion", nombre: "Descripción" },
-    { id: "Convenio", nombre: "Convenio" },
-    { id: "Telefono", nombre: "Teléfono" },
-    { id: "Direccion", nombre: "Dirección" },
-    { id: "TipoProveedor", nombre: "Tipo" },
-    { id: "Contacto", nombre: "Contacto" },
-    { id: "TelefonoContacto", nombre: "Teléfono" },
-    { id: "CorreoContacto", nombre: "Correo" },
-    { id: "FechaIngreso", nombre: "Ingreso", esFecha: true },
-    { id: "FechaModificacion", nombre: "Modificación", esFecha: true }
+    { id: "Descripcion", nombre: "Descripción", tipo: 'text' },
+    { id: "Convenio", nombre: "Convenio", tipo: 'text' },
+    { id: "Telefono", nombre: "Teléfono", tipo: 'text' },
+    { id: "Direccion", nombre: "Dirección", tipo: 'text' },
+    { id: "TipoProveedor", nombre: "Tipo", tipo: 'text' },
+    { id: "Contacto", nombre: "Contacto", tipo: 'text' },
+    { id: "TelefonoContacto", nombre: "Teléfono", tipo: 'text' },
+    { id: "CorreoContacto", nombre: "Correo", tipo: 'text' },
+    { id: "FechaIngreso", nombre: "Ingreso", tipo: 'date' },
+    { id: "FechaModificacion", nombre: "Modificación", tipo: 'date' }
   ], estado: true, operadorLogico: '&&'
 };
 
 const busquedaTransaccion: Busqueda = {
   filtros: [
-    { id: "Fecha", nombre: "Fecha", esFecha: true },
-    { id: "Cantidad", nombre: "Cantidad" },
-    { id: "Total", nombre: "Total" },
-    { id: "Direccion", nombre: "Dirección" },
-    { id: "Descripcion", nombre: "Descripción" },
-    { id: "FechaIngreso", nombre: "Ingreso", esFecha: true },
-    { id: "FechaModificacion", nombre: "Modificación", esFecha: true }
+    { id: "Fecha", nombre: "Fecha", tipo: 'date' },
+    { id: "Cantidad", nombre: "Cantidad", tipo: 'number', tipoNativo: 'int' },
+    { id: "Total", nombre: "Total", tipo: 'number' },
+    { id: "Direccion", nombre: "Dirección", tipo: 'text' },
+    { id: "Descripcion", nombre: "Descripción", tipo: 'text' },
+    { id: "FechaIngreso", nombre: "Ingreso", tipo: 'date' },
+    { id: "FechaModificacion", nombre: "Modificación", tipo: 'date' }
   ], estado: true, operadorLogico: '&&'
 };
 
@@ -128,29 +129,40 @@ export class BusquedaBuilder {
   }
 
   newBusqueda(currentBusqueda: Busqueda, orden: string = 'FechaModificacion') {
-    let busqueda: Busqueda = { 
-      filtros: [], estado: currentBusqueda.estado, operadorLogico: currentBusqueda.operadorLogico 
+    let busqueda: Busqueda = {
+      cantidad: this.paginator.pageSize, estado: currentBusqueda.estado, filtros: [], 
+      operadorLogico: currentBusqueda.operadorLogico, pagina: this.paginator.pageIndex,
+      orden: { 
+        activo: this.sort.active ? this.sort.active : orden, 
+        direccion: this.sort.direction ? this.sort.direction : 'desc' 
+      }
     };
-    const activo = this.sort.active ? this.sort.active : orden;
-    const direccion = this.sort.direction ? this.sort.direction : 'desc';
-    busqueda.orden = { activo: activo, direccion: direccion };
-    busqueda.pagina = this.paginator.pageIndex;
-    busqueda.cantidad = this.paginator.pageSize;
     if(busqueda.operadorLogico == '&&') {
       busqueda.filtros.push({ id: "Id", criterios: [''], operador: 'contiene' });
     }
-    for(let filtro of currentBusqueda.filtros) {
-      if(filtro.checked) {
-        if(filtro.operador == 'between') {
-          busqueda.filtros.push(filtro);
-        } else {
-          if(filtro.criterios.length > 0) {
-            busqueda.filtros.push(filtro);
-          }
-        }
+    for(let i = 0; i < currentBusqueda.filtros.length; i++) {
+      if(currentBusqueda.filtros[i].checked) {
+        this._addChecked(busqueda.filtros, currentBusqueda.filtros[i]);
       }
     }
     return busqueda;
+  }
+
+  private _addChecked(filtros: Filtro[], filtro: Filtro) {
+    if(filtro.operador == 'between') {
+      if(filtro.tipo == 'number') {
+        if(filtro.tipoNativo == 'int') {
+          filtro.criterio1 = Math.trunc(+filtro.criterio1).toString();
+          filtro.criterio2 = Math.trunc(+filtro.criterio2).toString();
+        } else {
+          filtro.criterio1 = filtro.criterio1 ? filtro.criterio1 : '0';
+          filtro.criterio2 = filtro.criterio2 ? filtro.criterio2 : '0';
+        }
+      }
+      filtros.push(filtro);
+    } else {
+      if(filtro.criterios.length > 0) filtros.push(filtro);
+    }
   }
 
   static BuildBase = (): Busqueda => JSON.parse(JSON.stringify(busquedaBase));

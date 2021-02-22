@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { httpOptions, Response, urlMarca } from '@models/http';
+import { httpOptions, Respuesta, urlMarca } from '@models/http';
 import { catchError } from 'rxjs/operators';
 import { Marca, Table } from '@models/entity';
 import { Busqueda } from '@models/busqueda';
@@ -22,12 +22,12 @@ export class MarcaService {
   getAll = (busqueda: Busqueda) => this.http.post<Table<Marca>>(`${urlMarca}/all`, busqueda, httpOptions)
       .pipe(catchError(this.handleError<HttpResponse<Table<Marca>>>('getAll')));
 
-  insertOrUpdate = (marca: Marca) => this.http.post<Response>(urlMarca, marca, httpOptions)
-      .pipe(catchError(this.handleError<HttpResponse<Response>>('insertOrUpdate')));
+  insertOrUpdate = (marca: Marca) => this.http.post<Respuesta>(urlMarca, marca, httpOptions)
+      .pipe(catchError(this.handleError<HttpResponse<Respuesta>>('insertOrUpdate')));
 
-  setStatus = (marca: Marca) => this.http.post<Response>(`${urlMarca}/${marca.id}/status`, marca, httpOptions)
-      .pipe(catchError(this.handleError<HttpResponse<Response>>('setStatus')));
+  setStatus = (marca: Marca) => this.http.post<Respuesta>(`${urlMarca}/${marca.id}/status`, marca, httpOptions)
+      .pipe(catchError(this.handleError<HttpResponse<Respuesta>>('setStatus')));
 
-  delete = (marca: Marca) => this.http.post<Response>(`${urlMarca}/${marca.id}/delete`, marca, httpOptions)
-      .pipe(catchError(this.handleError<HttpResponse<Response>>('delete')));
+  delete = (marca: Marca) => this.http.post<Respuesta>(`${urlMarca}/${marca.id}/delete`, marca, httpOptions)
+      .pipe(catchError(this.handleError<HttpResponse<Respuesta>>('delete')));
 }

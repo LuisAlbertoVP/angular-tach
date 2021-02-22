@@ -19,7 +19,7 @@ export class RepuestoControlService {
       modelo: [repuesto?.modelo, Validators.required],
       epoca: [repuesto?.epoca ? repuesto.epoca : ''],
       subMarca: [repuesto?.subMarca ? repuesto.subMarca : ''],
-      stock: [repuesto?.stock, Validators.required],
+      stock: [repuesto?.stock, [Validators.required, Validators.pattern('^[0-9]*$')]],
       precio: [repuesto?.precio, Validators.required],
       descripcion: [repuesto?.descripcion ? repuesto.descripcion : ''],
     });

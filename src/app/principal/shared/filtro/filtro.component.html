@@ -17,7 +17,7 @@
             <div class="w-100 d-flex">
               <mat-form-field class="w100">
                 <mat-select formControlName="operador" (selectionChange)="clearCriterios(filtro, $event.value)">
-                  <ng-container *ngIf="!filtro.get('esFecha').value">
+                  <ng-container *ngIf="filtro.get('tipo').value == 'text'">
                     <mat-option value="contiene">Contiene</mat-option>
                     <mat-option value="!=">No contiene</mat-option>
                   </ng-container>
@@ -26,7 +26,7 @@
               </mat-form-field>
               <mat-slide-toggle formControlName="checked" color="primary" labelPosition="before" class="ml-auto">Estado</mat-slide-toggle>   
             </div>
-            <div class="text-center">
+            <div class="container">
               <mat-form-field *ngIf="filtro.get('operador').value != 'between'; else elseBlock" class="w-100" appearance="outline">
                 <mat-label>Ingrese los criterios de búsqueda</mat-label>
                 <mat-chip-list formArrayName="criterios" #chipList>
@@ -40,7 +40,7 @@
                 </mat-chip-list>
               </mat-form-field>
               <ng-template #elseBlock>
-                <mat-form-field *ngIf="filtro.get('esFecha').value; else elseBlock" class="w-100" appearance="outline">
+                <mat-form-field *ngIf="filtro.get('tipo').value == 'date'; else elseBlock" class="w-100" appearance="outline">
                   <mat-label>Ingrese un rango de fechas</mat-label>
                   <mat-date-range-input [rangePicker]="picker">
                     <input formControlName="criterio1" matStartDate placeholder="Fecha Inicio">
@@ -50,18 +50,20 @@
                   <mat-date-range-picker #picker></mat-date-range-picker>
                 </mat-form-field>
                 <ng-template #elseBlock>
-                  <mat-form-field class="col-5" appearance="outline">
-                    <mat-label>De</mat-label>
-                    <input matInput formControlName="criterio1" />
-                    <button mat-button *ngIf="filtro.get('criterio1').value" matSuffix mat-icon-button aria-label="Clear" 
-                      (click)="clearCriterio1(filtro)" type="button"><mat-icon>close</mat-icon></button>
-                  </mat-form-field>
-                  <mat-form-field class="col-5" appearance="outline">
-                    <mat-label>Hasta</mat-label>
-                    <input matInput formControlName="criterio2" />
-                    <button mat-button *ngIf="filtro.get('criterio2').value" matSuffix mat-icon-button aria-label="Clear" 
-                      (click)="clearCriterio2(filtro)" type="button"><mat-icon>close</mat-icon></button>
-                  </mat-form-field>                 
+                  <div class="row">
+                    <div class="col-6">
+                      <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>De</mat-label>
+                        <input matInput formControlName="criterio1" [type]="filtro.get('tipo').value" />
+                      </mat-form-field>
+                    </div>
+                    <div class="col-6">
+                      <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Hasta</mat-label>
+                        <input matInput formControlName="criterio2" [type]="filtro.get('tipo').value" />
+                      </mat-form-field>
+                    </div>
+                  </div>         
                 </ng-template>
               </ng-template>
             </div>

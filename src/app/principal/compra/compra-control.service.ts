@@ -8,7 +8,11 @@ import { v4 as uuid } from 'uuid';
 })
 export class CompraControlService {
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder) {}
+
+  generateId() {
+    return uuid();
+  }
 
   toFormGroup(compra : Compra) {
     return this.fb.group({

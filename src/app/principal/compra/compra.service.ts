@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { httpOptions, Response, urlCompra } from '@models/http';
+import { httpOptions, Respuesta, urlCompra } from '@models/http';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Compra, Table } from '@models/entity';
@@ -27,9 +27,9 @@ export class CompraService {
   getAll = (busqueda: Busqueda) => this.http.post<Table<Compra>>(`${urlCompra}/all`, busqueda, httpOptions)
       .pipe(catchError(this.handleError<HttpResponse<Table<Compra>>>('getAll')));
 
-  insertOrUpdate = (compra: Compra) => this.http.post<Response>(urlCompra, compra, httpOptions)
-      .pipe(catchError(this.handleError<HttpResponse<Response>>('insertOrUpdate')));
+  insertOrUpdate = (compra: Compra) => this.http.post<Respuesta>(urlCompra, compra, httpOptions)
+      .pipe(catchError(this.handleError<HttpResponse<Respuesta>>('insertOrUpdate')));
 
-  setStatus = (compra: Compra) => this.http.post<Response>(`${urlCompra}/${compra.id}/status`, compra, httpOptions)
-      .pipe(catchError(this.handleError<HttpResponse<Response>>('setStatus')));
+  setStatus = (compra: Compra) => this.http.post<Respuesta>(`${urlCompra}/${compra.id}/status`, compra, httpOptions)
+      .pipe(catchError(this.handleError<HttpResponse<Respuesta>>('setStatus')));
 }

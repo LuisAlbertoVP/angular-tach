@@ -8,7 +8,11 @@ import { v4 as uuid } from 'uuid';
 })
 export class VentaControlService {
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder) {}
+
+  generateId() {
+    return uuid();
+  }
 
   toFormGroup(venta : Venta) {
     return this.fb.group({
@@ -17,7 +21,7 @@ export class VentaControlService {
         id: [venta?.cliente?.id]
       }),
       descripcion: [venta?.descripcion],
-      direccion: [venta?.descripcion],
+      direccion: [venta?.direccion],
       fecha: [venta?.fecha, Validators.required]
     });
   }

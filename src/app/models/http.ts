@@ -1,6 +1,6 @@
 import { HttpHeaders } from '@angular/common/http';
 
-export interface Response {
+export interface Respuesta {
   result: string;
 }
 

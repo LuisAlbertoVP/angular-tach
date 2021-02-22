@@ -46,13 +46,10 @@ export class FiltroComponent implements OnInit {
     this.criterios(filtro).push(new FormControl(event.option.viewValue));
   }
 
-  clearCriterio1 = (filtro: FormControl) => filtro.get('criterio1').setValue('');
-  clearCriterio2 = (filtro: FormControl) => filtro.get('criterio2').setValue('');
-
   clearCriterios(filtro: FormControl, value: string) {
     if(value == 'between') {
-      this.clearCriterio1(filtro);
-      this.clearCriterio2(filtro);
+      filtro.get('criterio1').setValue('');
+      filtro.get('criterio2').setValue('');
     } else {
       this.criterios(filtro).clear();
     }
@@ -78,8 +75,9 @@ export class FiltroComponent implements OnInit {
         criterios: this.fb.array(filtro?.criterios ? filtro.criterios : []),
         criterio1: [filtro?.criterio1 ? filtro.criterio1 : ''], 
         criterio2: [filtro?.criterio2 ? filtro.criterio2 : ''], 
-        operador: [filtro?.operador ? filtro.operador : filtro?.esFecha ? 'between' : 'contiene'],
-        esFecha: [filtro?.esFecha],
+        operador: [filtro?.operador ? filtro.operador : filtro?.tipo == 'text' ? 'contiene' : 'between'],
+        tipo: [filtro?.tipo],
+        tipoNativo: [filtro?.tipoNativo],
         checked: [filtro?.checked]
       }));
       this.data.push(filtro?.data ? filtro.data : []);

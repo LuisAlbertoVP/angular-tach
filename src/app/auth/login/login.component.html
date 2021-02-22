@@ -7,13 +7,13 @@
     <form [formGroup]="form" (ngSubmit)="login()">
       <mat-form-field class="w-100 mb-3" appearance="fill">
         <mat-label>Usuario</mat-label>
-        <input formControlName="nombreUsuario" matInput placeholder="Ingrese usuario" type="text" autocapitalize="none">
+        <input matInput formControlName="nombreUsuario" placeholder="Ingrese usuario" type="text" autocapitalize="none">
         <mat-icon matSuffix>person</mat-icon>
         <mat-error *ngIf="form.get('nombreUsuario').hasError('required')">Usuario es requerido</mat-error>
       </mat-form-field>
       <mat-form-field class="w-100 mb-3" appearance="fill">
         <mat-label>Contraseña</mat-label>
-        <input formControlName="clave" matInput [type]="hide ? 'password' : 'text'" placeholder="Ingrese contraseña">
+        <input matInput formControlName="clave" [type]="hide ? 'password' : 'text'" placeholder="Ingrese contraseña">
         <button mat-icon-button matSuffix (click)="hide = !hide" type="button">
           <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
         </button>

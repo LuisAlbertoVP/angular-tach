@@ -8,13 +8,13 @@
           <legend class="mb-3 blue">Detalles de cuenta</legend>
           <mat-form-field class="w-100" appearance="outline">
             <mat-label>Nombres</mat-label>
-            <input formControlName="nombres" matInput placeholder="Ingrese nombres" type="text" required />
+            <input matInput formControlName="nombres" placeholder="Ingrese nombres" type="text" required />
             <mat-icon matSuffix>person</mat-icon>
             <mat-error *ngIf="form.get('nombres').hasError('required')">Nombres son requeridos</mat-error>
           </mat-form-field>
           <mat-form-field class="w-100" appearance="outline">
             <mat-label>Cedula</mat-label>
-            <input formControlName="cedula" #cedula maxlength="10" matInput placeholder="Ingrese cedula" type="text" required />
+            <input matInput formControlName="cedula" #cedula maxlength="10" placeholder="Ingrese cedula" type="text" required />
             <mat-icon matSuffix>badge</mat-icon>
             <mat-hint align="end">{{ cedula.value?.length }} / 10</mat-hint>
             <mat-error *ngIf="form.get('cedula').hasError('required')">Cedula es requerida</mat-error>
@@ -22,26 +22,26 @@
           </mat-form-field>
           <mat-form-field class="w-100" appearance="outline">
             <mat-label>Correo</mat-label>
-            <input formControlName="correo" matInput placeholder="Ingrese correo" type="email" required />
+            <input matInput formControlName="correo" placeholder="Ingrese correo" type="email" required />
             <mat-icon matSuffix>mail</mat-icon>
             <mat-error *ngIf="form.get('correo').hasError('required')">Correo es requerido</mat-error>
             <mat-error *ngIf="form.get('correo').hasError('pattern')">Ingrese una dirección de correo válida</mat-error>
           </mat-form-field>
           <mat-form-field class="w-100" appearance="outline">
             <mat-label>Dirección</mat-label>
-            <input formControlName="direccion" matInput placeholder="Ingrese dirección" type="text" required />
+            <input matInput formControlName="direccion" placeholder="Ingrese dirección" type="text" required />
             <mat-icon matSuffix>location_on</mat-icon>
             <mat-error *ngIf="form.get('direccion').hasError('required')">Dirección es requerida</mat-error>
           </mat-form-field>
           <mat-form-field class="w-100" appearance="outline">
             <mat-label>Teléfono</mat-label>
-            <input formControlName="telefono" matInput placeholder="Ingrese teléfono" type="text" required />
+            <input matInput formControlName="telefono" placeholder="Ingrese teléfono" type="text" required />
             <mat-icon matSuffix>phone</mat-icon>
             <mat-error *ngIf="form.get('telefono').hasError('required')">Teléfono es requerido</mat-error>
           </mat-form-field>
           <mat-form-field class="w-100" appearance="outline">
             <mat-label>Celular</mat-label>
-            <input formControlName="celular" matInput placeholder="Ingrese celular" type="text" required />
+            <input matInput formControlName="celular" placeholder="Ingrese celular" type="text" required />
             <mat-icon matSuffix>phone</mat-icon>
             <mat-error *ngIf="form.get('celular').hasError('required')">Celular es requerido</mat-error>
           </mat-form-field>
@@ -71,7 +71,7 @@
           </mat-form-field>
           <mat-form-field class="w-100" appearance="outline">
             <mat-label>Salario</mat-label>
-            <input formControlName="salario" matInput placeholder="Ingrese salario" type="text" required />
+            <input matInput formControlName="salario" placeholder="Ingrese salario" type="number" required />
             <mat-icon matSuffix>monetization_on</mat-icon>
             <mat-error *ngIf="form.get('salario').hasError('required')">Salario es requerido</mat-error>
           </mat-form-field>
@@ -80,13 +80,13 @@
           <legend class="mb-3 blue">Inicio de sesión</legend>
           <mat-form-field class="w-100" appearance="outline">
             <mat-label>Usuario</mat-label>
-            <input formControlName="nombreUsuario" matInput placeholder="Ingrese usuario" type="text" required autocapitalize="none" />
+            <input matInput formControlName="nombreUsuario" placeholder="Ingrese usuario" type="text" required autocapitalize="none" />
             <mat-icon matSuffix>person</mat-icon>
             <mat-error *ngIf="form.get('nombreUsuario').hasError('required')">Usuario es requerido</mat-error>
           </mat-form-field>
           <mat-form-field class="w-100" appearance="outline">
             <mat-label>Nueva Contraseña</mat-label>
-            <input formControlName="clave" matInput [type]="hide ? 'password' : 'text'" placeholder="Ingrese contraseña" autocomplete="new-password" />
+            <input matInput formControlName="clave" [type]="hide ? 'password' : 'text'" placeholder="Ingrese contraseña" autocomplete="new-password" />
             <button mat-icon-button matSuffix (click)="hide = !hide" type="button">
               <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
             </button>

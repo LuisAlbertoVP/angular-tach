@@ -60,7 +60,7 @@ export class VentaListComponent implements OnInit, AfterViewInit {
     merge(this.criterio$, this.sort.sortChange, this.paginator.page).pipe(
       startWith({}), switchMap(() => {
         this.isLoadingResults = true;
-        return this.service.getAll(builder.newBusqueda(this.busqueda, 'FechaIngreso'));
+        return this.service.getAll(builder.newBusqueda(this.busqueda, 'Fecha'));
       }), map(response => {
         this.isLoadingResults = false;
         this.isRateLimitReached = false;

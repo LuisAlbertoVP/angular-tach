@@ -1,13 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { FormBuilder, Validators } from '@angular/forms';
-import { HttpResponse } from '@angular/common/http';
+import { FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '@auth_service/*';
+import { AuthControlService } from '../../auth-control.service';
 import { User } from '@models/entity';
 import { SHA256 } from 'crypto-js';
-import { v4 as uuid } from 'uuid';
 import * as moment from 'moment';
 
 @Component({
@@ -15,25 +14,15 @@ import * as moment from 'moment';
   templateUrl: './cuenta.component.html',
   styles: ['.cuenta-screen > *:not(:last-child) { width: 100%; margin-top: 2px; margin-bottom: 2px; }']
 })
-export class CuentaComponent {
-  form = this.fb.group({
-    nombreUsuario: ['', Validators.required],
-    nombres: ['', Validators.required],
-    cedula: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
-    correo: ['',[ Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')]],
-    direccion: ['', Validators.required],
-    telefono: ['', Validators.required],
-    celular: ['', Validators.required],
-    fechaNacimiento: ['', Validators.required],
-    clave: ['', [Validators.required, Validators.pattern('^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$')]]
-  });
+export class CuentaComponent implements OnInit {
+  form: FormGroup = null;
   hide: boolean = true;
   isMobile: boolean = false;
 
   constructor(
     breakpointObserver: BreakpointObserver,
+    private control: AuthControlService,
     private dialogRef: MatDialogRef<CuentaComponent>,
-    private fb: FormBuilder,
     public service: AuthService,
     private snackBar: MatSnackBar
   ) { 
@@ -50,14 +39,17 @@ export class CuentaComponent {
     });
   }
 
+  ngOnInit(): void {
+    this.form = this.control.toCuentaForm();
+  }
+
   crear() {
     if(this.form.valid) {
       const user: User = this.form.getRawValue();
-      user.id = uuid();
+      user.clave = SHA256(user.clave).toString();
       user.usuarioIngreso = user.nombreUsuario;
       user.fechaNacimiento = moment(user.fechaNacimiento).format('YYYY-MM-DD');
-      user.clave = SHA256(user.clave).toString();
-      this.service.addAccount(user).subscribe((response: HttpResponse<any>) => {
+      this.service.addAccount(user).subscribe(response => {
         if(response?.status == 200) {
           this.snackBar.open(response.body.result, 'Ok', {duration: 6000, panelClass: ['success']});
           this.dialogRef.close();

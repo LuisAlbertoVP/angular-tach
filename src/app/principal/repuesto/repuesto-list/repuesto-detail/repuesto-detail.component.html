@@ -8,7 +8,7 @@
           <legend class="mb-3 blue">General</legend>
           <mat-form-field class="w-100" appearance="outline">
             <mat-label>Código</mat-label>
-            <input matInput formControlName="codigo" placeholder="Ingrese un codigo" required />
+            <input matInput formControlName="codigo" placeholder="Ingrese un codigo" type="text" required />
             <mat-icon matSuffix>pin</mat-icon>
             <mat-error *ngIf="form.get('codigo').hasError('required')">Código requerido</mat-error>
           </mat-form-field>
@@ -34,7 +34,7 @@
           </ng-container>
           <mat-form-field class="w-100" appearance="outline">
             <mat-label>Modelo</mat-label>
-            <input matInput formControlName="modelo" placeholder="Ingrese un modelo" required />
+            <input matInput formControlName="modelo" placeholder="Ingrese un modelo" type="text" required />
             <mat-icon matSuffix>directions_car</mat-icon>
             <mat-error *ngIf="form.get('modelo').hasError('required')">Modelo requerido</mat-error>
           </mat-form-field>
@@ -43,21 +43,22 @@
             <input matInput formControlName="stock" placeholder="Ingrese una cantidad" type="number" required />
             <mat-icon matSuffix>inventory</mat-icon>
             <mat-error *ngIf="form.get('stock').hasError('required')">Cantidad requerida</mat-error>
+            <mat-error *ngIf="form.get('stock').hasError('pattern')">Cantidad debe ser un número entero</mat-error>
           </mat-form-field>
           <mat-form-field class="w-100" appearance="outline">
             <mat-label>Precio de Venta</mat-label>
-            <input matInput formControlName="precio" placeholder="Ingrese un precio" required />
+            <input matInput formControlName="precio" placeholder="Ingrese un precio" type="number" required />
             <mat-icon matSuffix>monetization_on</mat-icon>          
             <mat-error *ngIf="form.get('precio').hasError('required')">Precio requerido</mat-error>
           </mat-form-field>
           <mat-form-field class="w-100" appearance="outline">
             <mat-label>Año</mat-label>
-            <input matInput formControlName="epoca" placeholder="Ingrese un año" />
+            <input matInput formControlName="epoca" placeholder="Ingrese un año" type="text" />
             <mat-icon matSuffix>date_range</mat-icon>
           </mat-form-field>
           <mat-form-field class="w-100" appearance="outline">
             <mat-label>SubMarca</mat-label>
-            <input matInput formControlName="subMarca" placeholder="Ingrese una submarca" />
+            <input matInput formControlName="subMarca" placeholder="Ingrese una submarca" type="text" />
             <mat-icon matSuffix>local_offer</mat-icon>
           </mat-form-field>
         </fieldset>  

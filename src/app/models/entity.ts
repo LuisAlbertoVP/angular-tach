@@ -1,13 +1,14 @@
 import { Modulo } from "./menu";
 
 export interface Table<T> {
-  data: T[];
-  cantidad: number;
+  data?: T[];
+  cantidad?: number;
   stock?: number;
   precio?: number;
 }
 
 export interface Entity {
+  id?: string;
   estado?: boolean;
   usuarioIngreso?: string;
   fechaIngreso?: string;
@@ -16,7 +17,6 @@ export interface Entity {
 }
 
 export interface Categoria extends Entity {
-  id?: string;
   descripcion?: string;
   stock?: number;
   precio?: number;
@@ -39,14 +39,12 @@ export interface CompraDetalle {
 }
 
 export interface Marca extends Entity {
-  id?: string;
   descripcion?: string;
   stock?: number;
   precio?: number;
 }
 
 export interface Person extends Entity {
-  id?: string;
   nombres?: string;
   cedula?: string;
   direccion?: string;
@@ -57,7 +55,6 @@ export interface Person extends Entity {
 }
 
 export interface Proveedor extends Entity {
-  id?: string;
   descripcion?: string;
   convenio?: boolean;
   telefono?: string;
@@ -69,7 +66,6 @@ export interface Proveedor extends Entity {
 }
 
 export interface Repuesto extends Entity {
-  id?: string;
   descripcion?: string;
   codigo?: string;
   marca?: Marca;
@@ -82,7 +78,6 @@ export interface Repuesto extends Entity {
 }
 
 export interface Rol extends Entity {
-  id?: string;
   descripcion?: string;
   modulos?: Modulo[];
 }
@@ -99,7 +94,6 @@ export interface Token {
 }
 
 export interface Transaccion extends Entity {
-  id?: string;
   fecha?: string;
   cantidad?: number;
   total?: number;

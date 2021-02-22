@@ -1,12 +1,9 @@
 img {
-  width: 120px;
+  width: 100px;
 }
 .row { 
   margin-top: 20px; 
   margin-bottom: 10px; 
-}
-.tag {
-  height: 100px;
 }
 .no-error {
   margin-bottom: -1.25em;

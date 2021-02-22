@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { httpOptions, Response, url } from '@models/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { httpOptions, url, Respuesta } from '@models/http';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { HttpErrorHandlerService, HandleError } from '../http-error-handler.service';
@@ -39,14 +39,14 @@ export class AuthService {
     return localStorage.getItem('token_expiration');
   }
 
-  addAccount = (user: User) => this.http.post(`${url}/cuenta`, user, httpOptions)
-      .pipe(catchError(this.handleError('addAccount', user)));
+  addAccount = (user: User) => this.http.post<Respuesta>(`${url}/cuenta`, user, httpOptions)
+      .pipe(catchError(this.handleError<HttpResponse<Respuesta>>('addAccount')));
 
   getRolUser = (id: string): Observable<User> => this.http.get<User>(`${url}/cuenta/${id}/roles`)
       .pipe(catchError(this.handleError<User>('getRolUser')));
 
-  login = (user: User) => this.http.post(`${url}/login`, user, httpOptions)
-      .pipe(catchError(this.handleError('login', user)));
+  login = (user: User) => this.http.post<User>(`${url}/login`, user, httpOptions)
+      .pipe(catchError(this.handleError<HttpResponse<User>>('login')));
 
   logout() {
     localStorage.removeItem('id');

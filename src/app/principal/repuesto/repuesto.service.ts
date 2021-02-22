@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { httpOptions, Response, urlRepuesto } from '@models/http';
+import { httpOptions, Respuesta, urlRepuesto } from '@models/http';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Repuesto, Table } from '@models/entity';
@@ -30,12 +30,12 @@ export class RepuestoService {
   getAll = (busqueda: Busqueda) => this.http.post<Table<Repuesto>>(`${urlRepuesto}/all`, busqueda, httpOptions)
       .pipe(catchError(this.handleError<HttpResponse<Table<Repuesto>>>('getAll')));
 
-  insertOrUpdate = (repuesto: Repuesto) => this.http.post<Response>(urlRepuesto, repuesto, httpOptions)
-      .pipe(catchError(this.handleError<HttpResponse<Response>>('insertOrUpdate')));
+  insertOrUpdate = (repuesto: Repuesto) => this.http.post<Respuesta>(urlRepuesto, repuesto, httpOptions)
+      .pipe(catchError(this.handleError<HttpResponse<Respuesta>>('insertOrUpdate')));
 
-  setStatus = (repuesto: Repuesto) => this.http.post<Response>(`${urlRepuesto}/${repuesto.id}/status`, repuesto, httpOptions)
-      .pipe(catchError(this.handleError<HttpResponse<Response>>('setStatus')));
+  setStatus = (repuesto: Repuesto) => this.http.post<Respuesta>(`${urlRepuesto}/${repuesto.id}/status`, repuesto, httpOptions)
+      .pipe(catchError(this.handleError<HttpResponse<Respuesta>>('setStatus')));
 
-  delete = (repuesto: Repuesto) => this.http.post<Response>(`${urlRepuesto}/${repuesto.id}/delete`, repuesto, httpOptions)
-      .pipe(catchError(this.handleError<HttpResponse<Response>>('delete')));
+  delete = (repuesto: Repuesto) => this.http.post<Respuesta>(`${urlRepuesto}/${repuesto.id}/delete`, repuesto, httpOptions)
+      .pipe(catchError(this.handleError<HttpResponse<Respuesta>>('delete')));
 }

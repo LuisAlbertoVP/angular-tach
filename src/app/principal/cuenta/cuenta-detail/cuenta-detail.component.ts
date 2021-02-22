@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { HttpResponse } from '@angular/common/http';
+import { FormGroup } from '@angular/forms';
 import { AuthService } from '@auth_service/*';
 import { CuentaService } from '../cuenta.service';
+import { CuentaControlService } from '../cuenta-control.service';
 import { SharedService } from '@shared/shared.service';
 import { User } from '@models/entity';
 import { SHA256 } from 'crypto-js';
@@ -20,7 +20,7 @@ export class CuentaDetailComponent implements OnInit {
 
   constructor(
     private auth: AuthService,
-    private fb: FormBuilder,
+    private control: CuentaControlService,
     private service: CuentaService,
     private sharedService: SharedService
   ) {
@@ -30,17 +30,7 @@ export class CuentaDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.service.getById(this.id).subscribe(usuario => {
-      this.form = this.fb.group({
-        nombres: [usuario?.nombres, Validators.required],
-        cedula: [usuario?.cedula, [Validators.required, Validators.pattern('^[0-9]{10}$')]],
-        correo: [usuario?.correo,[ Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')]],
-        direccion: [usuario?.direccion, Validators.required],
-        telefono: [usuario?.telefono, Validators.required],
-        celular: [usuario?.celular, Validators.required],
-        fechaNacimiento: [usuario?.fechaNacimiento, Validators.required],
-        nombreUsuario: [usuario?.nombreUsuario, Validators.required],
-        clave: [usuario?.clave, Validators.pattern('^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$')]
-      });
+      this.form = this.control.toFormGroup(usuario);
     });
   }
 
@@ -48,11 +38,11 @@ export class CuentaDetailComponent implements OnInit {
     if(this.form.valid) {
       const usuario: User = this.form.getRawValue();
       usuario.id = this.id;
-      usuario.usuarioModificacion = this.auth.nombreUsuario;
       usuario.fechaNacimiento = moment(usuario.fechaNacimiento).format('YYYY-MM-DD');
       usuario.clave = usuario.clave ? SHA256(usuario.clave).toString() : '';
-      this.service.update(usuario).subscribe((response: HttpResponse<any>) => {
-        if(response.status == 200) {
+      usuario.usuarioModificacion = this.auth.nombreUsuario;
+      this.service.update(usuario).subscribe(response => {
+        if(response?.status == 200) {
           this.sharedService.showMessage(response.body.result);
         }
       });

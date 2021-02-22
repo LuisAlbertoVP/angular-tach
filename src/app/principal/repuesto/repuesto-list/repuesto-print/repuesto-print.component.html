@@ -11,7 +11,7 @@
                 <span *ngIf="filtro.operador == 'between'; else elseBlock">{{ 'De ' + filtro.criterio1 + ' a ' + filtro.criterio2 }}</span>
                 <ng-template #elseBlock>
                   <span *ngIf="filtro.operador == '!='">[No contiene]&nbsp;</span>
-                  <span class="capitalize">{{ sharedService.parseArray(filtro.criterios) }}</span>
+                  <span class="capitalize">{{ parseArray(filtro.criterios) }}</span>
                 </ng-template>
               </li>
             </ul>

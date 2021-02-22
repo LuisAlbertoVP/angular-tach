@@ -1,5 +1,5 @@
 import { ActivatedRoute } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, NgForm } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from '@auth_service/*';
@@ -18,6 +18,7 @@ import * as moment from 'moment';
   styleUrls: ['./compra-detail.component.css']
 })
 export class CompraDetailComponent implements OnInit {
+  @ViewChild('formView') formView: NgForm;
   cantidad: number = 0;
   displayedColumns: string[] = ['codigo', 'descripcion', 'stock', 'precio', 'total', 'accion'];
   data: Repuesto[] = [];
@@ -72,11 +73,12 @@ export class CompraDetailComponent implements OnInit {
     });
   }
 
-  clear(form: NgForm) {
+  clear() {
     this.data = [];
     this.cantidad = 0;
     this.total = 0;
-    form.resetForm();
+    this.formView.resetForm();
+    this.form.get('id').setValue(this.id ? this.id : this.control.generateId());
   }
 
   delete(repuesto: Repuesto) {
@@ -84,7 +86,7 @@ export class CompraDetailComponent implements OnInit {
     this._calcular();
   }
 
-  guardar(form: NgForm) {
+  guardar() {
     if(this.form.valid && this.data.length > 0) {
       const data: ConfirmationData = { seccion: "Compras", accion: "Continuar" };
       const dialogRef = this.dialog.open(ConfirmacionComponent, {
@@ -102,7 +104,7 @@ export class CompraDetailComponent implements OnInit {
           this.service.insertOrUpdate(compra).subscribe(response => {
             if(response?.status == 200) {
               this.sharedService.showMessage(response.body.result);
-              if(!this.id) this.clear(form);
+              if(!this.id) this.clear();
             }
           });
         }

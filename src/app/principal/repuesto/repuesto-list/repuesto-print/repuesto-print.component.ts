@@ -35,4 +35,6 @@ export class RepuestoPrintComponent implements OnInit {
       });
     });
   }
+
+  parseArray = (array: any[]) => array.map(element => element).join(', ');
 }

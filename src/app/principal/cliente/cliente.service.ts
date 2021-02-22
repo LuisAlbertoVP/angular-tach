@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { httpOptions, Response, urlCliente } from '@models/http';
+import { httpOptions, Respuesta, urlCliente } from '@models/http';
 import { catchError } from 'rxjs/operators';
 import { Cliente, Table } from '@models/entity';
 import { Busqueda } from '@models/busqueda';
@@ -22,12 +22,12 @@ export class ClienteService {
   getAll = (busqueda: Busqueda) => this.http.post<Table<Cliente>>(`${urlCliente}/all`, busqueda, httpOptions)
       .pipe(catchError(this.handleError<HttpResponse<Table<Cliente>>>('getAll')));
 
-  insertOrUpdate = (cliente: Cliente) => this.http.post<Response>(urlCliente, cliente, httpOptions)
-      .pipe(catchError(this.handleError<HttpResponse<Response>>('insertOrUpdate')));
+  insertOrUpdate = (cliente: Cliente) => this.http.post<Respuesta>(urlCliente, cliente, httpOptions)
+      .pipe(catchError(this.handleError<HttpResponse<Respuesta>>('insertOrUpdate')));
 
-  setStatus = (cliente: Cliente) => this.http.post<Response>(`${urlCliente}/${cliente.id}/status`, cliente, httpOptions)
-      .pipe(catchError(this.handleError<HttpResponse<Response>>('setStatus')));
+  setStatus = (cliente: Cliente) => this.http.post<Respuesta>(`${urlCliente}/${cliente.id}/status`, cliente, httpOptions)
+      .pipe(catchError(this.handleError<HttpResponse<Respuesta>>('setStatus')));
 
-  delete = (cliente: Cliente) => this.http.post<Response>(`${urlCliente}/${cliente.id}/delete`, cliente, httpOptions)
-      .pipe(catchError(this.handleError<HttpResponse<Response>>('delete')));
+  delete = (cliente: Cliente) => this.http.post<Respuesta>(`${urlCliente}/${cliente.id}/delete`, cliente, httpOptions)
+      .pipe(catchError(this.handleError<HttpResponse<Respuesta>>('delete')));
 }

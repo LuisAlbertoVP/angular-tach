@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
-import { HttpResponse } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { AuthService } from '@auth_service/*';
+import { AuthControlService } from '../auth-control.service';
 import { CuentaComponent } from './cuenta/cuenta.component';
 import { User } from '@models/entity';
 import { SHA256 } from 'crypto-js';
@@ -13,29 +13,30 @@ import { SHA256 } from 'crypto-js';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
-  form = this.fb.group({
-    nombreUsuario: ['', Validators.required],
-    clave: ['', Validators.required]
-  });
+export class LoginComponent implements OnInit {
+  form: FormGroup = null;
   hide: boolean = true;
   isLoading: boolean = false;
 
   constructor(
+    private control: AuthControlService,
     private dialog: MatDialog,
-    private fb: FormBuilder,
     private router: Router,
     private service: AuthService,
   ) {}
 
-  login(): void {
+  ngOnInit(): void {
+    this.form = this.control.toLoginForm();
+  }
+
+  login() {
     if(this.form.valid) {
       const user: User = this.form.getRawValue();
       user.clave = SHA256(user.clave).toString();
       this.isLoading = true;
-      this.service.login(user).subscribe((response: HttpResponse<User>) => {
+      this.service.login(user).subscribe(response => {
         this.isLoading = false;
-        if(response.status == 200) {
+        if(response?.status == 200) {
           this.service.saveToken(response.body);
           this.router.navigate(['/principal']);
         }

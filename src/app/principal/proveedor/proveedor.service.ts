@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { httpOptions, Response, urlProveedor } from '@models/http';
+import { httpOptions, Respuesta, urlProveedor } from '@models/http';
 import { catchError } from 'rxjs/operators';
 import { Proveedor, Table } from '@models/entity';
 import { Busqueda } from '@models/busqueda';
@@ -22,12 +22,12 @@ export class ProveedorService {
   getAll = (busqueda: Busqueda) => this.http.post<Table<Proveedor>>(`${urlProveedor}/all`, busqueda, httpOptions)
       .pipe(catchError(this.handleError<HttpResponse<Table<Proveedor>>>('getAll')));
 
-  insertOrUpdate = (proveedor: Proveedor) => this.http.post<Response>(urlProveedor, proveedor, httpOptions)
-      .pipe(catchError(this.handleError<HttpResponse<Response>>('insertOrUpdate')));
+  insertOrUpdate = (proveedor: Proveedor) => this.http.post<Respuesta>(urlProveedor, proveedor, httpOptions)
+      .pipe(catchError(this.handleError<HttpResponse<Respuesta>>('insertOrUpdate')));
 
-  setStatus = (proveedor: Proveedor) => this.http.post<Response>(`${urlProveedor}/${proveedor.id}/status`, proveedor, httpOptions)
-      .pipe(catchError(this.handleError<HttpResponse<Response>>('setStatus')));
+  setStatus = (proveedor: Proveedor) => this.http.post<Respuesta>(`${urlProveedor}/${proveedor.id}/status`, proveedor, httpOptions)
+      .pipe(catchError(this.handleError<HttpResponse<Respuesta>>('setStatus')));
 
-  delete = (proveedor: Proveedor) => this.http.post<Response>(`${urlProveedor}/${proveedor.id}/delete`, proveedor, httpOptions)
-      .pipe(catchError(this.handleError<HttpResponse<Response>>('delete')));
+  delete = (proveedor: Proveedor) => this.http.post<Respuesta>(`${urlProveedor}/${proveedor.id}/delete`, proveedor, httpOptions)
+      .pipe(catchError(this.handleError<HttpResponse<Respuesta>>('delete')));
 }

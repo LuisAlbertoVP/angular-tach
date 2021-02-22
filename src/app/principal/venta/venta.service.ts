@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { httpOptions, Response, urlVenta } from '@models/http';
+import { httpOptions, Respuesta, urlVenta } from '@models/http';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Venta, Table } from '@models/entity';
@@ -27,9 +27,9 @@ export class VentaService {
   getAll = (busqueda: Busqueda) => this.http.post<Table<Venta>>(`${urlVenta}/all`, busqueda, httpOptions)
       .pipe(catchError(this.handleError<HttpResponse<Table<Venta>>>('getAll')));
 
-  insertOrUpdate = (venta: Venta) => this.http.post<Response>(urlVenta, venta, httpOptions)
-      .pipe(catchError(this.handleError<HttpResponse<Response>>('insertOrUpdate')));
+  insertOrUpdate = (venta: Venta) => this.http.post<Respuesta>(urlVenta, venta, httpOptions)
+      .pipe(catchError(this.handleError<HttpResponse<Respuesta>>('insertOrUpdate')));
 
-  setStatus = (venta: Venta) => this.http.post<Response>(`${urlVenta}/${venta.id}/status`, venta, httpOptions)
-      .pipe(catchError(this.handleError<HttpResponse<Response>>('setStatus')));
+  setStatus = (venta: Venta) => this.http.post<Respuesta>(`${urlVenta}/${venta.id}/status`, venta, httpOptions)
+      .pipe(catchError(this.handleError<HttpResponse<Respuesta>>('setStatus')));
 }
