@@ -22,3 +22,16 @@ export interface Reporte extends RepuestoForm {
   compras: Compra[];
   ventas: Venta[];
 }
+
+export interface Dataset {
+  labels: string[];
+  data: string[];
+  type: string;
+}
+
+export interface MyChart {
+  id: string;
+  dataset: Dataset;
+  lastCount: number;
+  options: any;
+}

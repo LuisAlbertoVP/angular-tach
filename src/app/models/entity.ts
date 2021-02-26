@@ -20,6 +20,8 @@ export interface Categoria extends Entity {
   descripcion?: string;
   stock?: number;
   precio?: number;
+  cantidadCompras?: number;
+  cantidadVentas?: number;
 }
 
 export interface Cliente extends Person {
@@ -42,6 +44,8 @@ export interface Marca extends Entity {
   descripcion?: string;
   stock?: number;
   precio?: number;
+  cantidadCompras?: number;
+  cantidadVentas?: number;
 }
 
 export interface Person extends Entity {

@@ -2,41 +2,75 @@
   <mat-tab-group mat-align-tabs="center">
     <mat-tab>
       <ng-template mat-tab-label><mat-icon>summarize</mat-icon>Reporte</ng-template>
-        <div class="shadow m0-auto mt-3 mb-3 p-3" [class.w-75]="!isMobile">
-          <div class="d-flex" style="justify-content: center;">
-            <mat-spinner *ngIf="isLoading" color="accent"></mat-spinner>
-          </div>
-          <div class="container" [class.d-none]="isLoading">
-            <div class="row justify-content-center">
-              <div class="col-xs-8 col-md-7 col-xl-6 col-xxl-4">
-                <div class="shadow p-2">
-                  <canvas #categorias></canvas>
-                </div>
-              </div>
-              <div class="col-xs-8 col-md-7 col-xl-6 col-xxl-4">
-                <div class="shadow p-2">
-                  <canvas #marcas></canvas>
+      <div class="shadow m-3 p-3">
+        <div class="d-flex" style="justify-content: center;">
+          <mat-spinner *ngIf="isLoading" color="accent"></mat-spinner>
+        </div>
+        <div class="container-fluid" [class.d-none]="isLoading">
+          <div class="row justify-content-center">
+            <div class="col-xs-8 col-md-7 col-xl-6 col-xxl-4">
+              <div class="shadow-chart p-2 d-flex justify-content-center h-100"> 
+                <div class="text-center">
+                  <h4>Total unidades vendidas y compradas</h4>
+                  <p><span class="blue">{{ totalVendido }}</span>&nbsp;/&nbsp;<span class="text-danger">{{ totalComprado}}</span></p>
                 </div>
               </div>
             </div>
-            <div class="row justify-content-center">
-              <div class="col-xs-12 col-md-10 col-xl-8">
-                <canvas #ventas></canvas>
-              </div>
-            </div>
-            <div class="row justify-content-center">
-              <div class="col-xs-12 col-md-10 col-xl-8">
-                <canvas #compras></canvas>
+            <div *ngFor="let myChart of myCharts" class="col-xs-8 col-md-7 col-xl-6 col-xxl-4">
+              <div class="shadow-chart p-2">
+                <app-reporte-chart [myChart]="myChart"></app-reporte-chart>
               </div>
             </div>
           </div>
         </div>
+      </div>
     </mat-tab>
     <mat-tab>
       <ng-template mat-tab-label><mat-icon>settings</mat-icon>Personalizado</ng-template>
       <div class="shadow m0-auto mt-3 mb-3 p-3" [class.w-75]="!isMobile">
         <div class="container">
-          Proximamente
+          <div class="row justify-content-center">
+            <div class="col-10">
+              <div class="shadow-chart p-2">
+                <div class="d-flex margin">
+                  <mat-form-field appearance="fill">
+                    <mat-label>Tipo</mat-label>
+                    <mat-select #tipo>
+                      <mat-option>--</mat-option>
+                      <mat-option value="compras">Compras</mat-option>
+                      <mat-option value="ventas">Ventas</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <mat-form-field appearance="fill">
+                    <mat-label>Ingrese un rango de fechas</mat-label>
+                    <mat-date-range-input [rangePicker]="picker">
+                      <input matStartDate placeholder="Fecha Inicio" #date1/>
+                      <input matEndDate placeholder="Fecha Fin" #date2/>
+                    </mat-date-range-input>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-date-range-picker #picker></mat-date-range-picker>
+                  </mat-form-field>
+                  <mat-form-field appearance="fill">
+                    <mat-label>Agrupar por</mat-label>
+                    <mat-select #groupby>
+                      <mat-option>--</mat-option>
+                      <mat-option value="w">Semanas</mat-option>
+                      <mat-option value="M">Meses</mat-option>
+                      <mat-option value="Y">Años</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <button mat-raised-button color="primary" (click)="updateChartBusqueda(tipo.value, date1.value, date2.value, groupby.value)">Generar</button>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="chartBusqueda" class="row justify-content-center">
+            <div class="col-10">
+              <div class="shadow-chart p-2">
+                <app-reporte-chart [myChart]="chartBusqueda"></app-reporte-chart>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </mat-tab>
