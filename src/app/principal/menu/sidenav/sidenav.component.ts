@@ -29,7 +29,6 @@ export class SidenavComponent {
   }
   
   principal() {
-    this.sharedService.buildMenuBar({ title: 'Principal' });
     this.navigate('/principal');
   }
 }

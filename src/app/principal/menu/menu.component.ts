@@ -32,7 +32,6 @@ export class MenuComponent {
   navigate = (url: string) => this.router.navigate([url]);
 
   principal() {
-    this.sharedService.buildMenuBar({ title: 'Principal' });
     this.navigate('/principal');
   }
 

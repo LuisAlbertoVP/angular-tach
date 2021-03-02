@@ -15,6 +15,7 @@ import { merge, of as observableOf, Subject } from 'rxjs';
 import { ConfirmacionComponent } from '@shared/confirmacion/confirmacion.component';
 import { FiltroComponent } from '@shared/filtro/filtro.component';
 import { RepuestoDetailComponent } from './repuesto-detail/repuesto-detail.component';
+import { RepuestoReporteComponent } from './repuesto-reporte/repuesto-reporte.component';
 import { detailExpand } from '@animations/detailExpand';
 
 @Component({
@@ -28,7 +29,7 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
   readonly mobileColumns: string[] = ['opciones', 'Codigo', 'Modelo', 'Stock', 'Precio', 'accion'];
   readonly normalColumns: string[] = ['opciones', 'Codigo', 'Categoria.Descripcion', 'Marca.Descripcion', 
-    'Modelo', 'Epoca', 'SubMarca', 'Stock', 'Precio', 'accion'];
+    'Modelo', 'Epoca', 'Stock', 'Precio', 'accion'];
   builder: BusquedaBuilder =  null;
   busqueda: Busqueda = BusquedaBuilder.BuildRepuesto();
   criterio = new Subject();
@@ -167,6 +168,12 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
     busqueda.pagina = 0;
     busqueda.cantidad = this.resultsLength;
     this.printing.printWindow(this.router.url, busqueda);
+  }
+
+  openReporte(id: string) {
+    this.dialog.open(RepuestoReporteComponent, {
+      width: '720px', autoFocus: false, data: id
+    });
   }
 
   reload() {

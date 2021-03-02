@@ -39,11 +39,11 @@
             <mat-error *ngIf="form.get('modelo').hasError('required')">Modelo requerido</mat-error>
           </mat-form-field>
           <mat-form-field class="w-100" appearance="outline">
-            <mat-label>Cantidad</mat-label>
-            <input matInput formControlName="stock" placeholder="Ingrese una cantidad" type="number" required />
+            <mat-label>Stock</mat-label>
+            <input matInput formControlName="stock" placeholder="Ingrese un stock" type="number" required />
             <mat-icon matSuffix>inventory</mat-icon>
-            <mat-error *ngIf="form.get('stock').hasError('required')">Cantidad requerida</mat-error>
-            <mat-error *ngIf="form.get('stock').hasError('pattern')">Cantidad debe ser un número entero</mat-error>
+            <mat-error *ngIf="form.get('stock').hasError('required')">Stock requerida</mat-error>
+            <mat-error *ngIf="form.get('stock').hasError('pattern')">Stock debe ser un número entero</mat-error>
           </mat-form-field>
           <mat-form-field class="w-100" appearance="outline">
             <mat-label>Precio de Venta</mat-label>
@@ -57,7 +57,7 @@
             <mat-icon matSuffix>date_range</mat-icon>
           </mat-form-field>
           <mat-form-field class="w-100" appearance="outline">
-            <mat-label>SubMarca</mat-label>
+            <mat-label>Submarca</mat-label>
             <input matInput formControlName="subMarca" placeholder="Ingrese una submarca" type="text" />
             <mat-icon matSuffix>local_offer</mat-icon>
           </mat-form-field>

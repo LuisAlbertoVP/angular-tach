@@ -1,7 +1,7 @@
 <div class="container mt-4">
   <mat-tab-group mat-align-tabs="center">
     <mat-tab>
-      <ng-template mat-tab-label><mat-icon>summarize</mat-icon>Reporte</ng-template>
+      <ng-template mat-tab-label><mat-icon>insert_chart</mat-icon>Reporte</ng-template>
       <div class="shadow m-3 p-3">
         <div class="d-flex" style="justify-content: center;">
           <mat-spinner *ngIf="isLoading" color="accent"></mat-spinner>
@@ -27,10 +27,10 @@
     </mat-tab>
     <mat-tab>
       <ng-template mat-tab-label><mat-icon>settings</mat-icon>Personalizado</ng-template>
-      <div class="shadow m0-auto mt-3 mb-3 p-3" [class.w-75]="!isMobile">
-        <div class="container">
+      <div class="shadow m-3 p-3">
+        <div class="container-fluid">
           <div class="row justify-content-center">
-            <div class="col-10">
+            <div class="col-8">
               <div class="shadow-chart p-2">
                 <div class="d-flex margin">
                   <mat-form-field appearance="fill">
@@ -65,7 +65,7 @@
             </div>
           </div>
           <div *ngIf="chartBusqueda" class="row justify-content-center">
-            <div class="col-10">
+            <div class="col-8">
               <div class="shadow-chart p-2">
                 <app-reporte-chart [myChart]="chartBusqueda"></app-reporte-chart>
               </div>

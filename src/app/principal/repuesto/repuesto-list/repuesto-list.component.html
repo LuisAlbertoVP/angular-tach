@@ -40,6 +40,8 @@
                 <mat-icon>edit</mat-icon><span>Modificar</span></a>
               <a mat-menu-item (click)="openConfirmation(row)">
                 <mat-icon>delete_forever</mat-icon><span>Eliminar</span></a>
+              <a mat-menu-item (click)="openReporte(row.id)">
+                <mat-icon>insert_chart</mat-icon><span>Reporte</span></a>
             </mat-menu>
           </td>
           <td mat-footer-cell *matFooterCellDef></td>
@@ -69,11 +71,6 @@
           <td mat-cell *matCellDef="let row">{{ row.epoca }}</td>
           <td mat-footer-cell *matFooterCellDef></td>
         </ng-container>
-        <ng-container matColumnDef="SubMarca">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>SubMarca</th>
-          <td mat-cell *matCellDef="let row">{{ row.subMarca }}</td>
-          <td mat-footer-cell *matFooterCellDef></td>
-        </ng-container>
         <ng-container matColumnDef="Stock">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Stock</th>
           <td mat-cell *matCellDef="let row">{{ row.stock }}</td>
@@ -101,8 +98,8 @@
                     <dt class="blue">Marca</dt><dd>{{ row.marca?.descripcion }}</dd>
                     <dt class="blue">Categoría</dt><dd>{{ row.categoria?.descripcion }}</dd>
                     <dt class="blue">Año</dt><dd>{{ row.epoca ? row.epoca : 'Vacío' }}</dd>
-                    <dt class="blue">SubMarca</dt><dd>{{ row.subMarca ? row.subMarca : 'Vacío' }}</dd>
                   </ng-container>
+                  <dt class="blue">Submarca</dt><dd>{{ row.subMarca ? row.subMarca : 'Vacío' }}</dd>
                   <dt class="blue">Descripción</dt><dd>{{ row.descripcion }}</dd>
                 </dl>
               </div>

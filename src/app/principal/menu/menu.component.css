@@ -21,16 +21,20 @@
 .mr-auto {
   margin-right: auto;
 }
+.wnormal {
+  width: 250px;
+}
 .wmobile {
   width: 100%;
 }
 .input-search { 
-  font-size: 14px; 
+  font-size: 15px;
+  height: 40px;
   padding: 0px 15px; 
   outline: none; 
   border-radius: 6px;
   background-color: #dfe3ee; 
-  border: 1px solid #4d648d; 
+  border: 1px solid #7e9ed4; 
 }
 @media print {
   mat-toolbar { 

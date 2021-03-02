@@ -14,7 +14,6 @@ export class ReporteDetailComponent implements OnInit {
   chartBusqueda: MyChart = null;
   myCharts: MyChart[] = [];
   isLoading: boolean = true;
-  isMobile: boolean = false;
   reporte: Reporte = null;
 
   constructor(
@@ -22,7 +21,6 @@ export class ReporteDetailComponent implements OnInit {
     sharedService: SharedService
   ) {
     sharedService.buildMenuBar({ title: 'Reporte' });
-    sharedService.isMobile$.subscribe(isMobile => this.isMobile = isMobile);
   }
 
   get totalComprado() {

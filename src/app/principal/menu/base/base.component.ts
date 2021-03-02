@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { listModulos } from '@models/menu';
 import { Modulo } from '@models/menu';
 import { AuthService } from '@auth_service/*';
+import { SharedService } from '@shared/shared.service';
 
 @Component({
   selector: 'app-base',
@@ -14,8 +15,11 @@ export class BaseComponent implements OnInit {
 
   constructor(
     public auth: AuthService,
-    private router: Router
-  ) {}
+    private router: Router,
+    sharedService: SharedService
+  ) {
+    sharedService.buildMenuBar({ title: 'Principal' });
+  }
 
   ngOnInit(): void {
     this.modulos = JSON.parse(JSON.stringify(listModulos));

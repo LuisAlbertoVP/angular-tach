@@ -34,9 +34,10 @@ export interface Compra extends Transaccion {
 }
 
 export interface CompraDetalle {
+  cantidad?: number;
   compraId?: string;
   repuestoId?: string;
-  cantidad?: number;
+  compra?: Compra;
   repuesto?: Repuesto;
 }
 
@@ -79,6 +80,8 @@ export interface Repuesto extends Entity {
   precio?: number;
   epoca?: string;
   subMarca?: string;
+  compraDetalle?: CompraDetalle[];
+  ventaDetalle?: VentaDetalle[];
 }
 
 export interface Rol extends Entity {
@@ -120,8 +123,9 @@ export interface Venta extends Transaccion {
 }
 
 export interface VentaDetalle {
+  cantidad?: number;
   repuestoId?: string;
   ventaId?: string;
-  cantidad?: number;
   repuesto?: Repuesto;
+  venta?: Venta;
 }

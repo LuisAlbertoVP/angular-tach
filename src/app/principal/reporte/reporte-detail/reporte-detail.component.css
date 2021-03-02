@@ -1,3 +1,9 @@
+.d-flex {
+  flex-wrap: wrap;
+}
+.d-flex > * {
+  flex: 1;
+}
 .row {
   margin: 5px 0px;
 }

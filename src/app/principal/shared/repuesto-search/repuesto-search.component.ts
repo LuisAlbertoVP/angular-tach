@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RepuestoService } from '../../repuesto/repuesto.service';
@@ -8,10 +8,11 @@ import { Repuesto } from '@models/entity';
 
 @Component({
   selector: 'app-repuesto-search',
-  templateUrl: './repuesto-search.component.html'
+  templateUrl: './repuesto-search.component.html',
+  styles: ['.w90 { width: 90% }', '.w10 { width: 10% }']
 })
 export class RepuestoSearchComponent implements OnInit {
-  cantidad = this.fb.control(0, [Validators.required, Validators.min(1)]);
+  form: FormGroup = null;
   isMobile: boolean = false;
   
   constructor(
@@ -26,34 +27,39 @@ export class RepuestoSearchComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.cantidad.patchValue(this.repuesto?.stock);
+    this.form = this.fb.group({ 
+      busqueda: ['', Validators.required],
+      cantidad: [1, [Validators.required, Validators.min(1)]]
+    });
   }
 
-  buscar(id: string) {
-    if(id?.trim()) {
-      this.service.getRepuesto(id.trim()).subscribe(repuesto => {
-        if(repuesto) {
-          this.repuesto = repuesto;
-        } else {
-          this.sharedService.showErrorMessage('No existe el repuesto');
-        }
-      });
+  async buscar() {
+    const busqueda: string = this.form.get('busqueda').value;
+    if(busqueda?.trim()) {
+      const repuesto = await this.service.getRepuesto(busqueda.trim()).toPromise();
+      if(repuesto) {
+        this.repuesto = repuesto;
+      } else {
+        this.sharedService.showErrorMessage('No existe el repuesto');
+      }
+      return repuesto ? true : false;
     } else {
       this.showError('Ingrese un criterio de búsqueda');
+      return false;
     }
   }
 
-  guardar() {
-    if(this.cantidad.valid) {
-      if(this.repuesto) {
-        this.repuesto.stock = this.cantidad.value;
+  async guardar() {
+    const form = this.form.getRawValue();
+    if(this.form.valid) {
+      const isValid: boolean = await this.buscar();
+      if(isValid) {
+        this.repuesto.stock = form.cantidad;
         this.repuesto.descripcion = this._descripcion(this.repuesto);
         this.dialogRef.close(this.repuesto);
-      } else {
-        this.showError('Realice una búsqueda del repuesto');
       }
     } else {
-      this.showError('Cantidad inválida');
+      this.showError('Algunos campos son inválidos');
     }
   }
 
