@@ -24,7 +24,8 @@ import { detailExpand } from '@animations/detailExpand';
 export class CategoriaListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  readonly displayedColumns: string[] = ['opciones', 'Descripcion', 'Repuestos.Sum(Stock)', 'Repuestos.Sum(Precio)', 'accion'];
+  readonly displayedColumns: string[] = ['opciones', 'Descripcion', 'Repuestos.Sum(Stock)',
+    'Repuestos.Sum(Stock * Precio)', 'accion'];
   busqueda: Busqueda = BusquedaBuilder.BuildBase();
   criterio = new Subject();
   criterio$ = this.criterio.asObservable();
@@ -35,7 +36,7 @@ export class CategoriaListComponent implements OnInit, AfterViewInit {
   isRateLimitReached: boolean = false;
   resultsLength: number = 0;
   resultsStock: number = 0;
-  resultsPrecio: number = 0;
+  resultsTotal: number = 0;
 
   constructor(
     private activedRoute: ActivatedRoute,
@@ -69,7 +70,7 @@ export class CategoriaListComponent implements OnInit, AfterViewInit {
         this.isRateLimitReached = false;
         this.resultsLength = response.body.cantidad;
         this.resultsStock = response.body.stock;
-        this.resultsPrecio = response.body.precio;
+        this.resultsTotal = response.body.total;
         return response.body.data;
       }), catchError(() => {
         this.isLoadingResults = false;

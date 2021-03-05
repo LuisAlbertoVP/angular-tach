@@ -32,7 +32,7 @@ export class CompraListComponent implements OnInit, AfterViewInit {
   isRateLimitReached: boolean = false;
   resultsLength: number = 0;
   resultsStock: number = 0;
-  resultsPrecio: number = 0;
+  resultsTotal: number = 0;
 
   constructor(
     private activedRoute: ActivatedRoute,
@@ -66,7 +66,7 @@ export class CompraListComponent implements OnInit, AfterViewInit {
         this.isRateLimitReached = false;
         this.resultsLength = response.body.cantidad;
         this.resultsStock = response.body.stock;
-        this.resultsPrecio = response.body.precio;
+        this.resultsTotal = response.body.total;
         return response.body.data;
       }), catchError(() => {
         this.isLoadingResults = false;

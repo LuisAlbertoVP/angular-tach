@@ -54,10 +54,10 @@
           <td mat-cell *matCellDef="let row">{{ row.stock }}</td>
           <td mat-footer-cell *matFooterCellDef>{{ resultsStock }}</td>
         </ng-container>
-        <ng-container matColumnDef="Repuestos.Sum(Precio)">
+        <ng-container matColumnDef="Repuestos.Sum(Stock * Precio)">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Total</th>
-          <td mat-cell *matCellDef="let row">{{ row.precio | currency }}</td>
-          <td mat-footer-cell *matFooterCellDef>{{ resultsPrecio | currency }}</td>
+          <td mat-cell *matCellDef="let row">{{ row.total | currency }}</td>
+          <td mat-footer-cell *matFooterCellDef>{{ resultsTotal | currency }}</td>
         </ng-container>
         <ng-container matColumnDef="accion">
           <th mat-header-cell *matHeaderCellDef></th>

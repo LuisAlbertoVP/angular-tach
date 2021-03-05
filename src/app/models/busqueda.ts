@@ -80,6 +80,7 @@ const busquedaRepuesto: Busqueda = {
     { id: "SubMarca", nombre: "SubMarca", tipo: 'text' },
     { id: "Stock", nombre: "Cantidad", tipo: 'number', tipoNativo: 'int' },
     { id: "Precio", nombre: "Precio", tipo: 'number' },
+    { id: "Stock * Precio", nombre: "Total", tipo: 'number' },
     { id: "Descripcion", nombre: "Descripción", tipo: 'text' },
     { id: "FechaIngreso", nombre: "Ingreso", tipo: 'date' },
     { id: "FechaModificacion", nombre: "Modificación", tipo: 'date' }

@@ -60,7 +60,7 @@
         <ng-container matColumnDef="Total">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Total</th>
           <td mat-cell *matCellDef="let row">{{ row.total | currency }}</td>
-          <td mat-footer-cell *matFooterCellDef>{{ resultsPrecio | currency }}</td>
+          <td mat-footer-cell *matFooterCellDef>{{ resultsTotal | currency }}</td>
         </ng-container>
         <ng-container matColumnDef="accion">
           <th mat-header-cell *matHeaderCellDef></th>
@@ -75,6 +75,7 @@
                 <dl>
                   <dt class="blue">Ingresado Por</dt><dd>{{ '"' + row.usuarioIngreso + '" ' + sharedService.parseDateTime(row.fechaIngreso) }}</dd>
                   <dt class="blue">Últ. Modificación</dt><dd>{{ '"' + row.usuarioModificacion + '" ' + sharedService.parseDateTime(row.fechaModificacion) }}</dd>
+                  <dt class="blue">Cliente</dt><dd>{{ row.cliente?.nombres ? row.cliente.nombres : 'Vacío' }}</dd>
                   <dt class="blue">Descripción</dt><dd>{{ row.descripcion ? row.descripcion : 'Vacío' }}</dd>
                 </dl>           
               </div>

@@ -10,6 +10,7 @@ import { Repuesto } from '@models/entity';
   styles: ['.ml { margin-left: 3% } ']
 })
 export class RepuestoReporteComponent implements OnInit {
+  isLoading: boolean = true;
   repuesto: Repuesto = null;
   
   constructor(
@@ -19,6 +20,9 @@ export class RepuestoReporteComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.service.getReporte(this.id).subscribe(repuesto => this.repuesto = repuesto);
+    this.service.getReporte(this.id).subscribe(repuesto => {
+      this.repuesto = repuesto;
+      this.isLoading = false;
+    });
   }
 }

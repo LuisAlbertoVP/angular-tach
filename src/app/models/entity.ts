@@ -5,6 +5,7 @@ export interface Table<T> {
   cantidad?: number;
   stock?: number;
   precio?: number;
+  total?: number;
 }
 
 export interface Entity {
@@ -19,7 +20,7 @@ export interface Entity {
 export interface Categoria extends Entity {
   descripcion?: string;
   stock?: number;
-  precio?: number;
+  total?: number;
   cantidadCompras?: number;
   cantidadVentas?: number;
 }
@@ -44,7 +45,7 @@ export interface CompraDetalle {
 export interface Marca extends Entity {
   descripcion?: string;
   stock?: number;
-  precio?: number;
+  total?: number;
   cantidadCompras?: number;
   cantidadVentas?: number;
 }

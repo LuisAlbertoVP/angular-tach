@@ -27,9 +27,9 @@ import { detailExpand } from '@animations/detailExpand';
 export class RepuestoListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  readonly mobileColumns: string[] = ['opciones', 'Codigo', 'Modelo', 'Stock', 'Precio', 'accion'];
-  readonly normalColumns: string[] = ['opciones', 'Codigo', 'Categoria.Descripcion', 'Marca.Descripcion', 
-    'Modelo', 'Epoca', 'Stock', 'Precio', 'accion'];
+  readonly mobileColumns: string[] = ['opciones', 'Codigo', 'Modelo', 'Stock', 'Precio', 'Stock * Precio', 'accion'];
+  readonly normalColumns: string[] = ['opciones', 'Codigo', 'Categoria.Descripcion', 'Marca.Descripcion', 'Modelo', 
+    'Epoca', 'Stock', 'Precio', 'Stock * Precio', 'accion'];
   builder: BusquedaBuilder =  null;
   busqueda: Busqueda = BusquedaBuilder.BuildRepuesto();
   criterio = new Subject();
@@ -42,6 +42,7 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
   resultsLength: number = 0;
   resultsStock: number = 0;
   resultsPrecio: number = 0;
+  resultsTotal: number = 0;
 
   constructor(
     private activedRoute: ActivatedRoute,
@@ -93,6 +94,7 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
         this.resultsLength = response.body.cantidad;
         this.resultsStock = response.body.stock;
         this.resultsPrecio = response.body.precio;
+        this.resultsTotal = response.body.total;
         return response.body.data;
       }), catchError(() => {
         this.isLoadingResults = false;

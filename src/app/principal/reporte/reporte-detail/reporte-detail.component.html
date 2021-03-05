@@ -3,9 +3,7 @@
     <mat-tab>
       <ng-template mat-tab-label><mat-icon>insert_chart</mat-icon>Reporte</ng-template>
       <div class="shadow m-3 p-3">
-        <div class="d-flex" style="justify-content: center;">
-          <mat-spinner *ngIf="isLoading" color="accent"></mat-spinner>
-        </div>
+        <mat-spinner *ngIf="isLoading" color="accent" mode="indeterminate" class="m0-auto"></mat-spinner>
         <div class="container-fluid" [class.d-none]="isLoading">
           <div class="row justify-content-center">
             <div class="col-xs-8 col-md-7 col-xl-6 col-xxl-4">
