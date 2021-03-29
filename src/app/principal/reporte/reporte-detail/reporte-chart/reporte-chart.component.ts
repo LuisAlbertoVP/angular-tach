@@ -31,13 +31,17 @@ export class ReporteChartComponent implements AfterViewInit, OnChanges, OnDestro
   private _buildChart() {
     const dataset: Dataset = this.myChart.dataset;
     let colors = this._buildColors(dataset.labels.length);
+    if(dataset.labels.length > 10) {
+      dataset.labels = dataset.labels.slice(dataset.labels.length - 5, dataset.labels.length);
+      dataset.data = dataset.data.slice(dataset.data.length - 5, dataset.data.length);
+    }
     this.chart = new Chart(this.context.nativeElement.getContext('2d'), {
       type: dataset.type,
       data: {
-        labels: dataset.labels.slice(dataset.labels.length - this.myChart.lastCount, dataset.labels.length),
+        labels: dataset.labels,
         datasets: [{
           label: this.myChart.id,
-          data: dataset.data.slice(dataset.data.length - this.myChart.lastCount, dataset.data.length),
+          data: dataset.data,
           backgroundColor: colors.background,
           borderColor: colors.borders,
           borderWidth: 1

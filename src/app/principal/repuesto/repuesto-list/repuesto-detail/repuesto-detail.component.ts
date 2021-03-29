@@ -10,12 +10,11 @@ import { Categoria, Marca, Repuesto } from '@models/entity';
 @Component({
   selector: 'app-repuesto-detail',
   templateUrl: './repuesto-detail.component.html',
-  styles: ['.h160 { height: 160px; }']
+  styles: ['.h100 { height: 100px; }', '.padding { padding: 0px 25px; }']
 })
 export class RepuestoDetailComponent implements OnInit {
   categorias: Categoria[] = [];
   form: FormGroup = null;
-  isMobile: boolean = false;
   marcas: Marca[] = [];
   
   constructor(
@@ -25,9 +24,7 @@ export class RepuestoDetailComponent implements OnInit {
     private dialogRef: MatDialogRef<RepuestoDetailComponent>,
     private service: RepuestoService,
     private sharedService: SharedService
-  ) {
-    sharedService.isMobile$.subscribe(isMobile => this.isMobile = isMobile);
-  }
+  ) { }
 
   ngOnInit(): void {
     this.service.getForm().subscribe(repuestoForm => {

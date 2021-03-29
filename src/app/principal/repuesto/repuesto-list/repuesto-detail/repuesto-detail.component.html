@@ -3,9 +3,9 @@
   <form [formGroup]="form" (ngSubmit)="guardar()">
     <h2 mat-dialog-title class="text-center blue">{{ !repuesto ? 'Nuevo Repuesto' : 'Modificar Repuesto' }}</h2>
     <mat-dialog-content class="mat-typography">
-      <div class="m0-auto" [style.width]="isMobile ? '250px' : '325px'">
-        <fieldset class="mb-2">
-          <legend class="mb-3 blue">General</legend>
+      <div class="row padding">
+        <fieldset class="col-sm-12 col-md-6 mt-2">
+          <legend class="mb-3 blue">Datos requeridos</legend>
           <mat-form-field class="w-100" appearance="outline">
             <mat-label>Código</mat-label>
             <input matInput formControlName="codigo" placeholder="Ingrese un codigo" type="text" required />
@@ -51,6 +51,9 @@
             <mat-icon matSuffix>monetization_on</mat-icon>          
             <mat-error *ngIf="form.get('precio').hasError('required')">Precio requerido</mat-error>
           </mat-form-field>
+        </fieldset>  
+        <fieldset class="col-sm-12 col-md-6 mt-2">
+          <legend class="mb-3 blue">Datos opcionales</legend>
           <mat-form-field class="w-100" appearance="outline">
             <mat-label>Año</mat-label>
             <input matInput formControlName="epoca" placeholder="Ingrese un año" type="text" />
@@ -61,12 +64,9 @@
             <input matInput formControlName="subMarca" placeholder="Ingrese una submarca" type="text" />
             <mat-icon matSuffix>local_offer</mat-icon>
           </mat-form-field>
-        </fieldset>  
-        <fieldset class="mt-3 mb-2">
-          <legend class="mb-3 blue">Detalles del repuesto</legend>
           <mat-form-field class="w-100" appearance="outline">
             <mat-label>Descripción</mat-label>
-            <textarea matInput formControlName="descripcion" placeholder="Ingrese una descripcion" class="h160"></textarea>
+            <textarea matInput formControlName="descripcion" placeholder="Ingrese una descripcion" class="h100"></textarea>
           </mat-form-field>
         </fieldset>
       </div>

@@ -63,11 +63,11 @@ export class ReporteDetailComponent implements OnInit {
       id = 'Unidades vendidas';
     }
     const dataset: Dataset = this._datasetLine(transaccion, groupby);
-    this.chartBusqueda = { dataset: dataset, id: id, options: this._lineOptions(), lastCount: dataset.labels.length };
+    this.chartBusqueda = { dataset: dataset, id: id, options: this._lineOptions() };
   }
 
-  private _addChart(dataset: Dataset, id: string, options: any = {}, lastCount: number = 5) {
-    this.myCharts.push({ dataset: dataset, id: id, options: options, lastCount: lastCount });
+  private _addChart(dataset: Dataset, id: string, options: any = {}) {
+    this.myCharts.push({ dataset: dataset, id: id, options: options });
   }
 
   private _datasetBar1(data: Categoria[] | Marca[], type: string = 'bar'): Dataset {

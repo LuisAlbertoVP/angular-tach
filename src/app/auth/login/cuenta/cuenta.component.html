@@ -17,13 +17,6 @@
         <mat-error *ngIf="form.get('cedula').hasError('pattern')">Cedula debe tener 10 dígitos</mat-error>
       </mat-form-field>
       <mat-form-field class="w-100" appearance="outline">
-        <mat-label>Correo</mat-label>
-        <input matInput formControlName="correo" placeholder="Ingrese correo" type="email" required />
-        <mat-icon matSuffix>mail</mat-icon>
-        <mat-error *ngIf="form.get('correo').hasError('required')">Correo es requerido</mat-error>
-        <mat-error *ngIf="form.get('correo').hasError('pattern')">Ingrese una dirección de correo válida</mat-error>
-      </mat-form-field>
-      <mat-form-field class="w-100" appearance="outline">
         <mat-label>Dirección</mat-label>
         <input matInput formControlName="direccion" placeholder="Ingrese dirección" type="text" required />
         <mat-icon matSuffix>location_on</mat-icon>
@@ -38,7 +31,7 @@
       <mat-form-field class="w-100" appearance="outline">
         <mat-label>Celular</mat-label>
         <input matInput formControlName="celular" placeholder="Ingrese celular" type="text" required />
-        <mat-icon matSuffix>phone</mat-icon>
+        <mat-icon matSuffix>smartphone</mat-icon>
         <mat-error *ngIf="form.get('celular').hasError('required')">Celular es requerido</mat-error>
       </mat-form-field>
       <mat-form-field class="w-100" appearance="outline">
@@ -47,6 +40,13 @@
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
         <mat-error *ngIf="form.get('fechaNacimiento').hasError('required')">Fecha de nacimiento es requerida</mat-error>
+      </mat-form-field>
+      <mat-form-field class="w-100" appearance="outline">
+        <mat-label>Correo</mat-label>
+        <input matInput formControlName="correo" placeholder="Ingrese correo" type="email" required />
+        <mat-icon matSuffix>mail</mat-icon>
+        <mat-error *ngIf="form.get('correo').hasError('required')">Correo es requerido</mat-error>
+        <mat-error *ngIf="form.get('correo').hasError('pattern')">Ingrese una dirección de correo válida</mat-error>
       </mat-form-field>
       <mat-form-field class="w-100" appearance="outline">
         <mat-label>Usuario</mat-label>

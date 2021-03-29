@@ -103,6 +103,7 @@
                     <dt class="blue">Marca</dt><dd>{{ row.marca?.descripcion }}</dd>
                     <dt class="blue">Categoría</dt><dd>{{ row.categoria?.descripcion }}</dd>
                     <dt class="blue">Año</dt><dd>{{ row.epoca ? row.epoca : 'Vacío' }}</dd>
+                    <dt class="blue">Total</dt><dd>{{ (row.stock * row.precio) | currency }}</dd>
                   </ng-container>
                   <dt class="blue">Submarca</dt><dd>{{ row.subMarca ? row.subMarca : 'Vacío' }}</dd>
                   <dt class="blue">Descripción</dt><dd>{{ row.descripcion }}</dd>

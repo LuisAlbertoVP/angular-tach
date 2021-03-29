@@ -3,7 +3,7 @@
   <mat-dialog-content class="mat-typography">
     <div class="m0-auto" [style.width]="isMobile ? '250px' : '325px'">
       <fieldset class="mb-2">
-        <legend class="mb-3 blue">Detalles de cuenta</legend>
+        <legend class="mb-3 blue">Datos personales</legend>
         <mat-form-field class="w-100" appearance="outline">
           <mat-label>Nombres</mat-label>
           <input matInput formControlName="nombres" placeholder="Ingrese nombres" type="text" required />
@@ -40,7 +40,7 @@
         <mat-form-field class="w-100" appearance="outline">
           <mat-label>Celular</mat-label>
           <input matInput formControlName="celular" placeholder="Ingrese celular" type="text" required />
-          <mat-icon matSuffix>phone</mat-icon>
+          <mat-icon matSuffix>smartphone</mat-icon>
           <mat-error *ngIf="form.get('celular').hasError('required')">Celular es requerido</mat-error>
         </mat-form-field>
         <mat-form-field class="w-100" appearance="outline">

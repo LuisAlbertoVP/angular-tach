@@ -32,6 +32,5 @@ export interface Dataset {
 export interface MyChart {
   id: string;
   dataset: Dataset;
-  lastCount: number;
   options: any;
 }

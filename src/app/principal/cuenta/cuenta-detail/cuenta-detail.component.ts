@@ -16,7 +16,6 @@ export class CuentaDetailComponent implements OnInit {
   form: FormGroup = null;
   hide: boolean = true;
   id: string = this.auth.id;
-  isMobile: boolean = false;
 
   constructor(
     private auth: AuthService,
@@ -25,7 +24,6 @@ export class CuentaDetailComponent implements OnInit {
     private sharedService: SharedService
   ) {
     sharedService.buildMenuBar({ title: 'Cuenta' });
-    sharedService.isMobile$.subscribe(isMobile => this.isMobile = isMobile);
   }
 
   ngOnInit(): void {

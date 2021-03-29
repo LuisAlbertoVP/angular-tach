@@ -27,7 +27,7 @@ import { detailExpand } from '@animations/detailExpand';
 export class RepuestoListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  readonly mobileColumns: string[] = ['opciones', 'Codigo', 'Modelo', 'Stock', 'Precio', 'Stock * Precio', 'accion'];
+  readonly mobileColumns: string[] = ['opciones', 'Codigo', 'Modelo', 'Stock', 'Precio', 'accion'];
   readonly normalColumns: string[] = ['opciones', 'Codigo', 'Categoria.Descripcion', 'Marca.Descripcion', 'Modelo', 
     'Epoca', 'Stock', 'Precio', 'Stock * Precio', 'accion'];
   builder: BusquedaBuilder =  null;

@@ -33,7 +33,7 @@ export class RepuestoSearchComponent implements OnInit {
     });
   }
 
-  async buscar() {
+  async buscar(): Promise<boolean> {
     const busqueda: string = this.form.get('busqueda').value;
     if(busqueda?.trim()) {
       const repuesto = await this.service.getRepuesto(busqueda.trim()).toPromise();
