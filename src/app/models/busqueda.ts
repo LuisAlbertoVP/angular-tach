@@ -102,11 +102,23 @@ const busquedaProveedor: Busqueda = {
   ], estado: true, operadorLogico: '&&'
 };
 
-const busquedaTransaccion: Busqueda = {
+const busquedaCompra: Busqueda = {
   filtros: [
     { id: "Fecha", nombre: "Fecha", tipo: 'date' },
-    { id: "Cantidad", nombre: "Cantidad", tipo: 'number', tipoNativo: 'int' },
-    { id: "Total", nombre: "Total", tipo: 'number' },
+    { id: "CompraDetalle.Sum(Cantidad)", nombre: "Cantidad", tipo: 'number', tipoNativo: 'int' },
+    { id: "CompraDetalle.Sum(Cantidad * Repuesto.Precio)", nombre: "Total", tipo: 'number' },
+    { id: "Direccion", nombre: "Dirección", tipo: 'text' },
+    { id: "Descripcion", nombre: "Descripción", tipo: 'text' },
+    { id: "FechaIngreso", nombre: "Ingreso", tipo: 'date' },
+    { id: "FechaModificacion", nombre: "Modificación", tipo: 'date' }
+  ], estado: true, operadorLogico: '&&'
+};
+
+const busquedaVenta: Busqueda = {
+  filtros: [
+    { id: "Fecha", nombre: "Fecha", tipo: 'date' },
+    { id: "VentaDetalle.Sum(Cantidad)", nombre: "Cantidad", tipo: 'number', tipoNativo: 'int' },
+    { id: "VentaDetalle.Sum(Cantidad * Repuesto.Precio)", nombre: "Total", tipo: 'number' },
     { id: "Direccion", nombre: "Dirección", tipo: 'text' },
     { id: "Descripcion", nombre: "Descripción", tipo: 'text' },
     { id: "FechaIngreso", nombre: "Ingreso", tipo: 'date' },
@@ -171,5 +183,6 @@ export class BusquedaBuilder {
   static BuildUsuario = (): Busqueda => JSON.parse(JSON.stringify(busquedaUsuario));
   static BuildRepuesto = (): Busqueda => JSON.parse(JSON.stringify(busquedaRepuesto));
   static BuildProveedor = (): Busqueda => JSON.parse(JSON.stringify(busquedaProveedor));
-  static BuildTransaccion = (): Busqueda => JSON.parse(JSON.stringify(busquedaTransaccion));
+  static BuildCompra = (): Busqueda => JSON.parse(JSON.stringify(busquedaCompra));
+  static BuildVenta = (): Busqueda => JSON.parse(JSON.stringify(busquedaVenta));
 }

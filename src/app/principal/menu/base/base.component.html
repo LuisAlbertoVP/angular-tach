@@ -8,16 +8,18 @@
       </div>
     </div>
     <h2 class="blue mt-3 text-center">Transmisiones Automáticas Chabeli</h2>
-    <div class="principal">
-      <div *ngFor="let modulo of modulos" class="parent shadow m-3">
-        <div class="sparent m-3 cursor-point" (click)="modulo.checked=true; navigate(modulo)">
-          <div class="img-container">
-            <div class="images">
-              <div class="front"><img [src]="'assets/' + modulo.imagen" /></div>
-              <div class="back"><img src="assets/siguiente.png" /></div>
+    <div class="row">
+      <div *ngFor="let modulo of modulos" class="col-6 col-md-4 col-lg-2">
+        <div class="parent shadow m-3">
+          <div class="sparent m-3 cursor-point" (click)="modulo.checked=true; navigate(modulo)">
+            <div class="img-container">
+              <div class="images">
+                <div class="front"><img [src]="'assets/' + modulo.imagen" /></div>
+                <div class="back"><img src="assets/siguiente.png" /></div>
+              </div>
+              <a mat-raised-button color="primary">{{ modulo.descripcion }}</a>
+              <mat-progress-bar *ngIf="modulo.checked" mode="indeterminate" color="accent"></mat-progress-bar>
             </div>
-            <a mat-raised-button color="primary">{{ modulo.descripcion }}</a>
-            <mat-progress-bar *ngIf="modulo.checked" mode="indeterminate" color="accent"></mat-progress-bar>
           </div>
         </div>
       </div>

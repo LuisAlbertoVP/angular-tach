@@ -21,8 +21,9 @@ import { detailExpand } from '@animations/detailExpand';
 export class CompraListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  readonly displayedColumns: string[] = ['opciones', 'Fecha', 'Cantidad', 'Total', 'accion'];
-  busqueda: Busqueda = BusquedaBuilder.BuildTransaccion();
+  readonly displayedColumns: string[] = ['opciones', 'Fecha', 'CompraDetalle.Sum(Cantidad)', 
+    'CompraDetalle.Sum(Cantidad * Repuesto.Precio)', 'accion'];
+  busqueda: Busqueda = BusquedaBuilder.BuildCompra();
   criterio = new Subject();
   criterio$ = this.criterio.asObservable();
   data: Compra[] = [];
@@ -105,7 +106,7 @@ export class CompraListComponent implements OnInit, AfterViewInit {
   }
 
   reload() {
-    const busqueda: Busqueda = BusquedaBuilder.BuildTransaccion();
+    const busqueda: Busqueda = BusquedaBuilder.BuildCompra();
     busqueda.estado = this.busqueda.estado;
     this.navigateToPrincipal(busqueda);
   }

@@ -1,10 +1,10 @@
 <form [formGroup]="form" (ngSubmit)="guardar()">
-  <h2 mat-dialog-title class="text-center blue">Agregar Repuesto</h2>
+  <h2 mat-dialog-title class="text-center blue">{{ repuesto ? 'Modificar' : 'Agregar' }}&nbsp;Repuesto</h2>
   <mat-dialog-content class="mat-typography">
     <div class="m0-auto" [style.width]="isMobile ? '250px' : '325px'">
       <mat-form-field appearance="fill" class="w90">
         <mat-label>Código</mat-label>
-        <input matInput formControlName="busqueda" placeholder="Ingrese código del repuesto" required />
+        <input matInput formControlName="codigo" placeholder="Ingrese código del repuesto" required />
       </mat-form-field>
       <button mat-icon-button color="primary" (click)="buscar()" type="button" class="w10"><mat-icon>find_replace</mat-icon></button>
       <ul class="list-unstyled">
@@ -33,6 +33,6 @@
   </mat-dialog-content>
   <mat-dialog-actions class="d-flex justify-content-around">
     <button mat-raised-button mat-dialog-close type="button">Cancelar</button>
-    <button mat-raised-button color="primary" (click)="guardar()" type="submit">Agregar</button>
+    <button mat-raised-button color="primary" type="submit">{{ repuesto ? 'Modificar' : 'Agregar' }}</button>
   </mat-dialog-actions>
 </form>

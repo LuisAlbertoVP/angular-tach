@@ -20,9 +20,6 @@ h2 {
 .container h1 { 
     font-weight: 600; 
 }
-.principal { 
-    flex-wrap: wrap; 
-}
 .parent { 
     display: inline-block; 
     width: 160px; 
@@ -36,9 +33,9 @@ h2 {
 .parent:hover .images, .back { 
     transform: rotateY(180deg); 
 }
-.center, .principal, .sparent, .back { 
+.center, .sparent, .back { 
     display: flex; 
-    justify-content: center; 
+    justify-content: center;
 }
 .img-container, .front img, a { 
     width: 100px; 

@@ -10,7 +10,8 @@ import * as moment from 'moment';
 
 @Component({
   selector: 'app-cuenta-detail',
-  templateUrl: './cuenta-detail.component.html'
+  templateUrl: './cuenta-detail.component.html',
+  styles: ['.pl { padding-left: 50px; }']
 })
 export class CuentaDetailComponent implements OnInit {
   form: FormGroup = null;
@@ -23,7 +24,7 @@ export class CuentaDetailComponent implements OnInit {
     private service: CuentaService,
     private sharedService: SharedService
   ) {
-    sharedService.buildMenuBar({ title: 'Cuenta' });
+    sharedService.buildMenuBar({ title: 'Perfil' });
   }
 
   ngOnInit(): void {

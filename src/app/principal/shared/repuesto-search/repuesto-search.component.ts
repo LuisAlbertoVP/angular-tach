@@ -28,15 +28,15 @@ export class RepuestoSearchComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = this.fb.group({ 
-      busqueda: ['', Validators.required],
-      cantidad: [1, [Validators.required, Validators.min(1)]]
+      codigo: [this.repuesto ? this.repuesto.codigo : '', Validators.required],
+      cantidad: [this.repuesto ? this.repuesto.stock : 1, [Validators.required, Validators.min(1)]]
     });
   }
 
   async buscar(): Promise<boolean> {
-    const busqueda: string = this.form.get('busqueda').value;
-    if(busqueda?.trim()) {
-      const repuesto = await this.service.getRepuesto(busqueda.trim()).toPromise();
+    const codigo: string = this.form.get('codigo').value;
+    if(codigo?.trim()) {
+      const repuesto = await this.service.getRepuesto(codigo.trim()).toPromise();
       if(repuesto) {
         this.repuesto = repuesto;
       } else {
@@ -55,7 +55,7 @@ export class RepuestoSearchComponent implements OnInit {
       const isValid: boolean = await this.buscar();
       if(isValid) {
         this.repuesto.stock = form.cantidad;
-        this.repuesto.descripcion = this._descripcion(this.repuesto);
+        this.repuesto.descripcion = this._toDescripcion(this.repuesto);
         this.dialogRef.close(this.repuesto);
       }
     } else {
@@ -65,7 +65,7 @@ export class RepuestoSearchComponent implements OnInit {
 
   showError = (message: string) => this.snackBar.open(message, 'Error', {duration: 2000});
   
-  private _descripcion(repuesto: Repuesto) {
+  private _toDescripcion(repuesto: Repuesto) {
     return repuesto.categoria.descripcion + ' ' + repuesto.marca.descripcion + ' ' +
       repuesto.modelo + ' ' + repuesto.epoca;
   }

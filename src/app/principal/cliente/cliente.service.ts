@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { httpOptions, Respuesta, urlCliente } from '@models/http';
+import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { Cliente, Table } from '@models/entity';
+import { Cliente, Table, Venta } from '@models/entity';
 import { Busqueda } from '@models/busqueda';
 import { HttpErrorHandlerService, HandleError } from '../../http-error-handler.service';
 
@@ -18,6 +19,9 @@ export class ClienteService {
   ) { 
     this.handleError = httpErrorHandler.createHandleError('ClienteService');
   }
+
+  getVentas = (id: string): Observable<Venta[]> => this.http.get<Venta[]>(`${urlCliente}/${id}/ventas`)
+      .pipe(catchError(this.handleError<Venta[]>('getVentas')));
 
   getAll = (busqueda: Busqueda) => this.http.post<Table<Cliente>>(`${urlCliente}/all`, busqueda, httpOptions)
       .pipe(catchError(this.handleError<HttpResponse<Table<Cliente>>>('getAll')));

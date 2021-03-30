@@ -47,12 +47,12 @@
           <td mat-cell *matCellDef="let row">{{ sharedService.parseDate(row.fecha) }}</td>
           <td mat-footer-cell *matFooterCellDef>Total</td>
         </ng-container>
-        <ng-container matColumnDef="Cantidad">
+        <ng-container matColumnDef="CompraDetalle.Sum(Cantidad)">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Cantidad</th>
           <td mat-cell *matCellDef="let row">{{ row.cantidad }}</td>
           <td mat-footer-cell *matFooterCellDef>{{ resultsStock }}</td>
         </ng-container>
-        <ng-container matColumnDef="Total">
+        <ng-container matColumnDef="CompraDetalle.Sum(Cantidad * Repuesto.Precio)">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Total</th>
           <td mat-cell *matCellDef="let row">{{ row.total | currency }}</td>
           <td mat-footer-cell *matFooterCellDef>{{ resultsTotal | currency }}</td>

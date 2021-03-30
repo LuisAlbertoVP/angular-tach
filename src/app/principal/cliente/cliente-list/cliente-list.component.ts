@@ -13,6 +13,7 @@ import { merge, of as observableOf, Subject } from 'rxjs';
 import { ConfirmacionComponent } from '@shared/confirmacion/confirmacion.component';
 import { FiltroComponent } from '@shared/filtro/filtro.component';
 import { ClienteDetailComponent } from './cliente-detail/cliente-detail.component';
+import { ClienteRepuestoComponent } from './cliente-repuesto/cliente-repuesto.component';
 import { detailExpand } from '@animations/detailExpand';
 
 @Component({
@@ -24,8 +25,9 @@ import { detailExpand } from '@animations/detailExpand';
 export class ClienteListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  readonly mobileColumns: string[] = ['opciones', 'Nombres', 'Correo', 'accion'];
-  readonly normalColumns: string[] = ['opciones', 'Nombres', 'Telefono', 'Celular', 'Cedula', 'Correo','accion'];
+  readonly mobileColumns: string[] = ['opciones', 'Nombres', 'Ventas.Sum(VentaDetalle.Sum(Cantidad))', 'accion'];
+  readonly normalColumns: string[] = ['opciones', 'Nombres', 'Telefono', 'Celular', 'Correo', 
+    'Ventas.Sum(VentaDetalle.Sum(Cantidad))', 'accion'];
   busqueda: Busqueda = BusquedaBuilder.BuildCliente();
   criterio = new Subject();
   criterio$ = this.criterio.asObservable();
@@ -126,6 +128,12 @@ export class ClienteListComponent implements OnInit, AfterViewInit {
       width: '720px', autoFocus: false, disableClose: true, data: cliente
     });
     dialogRef.afterClosed().subscribe(result => result ? this.initSearch() : null);
+  }
+
+  openRepuesto(cliente: Cliente) {
+    this.dialog.open(ClienteRepuestoComponent, {
+      width: '720px', autoFocus: false, data: cliente
+    });
   }
 
   reload() {

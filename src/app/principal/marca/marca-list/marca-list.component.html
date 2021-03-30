@@ -36,10 +36,10 @@
           <td mat-cell *matCellDef="let row" (click)="$event.stopPropagation()">
             <a mat-icon-button [matMenuTriggerFor]="menu"><mat-icon>more_vert</mat-icon></a>
             <mat-menu #menu="matMenu">
-              <a mat-menu-item (click)="openForm(row)">
-                <mat-icon>edit</mat-icon><span>Modificar</span></a>
               <a mat-menu-item (click)="openConfirmation(row)">
                 <mat-icon>delete_forever</mat-icon><span>Eliminar</span></a>
+              <a mat-menu-item (click)="openForm(row)">
+                <mat-icon>edit</mat-icon><span>Modificar</span></a>
             </mat-menu>
           </td>
           <td mat-footer-cell *matFooterCellDef></td>

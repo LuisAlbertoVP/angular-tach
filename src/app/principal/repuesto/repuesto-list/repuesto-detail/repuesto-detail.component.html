@@ -6,14 +6,14 @@
       <div class="row padding">
         <fieldset class="col-sm-12 col-md-6 mt-2">
           <legend class="mb-3 blue">Datos requeridos</legend>
-          <mat-form-field class="w-100" appearance="outline">
+          <mat-form-field class="wd" appearance="outline">
             <mat-label>Código</mat-label>
             <input matInput formControlName="codigo" placeholder="Ingrese un codigo" type="text" required />
             <mat-icon matSuffix>pin</mat-icon>
             <mat-error *ngIf="form.get('codigo').hasError('required')">Código requerido</mat-error>
           </mat-form-field>
           <ng-container formGroupName="categoria">
-            <mat-form-field class="w-100" appearance="outline">
+            <mat-form-field class="wd" appearance="outline">
               <mat-label>Categoría</mat-label>
               <mat-select formControlName="id" required>
                 <mat-option>--</mat-option>
@@ -23,7 +23,7 @@
             </mat-form-field>
           </ng-container>
           <ng-container formGroupName="marca">
-            <mat-form-field class="w-100" appearance="outline">
+            <mat-form-field class="wd" appearance="outline">
               <mat-label>Marca</mat-label>
               <mat-select formControlName="id" required>
                 <mat-option>--</mat-option>
@@ -32,20 +32,20 @@
               <mat-error *ngIf="form.get('marca').get('id').hasError('required')">Escoja una marca</mat-error>
             </mat-form-field>
           </ng-container>
-          <mat-form-field class="w-100" appearance="outline">
+          <mat-form-field class="wd" appearance="outline">
             <mat-label>Modelo</mat-label>
             <input matInput formControlName="modelo" placeholder="Ingrese un modelo" type="text" required />
             <mat-icon matSuffix>directions_car</mat-icon>
             <mat-error *ngIf="form.get('modelo').hasError('required')">Modelo requerido</mat-error>
           </mat-form-field>
-          <mat-form-field class="w-100" appearance="outline">
+          <mat-form-field class="wd" appearance="outline">
             <mat-label>Stock</mat-label>
             <input matInput formControlName="stock" placeholder="Ingrese un stock" type="number" required />
             <mat-icon matSuffix>inventory</mat-icon>
             <mat-error *ngIf="form.get('stock').hasError('required')">Stock requerida</mat-error>
             <mat-error *ngIf="form.get('stock').hasError('pattern')">Stock debe ser un número entero</mat-error>
           </mat-form-field>
-          <mat-form-field class="w-100" appearance="outline">
+          <mat-form-field class="wd" appearance="outline">
             <mat-label>Precio de Venta</mat-label>
             <input matInput formControlName="precio" placeholder="Ingrese un precio" type="number" required />
             <mat-icon matSuffix>monetization_on</mat-icon>          
@@ -54,17 +54,17 @@
         </fieldset>  
         <fieldset class="col-sm-12 col-md-6 mt-2">
           <legend class="mb-3 blue">Datos opcionales</legend>
-          <mat-form-field class="w-100" appearance="outline">
+          <mat-form-field class="wd" appearance="outline">
             <mat-label>Año</mat-label>
             <input matInput formControlName="epoca" placeholder="Ingrese un año" type="text" />
             <mat-icon matSuffix>date_range</mat-icon>
           </mat-form-field>
-          <mat-form-field class="w-100" appearance="outline">
+          <mat-form-field class="wd" appearance="outline">
             <mat-label>Submarca</mat-label>
             <input matInput formControlName="subMarca" placeholder="Ingrese una submarca" type="text" />
             <mat-icon matSuffix>local_offer</mat-icon>
           </mat-form-field>
-          <mat-form-field class="w-100" appearance="outline">
+          <mat-form-field class="wd" appearance="outline">
             <mat-label>Descripción</mat-label>
             <textarea matInput formControlName="descripcion" placeholder="Ingrese una descripcion" class="h100"></textarea>
           </mat-form-field>

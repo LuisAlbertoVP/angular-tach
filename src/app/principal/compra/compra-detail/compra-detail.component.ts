@@ -45,7 +45,7 @@ export class CompraDetailComponent implements OnInit {
         this.data = compra.compraDetalle.map(compraDetalle => {
           const repuesto: Repuesto = compraDetalle.repuesto;
           repuesto.stock = compraDetalle.cantidad;
-          repuesto.descripcion = this._descripcion(compraDetalle.repuesto);
+          repuesto.descripcion = this._toDescripcion(compraDetalle.repuesto);
           return repuesto;
         });
         this._calcular();
@@ -63,20 +63,17 @@ export class CompraDetailComponent implements OnInit {
         const temp: Repuesto = this._hasRepuesto(result.id);
         if(temp != null) {
           temp.stock = result.stock;
-          temp.precio = result.precio;
-          this._calcular();
         } else {
           this.data = [result].concat(this.data);
-          this._calcular();
         }
+        this._calcular();
       }
     });
   }
 
   clear() {
     this.data = [];
-    this.cantidad = 0;
-    this.total = 0;
+    this._calcular();
     this.formView.resetForm();
     this.form.get('id').setValue(this.id ? this.id : this.control.generateId());
   }
@@ -95,9 +92,7 @@ export class CompraDetailComponent implements OnInit {
       dialogRef.afterClosed().subscribe(result => {
         if(result) {
           const compra: Compra = this.form.getRawValue();
-          compra.compraDetalle = this._buildCompraDetalle();
-          compra.cantidad = this.cantidad;
-          compra.total = this.total;
+          compra.compraDetalle = this._toCompraDetalle(this.data);
           compra.fecha = moment(compra.fecha).format('YYYY-MM-DD');
           compra.usuarioIngreso = this.auth.nombreUsuario;
           compra.usuarioModificacion = this.auth.nombreUsuario;
@@ -114,9 +109,9 @@ export class CompraDetailComponent implements OnInit {
     }
   }
 
-  private _buildCompraDetalle() {
+  private _toCompraDetalle(repuestos: Repuesto[]): CompraDetalle[] {
     let compraDetalle: CompraDetalle[] = [];
-    for(let repuesto of this.data) {
+    for(let repuesto of repuestos) {
       compraDetalle.push({ repuestoId: repuesto.id, cantidad: repuesto.stock });
     }
     return compraDetalle;
@@ -132,7 +127,7 @@ export class CompraDetailComponent implements OnInit {
     this.total = total;
   }
 
-  private _descripcion(repuesto: Repuesto) {
+  private _toDescripcion(repuesto: Repuesto): string {
     return repuesto.categoria.descripcion + ' ' + repuesto.marca.descripcion + ' ' +
       repuesto.modelo + ' ' + repuesto.epoca;
   }

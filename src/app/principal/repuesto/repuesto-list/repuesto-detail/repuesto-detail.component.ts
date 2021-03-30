@@ -10,7 +10,7 @@ import { Categoria, Marca, Repuesto } from '@models/entity';
 @Component({
   selector: 'app-repuesto-detail',
   templateUrl: './repuesto-detail.component.html',
-  styles: ['.h100 { height: 100px; }', '.padding { padding: 0px 25px; }']
+  styles: ['.h100 { height: 100px; }', '.padding { padding-left: 50px; }', '.wd { width: 85%; }']
 })
 export class RepuestoDetailComponent implements OnInit {
   categorias: Categoria[] = [];

@@ -46,7 +46,7 @@ export class VentaDetailComponent implements OnInit {
         this.data = venta.ventaDetalle.map(detalle => {
           const repuesto: Repuesto = detalle.repuesto;
           repuesto.stock = detalle.cantidad;
-          repuesto.descripcion = this._descripcion(detalle.repuesto);
+          repuesto.descripcion = this._toDescripcion(detalle.repuesto);
           return repuesto;
         });
         this._calcular();
@@ -65,20 +65,17 @@ export class VentaDetailComponent implements OnInit {
         const temp: Repuesto = this._hasRepuesto(result.id);
         if(temp != null) {
           temp.stock = result.stock;
-          temp.precio = result.precio;
-          this._calcular();
         } else {
           this.data = [result].concat(this.data);
-          this._calcular();
         }
+        this._calcular();
       }
     });
   }
 
   clear() {
     this.data = [];
-    this.cantidad = 0;
-    this.total = 0;
+    this._calcular();
     this.formView.resetForm();
     this.form.get('id').setValue(this.id ? this.id : this.control.generateId());
   }
@@ -97,9 +94,7 @@ export class VentaDetailComponent implements OnInit {
       dialogRef.afterClosed().subscribe(result => {
         if(result) {
           const venta: Venta = this.form.getRawValue();
-          venta.ventaDetalle = this._buildVentaDetalle();
-          venta.cantidad = this.cantidad;
-          venta.total = this.total;
+          venta.ventaDetalle = this._toVentaDetalle(this.data);
           venta.fecha = moment(venta.fecha).format('YYYY-MM-DD');
           venta.usuarioIngreso = this.auth.nombreUsuario;
           venta.usuarioModificacion = this.auth.nombreUsuario;
@@ -116,9 +111,9 @@ export class VentaDetailComponent implements OnInit {
     }
   }
 
-  private _buildVentaDetalle() {
+  private _toVentaDetalle(repuestos: Repuesto[]): VentaDetalle[] {
     let ventaDetalle: VentaDetalle[] = [];
-    for(let repuesto of this.data) {
+    for(let repuesto of repuestos) {
       ventaDetalle.push({ repuestoId: repuesto.id, cantidad: repuesto.stock });
     }
     return ventaDetalle;
@@ -134,7 +129,7 @@ export class VentaDetailComponent implements OnInit {
     this.total = total;
   }
 
-  private _descripcion(repuesto: Repuesto) {
+  private _toDescripcion(repuesto: Repuesto): string {
     return repuesto.categoria.descripcion + ' ' + repuesto.marca.descripcion + ' ' +
       repuesto.modelo + ' ' + repuesto.epoca;
   }

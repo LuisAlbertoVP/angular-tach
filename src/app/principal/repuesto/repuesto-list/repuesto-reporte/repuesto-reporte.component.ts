@@ -14,13 +14,13 @@ export class RepuestoReporteComponent implements OnInit {
   repuesto: Repuesto = null;
   
   constructor(
-    @Inject(MAT_DIALOG_DATA) public id: string,
+    @Inject(MAT_DIALOG_DATA) public data: Repuesto,
     private service: RepuestoService,
     public sharedService: SharedService
   ) {}
 
   ngOnInit(): void {
-    this.service.getReporte(this.id).subscribe(repuesto => {
+    this.service.getReporte(this.data.id).subscribe(repuesto => {
       this.repuesto = repuesto;
       this.isLoading = false;
     });

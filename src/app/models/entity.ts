@@ -27,6 +27,8 @@ export interface Categoria extends Entity {
 
 export interface Cliente extends Person {
   tipoCliente?: TipoCliente;
+  ventas?: Venta[];
+  totalVentas?: number;
 }
 
 export interface Compra extends Transaccion {

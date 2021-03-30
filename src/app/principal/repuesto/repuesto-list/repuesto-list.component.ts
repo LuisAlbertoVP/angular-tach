@@ -172,9 +172,9 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
     this.printing.printWindow(this.router.url, busqueda);
   }
 
-  openReporte(id: string) {
+  openReporte(repuesto: Repuesto) {
     this.dialog.open(RepuestoReporteComponent, {
-      width: '720px', autoFocus: false, data: id
+      width: '720px', autoFocus: false, data: repuesto
     });
   }
 
