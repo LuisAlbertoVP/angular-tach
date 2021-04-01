@@ -33,4 +33,5 @@ export interface MyChart {
   id: string;
   dataset: Dataset;
   options: any;
+  isInfinite?: boolean;
 }
