@@ -24,7 +24,7 @@ import { detailExpand } from '@animations/detailExpand';
 export class ProveedorListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  readonly displayedColumns: string[] = ['opciones', 'Descripcion', 'Convenio', 'Telefono', 'Direccion', 'accion'];
+  readonly displayedColumns: string[] = ['opciones', 'Descripcion', 'Telefono', 'WebSite', 'accion'];
   busqueda: Busqueda = BusquedaBuilder.BuildProveedor();
   criterio = new Subject();
   criterio$ = this.criterio.asObservable();
@@ -87,6 +87,13 @@ export class ProveedorListComponent implements OnInit, AfterViewInit {
         this.sharedService.showMessage(response.body.result);
       }
     });
+  }
+
+  goToWebsite(url: string) {
+    if(!url.startsWith('http://')) {
+      url = 'http://' + url;
+    }
+    window.open(url, '_blank');
   }
 
   navigateToPrincipal(busqueda: Busqueda) {

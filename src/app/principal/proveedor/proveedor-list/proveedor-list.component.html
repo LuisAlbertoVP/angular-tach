@@ -44,20 +44,18 @@
           </td>
         </ng-container>
         <ng-container matColumnDef="Descripcion">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Descripción</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
           <td mat-cell *matCellDef="let row">{{ row.descripcion }}</td>
-        </ng-container>
-        <ng-container matColumnDef="Convenio">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Convenio</th>
-          <td mat-cell *matCellDef="let row">{{ row.convenio ? 'Si' : 'No' }}</td>
         </ng-container>
         <ng-container matColumnDef="Telefono">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Teléfono</th>
           <td mat-cell *matCellDef="let row">{{ row.telefono }}</td>
         </ng-container>
-        <ng-container matColumnDef="Direccion">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Dirección</th>
-          <td mat-cell *matCellDef="let row">{{ row.direccion }}</td>
+        <ng-container matColumnDef="WebSite">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Sitio Web</th>
+          <td mat-cell *matCellDef="let row" (click)="$event.stopPropagation()">
+            <a (click)="goToWebsite(row.webSite)">{{ row.webSite }}</a>
+          </td>
         </ng-container>
         <ng-container matColumnDef="accion">
           <th mat-header-cell *matHeaderCellDef></th>
@@ -71,10 +69,8 @@
                 <dl>
                   <dt class="blue">Ingresado Por</dt><dd>{{ '"' + row.usuarioIngreso + '" ' + sharedService.parseDateTime(row.fechaIngreso) }}</dd>
                   <dt class="blue">Últ. Modificación</dt><dd>{{ '"' + row.usuarioModificacion + '" ' + sharedService.parseDateTime(row.fechaModificacion) }}</dd>
-                  <dt class="blue">Tipo de proveedor</dt><dd>{{ row.tipoProveedor ? row.tipoProveedor : 'Vacío' }}</dd>
-                  <dt class="blue">Contacto</dt><dd>{{ row.contacto ? row.contacto : 'Vacío' }}</dd>
-                  <dt class="blue">Teléfono del contacto</dt><dd>{{ row.telefonoContacto ? row.telefonoContacto : 'Vacío' }}</dd>
-                  <dt class="blue">Correo del contacto</dt><dd>{{ row.correoContacto ? row.correoContacto : 'Vacío' }}</dd>
+                  <dt class="blue">Correo</dt><dd>{{ row.correo ? row.correo : 'Vacío' }}</dd>
+                  <dt class="blue">Dirección</dt><dd>{{ row.direccion ? row.direccion : 'Vacío' }}</dd>
                 </dl>       
               </div>
             </div>

@@ -90,13 +90,10 @@ const busquedaRepuesto: Busqueda = {
 const busquedaProveedor: Busqueda = {
   filtros: [
     { id: "Descripcion", nombre: "Descripción", tipo: 'text' },
-    { id: "Convenio", nombre: "Convenio", tipo: 'text' },
     { id: "Telefono", nombre: "Teléfono", tipo: 'text' },
+    { id: "WebSite", nombre: "Sitio Web", tipo: 'text' },
     { id: "Direccion", nombre: "Dirección", tipo: 'text' },
-    { id: "TipoProveedor", nombre: "Tipo", tipo: 'text' },
-    { id: "Contacto", nombre: "Contacto", tipo: 'text' },
-    { id: "TelefonoContacto", nombre: "Teléfono", tipo: 'text' },
-    { id: "CorreoContacto", nombre: "Correo", tipo: 'text' },
+    { id: "Correo", nombre: "Correo", tipo: 'text' },
     { id: "FechaIngreso", nombre: "Ingreso", tipo: 'date' },
     { id: "FechaModificacion", nombre: "Modificación", tipo: 'date' }
   ], estado: true, operadorLogico: '&&'

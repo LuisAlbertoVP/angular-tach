@@ -64,13 +64,10 @@ export interface Person extends Entity {
 
 export interface Proveedor extends Entity {
   descripcion?: string;
-  convenio?: boolean;
   telefono?: string;
   direccion?: string;
-  tipoProveedor?: string;
-  contacto?: string;
-  telefonoContacto?: string;
-  correoContacto?: string;
+  correo?: string;
+  webSite?: string;
 }
 
 export interface Repuesto extends Entity {

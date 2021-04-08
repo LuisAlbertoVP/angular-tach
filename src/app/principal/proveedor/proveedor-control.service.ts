@@ -14,13 +14,10 @@ export class ProveedorControlService {
     return this.fb.group({
       id: [proveedor?.id ? proveedor.id : uuid()],
       descripcion: [proveedor?.descripcion, Validators.required],
-      convenio: [proveedor?.convenio ? proveedor.convenio : false],
       telefono: [proveedor?.telefono ? proveedor.telefono : ''],
       direccion: [proveedor?.direccion ? proveedor.direccion : ''],
-      tipoProveedor: [proveedor?.tipoProveedor ? proveedor.tipoProveedor : ''],
-      contacto: [proveedor?.contacto ? proveedor.contacto : ''],
-      telefonoContacto: [proveedor?.telefonoContacto ? proveedor.telefonoContacto : ''],
-      correoContacto: [proveedor?.correoContacto ? proveedor.correoContacto : '']
+      correo: [proveedor?.correo ? proveedor.correo : ''],
+      webSite: [proveedor?.webSite ? proveedor.webSite : '']
     });
   }
 }
