@@ -33,6 +33,11 @@ export interface Cliente extends Person {
 
 export interface Compra extends Transaccion {
   proveedor?: Proveedor;
+  numero?: string;
+  vendedor?: string;
+  soldTo?: string;
+  shipTo?: string;
+  ruta?: string;
   compraDetalle?: CompraDetalle[];
 }
 

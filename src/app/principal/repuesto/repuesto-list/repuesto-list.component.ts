@@ -7,7 +7,6 @@ import { PrintingService } from '@shared/printing.service';
 import { RepuestoService }  from '../repuesto.service';
 import { SharedService } from '@shared/shared.service';
 import { Busqueda, BusquedaBuilder } from '@models/busqueda';
-import { ConfirmationData } from '@models/confirmacion';
 import { Repuesto } from '@models/entity';
 import { RepuestoForm } from '@models/form';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
@@ -138,7 +137,7 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
   }
 
   openConfirmation(repuesto: Repuesto) {
-    const data: ConfirmationData = { seccion: "Repuestos", accion: "Eliminar" };
+    const data = { mensaje: "¿Está seguro de que desea eliminar definitivamente este repuesto?", accion: "Eliminar" };
     const dialogRef = this.dialog.open(ConfirmacionComponent, {
       width: '360px', autoFocus: false, disableClose: true, data: data
     });

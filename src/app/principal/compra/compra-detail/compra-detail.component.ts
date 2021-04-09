@@ -6,8 +6,7 @@ import { AuthService } from '@auth_service/*';
 import { CompraService } from '../compra.service';
 import { CompraControlService } from '../compra-control.service';
 import { SharedService } from '@shared/shared.service';
-import { Compra, CompraDetalle, Repuesto } from '@models/entity';
-import { ConfirmationData } from '@models/confirmacion';
+import { Compra, CompraDetalle, Proveedor, Repuesto } from '@models/entity';
 import { ConfirmacionComponent } from '@shared/confirmacion/confirmacion.component';
 import { RepuestoSearchComponent } from '@shared/repuesto-search/repuesto-search.component';
 import * as moment from 'moment';
@@ -24,6 +23,8 @@ export class CompraDetailComponent implements OnInit {
   data: Repuesto[] = [];
   form: FormGroup = null;
   id: string = '';
+  nombreArchivo: string = '';
+  proveedores: Proveedor[] = [];
   total: number = 0;
 
   constructor(
@@ -50,6 +51,7 @@ export class CompraDetailComponent implements OnInit {
         });
         this._calcular();
       }
+      this.proveedores = compraForm.proveedores;
       this.form = this.control.toFormGroup(compra);
     });
   }
@@ -85,7 +87,7 @@ export class CompraDetailComponent implements OnInit {
 
   guardar() {
     if(this.form.valid && this.data.length > 0) {
-      const data: ConfirmationData = { seccion: "Compras", accion: "Continuar" };
+      const data = { mensaje: "¿Desea guardar la compra?", accion: "Continuar" };
       const dialogRef = this.dialog.open(ConfirmacionComponent, {
         width: '360px', autoFocus: false, disableClose: true, data: data
       });
@@ -107,6 +109,23 @@ export class CompraDetailComponent implements OnInit {
     } else {
       this.sharedService.showErrorMessage('Compra inválida');
     }
+  }
+
+  selectFile(files: FileList) {
+    this.nombreArchivo = files[0].name;
+    console.log(files[0]);
+  }
+
+  uploadFile() {
+
+  }
+
+  downloadFile() {
+
+  }
+
+  deleteFile() {
+
   }
 
   private _toCompraDetalle(repuestos: Repuesto[]): CompraDetalle[] {

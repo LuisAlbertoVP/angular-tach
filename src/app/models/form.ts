@@ -1,4 +1,4 @@
-import { Categoria, Cliente, Compra, Marca, Rol, Venta } from "./entity";
+import { Categoria, Cliente, Compra, Marca, Proveedor, Rol, Venta } from "./entity";
 
 export interface UserForm {
   roles: Rol[];
@@ -11,6 +11,7 @@ export interface RepuestoForm {
 
 export interface CompraForm {
   compra: Compra;
+  proveedores: Proveedor[];
 }
 
 export interface VentaForm {

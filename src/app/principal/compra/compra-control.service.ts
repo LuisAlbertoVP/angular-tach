@@ -17,8 +17,16 @@ export class CompraControlService {
   toFormGroup(compra : Compra) {
     return this.fb.group({
       id: [compra?.id ? compra.id : uuid()],
+      proveedor: this.fb.group({
+        id: [compra?.proveedor?.id, Validators.required]
+      }),
       descripcion: [compra?.descripcion],
-      fecha: [compra?.fecha, Validators.required]
+      fecha: [compra?.fecha, Validators.required],
+      numero: [compra?.numero, Validators.required],
+      vendedor: [compra?.vendedor],
+      soldTo: [compra?.soldTo],
+      shipTo: [compra?.shipTo],
+      ruta: [compra?.ruta]
     });
   }
 }

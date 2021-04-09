@@ -6,7 +6,6 @@ import { MatSort } from '@angular/material/sort';
 import { CategoriaService }  from '../categoria.service';
 import { SharedService } from '@shared/shared.service';
 import { Busqueda, BusquedaBuilder } from '@models/busqueda';
-import { ConfirmationData } from '@models/confirmacion';
 import { Categoria } from '@models/entity';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { merge, of as observableOf, Subject } from 'rxjs';
@@ -103,7 +102,7 @@ export class CategoriaListComponent implements OnInit, AfterViewInit {
   }
 
   openConfirmation(categoria: Categoria) {
-    const data: ConfirmationData = { seccion: "Categorías", accion: "Eliminar" };
+    const data = { mensaje: "¿Está seguro de que desea eliminar definitivamente esta categoría?", accion: "Eliminar" };
     const dialogRef = this.dialog.open(ConfirmacionComponent, {
       width: '360px', autoFocus: false, disableClose: true, data: data
     });

@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA} from '@angular/material/dialog';
-import { ConfirmationAccept, ConfirmationData, ConfirmationDelete, ConfirmationDialog } from '@models/confirmacion';
+import { ConfirmationDialog } from '@models/confirmacion';
 
 @Component({
   selector: 'app-confirmacion',
@@ -9,10 +9,11 @@ import { ConfirmationAccept, ConfirmationData, ConfirmationDelete, ConfirmationD
 export class ConfirmacionComponent {
   dialog: ConfirmationDialog =  null;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: ConfirmationData) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: ConfirmationDialog) {
     switch(data.accion) {
-      case "Eliminar": this.dialog = new ConfirmationDelete().generate(data.seccion); break;
-      case "Continuar": this.dialog = new ConfirmationAccept().generate(data.seccion); break;
+      case "Eliminar": data.titulo = 'Advertencia'; break;
+      case "Continuar": data.titulo = 'Mensaje'; break;
     }
+    this.dialog = data;
   }
 }

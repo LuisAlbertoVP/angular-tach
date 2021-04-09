@@ -6,7 +6,6 @@ import { MatSort } from '@angular/material/sort';
 import { MarcaService }  from '../marca.service';
 import { SharedService } from '@shared/shared.service';
 import { Busqueda, BusquedaBuilder } from '@models/busqueda';
-import { ConfirmationData } from '@models/confirmacion';
 import { Marca } from '@models/entity';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { merge, of as observableOf, Subject } from 'rxjs';
@@ -103,7 +102,7 @@ export class MarcaListComponent implements OnInit, AfterViewInit {
   }
 
   openConfirmation(marca: Marca) {
-    const data: ConfirmationData = { seccion: "Marcas", accion: "Eliminar" };
+    const data = { mensaje: "¿Está seguro de que desea eliminar definitivamente esta marca?", accion: "Eliminar" };
     const dialogRef = this.dialog.open(ConfirmacionComponent, {
       width: '360px', autoFocus: false, disableClose: true, data: data
     });

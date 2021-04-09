@@ -1,9 +1,6 @@
-export type Seccion = "Categorías" | "Clientes" | "Compras" | "Cuenta" | "Marcas" | "Proveedores" | "Reportes"
-  | "Repuestos" | "Roles" | "Usuarios" | "Ventas";
-
 export interface Modulo {
   id: number;
-  descripcion?: Seccion;
+  descripcion?: string;
   ruta?: string;
   imagen?: string;
   checked?: boolean;

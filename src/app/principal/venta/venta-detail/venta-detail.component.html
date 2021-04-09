@@ -78,10 +78,10 @@
           <ng-container formGroupName="cliente">
             <mat-form-field class="no-error mt-2" appearance="outline">
               <mat-label>Cliente</mat-label>
-                <mat-select formControlName="id">
-                  <mat-option [value]="null">--</mat-option>
-                  <mat-option *ngFor="let cliente of clientes" [value]="cliente.id">{{ cliente.nombres }}</mat-option>
-                </mat-select>
+              <mat-select formControlName="id">
+                <mat-option [value]="null">--</mat-option>
+                <mat-option *ngFor="let cliente of clientes" [value]="cliente.id">{{ cliente.nombres }}</mat-option>
+              </mat-select>
             </mat-form-field>
           </ng-container>
           <mat-form-field class="no-error mt-2" appearance="outline">

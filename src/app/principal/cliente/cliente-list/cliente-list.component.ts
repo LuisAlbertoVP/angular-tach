@@ -6,7 +6,6 @@ import { MatSort } from '@angular/material/sort';
 import { SharedService } from '@shared/shared.service';
 import { ClienteService }  from '../cliente.service';
 import { Busqueda, BusquedaBuilder } from '@models/busqueda';
-import { ConfirmationData } from '@models/confirmacion';
 import { Cliente, TipoCliente } from '@models/entity';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { merge, of as observableOf, Subject } from 'rxjs';
@@ -105,7 +104,7 @@ export class ClienteListComponent implements OnInit, AfterViewInit {
   }
 
   openConfirmation(cliente: Cliente) {
-    const data: ConfirmationData = { seccion: "Clientes", accion: "Eliminar" };
+    const data = { mensaje: "¿Está seguro de que desea eliminar definitivamente este cliente?", accion: "Eliminar" };
     const dialogRef = this.dialog.open(ConfirmacionComponent, {
       width: '360px', autoFocus: false, disableClose: true, data: data
     });

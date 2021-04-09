@@ -47,6 +47,11 @@
           <td mat-cell *matCellDef="let row">{{ sharedService.parseDate(row.fecha) }}</td>
           <td mat-footer-cell *matFooterCellDef>Total</td>
         </ng-container>
+        <ng-container matColumnDef="Numero">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>No Documento</th>
+          <td mat-cell *matCellDef="let row">{{ row.numero }}</td>
+          <td mat-footer-cell *matFooterCellDef></td>
+        </ng-container>
         <ng-container matColumnDef="CompraDetalle.Sum(Cantidad)">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Cantidad</th>
           <td mat-cell *matCellDef="let row">{{ row.cantidad }}</td>
@@ -70,6 +75,10 @@
                 <dl>
                   <dt class="blue">Ingresado Por</dt><dd>{{ '"' + row.usuarioIngreso + '" ' + sharedService.parseDateTime(row.fechaIngreso) }}</dd>
                   <dt class="blue">Últ. Modificación</dt><dd>{{ '"' + row.usuarioModificacion + '" ' + sharedService.parseDateTime(row.fechaModificacion) }}</dd>
+                  <dt class="blue">Proveedor</dt><dd>{{ row.proveedor ? row.proveedor.descripcion : 'Vacío' }}</dd>
+                  <dt class="blue">Vendedor</dt><dd>{{ row.vendedor ? row.vendedor : 'Vacío' }}</dd>
+                  <dt class="blue">Vendido a</dt><dd>{{ row.soldTo ? row.soldTo : 'Vacío' }}</dd>
+                  <dt class="blue">Enviado a</dt><dd>{{ row.shipTo ? row.shipTo : 'Vacío' }}</dd>
                   <dt class="blue">Descripción</dt><dd>{{ row.descripcion ? row.descripcion : 'Vacío' }}</dd>
                 </dl>           
               </div>

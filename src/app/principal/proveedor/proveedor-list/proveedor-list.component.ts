@@ -6,7 +6,6 @@ import { MatSort } from '@angular/material/sort';
 import { ProveedorService }  from '../proveedor.service';
 import { SharedService } from '@shared/shared.service';
 import { Busqueda, BusquedaBuilder } from '@models/busqueda';
-import { ConfirmationData } from '@models/confirmacion';
 import { Proveedor } from '@models/entity';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { merge, of as observableOf, Subject } from 'rxjs';
@@ -105,7 +104,7 @@ export class ProveedorListComponent implements OnInit, AfterViewInit {
   }
 
   openConfirmation(proveedor: Proveedor) {
-    const data: ConfirmationData = { seccion: "Proveedores", accion: "Eliminar" };
+    const data = { mensaje: "¿Está seguro de que desea eliminar definitivamente este proveedor?", accion: "Eliminar" };
     const dialogRef = this.dialog.open(ConfirmacionComponent, {
       width: '360px', autoFocus: false, disableClose: true, data: data
     });

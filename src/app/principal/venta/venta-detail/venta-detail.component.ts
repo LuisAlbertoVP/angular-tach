@@ -7,7 +7,6 @@ import { SharedService } from '@shared/shared.service';
 import { VentaService } from '../venta.service';
 import { VentaControlService } from '../venta-control.service';
 import { Venta, VentaDetalle, Repuesto, Cliente } from '@models/entity';
-import { ConfirmationData } from '@models/confirmacion';
 import { ConfirmacionComponent } from '@shared/confirmacion/confirmacion.component';
 import { RepuestoSearchComponent } from '@shared/repuesto-search/repuesto-search.component';
 import * as moment from 'moment';
@@ -87,7 +86,7 @@ export class VentaDetailComponent implements OnInit {
 
   guardar() {
     if(this.form.valid && this.data.length > 0) {
-      const data: ConfirmationData = { seccion: "Ventas", accion: "Continuar" };
+      const data = { mensaje: "¿Desea guardar la venta?", accion: "Continuar" };
       const dialogRef = this.dialog.open(ConfirmacionComponent, {
         width: '360px', autoFocus: false, disableClose: true, data: data
       });

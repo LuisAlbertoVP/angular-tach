@@ -6,7 +6,6 @@ import { MatSort } from '@angular/material/sort';
 import { RolService }  from '../rol.service';
 import { SharedService } from '@shared/shared.service';
 import { Busqueda, BusquedaBuilder } from '@models/busqueda';
-import { ConfirmationData } from '@models/confirmacion';
 import { Rol } from '@models/entity';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { merge, of as observableOf, Subject } from 'rxjs';
@@ -98,7 +97,7 @@ export class RolListComponent implements OnInit, AfterViewInit {
   }
 
   openConfirmation(rol: Rol) {
-    const data: ConfirmationData = { seccion: "Roles", accion: "Eliminar" };
+    const data = { mensaje: "¿Está seguro de que desea eliminar definitivamente este rol?", accion: "Eliminar" };
     const dialogRef = this.dialog.open(ConfirmacionComponent, {
       width: '360px', autoFocus: false, disableClose: true, data: data
     });

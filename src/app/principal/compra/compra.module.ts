@@ -3,6 +3,7 @@ import { SharedModule } from '@shared/shared.module';
 import { CompraRoutingModule } from './compra-routing.module';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatSelectModule } from '@angular/material/select';
 import { CompraListComponent } from './compra-list/compra-list.component';
 import { CompraDetailComponent } from './compra-detail/compra-detail.component';
 
@@ -13,7 +14,8 @@ import { CompraDetailComponent } from './compra-detail/compra-detail.component';
     SharedModule,
     CompraRoutingModule,
     MatNativeDateModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatSelectModule
   ]
 })
 export class CompraModule { }

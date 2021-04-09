@@ -5,20 +5,23 @@ img {
   margin-top: 20px; 
   margin-bottom: 10px; 
 }
+.data > * {
+  width: 48%;
+}
+.data > :first-child {
+  margin-right: 4%;
+}
 .no-error {
   margin-bottom: -1.25em;
   width: 100%;
 }
 .table-container { 
-  max-height: 400px; 
-  height: 400px; 
+  max-height: 325px; 
+  height: 325px; 
 }
 tr.element-row:not(.expanded-row):hover { 
   background: whitesmoke; 
 }
 tr.element-row:not(.expanded-row):active { 
   background: #efefef; 
-}
-.h-descripcion{
-  height: 125px;
 }
