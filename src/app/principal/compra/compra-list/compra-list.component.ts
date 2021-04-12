@@ -82,6 +82,17 @@ export class CompraListComponent implements OnInit, AfterViewInit {
     this.initSearch();
   }
 
+  downloadFile(id: string) {
+    this.service.downloadFile(id).subscribe(response => {
+      if(response?.size) {
+        let url = window.URL.createObjectURL(response);
+        window.open(url);
+      } else {
+        this.sharedService.showErrorMessage('El archivo no existe');
+      }
+    });
+  }
+
   edit(id: string) {
     this.router.navigate(['/principal/compras/compra', id]);
   }

@@ -22,12 +22,12 @@
         <div class="col-8">
           <div class="data">
             <mat-form-field appearance="fill">
-              <mat-label>Vendido a</mat-label>
-              <textarea matInput formControlName="soldTo"></textarea>
+              <mat-label>Vendido a:</mat-label>
+              <textarea matInput formControlName="soldTo" class="htop"></textarea>
             </mat-form-field>
             <mat-form-field appearance="fill">
-              <mat-label>Enviar a</mat-label>
-              <textarea matInput formControlName="shipTo"></textarea>
+              <mat-label>Enviar a:</mat-label>
+              <textarea matInput formControlName="shipTo" class="htop"></textarea>
             </mat-form-field>
           </div>
           <div class="mat-elevation-z8 table-container">
@@ -64,14 +64,16 @@
               </tr>
             </table>  
           </div>
-          <div class="d-flex mt-3">
-            <input #file type="file" (change)="selectFile($event.target.files)" class="d-none">
-            <button mat-raised-button (click)="file.click()" type="button">Seleccionar archivo</button>
-            <span style="margin-left: 10px;">{{ nombreArchivo ? nombreArchivo : 'No ha seleccionado ningún archivo' }}</span>
-            <div class="ml-auto">
-              <button mat-icon-button (click)="uploadFile()" type="button"><mat-icon>upload</mat-icon></button>
-              <button mat-icon-button (click)="downloadFile()" type="button"><mat-icon>download</mat-icon></button>
-              <button mat-icon-button (click)="deleteFile()" type="button"><mat-icon>close</mat-icon></button>
+          <div class="d-flex file-container">
+            <input #archivo type="file" (change)="selectFile($event.target.files)" class="d-none">
+            <button mat-raised-button (click)="archivo.click()" type="button">Seleccionar archivo</button>
+            <span class="ml10">{{ nombreArchivo ? nombreArchivo : 'No ha seleccionado ningún archivo' }}</span>
+            <div *ngIf="id && nombreArchivo && !file" class="ml-auto">
+              <button mat-icon-button (click)="downloadFile(id)" type="button"><mat-icon>download</mat-icon></button>
+              <button mat-icon-button (click)="deleteFile(id)" type="button"><mat-icon>clear</mat-icon></button>
+            </div>
+            <div *ngIf="file" class="ml-auto">
+              <button mat-icon-button (click)="file=null; nombreArchivo=form.get('ruta').value" type="button"><mat-icon>remove</mat-icon></button>
             </div>
           </div>
         </div>
@@ -106,14 +108,14 @@
             <input matInput formControlName="numero" required />
             <mat-icon matSuffix>tag</mat-icon>
           </mat-form-field>
-          <mat-form-field class="no-error mt-2" appearance="outline">
+          <mat-form-field class="no-error mt-2" appearance="fill">
             <mat-label>Vendedor</mat-label>
             <input matInput formControlName="vendedor" />
             <mat-icon matSuffix>support_agent</mat-icon>
           </mat-form-field>
-          <mat-form-field class="no-error mt-2" appearance="outline">
+          <mat-form-field class="no-error mt-2" appearance="fill">
             <mat-label>Detalles de compra</mat-label>
-            <textarea matInput formControlName="descripcion" class="h-descripcion"></textarea>
+            <textarea matInput formControlName="descripcion" class="htop"></textarea>
           </mat-form-field>
         </div>
       </form>

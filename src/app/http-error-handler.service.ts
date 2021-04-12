@@ -20,10 +20,8 @@ export class HttpErrorHandlerService {
       const message = (response.error instanceof ErrorEvent) ?
       response.error.message : `codigo ${response.status} y cuerpo: ${JSON.stringify(response.error)}`;
       console.error(`${serviceName}: ${operation} fallo con: ${message}`);
-      if(response.error) {
-        if(!response.error.errors) {
-          this.snackBar.open(JSON.stringify(response.error), 'Error', {duration: 3000});
-        }
+      if(response.error && typeof response.error == 'string') {
+        this.snackBar.open(response.error, 'Error', {duration: 3000});
       }
       return of(result);
     };

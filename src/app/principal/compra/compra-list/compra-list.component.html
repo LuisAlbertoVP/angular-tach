@@ -36,6 +36,8 @@
           <td mat-cell *matCellDef="let row" (click)="$event.stopPropagation()">
             <a mat-icon-button [matMenuTriggerFor]="menu"><mat-icon>more_vert</mat-icon></a>
             <mat-menu #menu="matMenu">
+              <a mat-menu-item (click)="downloadFile(row.id)">
+                <mat-icon>download</mat-icon><span>Descargar</span></a>
               <a mat-menu-item (click)="edit(row.id)">
                 <mat-icon>edit</mat-icon><span>Modificar</span></a>
             </mat-menu>

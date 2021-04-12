@@ -21,6 +21,7 @@ export class CompraDetailComponent implements OnInit {
   cantidad: number = 0;
   displayedColumns: string[] = ['codigo', 'descripcion', 'stock', 'precio', 'total', 'accion'];
   data: Repuesto[] = [];
+  file: File = null;
   form: FormGroup = null;
   id: string = '';
   nombreArchivo: string = '';
@@ -53,6 +54,7 @@ export class CompraDetailComponent implements OnInit {
       }
       this.proveedores = compraForm.proveedores;
       this.form = this.control.toFormGroup(compra);
+      this.nombreArchivo = compra?.ruta;
     });
   }
 
@@ -76,6 +78,7 @@ export class CompraDetailComponent implements OnInit {
   clear() {
     this.data = [];
     this._calcular();
+    this.nombreArchivo = '';
     this.formView.resetForm();
     this.form.get('id').setValue(this.id ? this.id : this.control.generateId());
   }
@@ -85,6 +88,27 @@ export class CompraDetailComponent implements OnInit {
     this._calcular();
   }
 
+  deleteFile(id: string) {
+    this.service.deleteFile(id).subscribe(response => {
+      if(response.status == 200) {
+        this.nombreArchivo = '';
+        this.form.get('ruta').setValue(this.nombreArchivo);
+        this.sharedService.showMessage(response.body.result);
+      }
+    });
+  }
+
+  downloadFile(id: string) {
+    this.service.downloadFile(id).subscribe(response => {
+      if(response?.size) {
+        let url = window.URL.createObjectURL(response);
+        window.open(url);
+      } else {
+        this.sharedService.showErrorMessage('El archivo no existe');
+      }
+    });
+  }
+
   guardar() {
     if(this.form.valid && this.data.length > 0) {
       const data = { mensaje: "¿Desea guardar la compra?", accion: "Continuar" };
@@ -92,40 +116,40 @@ export class CompraDetailComponent implements OnInit {
         width: '360px', autoFocus: false, disableClose: true, data: data
       });
       dialogRef.afterClosed().subscribe(result => {
-        if(result) {
-          const compra: Compra = this.form.getRawValue();
-          compra.compraDetalle = this._toCompraDetalle(this.data);
-          compra.fecha = moment(compra.fecha).format('YYYY-MM-DD');
-          compra.usuarioIngreso = this.auth.nombreUsuario;
-          compra.usuarioModificacion = this.auth.nombreUsuario;
-          this.service.insertOrUpdate(compra).subscribe(response => {
-            if(response?.status == 200) {
-              this.sharedService.showMessage(response.body.result);
-              if(!this.id) this.clear();
-            }
-          });
-        }
+        if(result) this.guardarCompra();
       });
     } else {
       this.sharedService.showErrorMessage('Compra inválida');
     }
   }
 
+  guardarCompra() {
+    this.form.get('ruta').setValue(this.nombreArchivo);
+    const compra: Compra = this.form.getRawValue();
+    compra.compraDetalle = this._toCompraDetalle(this.data);
+    compra.fecha = moment(compra.fecha).format('YYYY-MM-DD');
+    compra.usuarioIngreso = this.auth.nombreUsuario;
+    compra.usuarioModificacion = this.auth.nombreUsuario;
+    const formData: FormData = new FormData();
+    if(this.file) formData.append('file', this.file, this.file.name);
+    this.service.insertOrUpdate(formData, compra).subscribe(responses => {
+      let band: boolean = true;
+      for(let i = 0; i < responses.length; i++) {
+        if(responses[i].status != 200) band = false;
+      }
+      if(band) {
+        this.sharedService.showMessage("Compra actualizada correctamente");
+        if(!this.id) this.clear();
+        this.file = null;
+      }
+    });
+  }
+
   selectFile(files: FileList) {
-    this.nombreArchivo = files[0].name;
-    console.log(files[0]);
-  }
-
-  uploadFile() {
-
-  }
-
-  downloadFile() {
-
-  }
-
-  deleteFile() {
-
+    if(files.length > 0) {
+      this.file = files[0];
+      this.nombreArchivo = this.file.name;
+    }
   }
 
   private _toCompraDetalle(repuestos: Repuesto[]): CompraDetalle[] {

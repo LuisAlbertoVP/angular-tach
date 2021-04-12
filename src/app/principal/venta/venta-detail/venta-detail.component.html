@@ -76,7 +76,7 @@
             <mat-icon matSuffix>location_on</mat-icon>
           </mat-form-field>
           <ng-container formGroupName="cliente">
-            <mat-form-field class="no-error mt-2" appearance="outline">
+            <mat-form-field class="no-error mt-2" appearance="fill">
               <mat-label>Cliente</mat-label>
               <mat-select formControlName="id">
                 <mat-option [value]="null">--</mat-option>
@@ -84,7 +84,7 @@
               </mat-select>
             </mat-form-field>
           </ng-container>
-          <mat-form-field class="no-error mt-2" appearance="outline">
+          <mat-form-field class="no-error mt-2" appearance="fill">
             <mat-label>Detalles de venta</mat-label>
             <textarea matInput formControlName="descripcion" class="h-descripcion"></textarea>
           </mat-form-field>
