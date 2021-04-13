@@ -12,10 +12,16 @@ a {
     text-decoration: none !important; 
 }
 dt, dd {
-    float: left;
-    width: 50%;
+    display: inline-block;
+    vertical-align: text-top;
+    
+}
+dt {
+    width: 25%;
+    word-break: break-all;
 }
 dd {
+    width: 75%;
     overflow-wrap: break-word;
 }
 legend { 
