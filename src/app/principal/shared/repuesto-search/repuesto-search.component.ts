@@ -9,7 +9,7 @@ import { Repuesto } from '@models/entity';
 @Component({
   selector: 'app-repuesto-search',
   templateUrl: './repuesto-search.component.html',
-  styles: ['.w90 { width: 90% }', '.w10 { width: 10% }']
+  styles: ['.w48 { width: 48% }', '.mr4 { margin-right: 4% }', '.no-error { margin-bottom: -1.25em; }']
 })
 export class RepuestoSearchComponent implements OnInit {
   form: FormGroup = null;
@@ -29,7 +29,9 @@ export class RepuestoSearchComponent implements OnInit {
   ngOnInit(): void {
     this.form = this.fb.group({ 
       codigo: [this.repuesto ? this.repuesto.codigo : '', Validators.required],
-      cantidad: [this.repuesto ? this.repuesto.stock : 1, [Validators.required, Validators.min(1)]]
+      cantidad: [this.repuesto ? this.repuesto.stock : '', [Validators.pattern('^[0-9]*$')]],
+      precio: [this.repuesto ? this.repuesto.precio : ''],
+      notas: [this.repuesto ? this.repuesto.notas : '']
     });
   }
 
@@ -54,7 +56,9 @@ export class RepuestoSearchComponent implements OnInit {
     if(this.form.valid) {
       const isValid: boolean = await this.buscar();
       if(isValid) {
-        this.repuesto.stock = form.cantidad;
+        this.repuesto.stock = form.cantidad ? form.cantidad : 1;
+        this.repuesto.precio = form.precio ? form.precio : this.repuesto.precio;
+        this.repuesto.notas = form.notas;
         this.repuesto.descripcion = this._toDescripcion(this.repuesto);
         this.dialogRef.close(this.repuesto);
       }

@@ -12,6 +12,7 @@ export interface RepuestoForm {
 export interface CompraForm {
   compra: Compra;
   proveedores: Proveedor[];
+  ordenes: Compra[];
 }
 
 export interface VentaForm {

@@ -103,8 +103,9 @@ const busquedaCompra: Busqueda = {
   filtros: [
     { id: "Fecha", nombre: "Fecha", tipo: 'date' },
     { id: "CompraDetalle.Sum(Cantidad)", nombre: "Cantidad", tipo: 'number', tipoNativo: 'int' },
-    { id: "CompraDetalle.Sum(Cantidad * Repuesto.Precio)", nombre: "Total", tipo: 'number' },
+    { id: "CompraDetalle.Sum(Cantidad * Precio)", nombre: "Total", tipo: 'number' },
     { id: "Proveedor.Descripcion", nombre: "Proveedor", tipo: 'text' },
+    { id: "TipoDocumento", nombre: "Tipo documento", tipo: 'text' },
     { id: "Numero", nombre: "Numero", tipo: 'text' },
     { id: "Vendedor", nombre: "Vendedor", tipo: 'text' },
     { id: "SoldTo", nombre: "Vendido a", tipo: 'text' },
@@ -119,7 +120,7 @@ const busquedaVenta: Busqueda = {
   filtros: [
     { id: "Fecha", nombre: "Fecha", tipo: 'date' },
     { id: "VentaDetalle.Sum(Cantidad)", nombre: "Cantidad", tipo: 'number', tipoNativo: 'int' },
-    { id: "VentaDetalle.Sum(Cantidad * Repuesto.Precio)", nombre: "Total", tipo: 'number' },
+    { id: "VentaDetalle.Sum(Cantidad * Precio)", nombre: "Total", tipo: 'number' },
     { id: "Cliente.Nombres", nombre: "Cliente", tipo: 'text' },
     { id: "Direccion", nombre: "Dirección", tipo: 'text' },
     { id: "Descripcion", nombre: "Descripción", tipo: 'text' },

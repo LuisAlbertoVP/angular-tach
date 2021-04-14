@@ -22,7 +22,7 @@ export class VentaListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   readonly displayedColumns: string[] = ['opciones', 'Fecha', 'Direccion', 'VentaDetalle.Sum(Cantidad)', 
-    'VentaDetalle.Sum(Cantidad * Repuesto.Precio)', 'accion'];
+    'VentaDetalle.Sum(Cantidad * Precio)', 'accion'];
   busqueda: Busqueda = BusquedaBuilder.BuildVenta();
   criterio = new Subject();
   criterio$ = this.criterio.asObservable();

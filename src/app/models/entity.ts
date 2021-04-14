@@ -33,7 +33,9 @@ export interface Cliente extends Person {
 
 export interface Compra extends Transaccion {
   proveedor?: Proveedor;
+  tipoDocumento?: string;
   numero?: string;
+  orden?: Compra;
   vendedor?: string;
   soldTo?: string;
   shipTo?: string;
@@ -43,6 +45,8 @@ export interface Compra extends Transaccion {
 
 export interface CompraDetalle {
   cantidad?: number;
+  precio?: number;
+  notas?: string;
   compraId?: string;
   repuestoId?: string;
   compra?: Compra;
@@ -87,6 +91,7 @@ export interface Repuesto extends Entity {
   subMarca?: string;
   compraDetalle?: CompraDetalle[];
   ventaDetalle?: VentaDetalle[];
+  notas?: string;
 }
 
 export interface Rol extends Entity {
@@ -129,6 +134,8 @@ export interface Venta extends Transaccion {
 
 export interface VentaDetalle {
   cantidad?: number;
+  precio?: number;
+  notas?: string;
   repuestoId?: string;
   ventaId?: string;
   repuesto?: Repuesto;

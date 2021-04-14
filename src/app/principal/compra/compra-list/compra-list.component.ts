@@ -21,8 +21,8 @@ import { detailExpand } from '@animations/detailExpand';
 export class CompraListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  readonly displayedColumns: string[] = ['opciones', 'Fecha', 'Numero', 'CompraDetalle.Sum(Cantidad)', 
-    'CompraDetalle.Sum(Cantidad * Repuesto.Precio)', 'accion'];
+  readonly displayedColumns: string[] = ['opciones', 'Fecha', 'TipoDocumento', 'Numero',
+    'CompraDetalle.Sum(Cantidad)', 'CompraDetalle.Sum(Cantidad * Precio)', 'accion'];
   busqueda: Busqueda = BusquedaBuilder.BuildCompra();
   criterio = new Subject();
   criterio$ = this.criterio.asObservable();

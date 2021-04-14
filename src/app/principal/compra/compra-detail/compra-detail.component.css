@@ -1,33 +1,35 @@
 img {
   width: 100px;
 }
-.row { 
-  margin-top: 20px; 
+.row {  
   margin-bottom: 10px; 
 }
 .htop {
   height: 50px;
 }
 .file-container {
-  margin-top: 15px;
+  margin-top: 10px;
   height: 50px;
 }
 .ml10 {
   margin-left: 10px;
 }
 .data > * {
-  width: 48%;
+  width: 49%;
 }
 .data > :first-child {
-  margin-right: 4%;
+  margin-right: 2%;
 }
 .no-error {
   margin-bottom: -1.25em;
   width: 100%;
 }
+.document .no-error {
+  width: 200px;
+}
 .table-container { 
-  max-height: 310px; 
-  height: 310px; 
+  max-height: 244px; 
+  height: 244px; 
 }
 tr.element-row:not(.expanded-row):hover { 
   background: whitesmoke; 

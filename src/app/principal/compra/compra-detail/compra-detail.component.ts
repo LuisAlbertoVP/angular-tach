@@ -19,12 +19,13 @@ import * as moment from 'moment';
 export class CompraDetailComponent implements OnInit {
   @ViewChild('formView') formView: NgForm;
   cantidad: number = 0;
-  displayedColumns: string[] = ['codigo', 'descripcion', 'stock', 'precio', 'total', 'accion'];
+  displayedColumns: string[] = ['codigo', 'descripcion', 'stock', 'precio', 'total', 'notas', 'accion'];
   data: Repuesto[] = [];
   file: File = null;
   form: FormGroup = null;
   id: string = '';
   nombreArchivo: string = '';
+  ordenes: Compra[] = [];
   proveedores: Proveedor[] = [];
   total: number = 0;
 
@@ -47,12 +48,14 @@ export class CompraDetailComponent implements OnInit {
         this.data = compra.compraDetalle.map(compraDetalle => {
           const repuesto: Repuesto = compraDetalle.repuesto;
           repuesto.stock = compraDetalle.cantidad;
+          repuesto.precio = compraDetalle.precio;
           repuesto.descripcion = this._toDescripcion(compraDetalle.repuesto);
           return repuesto;
         });
         this._calcular();
       }
       this.proveedores = compraForm.proveedores;
+      this.ordenes = compraForm.ordenes;
       this.form = this.control.toFormGroup(compra);
       this.nombreArchivo = compra?.ruta;
     });
@@ -67,6 +70,8 @@ export class CompraDetailComponent implements OnInit {
         const temp: Repuesto = this._hasRepuesto(result.id);
         if(temp != null) {
           temp.stock = result.stock;
+          temp.precio = result.precio;
+          temp.notas = result.notas;
         } else {
           this.data = [result].concat(this.data);
         }
@@ -155,7 +160,8 @@ export class CompraDetailComponent implements OnInit {
   private _toCompraDetalle(repuestos: Repuesto[]): CompraDetalle[] {
     let compraDetalle: CompraDetalle[] = [];
     for(let repuesto of repuestos) {
-      compraDetalle.push({ repuestoId: repuesto.id, cantidad: repuesto.stock });
+      compraDetalle.push({ repuestoId: repuesto.id, cantidad: repuesto.stock,
+        precio: repuesto.precio, notas: repuesto.notas });
     }
     return compraDetalle;
   }

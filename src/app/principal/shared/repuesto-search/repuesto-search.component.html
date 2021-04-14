@@ -1,12 +1,13 @@
 <form [formGroup]="form" (ngSubmit)="guardar()">
-  <h2 mat-dialog-title class="text-center blue">{{ repuesto ? 'Modificar' : 'Agregar' }}&nbsp;Repuesto</h2>
+  <h2 mat-dialog-title class="text-center blue">{{ repuesto ? 'Modificar' : 'Agregar un' }}&nbsp;repuesto</h2>
   <mat-dialog-content class="mat-typography">
     <div class="m0-auto" [style.width]="isMobile ? '250px' : '325px'">
-      <mat-form-field appearance="fill" class="w90">
+      <mat-form-field appearance="fill" class="w-100">
         <mat-label>Código</mat-label>
         <input matInput formControlName="codigo" placeholder="Ingrese código del repuesto" required />
+        <button matSuffix mat-icon-button color="primary" (click)="buscar()" type="button">
+          <mat-icon>find_replace</mat-icon></button>
       </mat-form-field>
-      <button mat-icon-button color="primary" (click)="buscar()" type="button" class="w10"><mat-icon>find_replace</mat-icon></button>
       <ul class="list-unstyled">
         <li class="d-flex"><span class="bold">Código</span>
           <span class="ml-auto">{{ repuesto?.codigo ? repuesto.codigo : 'Vacío' }}</span></li>
@@ -21,12 +22,18 @@
         <li class="d-flex"><span class="bold">Precio</span>
           <span class="ml-auto">{{ repuesto?.precio ? repuesto.precio : 'Vacío' }}</span></li>
       </ul>
-      <div class="text-center">
-        <mat-form-field appearance="outline">
+      <div *ngIf="repuesto">
+        <mat-form-field class="w48 no-error mr4" appearance="outline">
           <mat-label>Cantidad</mat-label>
-          <input matInput formControlName="cantidad" placeholder="Ingrese cantidad" type="number" required />
-          <mat-error *ngIf="form.get('cantidad').hasError('required')">Cantidad es requerida</mat-error>
-          <mat-error *ngIf="form.get('cantidad').hasError('min')">La cantidad debe ser mayor a 0</mat-error>
+          <input matInput formControlName="cantidad" placeholder="Ingrese cantidad" type="number" />
+        </mat-form-field>
+        <mat-form-field class="w48 no-error" appearance="outline">
+          <mat-label>Precio</mat-label>
+          <input matInput formControlName="precio" placeholder="Ingrese precio" type="number" />
+        </mat-form-field>
+        <mat-form-field class="w-100 no-error" appearance="outline">
+          <mat-label>Notas</mat-label>
+          <textarea matInput formControlName="notas" placeholder="Ingrese notas"></textarea>
         </mat-form-field>
       </div>
     </div>

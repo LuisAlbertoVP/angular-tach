@@ -20,8 +20,12 @@ export class CompraControlService {
       proveedor: this.fb.group({
         id: [compra?.proveedor?.id, Validators.required]
       }),
+      orden: this.fb.group({
+        id: [compra?.orden?.id]
+      }),
       descripcion: [compra?.descripcion],
       fecha: [compra?.fecha, Validators.required],
+      tipoDocumento: [compra?.tipoDocumento, Validators.required],
       numero: [compra?.numero, Validators.required],
       vendedor: [compra?.vendedor],
       soldTo: [compra?.soldTo],

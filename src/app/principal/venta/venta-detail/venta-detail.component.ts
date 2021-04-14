@@ -20,7 +20,7 @@ export class VentaDetailComponent implements OnInit {
   @ViewChild('formView') formView: NgForm;
   cantidad: number = 0;
   clientes: Cliente[] = [];
-  displayedColumns: string[] = ['codigo', 'descripcion', 'stock', 'precio', 'total', 'accion'];
+  displayedColumns: string[] = ['codigo', 'descripcion', 'stock', 'precio', 'total', 'notas', 'accion'];
   data: Repuesto[] = [];
   form: FormGroup = null;
   id: string = '';
@@ -45,6 +45,8 @@ export class VentaDetailComponent implements OnInit {
         this.data = venta.ventaDetalle.map(detalle => {
           const repuesto: Repuesto = detalle.repuesto;
           repuesto.stock = detalle.cantidad;
+          repuesto.precio = detalle.precio;
+          repuesto.notas = detalle.notas;
           repuesto.descripcion = this._toDescripcion(detalle.repuesto);
           return repuesto;
         });
@@ -64,6 +66,8 @@ export class VentaDetailComponent implements OnInit {
         const temp: Repuesto = this._hasRepuesto(result.id);
         if(temp != null) {
           temp.stock = result.stock;
+          temp.precio = result.precio;
+          temp.notas = result.notas;
         } else {
           this.data = [result].concat(this.data);
         }
@@ -113,7 +117,8 @@ export class VentaDetailComponent implements OnInit {
   private _toVentaDetalle(repuestos: Repuesto[]): VentaDetalle[] {
     let ventaDetalle: VentaDetalle[] = [];
     for(let repuesto of repuestos) {
-      ventaDetalle.push({ repuestoId: repuesto.id, cantidad: repuesto.stock });
+      ventaDetalle.push({ repuestoId: repuesto.id, cantidad: repuesto.stock, 
+        precio: repuesto.precio, notas: repuesto.notas });
     }
     return ventaDetalle;
   }

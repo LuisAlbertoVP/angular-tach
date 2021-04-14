@@ -16,7 +16,7 @@
               </li>
             </ul>
           </div>
-          <div>{{ 'Cantidad: ' + busqueda.cantidad + ' Stock: ' + stock + ' Total: ' + total }}</div>
+          <div>{{ 'Cantidad: ' + busqueda.cantidad + ', Total stock: ' + stock + ', Total: ' + (total | currency) }}</div>
         </div>
         <div class="ml-auto"><img src="assets/logo.png" /></div>
       </div>
@@ -24,17 +24,17 @@
   </th></tr></thead>
   <tbody><tr><td>
     <div class="p-2">
-      <ng-container *ngFor="let repuesto of repuestos">
+      <ng-container *ngFor="let repuesto of repuestos; let i=index">
         <div class="d-flex w-100">
-          <span>{{ '[' + repuesto.categoria.descripcion + ' ' + repuesto.marca.descripcion + ']' }}</span>&nbsp;
-          <span>{{ repuesto?.subMarca ? repuesto.subMarca : '' }}</span>
-          <span class="ml-auto codigo">{{ repuesto.codigo }}</span>
+          <span>{{ (i + 1) + ') ' + repuesto.categoria.descripcion + ' ' + repuesto.marca.descripcion + '.-' }}</span>&nbsp;
+          <span>{{ '"stock: ' + repuesto.stock + ', precio: ' + (repuesto.precio  | currency) + '"'}}</span>
+          <span class="ml-auto codigo">{{ repuesto.codigo }}</span>&nbsp;
+          <span>{{ '[' + repuesto.modelo + ']' }}</span>
         </div>
-        <div class="d-flex w-100">
-          <span>{{ 'Stock: ' + repuesto.stock + ' Precio: ' + repuesto.precio }}</span>
-          <span class="ml-auto">{{ repuesto.modelo }}</span>
+        <div class="spacer">
+          <span>{{ repuesto.descripcion }}</span>
+          <span *ngIf="repuesto?.subMarca">&nbsp;{{ '{' + repuesto.subMarca + '}' }}</span>
         </div>
-        <div class="spacer">{{ repuesto.descripcion }}</div>
       </ng-container>
     </div>
   </td></tr></tbody>
