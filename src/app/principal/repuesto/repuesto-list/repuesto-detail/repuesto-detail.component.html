@@ -1,6 +1,6 @@
 <mat-spinner *ngIf="!form; else elseBlock" color="accent" mode="indeterminate" class="m0-auto"></mat-spinner>
 <ng-template #elseBlock>
-  <form [formGroup]="form" (ngSubmit)="guardar()">
+  <form [formGroup]="form" (ngSubmit)="guardar()" autocomplete="off">
     <h2 mat-dialog-title class="text-center blue">{{ !repuesto ? 'Nuevo Repuesto' : 'Modificar Repuesto' }}</h2>
     <mat-dialog-content class="mat-typography">
       <div class="row padding">

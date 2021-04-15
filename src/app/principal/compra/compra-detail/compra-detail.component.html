@@ -18,7 +18,7 @@
   <div class="w-100 p-3 mt-3 shadow">
     <mat-spinner *ngIf="!form; else elseBlock" color="accent" class="m0-auto"></mat-spinner>
     <ng-template #elseBlock>
-      <form form #formView="ngForm" [formGroup]="form" (ngSubmit)="guardar()" class="row">
+      <form form #formView="ngForm" [formGroup]="form" (ngSubmit)="guardar()" class="row" autocomplete="off">
         <div class="col-8">
           <div class="d-flex flex-wrap justify-content-between document mb-3">
             <mat-form-field class="no-error" appearance="fill">

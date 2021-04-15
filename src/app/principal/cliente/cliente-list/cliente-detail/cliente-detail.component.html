@@ -1,4 +1,4 @@
-<form [formGroup]="form" (ngSubmit)="guardar()">
+<form [formGroup]="form" (ngSubmit)="guardar()" autocomplete="off">
   <h2 mat-dialog-title class="text-center blue">{{ !cliente ? 'Nuevo Cliente' : 'Modificar Cliente' }}</h2>
   <mat-dialog-content class="mat-typography">
     <div class="m0-auto" [style.width]="isMobile ? '250px' : '325px'">

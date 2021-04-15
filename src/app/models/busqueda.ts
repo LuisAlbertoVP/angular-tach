@@ -144,12 +144,12 @@ export class BusquedaBuilder {
     this.sort = sort;
   }
 
-  newBusqueda(currentBusqueda: Busqueda, orden: string = 'FechaModificacion') {
+  newBusqueda(currentBusqueda: Busqueda) {
     let busqueda: Busqueda = {
       cantidad: this.paginator.pageSize, estado: currentBusqueda.estado, filtros: [], 
       operadorLogico: currentBusqueda.operadorLogico, pagina: this.paginator.pageIndex,
-      orden: { 
-        activo: this.sort.active ? this.sort.active : orden, 
+      orden: {
+        activo: this.sort.active ? this.sort.active : 'FechaModificacion', 
         direccion: this.sort.direction ? this.sort.direction : 'desc' 
       }
     };

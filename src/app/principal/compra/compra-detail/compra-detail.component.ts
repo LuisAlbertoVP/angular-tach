@@ -69,7 +69,7 @@ export class CompraDetailComponent implements OnInit {
       if(result) {
         const temp: Repuesto = this._hasRepuesto(result.id);
         if(temp != null) {
-          temp.stock = result.stock;
+          temp.stock = repuesto ? result.stock : temp.stock + result.stock;
           temp.precio = result.precio;
           temp.notas = result.notas;
         } else {

@@ -1,6 +1,6 @@
 <mat-spinner *ngIf="!form; else elseBlock" color="accent" mode="indeterminate" class="m0-auto"></mat-spinner>
 <ng-template #elseBlock>
-  <form [formGroup]="form" (ngSubmit)="guardar()">
+  <form [formGroup]="form" (ngSubmit)="guardar()" autocomplete="off">
     <h2 mat-dialog-title class="text-center blue">{{ !usuario ? 'Nuevo Usuario' : 'Modificar Usuario' }}</h2>
     <mat-dialog-content class="mat-typography">
       <div class="m0-auto" [style.width]="isMobile ? '250px' : '325px'">

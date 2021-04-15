@@ -61,7 +61,7 @@ export class CompraListComponent implements OnInit, AfterViewInit {
     merge(this.criterio$, this.sort.sortChange, this.paginator.page).pipe(
       startWith({}), switchMap(() => {
         this.isLoadingResults = true;
-        return this.service.getAll(builder.newBusqueda(this.busqueda, 'Fecha'));
+        return this.service.getAll(builder.newBusqueda(this.busqueda));
       }), map(response => {
         this.isLoadingResults = false;
         this.isRateLimitReached = false;

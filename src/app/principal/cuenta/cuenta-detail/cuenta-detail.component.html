@@ -4,7 +4,7 @@
       <h2 class="text-center blue">Perfil de usuario</h2>
       <mat-spinner *ngIf="!form; else elseBlock" color="accent" mode="indeterminate" class="m0-auto"></mat-spinner>
       <ng-template #elseBlock>
-        <form [formGroup]="form" (ngSubmit)="guardar()" class="row pl">
+        <form [formGroup]="form" (ngSubmit)="guardar()" class="row pl" autocomplete="off">
           <fieldset class="col-md-12 col-lg-6 mt-3">
             <legend class="mb-3 blue">Datos personales</legend>
             <mat-form-field class="w-75" appearance="outline">

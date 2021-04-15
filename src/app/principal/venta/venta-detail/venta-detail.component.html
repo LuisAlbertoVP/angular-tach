@@ -57,7 +57,7 @@
             </tr>
           </table>  
         </div>
-        <form #formView="ngForm" [formGroup]="form" (ngSubmit)="guardar()" class="col-4">
+        <form #formView="ngForm" [formGroup]="form" (ngSubmit)="guardar()" class="col-4" autocomplete="off">
           <div class="d-flex">
             <button mat-icon-button color="primary" (click)="openBusqueda()" type="button"><mat-icon>add_shopping_cart</mat-icon></button>
             <button mat-icon-button color="primary" type="submit" class="ml-auto"><mat-icon>point_of_sale</mat-icon></button>
