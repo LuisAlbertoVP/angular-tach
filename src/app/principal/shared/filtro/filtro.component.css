@@ -16,13 +16,6 @@ h1 {
     overflow: hidden;
     text-overflow: ellipsis;
 }
-.content { 
-    width: 90%; 
-    margin: 0 auto; 
-}
 .mt-flex { 
     margin-top: 15px; 
-}
-.w100 { 
-    width: 100px; 
 }

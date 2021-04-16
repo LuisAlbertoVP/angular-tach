@@ -5,7 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { CompraService }  from '../compra.service';
 import { SharedService } from '@shared/shared.service';
-import { Busqueda, BusquedaBuilder } from '@models/busqueda';
+import { Busqueda, BusquedaFactory, BusquedaBuilder, busquedaCompra } from '@models/busqueda';
 import { Compra } from '@models/entity';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { merge, of as observableOf, Subject } from 'rxjs';
@@ -23,9 +23,9 @@ export class CompraListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
   readonly displayedColumns: string[] = ['opciones', 'Fecha', 'TipoDocumento', 'Numero',
     'CompraDetalle.Sum(Cantidad)', 'CompraDetalle.Sum(Cantidad * Precio)', 'accion'];
-  busqueda: Busqueda = BusquedaBuilder.BuildCompra();
-  criterio = new Subject();
-  criterio$ = this.criterio.asObservable();
+  busqueda: BusquedaBuilder = { rootBusqueda: busquedaCompra };
+  customEvent = new Subject();
+  customEvent$ = this.customEvent.asObservable();
   data: Compra[] = [];
   expandedElement: Compra = null;
   isLoadingResults: boolean = true;
@@ -50,18 +50,19 @@ export class CompraListComponent implements OnInit, AfterViewInit {
     this.activedRoute.queryParamMap.subscribe(params => {
       const busqueda: Busqueda = JSON.parse(params.get('busqueda'));
       if(busqueda) {
-        this.busqueda = busqueda;
+        this.busqueda.nextBusqueda = busqueda;
         this.initSearch();
       }
     });
   }
 
   ngAfterViewInit(): void {
-    const builder = new BusquedaBuilder(this.criterio$, this.paginator, this.sort);
-    merge(this.criterio$, this.sort.sortChange, this.paginator.page).pipe(
+    const builder = new BusquedaFactory(this.customEvent$, this.paginator, this.sort);
+    merge(this.customEvent$, this.sort.sortChange, this.paginator.page).pipe(
       startWith({}), switchMap(() => {
         this.isLoadingResults = true;
-        return this.service.getAll(builder.newBusqueda(this.busqueda));
+        this.busqueda.nextBusqueda = builder.newBusqueda(this.busqueda.nextBusqueda);
+        return this.service.getAll(this.busqueda.nextBusqueda);
       }), map(response => {
         this.isLoadingResults = false;
         this.isRateLimitReached = false;
@@ -78,7 +79,7 @@ export class CompraListComponent implements OnInit, AfterViewInit {
   }
 
   changeEstado() {
-    this.busqueda.estado = !this.busqueda.estado;
+    this.busqueda.nextBusqueda.estado = !this.busqueda.nextBusqueda.estado;
     this.initSearch();
   }
 
@@ -97,29 +98,23 @@ export class CompraListComponent implements OnInit, AfterViewInit {
     this.router.navigate(['/principal/compras/compra', id]);
   }
 
-  navigateToPrincipal(busqueda: Busqueda) {
-    busqueda.tiempo = Date.now();
-    const extras: NavigationExtras = { 
-      queryParams: { busqueda: JSON.stringify(busqueda) }, skipLocationChange: true 
-    };
-    this.router.navigate(['/principal/compras'], extras);
-  }
-
   openFilter() {
     const dialogRef = this.dialog.open(FiltroComponent, {
       width: '720px', autoFocus: false, disableClose: true, data: this.busqueda, restoreFocus: false
     });
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result: Busqueda) => {
       if(result) {
-        this.navigateToPrincipal(result);
+        const extras: NavigationExtras = { 
+          queryParams: { busqueda: JSON.stringify(result) }, skipLocationChange: true 
+        };
+        this.router.navigate(['/principal/compras'], extras);
       }
     });
   }
 
   reload() {
-    const busqueda: Busqueda = BusquedaBuilder.BuildCompra();
-    busqueda.estado = this.busqueda.estado;
-    this.navigateToPrincipal(busqueda);
+    this.busqueda.nextBusqueda = null;
+    this.initSearch();
   }
 
   updateEstado(compra: Compra) {
@@ -133,5 +128,5 @@ export class CompraListComponent implements OnInit, AfterViewInit {
     });
   }
 
-  initSearch = () => this.criterio.next();
+  initSearch = () => this.customEvent.next();
 }

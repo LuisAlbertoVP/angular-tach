@@ -6,7 +6,7 @@ import { MatSort } from '@angular/material/sort';
 import { PrintingService } from '@shared/printing.service';
 import { RepuestoService }  from '../repuesto.service';
 import { SharedService } from '@shared/shared.service';
-import { Busqueda, BusquedaBuilder } from '@models/busqueda';
+import { Busqueda, BusquedaFactory, BusquedaBuilder, busquedaRepuesto } from '@models/busqueda';
 import { Repuesto } from '@models/entity';
 import { RepuestoForm } from '@models/form';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
@@ -29,10 +29,10 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
   readonly mobileColumns: string[] = ['opciones', 'Codigo', 'Modelo', 'Stock', 'Precio', 'accion'];
   readonly normalColumns: string[] = ['opciones', 'Codigo', 'Categoria.Descripcion', 'Marca.Descripcion', 'Modelo', 
     'Epoca', 'Stock', 'Precio', 'Stock * Precio', 'accion'];
-  builder: BusquedaBuilder =  null;
-  busqueda: Busqueda = BusquedaBuilder.BuildRepuesto();
-  criterio = new Subject();
-  criterio$ = this.criterio.asObservable();
+  builder: BusquedaFactory =  null;
+  busqueda: BusquedaBuilder = { rootBusqueda: busquedaRepuesto };
+  customEvent = new Subject();
+  customEvent$ = this.customEvent.asObservable();
   data: Repuesto[] = [];
   expandedElement: Repuesto = null;
   isLoadingResults: boolean = true;
@@ -64,29 +64,32 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
     this.activedRoute.queryParamMap.subscribe(params => {
       const busqueda: Busqueda = JSON.parse(params.get('busqueda'));
       if(busqueda) {
-        this.busqueda = busqueda;
+        this.busqueda.nextBusqueda = busqueda;
         this.initSearch();
       }
     });
     this.activedRoute.paramMap.subscribe(params => {
       const criterio: string = params.get('id');
       if(criterio) {
-        this.busqueda = { estado: true, operadorLogico: '||', filtros: [] };
-        this.busqueda.filtros.push(
-          { id: 'Codigo', criterios: [criterio], operador: 'contiene', checked: true },
-          { id: 'Modelo', criterios: [criterio], operador: 'contiene', checked: true }
-        );
+        const busqueda: Busqueda = { 
+          estado: true, operadorLogico: '||', filtros: [
+            { id: 'Codigo', criterios: [criterio], operador: 'contiene' },
+            { id: 'Modelo', criterios: [criterio], operador: 'contiene' }
+          ]
+        };
+        this.busqueda.nextBusqueda = busqueda;
         this.initSearch();
       }
     });
   }
 
   ngAfterViewInit(): void {
-    this.builder = new BusquedaBuilder(this.criterio$, this.paginator, this.sort);
-    merge(this.criterio$, this.sort.sortChange, this.paginator.page).pipe(
+    this.builder = new BusquedaFactory(this.customEvent$, this.paginator, this.sort);
+    merge(this.customEvent$, this.sort.sortChange, this.paginator.page).pipe(
       startWith({}), switchMap(() => {
-        this.isLoadingResults = true;  
-        return this.service.getAll(this.builder.newBusqueda(this.busqueda));
+        this.isLoadingResults = true;
+        this.busqueda.nextBusqueda = this.builder.newBusqueda(this.busqueda.nextBusqueda);
+        return this.service.getAll(this.busqueda.nextBusqueda);
       }), map(response => {
         this.isLoadingResults = false;
         this.isRateLimitReached = false;
@@ -103,19 +106,18 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
     ).subscribe(data => this.data = data);
   }
 
-  buildBusquedaForm(repuestoForm: RepuestoForm): Busqueda {
-    const busqueda: Busqueda = this.busqueda.operadorLogico == '&&' ? this.busqueda : BusquedaBuilder.BuildRepuesto();
-    for(let filtro of busqueda.filtros) {
+  buildBusquedaForm(repuestoForm: RepuestoForm): BusquedaBuilder {
+    for(let filtro of this.busqueda.rootBusqueda.filtros) {
       switch(filtro.nombre) {
         case 'Marca': filtro.data = repuestoForm.marcas.map(marca => marca.descripcion); break
         case 'Categoría': filtro.data = repuestoForm.categorias.map(categoria => categoria.descripcion); break;
       }
     }
-    return busqueda;
+    return this.busqueda;
   }
 
   changeEstado() {
-    this.busqueda.estado = !this.busqueda.estado;
+    this.busqueda.nextBusqueda.estado = !this.busqueda.nextBusqueda.estado;
     this.initSearch();
   }
 
@@ -126,14 +128,6 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
         this.sharedService.showMessage(response.body.result);
       }
     });
-  }
-
-  navigateToPrincipal(busqueda: Busqueda) {
-    busqueda.tiempo = Date.now();
-    const extras: NavigationExtras = { 
-      queryParams: { busqueda: JSON.stringify(busqueda) }, skipLocationChange: true 
-    };
-    this.router.navigate(['/principal/repuestos'], extras);
   }
 
   openConfirmation(repuesto: Repuesto) {
@@ -151,8 +145,13 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
       const dialogRef = this.dialog.open(FiltroComponent, {
         width: '720px', autoFocus: false, disableClose: true, data: this.buildBusquedaForm(form), restoreFocus: false
       });
-      dialogRef.afterClosed().subscribe(result => {
-        if(result) this.navigateToPrincipal(result);
+      dialogRef.afterClosed().subscribe((result: Busqueda) => {
+        if(result) {
+          const extras: NavigationExtras = {
+            queryParams: { busqueda: JSON.stringify(result) }, skipLocationChange: true 
+          };
+          this.router.navigate(['/principal/repuestos'], extras);
+        }
       });
     });
   }
@@ -165,7 +164,7 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
   }
 
   openPrint() {
-    const busqueda: Busqueda = this.builder.newBusqueda(this.busqueda);
+    const busqueda: Busqueda = this.builder.newBusqueda(this.busqueda.nextBusqueda);
     busqueda.pagina = 0;
     busqueda.cantidad = this.resultsLength;
     this.printing.printWindow(this.router.url, busqueda);
@@ -178,10 +177,9 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
   }
 
   reload() {
-    if(this.busqueda.operadorLogico == '&&') {
-      const busqueda: Busqueda = BusquedaBuilder.BuildRepuesto();
-      busqueda.estado = this.busqueda.estado;
-      this.navigateToPrincipal(busqueda);
+    if(this.busqueda.nextBusqueda.operadorLogico == '&&') {
+      this.busqueda.nextBusqueda = null;
+      this.initSearch();
     } else {
       this.router.navigate(['/principal/repuestos']);
     }
@@ -198,5 +196,5 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
     });
   }
 
-  initSearch = () => this.criterio.next();
+  initSearch = () => this.customEvent.next();
 }

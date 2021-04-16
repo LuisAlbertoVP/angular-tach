@@ -5,7 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { SharedService } from '@shared/shared.service';
 import { ClienteService }  from '../cliente.service';
-import { Busqueda, BusquedaBuilder } from '@models/busqueda';
+import { Busqueda, BusquedaFactory, BusquedaBuilder, busquedaCliente } from '@models/busqueda';
 import { Cliente, TipoCliente } from '@models/entity';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { merge, of as observableOf, Subject } from 'rxjs';
@@ -27,9 +27,9 @@ export class ClienteListComponent implements OnInit, AfterViewInit {
   readonly mobileColumns: string[] = ['opciones', 'Nombres', 'Ventas.Sum(VentaDetalle.Sum(Cantidad))', 'accion'];
   readonly normalColumns: string[] = ['opciones', 'Nombres', 'Telefono', 'Celular', 'Correo', 
     'Ventas.Sum(VentaDetalle.Sum(Cantidad))', 'accion'];
-  busqueda: Busqueda = BusquedaBuilder.BuildCliente();
-  criterio = new Subject();
-  criterio$ = this.criterio.asObservable();
+  busqueda: BusquedaBuilder = { rootBusqueda: busquedaCliente };
+  customEvent = new Subject();
+  customEvent$ = this.customEvent.asObservable();
   data: Cliente[] = [];
   expandedElement: Cliente = null;
   isLoadingResults: boolean = true;
@@ -56,18 +56,19 @@ export class ClienteListComponent implements OnInit, AfterViewInit {
     this.activedRoute.queryParamMap.subscribe(params => {
       const busqueda: Busqueda = JSON.parse(params.get('busqueda'));
       if(busqueda) {
-        this.busqueda = busqueda;
+        this.busqueda.nextBusqueda = busqueda;
         this.initSearch();
       }
     });
   }
 
   ngAfterViewInit(): void {
-    const builder = new BusquedaBuilder(this.criterio$, this.paginator, this.sort);
-    merge(this.criterio$, this.sort.sortChange, this.paginator.page).pipe(
+    const builder = new BusquedaFactory(this.customEvent$, this.paginator, this.sort);
+    merge(this.customEvent$, this.sort.sortChange, this.paginator.page).pipe(
       startWith({}), switchMap(() => {
         this.isLoadingResults = true;
-        return this.service.getAll(builder.newBusqueda(this.busqueda));
+        this.busqueda.nextBusqueda = builder.newBusqueda(this.busqueda.nextBusqueda);
+        return this.service.getAll(this.busqueda.nextBusqueda);
       }), map(response => {
         this.isLoadingResults = false;
         this.isRateLimitReached = false;
@@ -82,7 +83,7 @@ export class ClienteListComponent implements OnInit, AfterViewInit {
   }
 
   changeEstado() {
-    this.busqueda.estado = !this.busqueda.estado;
+    this.busqueda.nextBusqueda.estado = !this.busqueda.nextBusqueda.estado;
     this.initSearch();
   }
 
@@ -93,14 +94,6 @@ export class ClienteListComponent implements OnInit, AfterViewInit {
         this.sharedService.showMessage(response.body.result);
       }
     });
-  }
-
-  navigateToPrincipal(busqueda: Busqueda) {
-    busqueda.tiempo = Date.now();
-    const extras: NavigationExtras = { 
-      queryParams: { busqueda: JSON.stringify(busqueda) }, skipLocationChange: true 
-    };
-    this.router.navigate(['/principal/clientes'], extras);
   }
 
   openConfirmation(cliente: Cliente) {
@@ -117,8 +110,13 @@ export class ClienteListComponent implements OnInit, AfterViewInit {
     const dialogRef = this.dialog.open(FiltroComponent, {
       width: '720px', autoFocus: false, disableClose: true, data: this.busqueda, restoreFocus: false
     });
-    dialogRef.afterClosed().subscribe(result => {
-      if(result) this.navigateToPrincipal(result);
+    dialogRef.afterClosed().subscribe((result: Busqueda) => {
+      if(result) {
+        const extras: NavigationExtras = { 
+          queryParams: { busqueda: JSON.stringify(result) }, skipLocationChange: true 
+        };
+        this.router.navigate(['/principal/clientes'], extras);
+      }
     });
   }
 
@@ -136,9 +134,8 @@ export class ClienteListComponent implements OnInit, AfterViewInit {
   }
 
   reload() {
-    const busqueda: Busqueda = BusquedaBuilder.BuildCliente();
-    busqueda.estado = this.busqueda.estado;
-    this.navigateToPrincipal(busqueda);
+    this.busqueda.nextBusqueda = null;
+    this.initSearch();
   }
 
   updateEstado(cliente: Cliente) {
@@ -152,6 +149,6 @@ export class ClienteListComponent implements OnInit, AfterViewInit {
     });
   }
 
-  initSearch = () => this.criterio.next();
+  initSearch = () => this.customEvent.next();
   parseTipoCliente = (tipoCliente: TipoCliente) => TipoCliente[tipoCliente];
 }

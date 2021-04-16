@@ -5,7 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { RolService }  from '../rol.service';
 import { SharedService } from '@shared/shared.service';
-import { Busqueda, BusquedaBuilder } from '@models/busqueda';
+import { Busqueda, BusquedaFactory, BusquedaBuilder, busquedaBase } from '@models/busqueda';
 import { Rol } from '@models/entity';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { merge, of as observableOf, Subject } from 'rxjs';
@@ -24,9 +24,9 @@ export class RolListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   readonly displayedColumns: string[] = ['opciones', 'Descripcion', 'FechaModificacion', 'accion'];
-  busqueda: Busqueda = BusquedaBuilder.BuildBase();
-  criterio = new Subject();
-  criterio$ = this.criterio.asObservable();
+  busqueda: BusquedaBuilder = { rootBusqueda: busquedaBase };
+  customEvent = new Subject();
+  customEvent$ = this.customEvent.asObservable();
   data: Rol[] = [];
   expandedElement: Rol = null;
   isLoadingResults: boolean = true;
@@ -49,18 +49,19 @@ export class RolListComponent implements OnInit, AfterViewInit {
     this.activedRoute.queryParamMap.subscribe(params => {
       const busqueda: Busqueda = JSON.parse(params.get('busqueda'));
       if(busqueda) {
-        this.busqueda = busqueda;
+        this.busqueda.nextBusqueda = busqueda;
         this.initSearch();
       }
     });
   }
 
   ngAfterViewInit(): void {
-    const builder = new BusquedaBuilder(this.criterio$, this.paginator, this.sort);
-    merge(this.criterio$, this.sort.sortChange, this.paginator.page).pipe(
+    const builder = new BusquedaFactory(this.customEvent$, this.paginator, this.sort);
+    merge(this.customEvent$, this.sort.sortChange, this.paginator.page).pipe(
       startWith({}), switchMap(() => {
         this.isLoadingResults = true;
-        return this.service.getAll(builder.newBusqueda(this.busqueda));
+        this.busqueda.nextBusqueda = builder.newBusqueda(this.busqueda.nextBusqueda);
+        return this.service.getAll(this.busqueda.nextBusqueda);
       }), map(response => {
         this.isLoadingResults = false;
         this.isRateLimitReached = false;
@@ -75,7 +76,7 @@ export class RolListComponent implements OnInit, AfterViewInit {
   }
 
   changeEstado() {
-    this.busqueda.estado = !this.busqueda.estado;
+    this.busqueda.nextBusqueda.estado = !this.busqueda.nextBusqueda.estado;
     this.initSearch();
   }
 
@@ -86,14 +87,6 @@ export class RolListComponent implements OnInit, AfterViewInit {
         this.sharedService.showMessage(response.body.result);
       }
     });
-  }
-
-  navigateToPrincipal(busqueda: Busqueda) {
-    busqueda.tiempo = Date.now();
-    const extras: NavigationExtras = { 
-      queryParams: { busqueda: JSON.stringify(busqueda) }, skipLocationChange: true 
-    };
-    this.router.navigate(['/principal/roles'], extras);
   }
 
   openConfirmation(rol: Rol) {
@@ -110,8 +103,13 @@ export class RolListComponent implements OnInit, AfterViewInit {
     const dialogRef = this.dialog.open(FiltroComponent, {
       width: '720px', autoFocus: false, disableClose: true, data: this.busqueda, restoreFocus: false
     });
-    dialogRef.afterClosed().subscribe(result => {
-      if(result) this.navigateToPrincipal(result);
+    dialogRef.afterClosed().subscribe((result: Busqueda) => {
+      if(result) {
+        const extras: NavigationExtras = { 
+          queryParams: { busqueda: JSON.stringify(result) }, skipLocationChange: true 
+        };
+        this.router.navigate(['/principal/roles'], extras);
+      }
     });
   }
 
@@ -123,9 +121,8 @@ export class RolListComponent implements OnInit, AfterViewInit {
   }
 
   reload() {
-    const busqueda: Busqueda = BusquedaBuilder.BuildBase();
-    busqueda.estado = this.busqueda.estado;
-    this.navigateToPrincipal(busqueda);
+    this.busqueda.nextBusqueda = null;
+    this.initSearch();
   }
 
   updateEstado(rol: Rol) {
@@ -139,5 +136,5 @@ export class RolListComponent implements OnInit, AfterViewInit {
     });
   }
 
-  initSearch = () => this.criterio.next();
+  initSearch = () => this.customEvent.next();
 }
