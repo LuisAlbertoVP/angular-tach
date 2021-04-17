@@ -14,12 +14,14 @@
               <tr>
                 <td>Fecha</td>
                 <td>Cantidad</td>
+                <td>Documento</td>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let detalle of repuesto.compraDetalle">
                 <td>{{ sharedService.parseDate(detalle.compra.fecha) }}</td>
                 <td>{{ detalle.cantidad }}</td>
+                <td>{{ detalle.compra.tipoDocumento + '# ' + detalle.compra.numero }}</td>
               </tr>
             </tbody>
           </table>

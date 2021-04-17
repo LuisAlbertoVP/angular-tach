@@ -12,6 +12,7 @@ import { merge, of as observableOf, Subject } from 'rxjs';
 import { ConfirmacionComponent } from '@shared/confirmacion/confirmacion.component';
 import { FiltroComponent } from '@shared/filtro/filtro.component';
 import { ProveedorDetailComponent } from './proveedor-detail/proveedor-detail.component';
+import { ProveedorRepuestoComponent } from './proveedor-repuesto/proveedor-repuesto.component';
 import { detailExpand } from '@animations/detailExpand';
 
 @Component({
@@ -23,7 +24,7 @@ import { detailExpand } from '@animations/detailExpand';
 export class ProveedorListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  readonly displayedColumns: string[] = ['opciones', 'Descripcion', 'Telefono', 'WebSite', 'accion'];
+  readonly displayedColumns: string[] = ['opciones', 'Descripcion', 'Telefono', 'Compras.Sum(CompraDetalle.Sum(Cantidad))', 'accion'];
   busqueda: BusquedaBuilder = { rootBusqueda: busquedaProveedor };
   customEvent = new Subject();
   customEvent$ = this.customEvent.asObservable();
@@ -90,9 +91,7 @@ export class ProveedorListComponent implements OnInit, AfterViewInit {
   }
 
   goToWebsite(url: string) {
-    if(!url.startsWith('http://')) {
-      url = 'http://' + url;
-    }
+    if(!url.startsWith('http://')) url = 'http://' + url;
     window.open(url, '_blank');
   }
 
@@ -125,6 +124,12 @@ export class ProveedorListComponent implements OnInit, AfterViewInit {
       width: '720px', autoFocus: false, disableClose: true, data: proveedor
     });
     dialogRef.afterClosed().subscribe(result => result ? this.initSearch() : null);
+  }
+
+  openRepuesto(proveedor: Proveedor) {
+    this.dialog.open(ProveedorRepuestoComponent, {
+      width: '720px', autoFocus: false, data: proveedor
+    });
   }
 
   reload() {

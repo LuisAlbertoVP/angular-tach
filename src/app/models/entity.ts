@@ -77,6 +77,8 @@ export interface Proveedor extends Entity {
   direccion?: string;
   correo?: string;
   webSite?: string;
+  compras?: Compra[];
+  totalCompras?: number;
 }
 
 export interface Repuesto extends Entity {

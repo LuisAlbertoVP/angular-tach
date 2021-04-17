@@ -40,6 +40,8 @@
                 <mat-icon>delete_forever</mat-icon><span>Eliminar</span></a>
               <a mat-menu-item (click)="openForm(row)">
                 <mat-icon>edit</mat-icon><span>Modificar</span></a>
+              <a mat-menu-item (click)="openRepuesto(row)">
+                <mat-icon>shopping_cart</mat-icon><span>Compras</span></a>
             </mat-menu>
           </td>
         </ng-container>
@@ -51,11 +53,9 @@
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Teléfono</th>
           <td mat-cell *matCellDef="let row">{{ row.telefono }}</td>
         </ng-container>
-        <ng-container matColumnDef="WebSite">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Sitio Web</th>
-          <td mat-cell *matCellDef="let row" (click)="$event.stopPropagation()">
-            <a (click)="goToWebsite(row.webSite)" class="cursor-point">{{ row.webSite }}</a>
-          </td>
+        <ng-container matColumnDef="Compras.Sum(CompraDetalle.Sum(Cantidad))">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Total Compras</th>
+          <td mat-cell *matCellDef="let row">{{ row.totalCompras }}</td>
         </ng-container>
         <ng-container matColumnDef="accion">
           <th mat-header-cell *matHeaderCellDef></th>
@@ -71,6 +71,7 @@
                   <dt class="blue">Modificado Por</dt><dd>{{ '"' + row.usuarioModificacion + '" ' + sharedService.parseDateTime(row.fechaModificacion) }}</dd>
                   <dt class="blue">Correo</dt><dd>{{ row.correo ? row.correo : 'Vacío' }}</dd>
                   <dt class="blue">Dirección</dt><dd>{{ row.direccion ? row.direccion : 'Vacío' }}</dd>
+                  <dt class="blue">Sitio Web</dt><dd><a (click)="goToWebsite(row.webSite)" class="cursor-point">{{ row.webSite }}</a></dd>
                 </dl>       
               </div>
             </div>
