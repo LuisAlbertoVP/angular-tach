@@ -38,6 +38,7 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
   isLoadingResults: boolean = true;
   isMobile: boolean = false;
   isRateLimitReached: boolean = false;
+  isTrash: boolean = true;
   resultsLength: number = 0;
   resultsStock: number = 0;
   resultsPrecio: number = 0;
@@ -74,7 +75,11 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
         const busqueda: Busqueda = { 
           estado: true, operadorLogico: '||', filtros: [
             { id: 'Codigo', criterios: [criterio], operador: 'contiene' },
-            { id: 'Modelo', criterios: [criterio], operador: 'contiene' }
+            { id: 'Modelo', criterios: [criterio], operador: 'contiene' },
+            { id: 'SubMarca', criterios: [criterio], operador: 'contiene' },
+            { id: 'Categoria.Descripcion', criterios: [criterio], operador: 'contiene' },
+            { id: 'Marca.Descripcion', criterios: [criterio], operador: 'contiene' },
+            { id: 'Descripcion', criterios: [criterio], operador: 'contiene' }
           ]
         };
         this.busqueda.nextBusqueda = busqueda;

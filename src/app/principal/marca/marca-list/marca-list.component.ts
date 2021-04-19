@@ -33,6 +33,7 @@ export class MarcaListComponent implements OnInit, AfterViewInit {
   isLoadingResults: boolean = true;
   isMobile: boolean = false;
   isRateLimitReached: boolean = false;
+  isTrash: boolean = true;
   resultsLength: number = 0;
   resultsStock: number = 0;
   resultsTotal: number = 0;

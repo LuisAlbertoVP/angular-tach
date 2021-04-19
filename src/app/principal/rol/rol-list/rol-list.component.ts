@@ -32,6 +32,7 @@ export class RolListComponent implements OnInit, AfterViewInit {
   isLoadingResults: boolean = true;
   isMobile: boolean = false;
   isRateLimitReached: boolean = false;
+  isTrash: boolean = true;
   resultsLength: number = 0;
 
   constructor(

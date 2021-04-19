@@ -27,9 +27,9 @@
             <mat-menu #menu="matMenu">
               <a mat-menu-item (click)="openForm()">
                 <mat-icon>add_box</mat-icon><span>Nuevo</span></a>
-              <a mat-menu-item (click)="changeEstado()">
-                <mat-icon>{{ busqueda.estado == 1 ? 'restore_from_trash' : 'description' }}</mat-icon>
-                <span>{{ busqueda.estado == 1 ? 'Papelera' : 'Proveedores' }}</span>
+              <a mat-menu-item (click)="changeEstado(); isTrash=!isTrash">
+                <mat-icon>{{ isTrash ? 'restore_from_trash' : 'description' }}</mat-icon>
+                <span>{{ isTrash ? 'Papelera' : 'Proveedores' }}</span>
               </a>
             </mat-menu>
           </th>

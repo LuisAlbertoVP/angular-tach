@@ -27,9 +27,7 @@ export class CuentaComponent implements OnInit {
     private snackBar: MatSnackBar
   ) { 
     breakpointObserver.observe([
-      Breakpoints.XSmall,
-      Breakpoints.Small,
-      Breakpoints.HandsetPortrait
+      Breakpoints.XSmall
     ]).subscribe(result => {
       if (result.matches) {
         this.isMobile = true;

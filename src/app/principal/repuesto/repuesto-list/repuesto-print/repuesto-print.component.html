@@ -5,7 +5,7 @@
         <div *ngIf="busqueda">
           <div *ngIf="busqueda.filtros.length > 0">
             <h2 class="bold">{{ busqueda.filtros.length > 1 ? 'Filtros' : 'Filtro' }}</h2>
-            <ul class="list-unstyled">
+            <ul *ngIf="busqueda.operadorLogico == '&&'; else elseBlock" class="list-unstyled">
               <li *ngFor="let filtro of busqueda.filtros">
                 <span class="bold">{{ filtro.id + ': ' }}</span>
                 <span *ngIf="filtro.operador == 'between'; else elseBlock">{{ 'De ' + filtro.criterio1 + ' a ' + filtro.criterio2 }}</span>
@@ -15,6 +15,9 @@
                 </ng-template>
               </li>
             </ul>
+            <ng-template #elseBlock>
+              <div>Repuestos que contienen:&nbsp;<span>{{ busqueda.filtros[0].criterios[0] }}</span></div>
+            </ng-template>
           </div>
           <div>{{ 'Cantidad: ' + busqueda.cantidad + ', Total stock: ' + stock + ', Total: ' + (total | currency) }}</div>
         </div>

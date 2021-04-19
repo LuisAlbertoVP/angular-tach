@@ -24,7 +24,8 @@ import { detailExpand } from '@animations/detailExpand';
 export class ProveedorListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  readonly displayedColumns: string[] = ['opciones', 'Descripcion', 'Telefono', 'Compras.Sum(CompraDetalle.Sum(Cantidad))', 'accion'];
+  readonly displayedColumns: string[] = ['opciones', 'Descripcion', 'Telefono', 
+    'Compras.Sum(CompraDetalle.Sum(Cantidad))', 'accion'];
   busqueda: BusquedaBuilder = { rootBusqueda: busquedaProveedor };
   customEvent = new Subject();
   customEvent$ = this.customEvent.asObservable();
@@ -33,6 +34,7 @@ export class ProveedorListComponent implements OnInit, AfterViewInit {
   isLoadingResults: boolean = true;
   isMobile: boolean = false;
   isRateLimitReached: boolean = false;
+  isTrash: boolean = true;
   resultsLength: number = 0;
 
   constructor(
