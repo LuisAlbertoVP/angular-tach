@@ -52,8 +52,7 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
     private service: RepuestoService,
     public sharedService: SharedService
   ) {
-    sharedService.buildMenuBar({ title: 'Repuestos', filterEvent: () => this.openFilter(),
-      printEvent: () => this.openPrint() });
+    sharedService.buildMenuBar({ title: 'Repuestos', filterEvent: () => this.openFilter() });
     sharedService.isMobile$.subscribe(isMobile => this.isMobile = isMobile);
   }
 

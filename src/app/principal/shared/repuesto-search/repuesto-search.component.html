@@ -20,7 +20,7 @@
         <li class="d-flex"><span class="bold">Año</span>
           <span class="ml-auto">{{ repuesto?.epoca ? repuesto.epoca : 'Vacío' }}</span></li>
         <li class="d-flex"><span class="bold">Precio</span>
-          <span class="ml-auto">{{ repuesto?.precio ? repuesto.precio : 'Vacío' }}</span></li>
+          <span class="ml-auto">{{ repuesto?.precio ? (repuesto.precio | currency) : 'Vacío' }}</span></li>
       </ul>
       <div *ngIf="repuesto">
         <mat-form-field class="w48 no-error mr4" appearance="outline">

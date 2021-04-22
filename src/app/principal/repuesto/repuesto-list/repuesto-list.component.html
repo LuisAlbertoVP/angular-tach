@@ -31,6 +31,8 @@
                 <mat-icon>{{ isTrash ? 'restore_from_trash' : 'directions_car' }}</mat-icon>
                 <span>{{ isTrash ? 'Papelera' : 'Repuestos' }}</span>
               </a>
+              <a mat-menu-item (click)="openPrint()">
+                <mat-icon>print</mat-icon><span>Imprimir</span></a>
             </mat-menu>
           </th>
           <td mat-cell *matCellDef="let row" (click)="$event.stopPropagation()">

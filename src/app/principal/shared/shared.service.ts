@@ -39,7 +39,7 @@ export class SharedService {
 
   parseArray = (array: any[]) => array.map(element => element.descripcion).join(', ');
 
-  parseDate = (fecha: string) => moment(fecha).format('DD/MM/YYYY');
+  parseDate = (fecha: string) => moment(fecha).format('MM/DD/YYYY');
 
-  parseDateTime = (fecha: string) => moment(fecha).format('DD/MM/YYYY, hh:mm:ss A');
+  parseDateTime = (fecha: string) => moment(fecha).format('MM/DD/YYYY, hh:mm:ss A');
 }
