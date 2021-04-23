@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { httpOptions, Respuesta, urlRol } from '@models/http';
+import { httpOptions, Mensaje, urlRol } from '@models/http';
 import { catchError } from 'rxjs/operators';
 import { Rol, Table } from '@models/entity';
 import { Busqueda } from '@models/busqueda';
@@ -22,12 +22,12 @@ export class RolService {
   getAll = (busqueda: Busqueda) => this.http.post<Table<Rol>>(`${urlRol}/all`, busqueda, httpOptions)
       .pipe(catchError(this.handleError<HttpResponse<Table<Rol>>>('getAll')));
 
-  insertOrUpdate = (rol: Rol) => this.http.post<Respuesta>(urlRol, rol, httpOptions)
-      .pipe(catchError(this.handleError<HttpResponse<Respuesta>>('insertOrUpdate')));
+  insertOrUpdate = (rol: Rol) => this.http.post<Mensaje>(urlRol, rol, httpOptions)
+      .pipe(catchError(this.handleError<HttpResponse<Mensaje>>('insertOrUpdate')));
 
-  setStatus = (rol: Rol) => this.http.post<Respuesta>(`${urlRol}/${rol.id}/status`, rol, httpOptions)
-      .pipe(catchError(this.handleError<HttpResponse<Respuesta>>('setStatus')));
+  setStatus = (rol: Rol) => this.http.post<Mensaje>(`${urlRol}/${rol.id}/status`, rol, httpOptions)
+      .pipe(catchError(this.handleError<HttpResponse<Mensaje>>('setStatus')));
 
-  delete = (rol: Rol) => this.http.post<Respuesta>(`${urlRol}/${rol.id}/delete`, rol, httpOptions)
-      .pipe(catchError(this.handleError<HttpResponse<Respuesta>>('delete')));
+  delete = (rol: Rol) => this.http.post<Mensaje>(`${urlRol}/${rol.id}/delete`, rol, httpOptions)
+      .pipe(catchError(this.handleError<HttpResponse<Mensaje>>('delete')));
 }

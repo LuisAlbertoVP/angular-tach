@@ -40,7 +40,7 @@ export class ClienteDetailComponent implements OnInit {
       cliente.usuarioModificacion = this.auth.nombreUsuario;
       this.service.insertOrUpdate(cliente).subscribe(response => {
         if(response?.status == 200) {
-          this.sharedService.showMessage(response.body.result);
+          this.sharedService.showMessage(response.body.texto);
           this.dialogRef.close(true);
         }
       });

@@ -103,7 +103,7 @@ export class VentaDetailComponent implements OnInit {
           venta.usuarioModificacion = this.auth.nombreUsuario;
           this.service.insertOrUpdate(venta).subscribe(response => {
             if(response?.status == 200) {
-              this.sharedService.showMessage(response.body.result);
+              this.sharedService.showMessage(response.body.texto);
               if(!this.id) this.clear();
             }
           });

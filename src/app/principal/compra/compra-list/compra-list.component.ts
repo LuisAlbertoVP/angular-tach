@@ -124,7 +124,7 @@ export class CompraListComponent implements OnInit, AfterViewInit {
     this.service.setStatus(clone).subscribe(response => {
       if(response?.status == 200) {
         this.data = this.data.filter(old => old.id != compra.id);
-        this.sharedService.showMessage(response.body.result);
+        this.sharedService.showMessage(response.body.texto);
       }
     });
   }

@@ -90,7 +90,7 @@ export class UsuarioListComponent implements OnInit, AfterViewInit {
     this.service.delete(user).subscribe(response => {
       if(response?.status == 200) {
         this.data = this.data.filter(old => old.id != user.id);
-        this.sharedService.showMessage(response.body.result);
+        this.sharedService.showMessage(response.body.texto);
       }
     });
   }
@@ -137,7 +137,7 @@ export class UsuarioListComponent implements OnInit, AfterViewInit {
     this.service.setStatus(clone).subscribe(response => {
       if(response?.status == 200) {
         this.data = this.data.filter(old => old.id != user.id);
-        this.sharedService.showMessage(response.body.result);
+        this.sharedService.showMessage(response.body.texto);
       }
     });
   }

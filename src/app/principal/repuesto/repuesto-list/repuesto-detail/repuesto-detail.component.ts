@@ -41,7 +41,7 @@ export class RepuestoDetailComponent implements OnInit {
       repuesto.usuarioModificacion = this.auth.nombreUsuario;
       this.service.insertOrUpdate(repuesto).subscribe(response => {
         if(response?.status == 200) {
-          this.sharedService.showMessage(response.body.result);
+          this.sharedService.showMessage(response.body.texto);
           this.dialogRef.close(true);
         }
       });

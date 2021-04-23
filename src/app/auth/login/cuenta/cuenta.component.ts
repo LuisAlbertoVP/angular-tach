@@ -49,7 +49,7 @@ export class CuentaComponent implements OnInit {
       user.fechaNacimiento = moment(user.fechaNacimiento).format('YYYY-MM-DD');
       this.service.addAccount(user).subscribe(response => {
         if(response?.status == 200) {
-          this.snackBar.open(response.body.result, 'Ok', {duration: 6000, panelClass: ['success']});
+          this.snackBar.open(response.body.texto, 'Ok', {duration: 6000, panelClass: ['success']});
           this.dialogRef.close();
         }
       });

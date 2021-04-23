@@ -49,7 +49,7 @@ export class RolDetailComponent implements OnInit {
       rol.usuarioModificacion = this.auth.nombreUsuario;
       this.service.insertOrUpdate(rol).subscribe(response => {
         if(response?.status == 200) {
-          this.sharedService.showMessage(response.body.result);
+          this.sharedService.showMessage(response.body.texto);
           this.dialogRef.close(true);
         }
       });

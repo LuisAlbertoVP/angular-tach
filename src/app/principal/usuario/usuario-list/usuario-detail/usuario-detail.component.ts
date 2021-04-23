@@ -52,7 +52,7 @@ export class UsuarioDetailComponent implements OnInit {
       usuario.usuarioModificacion = this.auth.nombreUsuario;
       this.service.insertOrUpdate(usuario).subscribe(response => {
         if(response?.status == 200) {
-          this.sharedService.showMessage(response.body.result);
+          this.sharedService.showMessage(response.body.texto);
           this.dialogRef.close(true);
         }
       });

@@ -41,7 +41,7 @@ export class MarcaDetailComponent implements OnInit {
       marca.usuarioModificacion = this.auth.nombreUsuario;
       this.service.insertOrUpdate(marca).subscribe(response => {
         if(response?.status == 200) {
-          this.sharedService.showMessage(response.body.result);
+          this.sharedService.showMessage(response.body.texto);
           this.dialogRef.close(true);
         }
       });

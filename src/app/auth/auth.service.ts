@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { httpOptions, url, Respuesta } from '@models/http';
+import { httpOptions, url, Mensaje } from '@models/http';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { HttpErrorHandlerService, HandleError } from '../http-error-handler.service';
@@ -39,8 +39,8 @@ export class AuthService {
     return localStorage.getItem('token_expiration');
   }
 
-  addAccount = (user: User) => this.http.post<Respuesta>(`${url}/cuenta`, user, httpOptions)
-      .pipe(catchError(this.handleError<HttpResponse<Respuesta>>('addAccount')));
+  addAccount = (user: User) => this.http.post<Mensaje>(`${url}/cuenta`, user, httpOptions)
+      .pipe(catchError(this.handleError<HttpResponse<Mensaje>>('addAccount')));
 
   getRolUser = (id: string): Observable<User> => this.http.get<User>(`${url}/cuenta/${id}/roles`)
       .pipe(catchError(this.handleError<User>('getRolUser')));

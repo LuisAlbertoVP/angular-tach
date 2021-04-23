@@ -87,7 +87,7 @@ export class ProveedorListComponent implements OnInit, AfterViewInit {
     this.service.delete(proveedor).subscribe(response => {
       if(response?.status == 200) {
         this.data = this.data.filter(old => old.id != proveedor.id);
-        this.sharedService.showMessage(response.body.result);
+        this.sharedService.showMessage(response.body.texto);
       }
     });
   }
@@ -145,7 +145,7 @@ export class ProveedorListComponent implements OnInit, AfterViewInit {
     this.service.setStatus(clone).subscribe(response => {
       if(response?.status == 200) {
         this.data = this.data.filter(old => old.id != proveedor.id);
-        this.sharedService.showMessage(response.body.result);
+        this.sharedService.showMessage(response.body.texto);
       }
     });
   }

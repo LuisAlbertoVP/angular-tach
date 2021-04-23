@@ -98,7 +98,7 @@ export class CompraDetailComponent implements OnInit {
       if(response.status == 200) {
         this.nombreArchivo = '';
         this.form.get('ruta').setValue(this.nombreArchivo);
-        this.sharedService.showMessage(response.body.result);
+        this.sharedService.showMessage(response.body.texto);
       }
     });
   }
@@ -143,7 +143,7 @@ export class CompraDetailComponent implements OnInit {
         if(responses[i].status != 200) band = false;
       }
       if(band) {
-        this.sharedService.showMessage("Compra actualizada correctamente");
+        this.sharedService.showMessage("Compra " + (this.id ? "actualizada" : "registrada") + " correctamente");
         if(!this.id) this.clear();
         this.file = null;
       }

@@ -90,7 +90,7 @@ export class MarcaListComponent implements OnInit, AfterViewInit {
     this.service.delete(marca).subscribe(response => {
       if(response?.status == 200) {
         this.data = this.data.filter(old => old.id != marca.id);
-        this.sharedService.showMessage(response.body.result);
+        this.sharedService.showMessage(response.body.texto);
       }
     });
   }
@@ -137,7 +137,7 @@ export class MarcaListComponent implements OnInit, AfterViewInit {
     this.service.setStatus(clone).subscribe(response => {
       if(response?.status == 200) {
         this.data = this.data.filter(old => old.id != marca.id);
-        this.sharedService.showMessage(response.body.result);
+        this.sharedService.showMessage(response.body.texto);
       }
     });
   }

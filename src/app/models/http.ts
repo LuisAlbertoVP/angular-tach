@@ -1,7 +1,7 @@
 import { HttpHeaders } from '@angular/common/http';
 
-export interface Respuesta {
-  result: string;
+export interface Mensaje {
+  texto: string;
 }
 
 export const httpOptions = {

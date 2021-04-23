@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { httpOptions, Respuesta, urlCompra } from '@models/http';
+import { httpOptions, Mensaje, urlCompra } from '@models/http';
 import { Observable, forkJoin } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Compra, Table } from '@models/entity';
@@ -21,8 +21,8 @@ export class CompraService {
     this.handleError = httpErrorHandler.createHandleError('CompraService');
   }
 
-  deleteFile = (id: string) => this.http.post<Respuesta>(`${urlCompra}/${id}/delete_file`, {}, httpOptions)
-      .pipe(catchError(this.handleError<HttpResponse<Respuesta>>('deleteFile')));
+  deleteFile = (id: string) => this.http.post<Mensaje>(`${urlCompra}/${id}/delete_file`, {}, httpOptions)
+      .pipe(catchError(this.handleError<HttpResponse<Mensaje>>('deleteFile')));
 
   downloadFile = (id: string): Observable<Blob> => this.http.get(`${urlCompra}/${id}/download_file`, { responseType: 'blob' })
       .pipe(catchError(this.handleError<Blob>('downloadFile')));
@@ -44,6 +44,6 @@ export class CompraService {
     return forkJoin(requests);
   }
 
-  setStatus = (compra: Compra) => this.http.post<Respuesta>(`${urlCompra}/${compra.id}/status`, compra, httpOptions)
-      .pipe(catchError(this.handleError<HttpResponse<Respuesta>>('setStatus')));
+  setStatus = (compra: Compra) => this.http.post<Mensaje>(`${urlCompra}/${compra.id}/status`, compra, httpOptions)
+      .pipe(catchError(this.handleError<HttpResponse<Mensaje>>('setStatus')));
 }

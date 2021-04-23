@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { httpOptions, Respuesta, urlCuenta } from '@models/http';
+import { httpOptions, Mensaje, urlCuenta } from '@models/http';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { User } from '@models/entity';
@@ -22,6 +22,6 @@ export class CuentaService {
   getById = (id: string): Observable<User> => this.http.get<User>(`${urlCuenta}/${id}`)
       .pipe(catchError(this.handleError<User>('getById')));
 
-  update = (user: User) => this.http.post<Respuesta>(`${urlCuenta}/update`, user, httpOptions)
-      .pipe(catchError(this.handleError<HttpResponse<Respuesta>>('update')));
+  update = (user: User) => this.http.post<Mensaje>(`${urlCuenta}/update`, user, httpOptions)
+      .pipe(catchError(this.handleError<HttpResponse<Mensaje>>('update')));
 }

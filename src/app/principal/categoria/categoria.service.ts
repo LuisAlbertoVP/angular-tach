@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { httpOptions, Respuesta, urlCategoria } from '@models/http';
+import { httpOptions, Mensaje, urlCategoria } from '@models/http';
 import { catchError } from 'rxjs/operators';
 import { Categoria, Table } from '@models/entity';
 import { Busqueda } from '@models/busqueda';
@@ -22,12 +22,12 @@ export class CategoriaService {
   getAll = (busqueda: Busqueda) => this.http.post<Table<Categoria>>(`${urlCategoria}/all`, busqueda, httpOptions)
       .pipe(catchError(this.handleError<HttpResponse<Table<Categoria>>>('getAll')));
 
-  insertOrUpdate = (categoria: Categoria) => this.http.post<Respuesta>(urlCategoria, categoria, httpOptions)
-      .pipe(catchError(this.handleError<HttpResponse<Respuesta>>('insertOrUpdate')));
+  insertOrUpdate = (categoria: Categoria) => this.http.post<Mensaje>(urlCategoria, categoria, httpOptions)
+      .pipe(catchError(this.handleError<HttpResponse<Mensaje>>('insertOrUpdate')));
 
-  setStatus = (categoria: Categoria) => this.http.post<Respuesta>(`${urlCategoria}/${categoria.id}/status`, categoria, httpOptions)
-      .pipe(catchError(this.handleError<HttpResponse<Respuesta>>('setStatus')));
+  setStatus = (categoria: Categoria) => this.http.post<Mensaje>(`${urlCategoria}/${categoria.id}/status`, categoria, httpOptions)
+      .pipe(catchError(this.handleError<HttpResponse<Mensaje>>('setStatus')));
 
-  delete = (categoria: Categoria) => this.http.post<Respuesta>(`${urlCategoria}/${categoria.id}/delete`, categoria, httpOptions)
-      .pipe(catchError(this.handleError<HttpResponse<Respuesta>>('delete')));
+  delete = (categoria: Categoria) => this.http.post<Mensaje>(`${urlCategoria}/${categoria.id}/delete`, categoria, httpOptions)
+      .pipe(catchError(this.handleError<HttpResponse<Mensaje>>('delete')));
 }
