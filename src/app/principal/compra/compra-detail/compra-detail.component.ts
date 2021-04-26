@@ -69,12 +69,11 @@ export class CompraDetailComponent implements OnInit {
       if(result) {
         const temp: Repuesto = this._hasRepuesto(result.id);
         if(temp != null) {
-          temp.stock = repuesto ? result.stock : temp.stock + result.stock;
-          temp.precio = result.precio;
-          temp.notas = result.notas;
-        } else {
-          this.data = [result].concat(this.data);
+          result.stock = repuesto ? result.stock : temp.stock + result.stock;
+          result.notas = repuesto ? result.notas : result.notas ? result.notas : temp.notas;
+          this.data = this.data.filter(r => r.id != temp.id);
         }
+        this.data = [result].concat(this.data);
         this._calcular();
       }
     });
@@ -89,7 +88,7 @@ export class CompraDetailComponent implements OnInit {
   }
 
   delete(repuesto: Repuesto) {
-    this.data = this.data.filter(r => r.id != repuesto.id)
+    this.data = this.data.filter(r => r.id != repuesto.id);
     this._calcular();
   }
 

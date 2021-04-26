@@ -29,18 +29,19 @@ export class RepuestoSearchComponent implements OnInit {
   ngOnInit(): void {
     this.form = this.fb.group({ 
       codigo: [this.repuesto ? this.repuesto.codigo : '', Validators.required],
-      cantidad: [this.repuesto ? this.repuesto.stock : '', [Validators.pattern('^[0-9]*$')]],
-      precio: [this.repuesto ? this.repuesto.precio : ''],
+      stock: [this.repuesto ? this.repuesto.stock : 1, [Validators.pattern('^[0-9]*$')]],
+      precio: [this.repuesto ? this.repuesto.precio : 0],
       notas: [this.repuesto ? this.repuesto.notas : '']
     });
   }
 
-  async buscar(): Promise<boolean> {
+  async buscar(isNewSearch: boolean = true): Promise<boolean> {
     const codigo: string = this.form.get('codigo').value;
     if(codigo?.trim()) {
       const repuesto = await this.service.getRepuesto(codigo.trim()).toPromise();
       if(repuesto) {
         this.repuesto = repuesto;
+        if(isNewSearch) this.form.get('precio').setValue(repuesto.precio);
       } else {
         this.sharedService.showErrorMessage('No existe el repuesto');
       }
@@ -52,12 +53,12 @@ export class RepuestoSearchComponent implements OnInit {
   }
 
   async guardar() {
-    const form = this.form.getRawValue();
     if(this.form.valid) {
-      const isValid: boolean = await this.buscar();
+      const isValid: boolean = await this.buscar(false);
       if(isValid) {
-        this.repuesto.stock = form.cantidad ? form.cantidad : 1;
+        const form: Repuesto = this.form.getRawValue();
         this.repuesto.precio = form.precio ? form.precio : this.repuesto.precio;
+        this.repuesto.stock = form.stock;
         this.repuesto.notas = form.notas;
         this.repuesto.descripcion = this._toDescripcion(this.repuesto);
         this.dialogRef.close(this.repuesto);
