@@ -29,10 +29,9 @@
     <div class="p-2">
       <ng-container *ngFor="let repuesto of repuestos; let i=index">
         <div class="d-flex w-100">
-          <span>{{ (i + 1) + ') ' + repuesto.categoria.descripcion + ' ' + repuesto.marca.descripcion + '.-' }}</span>&nbsp;
-          <span>{{ '"stock: ' + repuesto.stock + ', precio: ' + (repuesto.precio  | currency) + '"'}}</span>
-          <span class="ml-auto codigo">{{ repuesto.codigo }}</span>&nbsp;
-          <span>{{ '[' + repuesto.modelo + ']' }}</span>
+          <span>{{ (i + 1) + ') ' + repuesto.codigo + ' "' + repuesto.modelo + '".-' }}</span>&nbsp;
+          <span class="text-print">{{ repuesto.categoria.descripcion + ' ' + repuesto.marca.descripcion }}</span>&nbsp;
+          <span class="ml-auto">{{ 'Stock: ' + repuesto.stock }}</span>
         </div>
         <div class="spacer">
           <span>{{ repuesto.descripcion }}</span>

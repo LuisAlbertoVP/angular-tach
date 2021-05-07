@@ -5,14 +5,15 @@ div img {
   border:1px solid silver; 
   border-radius: 10px;
 }
-.codigo {
-  color: slateblue;
+.text-print {
+  font-weight: 100;
 }
 .capitalize {
   text-transform: capitalize;
 }
 .spacer { 
-  border-bottom: 1px solid lightgray; 
+  border-bottom: 1px solid lightgray;
+  font-size: 10px;
 }
 @media screen {
   :host {
