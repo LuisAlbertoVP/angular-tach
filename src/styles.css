@@ -17,11 +17,11 @@ dt, dd {
     
 }
 dt {
-    width: 25%;
-    word-break: break-all;
+    width: 30%;
+    word-wrap: break-word;
 }
 dd {
-    width: 75%;
+    width: 70%;
     overflow-wrap: break-word;
 }
 legend { 

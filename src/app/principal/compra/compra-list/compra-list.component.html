@@ -78,7 +78,7 @@
         <ng-container matColumnDef="expandedDetail">
           <td mat-cell *matCellDef="let row" [attr.colspan]="displayedColumns.length">
             <div class="element-detail" [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'">
-              <div class="m0-auto shadow p-3 mb-3" [style.width]="isMobile ? '75%' : '50%'">
+              <div class="m0-auto shadow p-3 mb-3" [style.width]="isMobile ? '85%' : '75%'">
                 <dl>
                   <dt class="blue">Ingresado Por</dt><dd>{{ '"' + row.usuarioIngreso + '" ' + sharedService.parseDateTime(row.fechaIngreso) }}</dd>
                   <dt class="blue">Modificado Por</dt><dd>{{ '"' + row.usuarioModificacion + '" ' + sharedService.parseDateTime(row.fechaModificacion) }}</dd>
