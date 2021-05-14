@@ -2,6 +2,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, NgForm } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 import { AuthService } from '@auth_service/*';
 import { CompraService } from '../compra.service';
 import { CompraControlService } from '../compra-control.service';
@@ -26,6 +28,7 @@ export class CompraDetailComponent implements OnInit {
   id: string = '';
   nombreArchivo: string = '';
   ordenes: Compra[] = [];
+  filteredOrdenes: Observable<Compra[]>;
   proveedores: Proveedor[] = [];
   total: number = 0;
 
@@ -58,6 +61,8 @@ export class CompraDetailComponent implements OnInit {
       this.ordenes = compraForm.ordenes;
       this.form = this.control.toFormGroup(compra);
       this.nombreArchivo = compra?.ruta;
+      this.filteredOrdenes = this.form.get('orden').valueChanges
+        .pipe(startWith(''),map(value => this._filter(value)));
     });
   }
 
@@ -156,15 +161,6 @@ export class CompraDetailComponent implements OnInit {
     }
   }
 
-  private _toCompraDetalle(repuestos: Repuesto[]): CompraDetalle[] {
-    let compraDetalle: CompraDetalle[] = [];
-    for(let repuesto of repuestos) {
-      compraDetalle.push({ repuestoId: repuesto.id, cantidad: repuesto.stock,
-        precio: repuesto.precio, notas: repuesto.notas });
-    }
-    return compraDetalle;
-  }
-
   private _calcular() {
     let cantidad = 0, total = 0;
     for(let repuesto of this.data) {
@@ -173,6 +169,20 @@ export class CompraDetailComponent implements OnInit {
     }
     this.cantidad = cantidad;
     this.total = total;
+  }
+
+  private _filter(value: string): Compra[] {
+    const filterValue: string = value.toLowerCase();
+    return this.ordenes.filter(orden => orden.numero.toLowerCase().includes(filterValue));
+  }
+
+  private _toCompraDetalle(repuestos: Repuesto[]): CompraDetalle[] {
+    let compraDetalle: CompraDetalle[] = [];
+    for(let repuesto of repuestos) {
+      compraDetalle.push({ repuestoId: repuesto.id, cantidad: repuesto.stock,
+        precio: repuesto.precio, notas: repuesto.notas });
+    }
+    return compraDetalle;
   }
 
   private _toDescripcion(repuesto: Repuesto): string {

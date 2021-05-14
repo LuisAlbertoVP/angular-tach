@@ -82,8 +82,8 @@
                 <dl>
                   <dt class="blue">Ingresado Por</dt><dd>{{ '"' + row.usuarioIngreso + '" ' + sharedService.parseDateTime(row.fechaIngreso) }}</dd>
                   <dt class="blue">Modificado Por</dt><dd>{{ '"' + row.usuarioModificacion + '" ' + sharedService.parseDateTime(row.fechaModificacion) }}</dd>
-                  <ng-container *ngIf="row.orden?.numero">
-                    <dt class="blue">Orden</dt><dd>{{ row.orden.numero }}</dd>
+                  <ng-container *ngIf="row.orden">
+                    <dt class="blue">Orden</dt><dd>{{ row.orden }}</dd>
                   </ng-container>
                   <dt class="blue">Proveedor</dt><dd>{{ row.proveedor ? row.proveedor.descripcion : 'Vacío' }}</dd>
                   <dt class="blue">Vendedor</dt><dd>{{ row.vendedor ? row.vendedor : 'Vacío' }}</dd>

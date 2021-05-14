@@ -4,6 +4,7 @@ import { CompraRoutingModule } from './compra-routing.module';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSelectModule } from '@angular/material/select';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { CompraListComponent } from './compra-list/compra-list.component';
 import { CompraDetailComponent } from './compra-detail/compra-detail.component';
 
@@ -15,7 +16,8 @@ import { CompraDetailComponent } from './compra-detail/compra-detail.component';
     CompraRoutingModule,
     MatNativeDateModule,
     MatDatepickerModule,
-    MatSelectModule
+    MatSelectModule,
+    MatAutocompleteModule
   ]
 })
 export class CompraModule { }

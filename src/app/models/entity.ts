@@ -35,7 +35,7 @@ export interface Compra extends Transaccion {
   proveedor?: Proveedor;
   tipoDocumento?: string;
   numero?: string;
-  orden?: Compra;
+  orden?: string;
   vendedor?: string;
   soldTo?: string;
   shipTo?: string;

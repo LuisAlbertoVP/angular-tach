@@ -113,15 +113,6 @@ export class VentaDetailComponent implements OnInit {
     }
   }
 
-  private _toVentaDetalle(repuestos: Repuesto[]): VentaDetalle[] {
-    let ventaDetalle: VentaDetalle[] = [];
-    for(let repuesto of repuestos) {
-      ventaDetalle.push({ repuestoId: repuesto.id, cantidad: repuesto.stock, 
-        precio: repuesto.precio, notas: repuesto.notas });
-    }
-    return ventaDetalle;
-  }
-
   private _calcular() {
     let cantidad = 0, total = 0;
     for(let repuesto of this.data) {
@@ -130,6 +121,15 @@ export class VentaDetailComponent implements OnInit {
     }
     this.cantidad = cantidad;
     this.total = total;
+  }
+  
+  private _toVentaDetalle(repuestos: Repuesto[]): VentaDetalle[] {
+    let ventaDetalle: VentaDetalle[] = [];
+    for(let repuesto of repuestos) {
+      ventaDetalle.push({ repuestoId: repuesto.id, cantidad: repuesto.stock, 
+        precio: repuesto.precio, notas: repuesto.notas });
+    }
+    return ventaDetalle;
   }
 
   private _toDescripcion(repuesto: Repuesto): string {

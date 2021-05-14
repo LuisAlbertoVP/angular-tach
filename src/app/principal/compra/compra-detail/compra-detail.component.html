@@ -34,13 +34,13 @@
               <input matInput formControlName="numero" type="text" required />
               <mat-icon matSuffix>tag</mat-icon>
             </mat-form-field>
-            <ng-container *ngIf="form.get('tipoDocumento').value == 'Factura'" formGroupName="orden">
+            <ng-container *ngIf="form.get('tipoDocumento').value == 'Factura'">
               <mat-form-field class="no-error" appearance="fill">
                 <mat-label>No de orden</mat-label>
-                <mat-select formControlName="id">
-                  <mat-option [value]="null">--</mat-option>
-                  <mat-option *ngFor="let orden of ordenes" [value]="orden.id">{{ orden.numero }}</mat-option>
-                </mat-select>
+                <input matInput formControlName="orden" type="text" [matAutocomplete]="auto">
+                <mat-autocomplete #auto="matAutocomplete">
+                  <mat-option *ngFor="let orden of filteredOrdenes | async" [value]="orden.numero">{{ orden.numero }}</mat-option>
+                </mat-autocomplete>
               </mat-form-field>
             </ng-container>
           </div>
