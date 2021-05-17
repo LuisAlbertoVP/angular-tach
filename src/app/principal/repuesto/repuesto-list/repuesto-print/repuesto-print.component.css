@@ -11,9 +11,11 @@ div img {
 .capitalize {
   text-transform: capitalize;
 }
+.fs-10 {
+  font-size: 10px;
+}
 .spacer { 
   border-bottom: 1px solid lightgray;
-  font-size: 10px;
 }
 @media screen {
   :host {

@@ -28,13 +28,13 @@
   <tbody><tr><td>
     <div class="p-2">
       <ng-container *ngFor="let repuesto of repuestos; let i=index">
-        <div class="d-flex w-100">
+        <div class="d-flex w-100" [class.spacer]="!printBusqueda.isDescription">
           <span>{{ (i + 1) + ') ' + repuesto.codigo + ' "' + repuesto.modelo + '".-' }}</span>
           <span class="text-print">&nbsp;{{ repuesto.categoria.descripcion + ' ' + repuesto.marca.descripcion }}</span>
           <span class="ml-auto">&nbsp;{{ 'Stock: ' + repuesto.stock }}</span>
           <span *ngIf="printBusqueda.isPrice">&nbsp;{{ 'Precio: ' + repuesto.precio }}</span>
         </div>
-        <div *ngIf="printBusqueda.isDescription" class="spacer">
+        <div *ngIf="printBusqueda.isDescription" class="fs-10 spacer">
           <span>{{ repuesto.descripcion }}</span>
           <span *ngIf="repuesto?.subMarca">&nbsp;{{ '{' + repuesto.subMarca + '}' }}</span>
         </div>
