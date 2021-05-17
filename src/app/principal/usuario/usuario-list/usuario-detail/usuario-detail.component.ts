@@ -6,7 +6,6 @@ import { SharedService } from '@shared/shared.service';
 import { UsuarioControlService } from '../../usuario-control.service';
 import { UsuarioService } from '../../usuario.service';
 import { User, Rol } from '@models/entity';
-import { SHA256 } from 'crypto-js';
 import * as moment from 'moment';
 
 @Component({
@@ -47,7 +46,7 @@ export class UsuarioDetailComponent implements OnInit {
       usuario.roles = roles;
       usuario.fechaNacimiento = moment(usuario.fechaNacimiento).format('YYYY-MM-DD');
       usuario.fechaContratacion = moment(usuario.fechaContratacion).format('YYYY-MM-DD');
-      usuario.clave = usuario.clave ? SHA256(usuario.clave).toString() : '';
+      usuario.clave = usuario.clave ? usuario.clave : '';
       usuario.usuarioIngreso = this.auth.nombreUsuario;
       usuario.usuarioModificacion = this.auth.nombreUsuario;
       this.service.insertOrUpdate(usuario).subscribe(response => {

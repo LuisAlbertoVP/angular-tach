@@ -6,7 +6,6 @@ import { AuthService } from '@auth_service/*';
 import { AuthControlService } from '../auth-control.service';
 import { CuentaComponent } from './cuenta/cuenta.component';
 import { User } from '@models/entity';
-import { SHA256 } from 'crypto-js';
 
 @Component({
   selector: 'app-login',
@@ -31,9 +30,8 @@ export class LoginComponent implements OnInit {
 
   login() {
     if(this.form.valid) {
-      const user: User = this.form.getRawValue();
-      user.clave = SHA256(user.clave).toString();
       this.isLoading = true;
+      const user: User = this.form.getRawValue();
       this.service.login(user).subscribe(response => {
         this.isLoading = false;
         if(response?.status == 200) {

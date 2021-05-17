@@ -6,7 +6,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '@auth_service/*';
 import { AuthControlService } from '../../auth-control.service';
 import { User } from '@models/entity';
-import { SHA256 } from 'crypto-js';
 import * as moment from 'moment';
 
 @Component({
@@ -44,7 +43,6 @@ export class CuentaComponent implements OnInit {
   crear() {
     if(this.form.valid) {
       const user: User = this.form.getRawValue();
-      user.clave = SHA256(user.clave).toString();
       user.usuarioIngreso = user.nombreUsuario;
       user.fechaNacimiento = moment(user.fechaNacimiento).format('YYYY-MM-DD');
       this.service.addAccount(user).subscribe(response => {
