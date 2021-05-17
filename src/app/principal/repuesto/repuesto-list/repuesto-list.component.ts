@@ -6,7 +6,7 @@ import { MatSort } from '@angular/material/sort';
 import { PrintingService } from '@shared/printing.service';
 import { RepuestoService }  from '../repuesto.service';
 import { SharedService } from '@shared/shared.service';
-import { Busqueda, BusquedaFactory, BusquedaBuilder, busquedaRepuesto } from '@models/busqueda';
+import { Busqueda, BusquedaFactory, BusquedaBuilder, busquedaRepuesto, PrintBusqueda } from '@models/busqueda';
 import { Repuesto } from '@models/entity';
 import { RepuestoForm } from '@models/form';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
@@ -16,6 +16,7 @@ import { FiltroComponent } from '@shared/filtro/filtro.component';
 import { RepuestoDetailComponent } from './repuesto-detail/repuesto-detail.component';
 import { RepuestoReporteComponent } from './repuesto-reporte/repuesto-reporte.component';
 import { detailExpand } from '@animations/detailExpand';
+import { PrintContextComponent } from './repuesto-print/print-context/print-context.component';
 
 @Component({
   selector: 'app-repuesto-list',
@@ -168,10 +169,17 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
   }
 
   openPrint() {
-    const busqueda: Busqueda = this.builder.newBusqueda(this.busqueda.nextBusqueda);
-    busqueda.pagina = 0;
-    busqueda.cantidad = this.resultsLength;
-    this.printing.printWindow(this.router.url, busqueda);
+    const dialogRef = this.dialog.open(PrintContextComponent, {
+      width: '520px', autoFocus: false, disableClose: true
+    });
+    dialogRef.afterClosed().subscribe((result: PrintBusqueda) => {
+      if(result) {
+        result.busqueda = this.builder.newBusqueda(this.busqueda.nextBusqueda);
+        result.busqueda.pagina = 0;
+        result.busqueda.cantidad = this.resultsLength;
+        this.printing.printWindow(this.router.url, result);
+      }
+    });
   }
 
   openReporte(repuesto: Repuesto) {

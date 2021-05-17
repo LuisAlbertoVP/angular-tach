@@ -34,6 +34,13 @@ export interface BusquedaBuilder {
   nextBusqueda?: Busqueda;
 }
 
+export interface PrintBusqueda {
+  busqueda?: Busqueda;
+  isHeader?: boolean;
+  isPrice?: boolean;
+  isDescription?: boolean;
+}
+
 export const busquedaBase: Busqueda = {
   filtros: [
     { id: "Descripcion", nombre: "Descripción", tipo: 'text' },

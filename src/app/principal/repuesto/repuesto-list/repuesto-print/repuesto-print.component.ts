@@ -2,7 +2,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { PrintingService } from '@shared/printing.service';
 import { RepuestoService }  from '../../repuesto.service';
-import { Busqueda } from '@models/busqueda';
+import { PrintBusqueda } from '@models/busqueda';
 import { Repuesto } from '@models/entity';
 
 @Component({
@@ -11,7 +11,7 @@ import { Repuesto } from '@models/entity';
   styleUrls: ['./repuesto-print.component.css']
 })
 export class RepuestoPrintComponent implements OnInit {
-  busqueda: Busqueda = null;
+  printBusqueda: PrintBusqueda = null;
   repuestos: Repuesto[] = [];
 
   constructor(
@@ -19,6 +19,10 @@ export class RepuestoPrintComponent implements OnInit {
     private printing: PrintingService,
     private service: RepuestoService
   ) { }
+
+  get filtros() {
+    return this.printBusqueda.busqueda.filtros;
+  }
 
   get stock() {
     return this.repuestos.reduce((previus, repuesto) => previus + repuesto.stock, 0);
@@ -30,10 +34,10 @@ export class RepuestoPrintComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.queryParamMap.subscribe(params => {
-      const busqueda: Busqueda = JSON.parse(params.get('printObject'));
-      this.service.getAll(busqueda).subscribe(response => {
-        busqueda.filtros = busqueda.filtros.filter(filtro => filtro.id != 'Id');
-        this.busqueda = busqueda;
+      const printBusqueda: PrintBusqueda = JSON.parse(params.get('printObject'));
+      this.service.getAll(printBusqueda.busqueda).subscribe(response => {
+        printBusqueda.busqueda.filtros = printBusqueda.busqueda.filtros.filter(filtro => filtro.id != 'Id');
+        this.printBusqueda = printBusqueda;
         this.repuestos = response.body.data;
         this.printing.dataOnLoad();
       });

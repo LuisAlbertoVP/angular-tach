@@ -1,12 +1,12 @@
-<table class="w-100">
+<table *ngIf="printBusqueda" class="w-100">
   <thead><tr><th>
     <div class="pt-2 pb-2">
-      <div class="d-flex w-100 p-2 header">
-        <div *ngIf="busqueda">
-          <div *ngIf="busqueda.filtros.length > 0">
-            <h2 class="bold">{{ busqueda.filtros.length > 1 ? 'Filtros' : 'Filtro' }}</h2>
-            <ul *ngIf="busqueda.operadorLogico == '&&'; else elseBlock" class="list-unstyled">
-              <li *ngFor="let filtro of busqueda.filtros">
+      <div *ngIf="printBusqueda.isHeader" class="d-flex w-100 p-2 header">
+        <div>
+          <div *ngIf="filtros.length > 0">
+            <h2 class="bold">{{ filtros.length > 1 ? 'Filtros' : 'Filtro' }}</h2>
+            <ul *ngIf="printBusqueda.busqueda.operadorLogico == '&&'; else elseBlock" class="list-unstyled">
+              <li *ngFor="let filtro of filtros">
                 <span class="bold">{{ filtro.id + ': ' }}</span>
                 <span *ngIf="filtro.operador == 'between'; else elseBlock">{{ 'De ' + filtro.criterio1 + ' a ' + filtro.criterio2 }}</span>
                 <ng-template #elseBlock>
@@ -16,10 +16,10 @@
               </li>
             </ul>
             <ng-template #elseBlock>
-              <div>Repuestos que contienen:&nbsp;<span>{{ busqueda.filtros[0].criterios[0] }}</span></div>
+              <div>Repuestos que contienen:&nbsp;<span>{{ filtros[0].criterios[0] }}</span></div>
             </ng-template>
           </div>
-          <div>{{ 'Cantidad: ' + busqueda.cantidad + ', Total stock: ' + stock + ', Total: ' + (total | currency) }}</div>
+          <div>{{ 'Cantidad: ' + printBusqueda.busqueda.cantidad + ', Total stock: ' + stock + ', Total: ' + (total | currency) }}</div>
         </div>
         <div class="ml-auto"><img src="assets/logo.png" /></div>
       </div>
@@ -29,11 +29,12 @@
     <div class="p-2">
       <ng-container *ngFor="let repuesto of repuestos; let i=index">
         <div class="d-flex w-100">
-          <span>{{ (i + 1) + ') ' + repuesto.codigo + ' "' + repuesto.modelo + '".-' }}</span>&nbsp;
-          <span class="text-print">{{ repuesto.categoria.descripcion + ' ' + repuesto.marca.descripcion }}</span>&nbsp;
-          <span class="ml-auto">{{ 'Stock: ' + repuesto.stock }}</span>
+          <span>{{ (i + 1) + ') ' + repuesto.codigo + ' "' + repuesto.modelo + '".-' }}</span>
+          <span class="text-print">&nbsp;{{ repuesto.categoria.descripcion + ' ' + repuesto.marca.descripcion }}</span>
+          <span class="ml-auto">&nbsp;{{ 'Stock: ' + repuesto.stock }}</span>
+          <span *ngIf="printBusqueda.isPrice">&nbsp;{{ 'Precio: ' + repuesto.precio }}</span>
         </div>
-        <div class="spacer">
+        <div *ngIf="printBusqueda.isDescription" class="spacer">
           <span>{{ repuesto.descripcion }}</span>
           <span *ngIf="repuesto?.subMarca">&nbsp;{{ '{' + repuesto.subMarca + '}' }}</span>
         </div>
