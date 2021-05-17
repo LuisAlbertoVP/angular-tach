@@ -25,7 +25,7 @@ export class ClienteListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   readonly mobileColumns: string[] = ['opciones', 'Nombres', 'Ventas.Sum(VentaDetalle.Sum(Cantidad))', 'accion'];
-  readonly normalColumns: string[] = ['opciones', 'Nombres', 'Telefono', 'Celular', 'Correo', 
+  readonly normalColumns: string[] = ['opciones', 'Nombres', 'Telefono', 'Celular', 'Cedula', 
     'Ventas.Sum(VentaDetalle.Sum(Cantidad))', 'accion'];
   busqueda: BusquedaBuilder = { rootBusqueda: busquedaCliente };
   customEvent = new Subject();
