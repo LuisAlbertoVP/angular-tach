@@ -4,6 +4,9 @@
 .d-flex > * {
   flex: 1;
 }
+.margin > * { 
+  margin-left: 2px; margin-right: 2px; 
+}
 .row {
   margin: 5px 0px;
 }

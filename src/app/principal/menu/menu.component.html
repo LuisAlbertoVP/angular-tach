@@ -5,9 +5,9 @@
         <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
         <h1 (click)="principal()" class="cursor-point mr-auto">{{ menuBar.title }}</h1>
       </ng-container>
-      <input *ngIf="visible" #input (keyup.enter)="search(input.value)" placeholder="Buscar en inventario" type="text" class="input-search" 
-        [class.wnormal]="!isMobile && visible" [class.wmobile]="isMobile && visible"/>
-      <a mat-icon-button (click)="visible=!visible" class="not-hover"><mat-icon>search</mat-icon></a>
+      <input *ngIf="visible" #data (keyup.enter)="search(data.value)" [class.wnormal]="!isMobile && visible" class="input-search"
+        [class.wmobile]="isMobile && visible" placeholder="Buscar en inventario" type="text" />
+      <a mat-icon-button (click)="requestFocus()" class="not-hover"><mat-icon>search</mat-icon></a>
       <a *ngIf="menuBar.filterEvent" mat-icon-button (click)="menuBar.filterEvent()" class="not-hover"><mat-icon>filter_list</mat-icon></a>
       <a mat-icon-button [matMenuTriggerFor]="menu" class="not-hover"><mat-icon>more_vert</mat-icon></a>
       <mat-menu #menu="matMenu">
@@ -49,7 +49,7 @@
     </div>
   </mat-toolbar>
   <mat-sidenav-container class="principal-sidenav">
-    <mat-sidenav #snav mode="over" [opened]="false" [fixedInViewport]="true" fixedTopGap="56">
+    <mat-sidenav #snav mode="over" [opened]="false" [fixedInViewport]="true" [autoFocus]="false" fixedTopGap="56">
       <app-sidenav (closeSidenav)="snav.toggle()"></app-sidenav>
     </mat-sidenav>
     <mat-sidenav-content>

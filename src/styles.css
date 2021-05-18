@@ -14,7 +14,6 @@ a {
 dt, dd {
     display: inline-block;
     vertical-align: text-top;
-    
 }
 dt {
     width: 30%;
@@ -32,9 +31,6 @@ tr.mat-footer-row {
 }
 .ml-auto { 
     margin-left: auto !important; 
-}
-.margin > * { 
-    margin-left: 2px; margin-right: 2px; 
 }
 .bold, .text-error { 
     font-weight: bold; 
@@ -71,7 +67,7 @@ tr.mat-footer-row {
     color: #3f51b5 
 }
 .warning .mat-simple-snackbar-action {
-    color: rgb(226, 226, 97);
+    color: #ffc107;
 }
 .shadow {
     box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;

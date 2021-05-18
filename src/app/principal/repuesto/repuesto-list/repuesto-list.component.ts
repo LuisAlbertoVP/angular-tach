@@ -178,6 +178,8 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
         result.busqueda.pagina = 0;
         result.busqueda.cantidad = this.resultsLength;
         this.printing.printWindow(this.router.url, result);
+      } else {
+        this.sharedService.showWarningMessage('La operación ha sido cancelada');
       }
     });
   }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '@auth_service/*';
 import { SharedService } from '@shared/shared.service';
@@ -10,6 +10,7 @@ import { MenuBar } from '@models/menu-bar';
   styleUrls: ['./menu.component.css']
 })
 export class MenuComponent {
+  @ViewChild('data') data: ElementRef;
   isMobile: boolean = false;
   menuBar: MenuBar = null;
   visible: boolean = false;
@@ -17,6 +18,7 @@ export class MenuComponent {
   constructor(
     private router: Router,
     private service: AuthService,
+    private cd: ChangeDetectorRef,
     private sharedService: SharedService
   ) {
     sharedService.menuBar$.subscribe(menuBar => this.menuBar = menuBar);
@@ -28,16 +30,20 @@ export class MenuComponent {
     this.service.logout();
     this.navigate('/');
   }
-  
+
   navigate = (url: string) => this.router.navigate([url]);
 
-  principal() {
-    this.navigate('/principal');
+  principal = () => this.navigate('/principal');
+
+  requestFocus() {
+    this.visible = !this.visible;
+    this.cd.detectChanges();
+    this.data.nativeElement.focus();
   }
 
   search(valor: string) {
     if(valor?.trim()) {
-      this.navigate('/principal/repuestos/' + valor.trim());
+      this.router.navigate(['/principal/repuestos', valor.trim()]);
     }
   }
 }
