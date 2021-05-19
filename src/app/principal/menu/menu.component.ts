@@ -38,7 +38,7 @@ export class MenuComponent {
   requestFocus() {
     this.visible = !this.visible;
     this.cd.detectChanges();
-    this.data.nativeElement.focus();
+    if(this.visible) this.data.nativeElement.focus();
   }
 
   search(valor: string) {
