@@ -9,7 +9,7 @@ export interface Filtro {
   criterio2?: string;
   criterios?: string[];
   data?: string[];
-  operador?: string;
+  condicion?: string;
   tipo?: string;
   tipoNativo?: string;
 }
@@ -25,7 +25,7 @@ export interface Busqueda {
   orden?: Orden;
   pagina?: number;
   cantidad?: number;
-  operadorLogico?: string;
+  operador?: string;
   tiempo?: number;
 }
 
@@ -174,8 +174,8 @@ export class BusquedaFactory {
 
   private _createFirstBusqueda(): Busqueda { 
     return {
-      estado: true, operadorLogico: '&&', filtros: [
-        { id: "Id", criterios: [''], operador: 'contiene' }
+      estado: true, operador: '&&', filtros: [
+        { id: "Id", criterios: [''], condicion: 'contiene' }
       ]
     };
   }

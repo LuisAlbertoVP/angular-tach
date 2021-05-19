@@ -67,6 +67,7 @@
             <input matInput formControlName="salario" placeholder="Ingrese salario" type="number" required />
             <mat-icon matSuffix>monetization_on</mat-icon>
             <mat-error *ngIf="form.get('salario').hasError('required')">Salario es requerido</mat-error>
+            <mat-error *ngIf="form.get('salario').hasError('pattern')">Salario inválido</mat-error>
           </mat-form-field>
         </fieldset>
         <fieldset class="mt-3 mb-2">

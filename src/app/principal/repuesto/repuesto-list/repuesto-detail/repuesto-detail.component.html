@@ -42,14 +42,15 @@
             <mat-label>Stock</mat-label>
             <input matInput formControlName="stock" placeholder="Ingrese un stock" type="number" required />
             <mat-icon matSuffix>inventory</mat-icon>
-            <mat-error *ngIf="form.get('stock').hasError('required')">Stock requerida</mat-error>
-            <mat-error *ngIf="form.get('stock').hasError('pattern')">Stock debe ser un número entero</mat-error>
+            <mat-error *ngIf="form.get('stock').hasError('required')">Stock requerido</mat-error>
+            <mat-error *ngIf="form.get('stock').hasError('pattern')">Stock inválido</mat-error>
           </mat-form-field>
           <mat-form-field class="wd" appearance="outline">
             <mat-label>Precio de Venta</mat-label>
             <input matInput formControlName="precio" placeholder="Ingrese un precio" type="number" required />
             <mat-icon matSuffix>monetization_on</mat-icon>          
             <mat-error *ngIf="form.get('precio').hasError('required')">Precio requerido</mat-error>
+            <mat-error *ngIf="form.get('precio').hasError('pattern')">Precio inválido</mat-error>
           </mat-form-field>
         </fieldset>  
         <fieldset class="col-sm-12 col-md-6 mt-2">

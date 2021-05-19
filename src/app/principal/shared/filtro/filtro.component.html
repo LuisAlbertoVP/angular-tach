@@ -1,7 +1,7 @@
 <form [formGroup]="form" (ngSubmit)="guardar()" autocomplete="off">
   <div mat-dialog-title class="shadow p-3 d-flex justify-content-around">
-    <button mat-icon-button mat-dialog-close type="button"><mat-icon>highlight_off</mat-icon></button>
-    <h1 class="mt-flex">FILTROS</h1>
+    <button mat-icon-button mat-dialog-close type="button"><mat-icon>clear</mat-icon></button>
+    <h1 class="mt-flex">Filtros</h1>
     <button mat-icon-button color="primary" type="submit"><mat-icon>save</mat-icon></button>
   </div>
   <mat-dialog-content class="mat-typography pt-1 pb-1">
@@ -14,17 +14,22 @@
               <div class="col-3">
                 <mat-form-field class="w-100" appearance="fill">
                   <mat-label>Condición</mat-label>
-                  <mat-select formControlName="operador" (selectionChange)="clearCriterios(filtro, $event.value)">
-                    <ng-container *ngIf="filtro.get('tipo').value == 'text'">
-                      <mat-option value="contiene">Contiene</mat-option>
-                      <mat-option value="!=">No contiene</mat-option>
+                  <mat-select formControlName="condicion">
+                    <ng-container [ngSwitch]="filtro.get('tipo').value">
+                      <ng-container *ngSwitchCase="'text'">
+                        <mat-option value="contiene">Contiene</mat-option>
+                        <mat-option value="nocontiene">No contiene</mat-option>
+                      </ng-container>
+                      <ng-container *ngSwitchDefault>
+                        <mat-option value="between">Rango</mat-option>
+                        <mat-option value="nobetween">No en rango</mat-option>
+                      </ng-container>
                     </ng-container>
-                    <mat-option value="between">Rango</mat-option>
                   </mat-select>
                 </mat-form-field>
               </div>
               <div class="col-9">
-                <mat-form-field *ngIf="filtro.get('operador').value != 'between'; else elseBlock" class="w-100" appearance="outline">
+                <mat-form-field *ngIf="filtro.get('tipo').value == 'text'; else elseBlock" class="w-100" appearance="outline">
                   <mat-label>Ingrese los criterios de búsqueda</mat-label>
                   <mat-chip-list formArrayName="criterios" #chipList>
                     <mat-chip *ngFor="let criterio of criterios(filtro).controls; let i=index" [removable]="true" (removed)="removeCriterio(filtro, i)">
@@ -51,16 +56,18 @@
                       <div class="col-6">
                         <mat-form-field class="w-100" appearance="outline">
                           <mat-label>De</mat-label>
-                          <input matInput formControlName="criterio1" [type]="filtro.get('tipo').value" />
+                          <input matInput formControlName="criterio1" type="number" />
+                          <mat-error>Número inválido</mat-error>
                         </mat-form-field>
                       </div>
                       <div class="col-6">
                         <mat-form-field class="w-100" appearance="outline">
                           <mat-label>Hasta</mat-label>
-                          <input matInput formControlName="criterio2" [type]="filtro.get('tipo').value" />
+                          <input matInput formControlName="criterio2" type="number" />
+                          <mat-error>Número inválido</mat-error>
                         </mat-form-field>
                       </div>
-                    </div>      
+                    </div>
                   </ng-template>
                 </ng-template>
               </div>

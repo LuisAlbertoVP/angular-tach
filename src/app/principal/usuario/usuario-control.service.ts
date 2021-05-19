@@ -30,7 +30,7 @@ export class UsuarioControlService {
       celular: [user?.celular, Validators.required],
       fechaNacimiento: [user?.fechaNacimiento, Validators.required],
       fechaContratacion: [user?.fechaContratacion, Validators.required],
-      salario: [user?.salario, Validators.required],
+      salario: [user?.salario, [Validators.required, Validators.pattern('^[0-9]{0,9}(\\.[0-9]{1,3})?$')]],
       roles: [this.toRoles(user?.roles), Validators.required],
       clave: ['']
     });

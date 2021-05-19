@@ -73,13 +73,13 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
       const criterio: string = params.get('id');
       if(criterio) {
         const busqueda: Busqueda = { 
-          estado: true, operadorLogico: '||', filtros: [
-            { id: 'Codigo', criterios: [criterio], operador: 'contiene' },
-            { id: 'Modelo', criterios: [criterio], operador: 'contiene' },
-            { id: 'SubMarca', criterios: [criterio], operador: 'contiene' },
-            { id: 'Categoria.Descripcion', criterios: [criterio], operador: 'contiene' },
-            { id: 'Marca.Descripcion', criterios: [criterio], operador: 'contiene' },
-            { id: 'Descripcion', criterios: [criterio], operador: 'contiene' }
+          estado: true, operador: '||', filtros: [
+            { id: 'Codigo', criterios: [criterio], condicion: 'contiene' },
+            { id: 'Modelo', criterios: [criterio], condicion: 'contiene' },
+            { id: 'SubMarca', criterios: [criterio], condicion: 'contiene' },
+            { id: 'Categoria.Descripcion', criterios: [criterio], condicion: 'contiene' },
+            { id: 'Marca.Descripcion', criterios: [criterio], condicion: 'contiene' },
+            { id: 'Descripcion', criterios: [criterio], condicion: 'contiene' }
           ]
         };
         this.busqueda.nextBusqueda = busqueda;
@@ -191,7 +191,7 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
   }
 
   reload() {
-    if(this.busqueda.nextBusqueda.operadorLogico == '&&') {
+    if(this.busqueda.nextBusqueda.operador == '&&') {
       this.busqueda.nextBusqueda = null;
       this.initSearch();
     } else {
