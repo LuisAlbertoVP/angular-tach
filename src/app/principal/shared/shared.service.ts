@@ -42,4 +42,6 @@ export class SharedService {
   parseDate = (fecha: string) => moment(fecha).format('MM/DD/YYYY');
 
   parseDateTime = (fecha: string) => moment(fecha).format('MM/DD/YYYY, hh:mm:ss A');
+
+  parseDbDate = (fecha: string) => moment(new Date(fecha)).format('YYYY-MM-DD');
 }

@@ -20,7 +20,7 @@ export class RepuestoControlService {
       epoca: [repuesto?.epoca ? repuesto.epoca : ''],
       subMarca: [repuesto?.subMarca ? repuesto.subMarca : ''],
       stock: [repuesto?.stock, [Validators.required, Validators.pattern('^[0-9]{0,9}$')]],
-      precio: [repuesto?.precio, [Validators.required, Validators.pattern('^[0-9]{0,9}(\\.[0-9]{1,3})?$')]],
+      precio: [repuesto?.precio, [Validators.required, Validators.pattern('^[0-9]{0,9}(\\.[0-9]{1,4})?$')]],
       descripcion: [repuesto?.descripcion ? repuesto.descripcion : ''],
     });
   }

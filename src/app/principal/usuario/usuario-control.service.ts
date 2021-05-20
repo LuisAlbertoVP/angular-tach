@@ -10,8 +10,7 @@ export class UsuarioControlService {
 
   constructor(private fb: FormBuilder) { }
 
-  toRoles(roles: Rol[] = []): string[] {
-    const ids: string[] = [];
+  toRoles(roles: Rol[] = [], ids: string[] = []): string[] {
     for(let rol of roles) {
       ids.push(rol.id);
     }
@@ -30,7 +29,7 @@ export class UsuarioControlService {
       celular: [user?.celular, Validators.required],
       fechaNacimiento: [user?.fechaNacimiento, Validators.required],
       fechaContratacion: [user?.fechaContratacion, Validators.required],
-      salario: [user?.salario, [Validators.required, Validators.pattern('^[0-9]{0,9}(\\.[0-9]{1,3})?$')]],
+      salario: [user?.salario, [Validators.required, Validators.pattern('^[0-9]{0,9}(\\.[0-9]{1,4})?$')]],
       roles: [this.toRoles(user?.roles), Validators.required],
       clave: ['']
     });

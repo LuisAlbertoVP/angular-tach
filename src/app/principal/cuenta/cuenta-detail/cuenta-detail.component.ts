@@ -5,7 +5,6 @@ import { CuentaService } from '../cuenta.service';
 import { CuentaControlService } from '../cuenta-control.service';
 import { SharedService } from '@shared/shared.service';
 import { User } from '@models/entity';
-import * as moment from 'moment';
 
 @Component({
   selector: 'app-cuenta-detail',
@@ -36,7 +35,7 @@ export class CuentaDetailComponent implements OnInit {
     if(this.form.valid) {
       const usuario: User = this.form.getRawValue();
       usuario.id = this.id;
-      usuario.fechaNacimiento = moment(usuario.fechaNacimiento).format('YYYY-MM-DD');
+      usuario.fechaNacimiento = this.sharedService.parseDbDate(usuario.fechaNacimiento)
       usuario.clave = usuario.clave ? usuario.clave : '';
       usuario.usuarioModificacion = this.auth.nombreUsuario;
       this.service.update(usuario).subscribe(response => {

@@ -5,6 +5,7 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Busqueda, BusquedaBuilder, Filtro } from '@models/busqueda';
+import { SharedService } from '@shared/shared.service';
 
 @Component({
   selector: 'app-filtro',
@@ -20,7 +21,8 @@ export class FiltroComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public busqueda: BusquedaBuilder,
     private dialogRef: MatDialogRef<FiltroComponent>,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private sharedService: SharedService
   ) {}
 
   get filtros() {
@@ -30,11 +32,11 @@ export class FiltroComponent implements OnInit {
   ngOnInit(): void {
     const nextBusqueda: Busqueda = this.busqueda.nextBusqueda;
     this.form = this.fb.group({
-      filtros: this.fb.array(this._toFormArray(this.busqueda.rootBusqueda.filtros)),
+      filtros: this.fb.array(this._toFormList(this.busqueda.rootBusqueda.filtros)),
       estado: nextBusqueda?.estado ? nextBusqueda.estado : true,
       operador: '&&'
     });
-    if(nextBusqueda?.operador == '&&') this._setFormArray(nextBusqueda.filtros);
+    if(nextBusqueda?.operador == '&&') this._setFormList(nextBusqueda.filtros);
   }
 
   addCriterio(filtro: FormControl, event: MatChipInputEvent) {
@@ -68,44 +70,59 @@ export class FiltroComponent implements OnInit {
   criterios = (filtro: FormControl) => filtro.get('criterios') as FormArray;
   removeCriterio = (filtro: FormControl, position: number) => this.criterios(filtro).removeAt(position);
 
-  private _buildNewFiltros(filtros: Filtro[], array: Filtro[] = []) {
+  private _buildNewFiltros(filtros: Filtro[], newFiltros: Filtro[] = []) {
     for(let filtro of filtros) {
       if(filtro.condicion == 'between' || filtro.condicion == 'nobetween') {
         filtro.criterio1 = filtro.criterio1?.toString();
         filtro.criterio2 = filtro.criterio2?.toString();
         if(filtro.criterio1 && filtro.criterio2) {
+          if(filtro.tipo == 'date') {
+            filtro.criterio1 = this.sharedService.parseDbDate(filtro.criterio1);
+            filtro.criterio2 = this.sharedService.parseDbDate(filtro.criterio2);
+          }
           if(filtro.tipoNativo == 'int') {
             filtro.criterio1 = Math.trunc(+filtro.criterio1).toString();
             filtro.criterio2 = Math.trunc(+filtro.criterio2).toString();
           }
-          array.push(filtro);
+          newFiltros.push(filtro);
         }
       } else {
-        if(filtro.criterios.length > 0) array.push(filtro);
+        if(filtro.criterios.length > 0) newFiltros.push(filtro);
       }
     }
-    return array;
+    return newFiltros;
   }
 
-  private _setFormArray(filtros: Filtro[]) {
+  private _setFormList(filtros: Filtro[]) {
     for(let filtro of filtros) {
       if(filtro.id != 'Id') {
         if(filtro.tipo == 'text') {
-          const criterios = this.formDictionary[filtro.id].get('criterios') as FormArray;
-          for(let criterio of filtro.criterios) {
-            criterios.push(this.fb.control(criterio));
-          }
+          this._setCriterios(filtro, this.formDictionary[filtro.id].get('criterios') as FormArray);
         } else {
-          this.formDictionary[filtro.id].get('criterio1').setValue(filtro.criterio1);
-          this.formDictionary[filtro.id].get('criterio2').setValue(filtro.criterio2);
+          this._setRango(filtro, this.formDictionary[filtro.id]);
         }
         this.formDictionary[filtro.id].get('condicion').setValue(filtro.condicion);
       }
     }
   }
+
+  private _setCriterios(filtro: Filtro, formArray: FormArray) {
+    for(let criterio of filtro.criterios) {
+      formArray.push(this.fb.control(criterio));
+    }
+  }
+
+  private _setRango(filtro: Filtro, form: FormGroup) {
+    if(filtro.tipo == 'date') {
+      form.get('criterio1').setValue(new Date(this.sharedService.parseDate(filtro.criterio1)));
+      form.get('criterio2').setValue(new Date(this.sharedService.parseDate(filtro.criterio2)));
+    } else {
+      form.get('criterio1').setValue(+filtro.criterio1)
+      form.get('criterio2').setValue(+filtro.criterio2);
+    }
+  }
   
-  private _toFormArray(filtros: Filtro[]) {
-    let newFiltros = [];
+  private _toFormList(filtros: Filtro[], newFormList: FormGroup[] = []) {
     for(let filtro of filtros) {
       const form = this.fb.group({
         id: [filtro.id],
@@ -117,22 +134,23 @@ export class FiltroComponent implements OnInit {
         tipo: [filtro.tipo],
         tipoNativo: [filtro?.tipoNativo]
       });
-      if(filtro.tipo == 'number') {
-        if(filtro.tipoNativo == 'int') {
-          this._addValidator(form, '^[0-9]{0,9}$', '^[0-9]{0,9}$');
-        } else {
-          this._addValidator(form, '^[0-9]{0,9}(\\.[0-9]{1,3})?$', '^[0-9]{0,9}(\\.[0-9]{1,3})?$');
-        }
-      }
-      newFiltros.push(form);
+      this._addNumberValidators(filtro, form);
       this.formDictionary[filtro.id] = form;
       this.data.push(filtro?.data ? filtro.data : []);
+      newFormList.push(form);
     }
-    return newFiltros;
+    return newFormList;
   }
 
-  private _addValidator(form: FormGroup, regex1: string, regex2: string) {
-    form.get('criterio1').setValidators(Validators.pattern(regex1));
-    form.get('criterio2').setValidators(Validators.pattern(regex2));
+  private _addNumberValidators(filtro: Filtro, form: FormGroup) {
+    if(filtro.tipo == 'number') {
+      if(filtro.tipoNativo == 'int') {
+        form.get('criterio1').setValidators(Validators.pattern('^[0-9]{0,9}$'));
+        form.get('criterio2').setValidators(Validators.pattern('^[0-9]{0,9}$'));
+      } else {
+        form.get('criterio1').setValidators(Validators.pattern('^[0-9]{0,9}(\\.[0-9]{1,4})?$'));
+        form.get('criterio2').setValidators(Validators.pattern('^[0-9]{0,9}(\\.[0-9]{1,4})?$'));
+      }
+    }
   }
 }

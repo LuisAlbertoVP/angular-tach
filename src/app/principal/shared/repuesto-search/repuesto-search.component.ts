@@ -30,7 +30,7 @@ export class RepuestoSearchComponent implements OnInit {
     this.form = this.fb.group({ 
       codigo: [this.repuesto ? this.repuesto.codigo : '', Validators.required],
       stock: [this.repuesto ? this.repuesto.stock : 1, Validators.pattern('^[0-9]{0,9}$')],
-      precio: [this.repuesto ? this.repuesto.precio : 0, Validators.pattern('^[0-9]{0,9}(\\.[0-9]{1,3})?$')],
+      precio: [this.repuesto ? this.repuesto.precio : 0, Validators.pattern('^[0-9]{0,9}(\\.[0-9]{1,4})?$')],
       notas: [this.repuesto ? this.repuesto.notas : '']
     });
   }

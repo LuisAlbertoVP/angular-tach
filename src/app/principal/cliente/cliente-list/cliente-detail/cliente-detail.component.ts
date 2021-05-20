@@ -6,7 +6,6 @@ import { SharedService } from '@shared/shared.service';
 import { ClienteService } from '../../cliente.service';
 import { ClienteControlService } from '../../cliente-control.service';
 import { Cliente } from '@models/entity';
-import * as moment from 'moment';
 
 @Component({
   selector: 'app-cliente-detail',
@@ -35,7 +34,7 @@ export class ClienteDetailComponent implements OnInit {
   guardar() {
     if(this.form.valid) {
       const cliente = this.form.getRawValue();
-      cliente.fechaNacimiento = moment(cliente.fechaNacimiento).format('YYYY-MM-DD');
+      cliente.fechaNacimiento = this.sharedService.parseDbDate(cliente.fechaNacimiento);
       cliente.usuarioIngreso = this.auth.nombreUsuario;
       cliente.usuarioModificacion = this.auth.nombreUsuario;
       this.service.insertOrUpdate(cliente).subscribe(response => {

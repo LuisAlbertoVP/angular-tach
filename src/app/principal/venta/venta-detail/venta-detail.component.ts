@@ -9,7 +9,6 @@ import { VentaControlService } from '../venta-control.service';
 import { Venta, VentaDetalle, Repuesto, Cliente } from '@models/entity';
 import { ConfirmacionComponent } from '@shared/confirmacion/confirmacion.component';
 import { RepuestoSearchComponent } from '@shared/repuesto-search/repuesto-search.component';
-import * as moment from 'moment';
 
 @Component({
   selector: 'app-venta-detail',
@@ -97,7 +96,7 @@ export class VentaDetailComponent implements OnInit {
         if(result) {
           const venta: Venta = this.form.getRawValue();
           venta.ventaDetalle = this._toVentaDetalle(this.data);
-          venta.fecha = moment(venta.fecha).format('YYYY-MM-DD');
+          venta.fecha = this.sharedService.parseDbDate(venta.fecha);
           venta.usuarioIngreso = this.auth.nombreUsuario;
           venta.usuarioModificacion = this.auth.nombreUsuario;
           this.service.insertOrUpdate(venta).subscribe(response => {
@@ -123,8 +122,7 @@ export class VentaDetailComponent implements OnInit {
     this.total = total;
   }
   
-  private _toVentaDetalle(repuestos: Repuesto[]): VentaDetalle[] {
-    let ventaDetalle: VentaDetalle[] = [];
+  private _toVentaDetalle(repuestos: Repuesto[], ventaDetalle: VentaDetalle[] = []): VentaDetalle[] {
     for(let repuesto of repuestos) {
       ventaDetalle.push({ repuestoId: repuesto.id, cantidad: repuesto.stock, 
         precio: repuesto.precio, notas: repuesto.notas });

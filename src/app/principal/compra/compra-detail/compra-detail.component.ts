@@ -11,7 +11,6 @@ import { SharedService } from '@shared/shared.service';
 import { Compra, CompraDetalle, Proveedor, Repuesto } from '@models/entity';
 import { ConfirmacionComponent } from '@shared/confirmacion/confirmacion.component';
 import { RepuestoSearchComponent } from '@shared/repuesto-search/repuesto-search.component';
-import * as moment from 'moment';
 
 @Component({
   selector: 'app-compra-detail',
@@ -136,7 +135,7 @@ export class CompraDetailComponent implements OnInit {
     this.form.get('ruta').setValue(this.nombreArchivo);
     const compra: Compra = this.form.getRawValue();
     compra.compraDetalle = this._toCompraDetalle(this.data);
-    compra.fecha = moment(compra.fecha).format('YYYY-MM-DD');
+    compra.fecha = this.sharedService.parseDbDate(compra.fecha);
     compra.usuarioIngreso = this.auth.nombreUsuario;
     compra.usuarioModificacion = this.auth.nombreUsuario;
     const formData: FormData = new FormData();
