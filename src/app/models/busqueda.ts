@@ -155,10 +155,11 @@ export class BusquedaFactory {
     customEvent.subscribe(() => this.paginator.pageIndex = 0);
   }
 
-  newBusqueda(nextBusqueda: Busqueda): Busqueda {
+  newBusqueda(nextBusqueda: Busqueda, isActivated: boolean): Busqueda {
     if(this._isFirstBusqueda(nextBusqueda)) {
       nextBusqueda = this._createFirstBusqueda();
     }
+    nextBusqueda.estado = isActivated;
     nextBusqueda.cantidad = this.paginator.pageSize;
     nextBusqueda.pagina = this.paginator.pageIndex;
     nextBusqueda.orden = {
@@ -174,7 +175,7 @@ export class BusquedaFactory {
 
   private _createFirstBusqueda(): Busqueda { 
     return {
-      estado: true, operador: '&&', filtros: [
+      operador: '&&', filtros: [
         { id: "Id", criterios: [''], condicion: 'contiene' }
       ]
     };

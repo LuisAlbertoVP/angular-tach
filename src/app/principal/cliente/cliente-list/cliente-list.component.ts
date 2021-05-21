@@ -6,7 +6,7 @@ import { MatSort } from '@angular/material/sort';
 import { SharedService } from '@shared/shared.service';
 import { ClienteService }  from '../cliente.service';
 import { Busqueda, BusquedaFactory, BusquedaBuilder, busquedaCliente } from '@models/busqueda';
-import { Cliente, TipoCliente } from '@models/entity';
+import { Cliente, Table, TipoCliente } from '@models/entity';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { merge, of as observableOf, Subject } from 'rxjs';
 import { ConfirmacionComponent } from '@shared/confirmacion/confirmacion.component';
@@ -30,13 +30,12 @@ export class ClienteListComponent implements OnInit, AfterViewInit {
   busqueda: BusquedaBuilder = { rootBusqueda: busquedaCliente };
   customEvent = new Subject();
   customEvent$ = this.customEvent.asObservable();
-  data: Cliente[] = [];
   expandedElement: Cliente = null;
-  isLoadingResults: boolean = true;
+  isLoading: boolean = true;
   isMobile: boolean = false;
-  isRateLimitReached: boolean = false;
-  isTrash: boolean = true;
-  resultsLength: number = 0;
+  isRateLimit: boolean = false;
+  isActivated: boolean = true;
+  table: Table<Cliente> = null;
 
   constructor(
     private activedRoute: ActivatedRoute,
@@ -67,31 +66,30 @@ export class ClienteListComponent implements OnInit, AfterViewInit {
     const builder = new BusquedaFactory(this.customEvent$, this.paginator, this.sort);
     merge(this.customEvent$, this.sort.sortChange, this.paginator.page).pipe(
       startWith({}), switchMap(() => {
-        this.isLoadingResults = true;
-        this.busqueda.nextBusqueda = builder.newBusqueda(this.busqueda.nextBusqueda);
+        this.isLoading = true;
+        this.busqueda.nextBusqueda = builder.newBusqueda(this.busqueda.nextBusqueda, this.isActivated);
         return this.service.getAll(this.busqueda.nextBusqueda);
       }), map(response => {
-        this.isLoadingResults = false;
-        this.isRateLimitReached = false;
-        this.resultsLength = response.body.cantidad;
-        return response.body.data;
+        this.isLoading = false;
+        this.isRateLimit = false;
+        return response.body;
       }), catchError(() => {
-        this.isLoadingResults = false;
-        this.isRateLimitReached = true;
+        this.isLoading = false;
+        this.isRateLimit = true;
         return observableOf([]);
       })
-    ).subscribe(data => this.data = data);
+    ).subscribe((table: Table<Cliente>) => this.table = table);
   }
 
   changeEstado() {
-    this.busqueda.nextBusqueda.estado = !this.busqueda.nextBusqueda.estado;
+    this.isActivated = !this.isActivated;
     this.initSearch();
   }
 
   delete(cliente: Cliente) {
     this.service.delete(cliente).subscribe(response => {
       if(response?.status == 200) {
-        this.data = this.data.filter(old => old.id != cliente.id);
+        this.table.data = this.table.data.filter(old => old.id != cliente.id);
         this.sharedService.showMessage(response.body.texto);
       }
     });
@@ -144,7 +142,7 @@ export class ClienteListComponent implements OnInit, AfterViewInit {
     clone.estado = clone.estado ? false : true;
     this.service.setStatus(clone).subscribe(response => {
       if(response?.status == 200) {
-        this.data = this.data.filter(old => old.id != cliente.id);
+        this.table.data = this.table.data.filter(old => old.id != cliente.id);
         this.sharedService.showMessage(response.body.texto);
       }
     });

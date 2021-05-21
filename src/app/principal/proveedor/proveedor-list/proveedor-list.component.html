@@ -15,21 +15,21 @@
     <img src="assets/logo.png" class="ml-auto" />
   </div>
   <div class="w-100 p-3 mt-3 mat-elevation-z8">
-    <div class="loading-shade" *ngIf="isLoadingResults || isRateLimitReached">
-      <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
-      <div class="text-error" *ngIf="isRateLimitReached">El tiempo se ha agotado, vuelva a intentarlo más tarde</div>
+    <div class="loading-shade" *ngIf="isLoading || isRateLimit">
+      <mat-spinner *ngIf="isLoading"></mat-spinner>
+      <div class="text-error" *ngIf="isRateLimit">El tiempo se ha agotado, vuelva a intentarlo más tarde</div>
     </div>
     <div class="table-container position-relative" [class.isMobile]="isMobile">
-      <table mat-table [dataSource]="data" multiTemplateDataRows matSort class="w-100">
+      <table mat-table [dataSource]="table?.data" multiTemplateDataRows matSort class="w-100">
         <ng-container matColumnDef="opciones">
           <th mat-header-cell *matHeaderCellDef>
             <a mat-icon-button [matMenuTriggerFor]="menu" class="not-hover"><mat-icon>more_vert</mat-icon></a>
             <mat-menu #menu="matMenu">
               <a mat-menu-item (click)="openForm()">
                 <mat-icon>add_box</mat-icon><span>Nuevo</span></a>
-              <a mat-menu-item (click)="changeEstado(); isTrash=!isTrash">
-                <mat-icon>{{ isTrash ? 'restore_from_trash' : 'local_shipping' }}</mat-icon>
-                <span>{{ isTrash ? 'Papelera' : 'Proveedores' }}</span>
+              <a mat-menu-item (click)="changeEstado()">
+                <mat-icon>{{ isActivated ? 'restore_from_trash' : 'local_shipping' }}</mat-icon>
+                <span>{{ isActivated ? 'Papelera' : 'Proveedores' }}</span>
               </a>
             </mat-menu>
           </th>
@@ -86,6 +86,6 @@
         </tr>
       </table>
     </div>
-    <mat-paginator [pageSizeOptions]="[25, 50, 75, 100]" [length]="resultsLength" [showFirstLastButtons]="true"></mat-paginator>
+    <mat-paginator [pageSizeOptions]="[25, 50, 75, 100]" [length]="table?.cantidad" [showFirstLastButtons]="true"></mat-paginator>
   </div>  
 </div>

@@ -7,7 +7,7 @@ import { PrintingService } from '@shared/printing.service';
 import { RepuestoService }  from '../repuesto.service';
 import { SharedService } from '@shared/shared.service';
 import { Busqueda, BusquedaFactory, BusquedaBuilder, busquedaRepuesto, PrintBusqueda } from '@models/busqueda';
-import { Repuesto } from '@models/entity';
+import { Repuesto, Table } from '@models/entity';
 import { RepuestoForm } from '@models/form';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { merge, of as observableOf, Subject } from 'rxjs';
@@ -34,16 +34,12 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
   busqueda: BusquedaBuilder = { rootBusqueda: busquedaRepuesto };
   customEvent = new Subject();
   customEvent$ = this.customEvent.asObservable();
-  data: Repuesto[] = [];
   expandedElement: Repuesto = null;
-  isLoadingResults: boolean = true;
+  isLoading: boolean = true;
   isMobile: boolean = false;
-  isRateLimitReached: boolean = false;
-  isTrash: boolean = true;
-  resultsLength: number = 0;
-  resultsStock: number = 0;
-  resultsPrecio: number = 0;
-  resultsTotal: number = 0;
+  isRateLimit: boolean = false;
+  isActivated: boolean = true;
+  table: Table<Repuesto> = null;
 
   constructor(
     private activedRoute: ActivatedRoute,
@@ -92,23 +88,19 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
     this.builder = new BusquedaFactory(this.customEvent$, this.paginator, this.sort);
     merge(this.customEvent$, this.sort.sortChange, this.paginator.page).pipe(
       startWith({}), switchMap(() => {
-        this.isLoadingResults = true;
-        this.busqueda.nextBusqueda = this.builder.newBusqueda(this.busqueda.nextBusqueda);
+        this.isLoading = true;
+        this.busqueda.nextBusqueda = this.builder.newBusqueda(this.busqueda.nextBusqueda, this.isActivated);
         return this.service.getAll(this.busqueda.nextBusqueda);
       }), map(response => {
-        this.isLoadingResults = false;
-        this.isRateLimitReached = false;
-        this.resultsLength = response.body.cantidad;
-        this.resultsStock = response.body.stock;
-        this.resultsPrecio = response.body.precio;
-        this.resultsTotal = response.body.total;
-        return response.body.data;
+        this.isLoading = false;
+        this.isRateLimit = false;
+        return response.body;
       }), catchError(() => {
-        this.isLoadingResults = false;
-        this.isRateLimitReached = true;
+        this.isLoading = false;
+        this.isRateLimit = true;
         return observableOf([]);
       })
-    ).subscribe(data => this.data = data);
+    ).subscribe((table: Table<Repuesto>) => this.table = table);
   }
 
   buildBusquedaForm(repuestoForm: RepuestoForm): BusquedaBuilder {
@@ -122,14 +114,14 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
   }
 
   changeEstado() {
-    this.busqueda.nextBusqueda.estado = !this.busqueda.nextBusqueda.estado;
+    this.isActivated = !this.isActivated;
     this.initSearch();
   }
 
   delete(repuesto: Repuesto) {
     this.service.delete(repuesto).subscribe(response => {
       if(response?.status == 200) {
-        this.data = this.data.filter(old => old.id != repuesto.id);
+        this.table.data = this.table.data.filter(old => old.id != repuesto.id);
         this.sharedService.showMessage(response.body.texto);
       }
     });
@@ -174,9 +166,9 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
     });
     dialogRef.afterClosed().subscribe((result: PrintBusqueda) => {
       if(result) {
-        result.busqueda = this.builder.newBusqueda(this.busqueda.nextBusqueda);
+        result.busqueda = this.builder.newBusqueda(this.busqueda.nextBusqueda, this.isActivated);
         result.busqueda.pagina = 0;
-        result.busqueda.cantidad = this.resultsLength;
+        result.busqueda.cantidad = this.table.cantidad;
         this.printing.printWindow(this.router.url, result);
       } else {
         this.sharedService.showWarningMessage('La operación ha sido cancelada');
@@ -204,7 +196,7 @@ export class RepuestoListComponent implements OnInit, AfterViewInit {
     clone.estado = clone.estado ? false : true;
     this.service.setStatus(clone).subscribe(response => {
       if(response?.status == 200) {
-        this.data = this.data.filter(old => old.id != repuesto.id);
+        this.table.data = this.table.data.filter(old => old.id != repuesto.id);
         this.sharedService.showMessage(response.body.texto);
       }
     });

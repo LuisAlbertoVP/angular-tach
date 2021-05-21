@@ -6,7 +6,7 @@ import { MatSort } from '@angular/material/sort';
 import { MarcaService }  from '../marca.service';
 import { SharedService } from '@shared/shared.service';
 import { Busqueda, BusquedaFactory, BusquedaBuilder, busquedaBase } from '@models/busqueda';
-import { Marca } from '@models/entity';
+import { Marca, Table } from '@models/entity';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { merge, of as observableOf, Subject } from 'rxjs';
 import { ConfirmacionComponent } from '@shared/confirmacion/confirmacion.component';
@@ -28,15 +28,12 @@ export class MarcaListComponent implements OnInit, AfterViewInit {
   busqueda: BusquedaBuilder = { rootBusqueda: busquedaBase };
   customEvent = new Subject();
   customEvent$ = this.customEvent.asObservable();
-  data: Marca[] = [];
   expandedElement: Marca = null;
-  isLoadingResults: boolean = true;
+  isLoading: boolean = true;
   isMobile: boolean = false;
-  isRateLimitReached: boolean = false;
-  isTrash: boolean = true;
-  resultsLength: number = 0;
-  resultsStock: number = 0;
-  resultsTotal: number = 0;
+  isRateLimit: boolean = false;
+  isActivated: boolean = true;
+  table: Table<Marca> = null;
 
   constructor(
     private activedRoute: ActivatedRoute,
@@ -63,33 +60,30 @@ export class MarcaListComponent implements OnInit, AfterViewInit {
     const builder = new BusquedaFactory(this.customEvent$, this.paginator, this.sort);
     merge(this.customEvent$, this.sort.sortChange, this.paginator.page).pipe(
       startWith({}), switchMap(() => {
-        this.isLoadingResults = true;
-        this.busqueda.nextBusqueda = builder.newBusqueda(this.busqueda.nextBusqueda);
+        this.isLoading = true;
+        this.busqueda.nextBusqueda = builder.newBusqueda(this.busqueda.nextBusqueda, this.isActivated);
         return this.service.getAll(this.busqueda.nextBusqueda);
       }), map(response => {
-        this.isLoadingResults = false;
-        this.isRateLimitReached = false;
-        this.resultsLength = response.body.cantidad;
-        this.resultsStock = response.body.stock;
-        this.resultsTotal = response.body.total;
-        return response.body.data;
+        this.isLoading = false;
+        this.isRateLimit = false;
+        return response.body;
       }), catchError(() => {
-        this.isLoadingResults = false;
-        this.isRateLimitReached = true;
+        this.isLoading = false;
+        this.isRateLimit = true;
         return observableOf([]);
       })
-    ).subscribe(data => this.data = data);
+    ).subscribe((table: Table<Marca>) => this.table = table);
   }
 
   changeEstado() {
-    this.busqueda.nextBusqueda.estado = !this.busqueda.nextBusqueda.estado;
+    this.isActivated = !this.isActivated;
     this.initSearch();
   }
 
   delete(marca: Marca) {
     this.service.delete(marca).subscribe(response => {
       if(response?.status == 200) {
-        this.data = this.data.filter(old => old.id != marca.id);
+        this.table.data = this.table.data.filter(old => old.id != marca.id);
         this.sharedService.showMessage(response.body.texto);
       }
     });
@@ -136,7 +130,7 @@ export class MarcaListComponent implements OnInit, AfterViewInit {
     clone.estado = clone.estado ? false : true;
     this.service.setStatus(clone).subscribe(response => {
       if(response?.status == 200) {
-        this.data = this.data.filter(old => old.id != marca.id);
+        this.table.data = this.table.data.filter(old => old.id != marca.id);
         this.sharedService.showMessage(response.body.texto);
       }
     });

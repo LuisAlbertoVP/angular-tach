@@ -6,7 +6,7 @@ import { MatSort } from '@angular/material/sort';
 import { CompraService }  from '../compra.service';
 import { SharedService } from '@shared/shared.service';
 import { Busqueda, BusquedaFactory, BusquedaBuilder, busquedaCompra } from '@models/busqueda';
-import { Compra } from '@models/entity';
+import { Compra, Table } from '@models/entity';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { merge, of as observableOf, Subject } from 'rxjs';
 import { FiltroComponent } from '@shared/filtro/filtro.component';
@@ -26,15 +26,12 @@ export class CompraListComponent implements OnInit, AfterViewInit {
   busqueda: BusquedaBuilder = { rootBusqueda: busquedaCompra };
   customEvent = new Subject();
   customEvent$ = this.customEvent.asObservable();
-  data: Compra[] = [];
   expandedElement: Compra = null;
-  isLoadingResults: boolean = true;
+  isLoading: boolean = true;
   isMobile: boolean = false;
-  isRateLimitReached: boolean = false;
-  isTrash: boolean = true;
-  resultsLength: number = 0;
-  resultsStock: number = 0;
-  resultsTotal: number = 0;
+  isRateLimit: boolean = false;
+  isActivated: boolean = true;
+  table: Table<Compra> = null;
 
   constructor(
     private activedRoute: ActivatedRoute,
@@ -61,26 +58,23 @@ export class CompraListComponent implements OnInit, AfterViewInit {
     const builder = new BusquedaFactory(this.customEvent$, this.paginator, this.sort);
     merge(this.customEvent$, this.sort.sortChange, this.paginator.page).pipe(
       startWith({}), switchMap(() => {
-        this.isLoadingResults = true;
-        this.busqueda.nextBusqueda = builder.newBusqueda(this.busqueda.nextBusqueda);
+        this.isLoading = true;
+        this.busqueda.nextBusqueda = builder.newBusqueda(this.busqueda.nextBusqueda, this.isActivated);
         return this.service.getAll(this.busqueda.nextBusqueda);
       }), map(response => {
-        this.isLoadingResults = false;
-        this.isRateLimitReached = false;
-        this.resultsLength = response.body.cantidad;
-        this.resultsStock = response.body.stock;
-        this.resultsTotal = response.body.total;
-        return response.body.data;
+        this.isLoading = false;
+        this.isRateLimit = false;
+        return response.body;
       }), catchError(() => {
-        this.isLoadingResults = false;
-        this.isRateLimitReached = true;
+        this.isLoading = false;
+        this.isRateLimit = true;
         return observableOf([]);
       })
-    ).subscribe(data => this.data = data);
+    ).subscribe((table: Table<Compra>) => this.table = table);
   }
 
   changeEstado() {
-    this.busqueda.nextBusqueda.estado = !this.busqueda.nextBusqueda.estado;
+    this.isActivated = !this.isActivated;
     this.initSearch();
   }
 
@@ -123,7 +117,7 @@ export class CompraListComponent implements OnInit, AfterViewInit {
     clone.estado = clone.estado ? false : true;
     this.service.setStatus(clone).subscribe(response => {
       if(response?.status == 200) {
-        this.data = this.data.filter(old => old.id != compra.id);
+        this.table.data = this.table.data.filter(old => old.id != compra.id);
         this.sharedService.showMessage(response.body.texto);
       }
     });
