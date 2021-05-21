@@ -11,6 +11,7 @@
             <input matInput formControlName="codigo" placeholder="Ingrese un codigo" type="text" required />
             <mat-icon matSuffix>pin</mat-icon>
             <mat-error *ngIf="form.get('codigo').hasError('required')">Código requerido</mat-error>
+            <mat-error *ngIf="form.get('codigo').hasError('maxlength')">Logitud máxima es de 50 caracteres</mat-error>
           </mat-form-field>
           <ng-container formGroupName="categoria">
             <mat-form-field class="wd" appearance="outline">
@@ -37,6 +38,7 @@
             <input matInput formControlName="modelo" placeholder="Ingrese un modelo" type="text" required />
             <mat-icon matSuffix>directions_car</mat-icon>
             <mat-error *ngIf="form.get('modelo').hasError('required')">Modelo requerido</mat-error>
+            <mat-error *ngIf="form.get('modelo').hasError('maxlength')">Logitud máxima es de 50 caracteres</mat-error>
           </mat-form-field>
           <mat-form-field class="wd" appearance="outline">
             <mat-label>Stock</mat-label>
@@ -59,11 +61,13 @@
             <mat-label>Año</mat-label>
             <input matInput formControlName="epoca" placeholder="Ingrese un año" type="text" />
             <mat-icon matSuffix>date_range</mat-icon>
+            <mat-error *ngIf="form.get('epoca').hasError('maxlength')">Logitud máxima es de 50 caracteres</mat-error>
           </mat-form-field>
           <mat-form-field class="wd" appearance="outline">
             <mat-label>Submarca</mat-label>
             <input matInput formControlName="subMarca" placeholder="Ingrese una submarca" type="text" />
             <mat-icon matSuffix>local_offer</mat-icon>
+            <mat-error *ngIf="form.get('subMarca').hasError('maxlength')">Logitud máxima es de 50 caracteres</mat-error>
           </mat-form-field>
           <mat-form-field class="wd" appearance="outline">
             <mat-label>Descripción</mat-label>

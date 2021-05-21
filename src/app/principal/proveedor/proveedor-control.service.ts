@@ -13,8 +13,8 @@ export class ProveedorControlService {
   toFormGroup(proveedor: Proveedor) {
     return this.fb.group({
       id: [proveedor?.id ? proveedor.id : uuid()],
-      descripcion: [proveedor?.descripcion, Validators.required],
-      telefono: [proveedor?.telefono ? proveedor.telefono : ''],
+      descripcion: [proveedor?.descripcion, [Validators.required, Validators.maxLength(50)]],
+      telefono: [proveedor?.telefono ? proveedor.telefono : '', Validators.maxLength(25)],
       direccion: [proveedor?.direccion ? proveedor.direccion : ''],
       correo: [proveedor?.correo ? proveedor.correo : ''],
       webSite: [proveedor?.webSite ? proveedor.webSite : '']

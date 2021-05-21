@@ -31,7 +31,7 @@ export class RolDetailComponent implements OnInit {
   ngOnInit(): void {
     this.form = this.fb.group({
       id: [this.rol?.id],
-      descripcion: [this.rol?.descripcion, Validators.required]
+      descripcion: [this.rol?.descripcion, [Validators.required, Validators.maxLength(50)]]
     });
     this.modulos = JSON.parse(JSON.stringify(listModulos));
     this.modulos = this.modulos.filter(modulo => modulo.id != 0);

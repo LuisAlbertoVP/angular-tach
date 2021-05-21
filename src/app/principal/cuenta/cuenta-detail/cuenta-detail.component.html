@@ -12,6 +12,7 @@
               <input matInput formControlName="nombres" placeholder="Ingrese nombres" type="text" required />
               <mat-icon matSuffix>person</mat-icon>
               <mat-error *ngIf="form.get('nombres').hasError('required')">Nombres son requeridos</mat-error>
+              <mat-error *ngIf="form.get('nombres').hasError('maxlength')">Logitud máxima es de 50 caracteres</mat-error>
             </mat-form-field>
             <mat-form-field class="w-75" appearance="outline">
               <mat-label>Cedula</mat-label>
@@ -32,12 +33,14 @@
               <input matInput formControlName="telefono" placeholder="Ingrese teléfono" type="text" required />
               <mat-icon matSuffix>phone</mat-icon>
               <mat-error *ngIf="form.get('telefono').hasError('required')">Teléfono es requerido</mat-error>
+              <mat-error *ngIf="form.get('telefono').hasError('maxlength')">Logitud máxima es de 25 caracteres</mat-error>
             </mat-form-field>
             <mat-form-field class="w-75" appearance="outline">
               <mat-label>Celular</mat-label>
               <input matInput formControlName="celular" placeholder="Ingrese celular" type="text" required />
               <mat-icon matSuffix>smartphone</mat-icon>
               <mat-error *ngIf="form.get('celular').hasError('required')">Celular es requerido</mat-error>
+              <mat-error *ngIf="form.get('celular').hasError('maxlength')">Logitud máxima es de 25 caracteres</mat-error>
             </mat-form-field>
             <mat-form-field class="w-75" appearance="outline">
               <mat-label>Fecha de nacimiento</mat-label>
@@ -61,6 +64,7 @@
               <input matInput formControlName="nombreUsuario" placeholder="Ingrese usuario" type="text" required autocapitalize="none" />
               <mat-icon matSuffix>person</mat-icon>
               <mat-error *ngIf="form.get('nombreUsuario').hasError('required')">Usuario es requerido</mat-error>
+              <mat-error *ngIf="form.get('nombreUsuario').hasError('maxlength')">Logitud máxima es de 25 caracteres</mat-error>
             </mat-form-field>
             <mat-form-field class="w-75" appearance="outline">
               <mat-label>Nueva Contraseña</mat-label>

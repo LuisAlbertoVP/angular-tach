@@ -29,7 +29,7 @@ export class CategoriaDetailComponent implements OnInit {
   ngOnInit(): void {
     this.form = this.fb.group({
       id: [this.categoria?.id ? this.categoria.id : uuid()],
-      descripcion: [this.categoria?.descripcion, Validators.required]
+      descripcion: [this.categoria?.descripcion, [Validators.required, Validators.maxLength(50)]]
     });
   }
 

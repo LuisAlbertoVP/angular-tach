@@ -7,6 +7,7 @@
         <input matInput formControlName="descripcion" type="text" required />
         <mat-icon matSuffix>category</mat-icon>
         <mat-error *ngIf="form.get('descripcion').hasError('required')">Descripción es requerida</mat-error>
+        <mat-error *ngIf="form.get('descripcion').hasError('maxlength')">Logitud máxima es de 50 caracteres</mat-error>
       </mat-form-field>
     </div>
   </mat-dialog-content>

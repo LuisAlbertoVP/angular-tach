@@ -20,13 +20,13 @@ export class UsuarioControlService {
   toFormGroup(user: User) {
     return this.fb.group({
       id: [user?.id ? user.id : uuid()],
-      nombreUsuario: [user?.nombreUsuario, Validators.required],
-      nombres: [user?.nombres, Validators.required],
+      nombreUsuario: [user?.nombreUsuario, [Validators.required, Validators.maxLength(25)]],
+      nombres: [user?.nombres, [Validators.required, Validators.maxLength(50)]],
       cedula: [user?.cedula, [Validators.required, Validators.pattern('^[0-9]{10}$')]],
       correo: [user?.correo,[ Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')]],
       direccion: [user?.direccion, Validators.required],
-      telefono: [user?.telefono, Validators.required],
-      celular: [user?.celular, Validators.required],
+      telefono: [user?.telefono, [Validators.required, Validators.maxLength(25)]],
+      celular: [user?.celular, [Validators.required, Validators.maxLength(25)]],
       fechaNacimiento: [user?.fechaNacimiento, Validators.required],
       fechaContratacion: [user?.fechaContratacion, Validators.required],
       salario: [user?.salario, [Validators.required, Validators.pattern('^[0-9]{0,9}(\\.[0-9]{1,4})?$')]],

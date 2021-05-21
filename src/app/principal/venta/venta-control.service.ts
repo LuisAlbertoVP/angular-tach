@@ -21,7 +21,7 @@ export class VentaControlService {
         id: [venta?.cliente?.id]
       }),
       descripcion: [venta?.descripcion],
-      direccion: [venta?.direccion],
+      direccion: [venta?.direccion, Validators.required],
       fecha: [venta?.fecha, Validators.required]
     });
   }

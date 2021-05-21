@@ -29,7 +29,7 @@ export class MarcaDetailComponent implements OnInit {
   ngOnInit(): void {
     this.form = this.fb.group({
       id: [this.marca?.id],
-      descripcion: [this.marca?.descripcion, Validators.required]
+      descripcion: [this.marca?.descripcion, [Validators.required, Validators.maxLength(50)]]
     });
   }
 

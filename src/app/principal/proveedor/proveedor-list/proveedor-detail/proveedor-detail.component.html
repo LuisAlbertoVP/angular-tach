@@ -9,11 +9,13 @@
           <input matInput formControlName="descripcion" placeholder="Ingrese un nombre" type="text" required />
           <mat-icon matSuffix>local_shipping</mat-icon>
           <mat-error *ngIf="form.get('descripcion').hasError('required')">Nombre requerido</mat-error>
+          <mat-error *ngIf="form.get('descripcion').hasError('maxlength')">Logitud máxima es de 50 caracteres</mat-error>
         </mat-form-field>
         <mat-form-field class="w-100" appearance="outline">
           <mat-label>Teléfono</mat-label>
           <input matInput formControlName="telefono" placeholder="Ingrese un teléfono" type="text" />
           <mat-icon matSuffix>phone</mat-icon>
+          <mat-error *ngIf="form.get('telefono').hasError('maxlength')">Logitud máxima es de 25 caracteres</mat-error>
         </mat-form-field>
         <mat-form-field class="w-100" appearance="outline">
           <mat-label>Dirección</mat-label>

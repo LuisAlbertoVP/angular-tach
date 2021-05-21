@@ -9,6 +9,7 @@
           <input formControlName="descripcion" matInput placeholder="Ingrese descripción" type="text" required />
           <mat-icon matSuffix>manage_accounts</mat-icon>
           <mat-error *ngIf="form.get('descripcion').hasError('required')">Descripción es requerida</mat-error>
+          <mat-error *ngIf="form.get('descripcion').hasError('maxlength')">Logitud máxima es de 50 caracteres</mat-error>
         </mat-form-field>
       </fieldset>
       <fieldset class="mt-3 mb-2">

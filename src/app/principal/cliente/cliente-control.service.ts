@@ -13,12 +13,12 @@ export class ClienteControlService {
   toFormGroup(cliente: Cliente) {
     return this.fb.group({
       id: [cliente?.id ? cliente.id : uuid()],
-      nombres: [cliente?.nombres, Validators.required],
+      nombres: [cliente?.nombres, [Validators.required, Validators.maxLength(50)]],
       cedula: [cliente?.cedula, [Validators.required, Validators.pattern('^[0-9]{10}$')]],
       correo: [cliente?.correo,[ Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')]],
       direccion: [cliente?.direccion, Validators.required],
-      telefono: [cliente?.telefono, Validators.required],
-      celular: [cliente?.celular, Validators.required],
+      telefono: [cliente?.telefono, [Validators.required, Validators.maxLength(25)]],
+      celular: [cliente?.celular, [Validators.required, Validators.maxLength(25)]],
       fechaNacimiento: [cliente?.fechaNacimiento, Validators.required],
       tipoCliente: [cliente?.tipoCliente ? cliente.tipoCliente : 'Cliente', Validators.required]
     });
