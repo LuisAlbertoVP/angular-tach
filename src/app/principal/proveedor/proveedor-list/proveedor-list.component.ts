@@ -25,7 +25,7 @@ export class ProveedorListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   readonly displayedColumns: string[] = ['opciones', 'Descripcion', 'Telefono', 
-    'Compras.Sum(CompraDetalle.Sum(Cantidad))', 'accion'];
+    'Compras.Where(Estado==true).Sum(CompraDetalle.Sum(Cantidad))', 'accion'];
   busqueda: BusquedaBuilder = { rootBusqueda: busquedaProveedor };
   customEvent = new Subject();
   customEvent$ = this.customEvent.asObservable();

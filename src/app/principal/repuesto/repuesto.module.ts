@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { SharedModule } from '@shared/shared.module';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatTabsModule } from '@angular/material/tabs';
 import { RepuestoRoutingModule } from './repuesto-routing.module';
 import { RepuestoListComponent } from './repuesto-list/repuesto-list.component';
 import { RepuestoDetailComponent } from './repuesto-list/repuesto-detail/repuesto-detail.component';
@@ -16,7 +17,8 @@ import { PrintContextComponent } from './repuesto-list/repuesto-print/print-cont
     SharedModule,
     RepuestoRoutingModule,
     MatSelectModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatTabsModule
   ]
 })
 export class RepuestoModule { }

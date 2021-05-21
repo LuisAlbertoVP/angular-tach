@@ -7,7 +7,7 @@ import { Repuesto } from '@models/entity';
 @Component({
   selector: 'app-repuesto-reporte',
   templateUrl: './repuesto-reporte.component.html',
-  styles: ['.ml { margin-left: 3% } ']
+  styleUrls: ['./repuesto-reporte.component.css']
 })
 export class RepuestoReporteComponent implements OnInit {
   isLoading: boolean = true;
@@ -21,6 +21,8 @@ export class RepuestoReporteComponent implements OnInit {
 
   ngOnInit(): void {
     this.service.getReporte(this.data.id).subscribe(repuesto => {
+      repuesto.ventaDetalle.sort((a, b) => Date.parse(b.venta.fecha) - Date.parse(a.venta.fecha));
+      repuesto.compraDetalle.sort((a, b) => Date.parse(b.compra.fecha) - Date.parse(a.compra.fecha));
       this.repuesto = repuesto;
       this.isLoading = false;
     });

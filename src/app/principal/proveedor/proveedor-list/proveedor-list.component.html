@@ -53,7 +53,7 @@
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Teléfono</th>
           <td mat-cell *matCellDef="let row">{{ row.telefono }}</td>
         </ng-container>
-        <ng-container matColumnDef="Compras.Sum(CompraDetalle.Sum(Cantidad))">
+        <ng-container matColumnDef="Compras.Where(Estado==true).Sum(CompraDetalle.Sum(Cantidad))">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Total Compras</th>
           <td mat-cell *matCellDef="let row">{{ row.totalCompras }}</td>
         </ng-container>
