@@ -1,10 +1,12 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 import { MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { RepuestoService } from '../../repuesto/repuesto.service';
+import { Observable } from 'rxjs';
 import { SharedService } from '@shared/shared.service';
 import { Repuesto } from '@models/entity';
+import { server } from '@models/http';
 
 @Component({
   selector: 'app-repuesto-search',
@@ -19,7 +21,7 @@ export class RepuestoSearchComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public repuesto: Repuesto,
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<RepuestoSearchComponent>,
-    private service: RepuestoService,
+    private http: HttpClient,
     private sharedService: SharedService,
     private snackBar: MatSnackBar
   ) {
@@ -38,7 +40,7 @@ export class RepuestoSearchComponent implements OnInit {
   async buscar(isNewSearch: boolean = true): Promise<boolean> {
     const codigo: string = this.form.get('codigo').value;
     if(codigo?.trim()) {
-      const repuesto = await this.service.getRepuesto(codigo.trim()).toPromise();
+      const repuesto = await this._getRepuesto(codigo.trim()).toPromise();
       if(repuesto) {
         this.repuesto = repuesto;
         if(isNewSearch) this.form.get('precio').setValue(repuesto.precio);
@@ -69,6 +71,10 @@ export class RepuestoSearchComponent implements OnInit {
   }
 
   showError = (message: string) => this.snackBar.open(message, 'Error', {duration: 2000});
+
+  private _getRepuesto(id: string): Observable<Repuesto> {
+    return this.http.get<Repuesto>(server.host + `/cuenta/repuestos/${id}`);
+  }
   
   private _toDescripcion(repuesto: Repuesto) {
     return repuesto.categoria.descripcion + ' ' + repuesto.marca.descripcion + ' ' +

@@ -25,9 +25,6 @@ export class RepuestoService {
   getReporte = (id: string): Observable<Repuesto> => this.http.get<Repuesto>(`${this.url}/${id}/reporte`)
       .pipe(catchError(this.handleError<Repuesto>('getReporte')));
 
-  getRepuesto = (id: string): Observable<Repuesto> => this.http.get<Repuesto>(`${this.url}/${id}`)
-      .pipe(catchError(this.handleError<Repuesto>('getRepuesto')));
-
   getForm = (): Observable<RepuestoForm> => this.http.get<RepuestoForm>(`${this.url}/form`)
       .pipe(catchError(this.handleError<RepuestoForm>('getForm')));
 
