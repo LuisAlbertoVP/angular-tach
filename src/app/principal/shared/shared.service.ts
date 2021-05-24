@@ -10,7 +10,7 @@ import * as moment from 'moment';
 })
 export class SharedService {
   private isMobile = new BehaviorSubject<boolean>(false);
-  private menuBar = new BehaviorSubject<MenuBar>({ title: 'Principal' });
+  private menuBar = new BehaviorSubject<MenuBar>({ title: 'Menú principal' });
   isMobile$ = this.isMobile.asObservable();
   menuBar$ = this.menuBar.asObservable();
 

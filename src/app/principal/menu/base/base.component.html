@@ -1,16 +1,11 @@
 <div class="center">
-  <div class="container shadow">
-    <div class="d-flex pt-5 p-3">
-      <h1 class="blue">Menú Principal</h1>
-      <div class="ml-auto right">
-        <b>Usuario</b>
-        <p>{{ auth.nombres }}</p>
-      </div>
+  <div id="container-menu" class="container">
+    <div class="row header-menu mb-2">
+      <h1 class="text-center text-white">Transmisiones Automáticas Chabeli</h1>
     </div>
-    <h2 class="blue text-center">Transmisiones Automáticas Chabeli</h2>
     <div class="row">
       <div *ngFor="let modulo of modulos" class="col-6 col-md-4 col-lg-2">
-        <div class="parent shadow m-3">
+        <div class="parent m-3">
           <div class="sparent m-3 cursor-point" (click)="modulo.checked=true; navigate(modulo)">
             <div class="img-container">
               <div class="images">

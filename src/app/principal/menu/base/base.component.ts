@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { listModulos } from '@models/menu';
 import { Modulo } from '@models/menu';
-import { AuthService } from '@auth_service/*';
 import { SharedService } from '@shared/shared.service';
 
 @Component({
@@ -14,11 +13,10 @@ export class BaseComponent implements OnInit {
   modulos: Modulo[] = [];
 
   constructor(
-    public auth: AuthService,
     private router: Router,
     sharedService: SharedService
   ) {
-    sharedService.buildMenuBar({ title: 'Principal' });
+    sharedService.buildMenuBar({ title: 'Menú principal' });
   }
 
   ngOnInit(): void {
