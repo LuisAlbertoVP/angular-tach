@@ -2,14 +2,15 @@
 <ng-template #elseBlock>
   <h2 mat-dialog-title class="text-center blue">Reporte del repuesto con código {{ data.codigo }}</h2>
   <mat-dialog-content class="mat-typography">
-    <div class="mat-elevation-z4 m-3 p-3">
+    <div class="mat-elevation-z4 m-2 p-3">
       <div *ngIf="!repuesto || (repuesto.compraDetalle.length == 0 && repuesto.ventaDetalle.length == 0); else elseBlock">
-        <b>No existe reporte para este repuesto</b>
+        <h3>No existe reporte para este repuesto</h3>
       </div>
       <ng-template #elseBlock>
         <mat-tab-group mat-align-tabs="center">
           <mat-tab label="Compras">
-            <ng-container *ngIf="repuesto.compraDetalle.length > 0">
+            <h3 *ngIf="repuesto.compraDetalle.length == 0; else elseCompra" class="mt-3">Este repuesto no aparece en ninguna compra</h3>
+            <ng-template #elseCompra>
               <h3 class="mt-3">Este repuesto aparece en las siguientes compras:</h3>
               <div class="table-container mt-1">
                 <table class="table table-hover">
@@ -32,10 +33,11 @@
                   </tbody>
                 </table>
               </div>
-            </ng-container>
+            </ng-template>
           </mat-tab>
           <mat-tab label="Ventas">
-            <ng-container *ngIf="repuesto.ventaDetalle.length > 0">
+            <h3 *ngIf="repuesto.ventaDetalle.length == 0; else elseVenta" class="mt-3">Este repuesto no aparece en ninguna venta</h3>
+            <ng-template #elseVenta>
               <h3 class="mt-3">Este repuesto aparece en las siguientes ventas:</h3>
               <div class="table-container mt-1">
                 <table class="table table-hover">
@@ -58,7 +60,7 @@
                   </tbody>
                 </table>
               </div>
-            </ng-container>
+            </ng-template>
           </mat-tab>
         </mat-tab-group>
       </ng-template>
