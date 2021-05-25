@@ -35,10 +35,10 @@ export class ReporteDetailComponent implements OnInit {
     this.service.get().subscribe(reporte => { 
       this._addChart(this._datasetPie(reporte.categorias), 'Categorías', this._pieOptions('Categorías'));
       this._addChart(this._datasetPie(reporte.marcas), 'Marcas', this._pieOptions('Marcas'));
-      this._addChart(this._datasetLine(reporte.ventas), 'Unidades vendidas', this._lineOptions());
+      this._addChart(this._datasetLine(reporte.ventas), 'Unidades vendidas', this._lineOptions(this._callbackDatesMonth));
       this._addChart(this._datasetBar2(reporte.categorias, 'horizontalBar'), 'Categorías más vendidas');
       this._addChart(this._datasetBar2(reporte.marcas), 'Marcas más vendidas');
-      this._addChart(this._datasetLine(reporte.compras), 'Unidades compradas', this._lineOptions());
+      this._addChart(this._datasetLine(reporte.compras), 'Unidades compradas', this._lineOptions(this._callbackDatesMonth));
       this._addChart(this._datasetBar1(reporte.categorias), 'Categorías más compradas');
       this._addChart(this._datasetBar1(reporte.marcas, 'horizontalBar'), 'Marcas más compradas');
       this.reporte = reporte;
@@ -47,8 +47,7 @@ export class ReporteDetailComponent implements OnInit {
   }
 
   updateChartBusqueda(tipo: string, date1: string, date2: string, groupby: string) {
-    let id = '';
-    let transaccion = [];
+    let id = '', transaccion = [];
     if(tipo == 'compras') {
       for(let compra of this.reporte.compras) {
         const fecha = Date.parse(compra.fecha);
@@ -63,7 +62,8 @@ export class ReporteDetailComponent implements OnInit {
       id = 'Unidades vendidas';
     }
     const dataset: Dataset = this._datasetLine(transaccion, groupby);
-    this.chartBusqueda = { dataset: dataset, id: id, options: this._lineOptions(), isInfinite: true };
+    const callback = groupby == 'Y' ? this._callbackDatesYear : this._callbackDatesMonth;
+    this.chartBusqueda = { dataset: dataset, id: id, options: this._lineOptions(callback), isInfinite: true };
   }
 
   private _addChart(dataset: Dataset, id: string, options: any = {}) {
@@ -80,7 +80,7 @@ export class ReporteDetailComponent implements OnInit {
     return { labels: sorted.map(d => d.descripcion), data: sorted.map(d => d.cantidadVentas.toString()), type: type };
   }
 
-  private _datasetLine(data: Transaccion[], format: string = 'w'): Dataset {
+  private _datasetLine(data: Transaccion[], format: string = 'YY M'): Dataset {
     const sorted = this._groupDatesBy(format, data.slice(0).sort((a,b) => Date.parse(a.fecha) - Date.parse(b.fecha)));
     return { labels: sorted.map(d => d.fecha), data: sorted.map(d => d.cantidad.toString()), type: 'line' };
   }
@@ -90,18 +90,21 @@ export class ReporteDetailComponent implements OnInit {
     return { labels: sorted.map(d => d.descripcion), data: sorted.map(d => d.stock.toString()), type: 'pie' };
   }
 
-  private _lineOptions() {
-    return { scales: { xAxes: [ {ticks: { autoSkip: false, callback: this._callbackDates } } ] } };
+  private _lineOptions(callback: any) {
+    return { scales: { xAxes: [ { ticks: { autoSkip: false, callback: callback } } ] } };
   }
 
   private _pieOptions(id: string) {
     return { title: { display: true, text: id }, legend: { display: true, position: 'right' } };
   }
 
-  private _callbackDates(date: string) {
-    const dates: string[] = date.split(' a ');
-    const format = moment(dates[0]).locale('es').format('MMM w');
+  private _callbackDatesMonth(date: string) {
+    const format = moment(date.split(' a ')[0]).locale('es').format('MMM YYYY');
     return format.charAt(0).toUpperCase() + format.slice(1);
+  }
+
+  private _callbackDatesYear(date: string) {
+    return moment(date.split(' a ')[0]).locale('es').format('Y');
   }
 
   private _groupDatesBy(format: string, transacciones: Transaccion[]): Transaccion[] {

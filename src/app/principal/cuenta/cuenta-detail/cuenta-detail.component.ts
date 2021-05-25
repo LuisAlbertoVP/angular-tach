@@ -40,6 +40,8 @@ export class CuentaDetailComponent implements OnInit {
       usuario.usuarioModificacion = this.auth.nombreUsuario;
       this.service.update(usuario).subscribe(response => {
         if(response?.status == 200) {
+          this.auth.nombres = usuario.nombres;
+          this.auth.nombreUsuario = usuario.nombreUsuario;
           this.sharedService.showMessage(response.body.texto);
         }
       });

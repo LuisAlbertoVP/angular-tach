@@ -1,5 +1,5 @@
 <div class="container mt-4">
-  <div class="d-flex shadow p-3">
+  <div class="d-flex pshadow p-3">
     <div>
       <div class="d-flex">
         <h2 class="mt-3 mb-3 blue">Compra</h2>
@@ -15,7 +15,7 @@
     </div>
     <img src="assets/logo.png" class="ml-auto" />
   </div>
-  <div class="w-100 p-3 mt-3 shadow">
+  <div class="w-100 p-3 mt-3 pshadow">
     <mat-spinner *ngIf="!form; else elseBlock" color="accent" class="m0-auto"></mat-spinner>
     <ng-template #elseBlock>
       <form form #formView="ngForm" [formGroup]="form" (ngSubmit)="guardar()" class="row" autocomplete="off">

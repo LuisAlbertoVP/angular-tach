@@ -39,6 +39,14 @@ export class AuthService {
     return localStorage.getItem('token_expiration');
   }
 
+  set nombres(nombres: string) {
+    localStorage.setItem('nombres', nombres);
+  }
+
+  set nombreUsuario(nombreUsuario: string) {
+    localStorage.setItem('nombreUsuario', nombreUsuario);
+  }
+
   addAccount = (user: User) => this.http.post<Mensaje>(`${server.host}/cuenta`, user, httpOptions)
       .pipe(catchError(this.handleError<HttpResponse<Mensaje>>('addAccount')));
 

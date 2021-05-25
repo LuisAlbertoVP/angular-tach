@@ -26,14 +26,11 @@ dd {
 legend { 
     font-size: 18px; 
 }
-tr.mat-footer-row {
+tr.mat-footer-row, .bold, .text-error {
     font-weight: bold;
 }
 .ml-auto { 
     margin-left: auto !important; 
-}
-.bold, .text-error { 
-    font-weight: bold; 
 }
 .not-hover:hover * { 
     color: rgb(203, 217, 236); 
@@ -69,7 +66,9 @@ tr.mat-footer-row {
 .warning .mat-simple-snackbar-action {
     color: #ffc107;
 }
-.shadow {
-    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
-    border-radius: 12px;
+.pshadow {
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+dl.pshadow {
+    border-radius: 8px;
 }

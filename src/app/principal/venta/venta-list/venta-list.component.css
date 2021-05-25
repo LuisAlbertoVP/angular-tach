@@ -22,11 +22,6 @@ tr.element-row:not(.expanded-row):active {
 }
 .element-detail { 
   overflow: hidden; 
-  display: flex; 
-}
-.element-description { 
-  padding: 16px; 
-  width: 100%; 
 }
 .loading-shade {
   position: absolute;

@@ -2,7 +2,7 @@
   <mat-tab-group mat-align-tabs="center">
     <mat-tab>
       <ng-template mat-tab-label><mat-icon>insert_chart</mat-icon>Reporte</ng-template>
-      <div class="shadow m-3 p-3">
+      <div class="pshadow m-3 p-3">
         <mat-spinner *ngIf="isLoading" color="accent" mode="indeterminate" class="m0-auto"></mat-spinner>
         <div class="container-fluid" [class.d-none]="isLoading">
           <div class="row justify-content-center">
@@ -25,7 +25,7 @@
     </mat-tab>
     <mat-tab>
       <ng-template mat-tab-label><mat-icon>settings</mat-icon>Personalizado</ng-template>
-      <div class="shadow m-3 p-3">
+      <div class="pshadow m-3 p-3">
         <div class="container-fluid">
           <div class="row justify-content-center">
             <div class="col-sm-12 col-md-8">
@@ -52,9 +52,8 @@
                     <mat-label>Agrupar por</mat-label>
                     <mat-select #groupby>
                       <mat-option>--</mat-option>
-                      <mat-option value="w">Semanas</mat-option>
-                      <mat-option value="M">Meses</mat-option>
                       <mat-option value="Y">Años</mat-option>
+                      <mat-option value="YY M">Meses</mat-option>
                     </mat-select>
                   </mat-form-field>
                 </div>
